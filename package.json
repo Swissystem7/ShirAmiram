@@ -1,0 +1,9 @@
+{
+  "name": "shiramiram",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Learn English vocabulary through song lyrics",
+  "scripts": {
+    "test": "node --test test/"
+  }
+}
