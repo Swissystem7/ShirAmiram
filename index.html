@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShirAmiram • שיראמיר'ם</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; }
+    .lyrics-active { background: rgba(168,85,247,0.25); border-right: 4px solid #a855f7; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 flex flex-col items-center">
+  <header class="w-full max-w-xl border-b border-slate-800 pb-3 mb-4 flex justify-between items-center">
+    <h1 class="text-xl font-extrabold text-purple-400">ShirAmiram • שיראמיר'ם</h1>
+    <span class="text-xs bg-purple-950 text-purple-300 border border-purple-800 px-2 py-0.5 rounded font-mono">128 BPM</span>
+  </header>
+  <main class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
+    <div class="flex justify-between items-center text-xs">
+      <span class="text-pink-400 font-bold uppercase tracking-wider">Track #01 • Synth-Pop</span>
+      <span id="timer" class="font-mono text-slate-400">00:00 / 00:32</span>
+    </div>
+    <h2 class="text-lg font-bold text-white">The Inevitable Breakthrough</h2>
+    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 min-h-[140px] space-y-2 text-sm font-mono text-left" dir="ltr" id="lyrics-box">
+      <div id="l1" class="p-1 rounded transition">[deliberate] stride in the shadows</div>
+      <div id="l2" class="p-1 rounded transition">it is [crucial] to try</div>
+      <div id="l3" class="p-1 rounded transition">never let them [undermine]</div>
+      <div id="l4" class="p-1 rounded transition">victory is [inevitable] now!</div>
+    </div>
+    <div class="pt-2">
+      <button id="btn-play" type="button" class="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-bold text-white shadow-lg transition">הפעל ביט (Synth-Pop 128 BPM)</button>
+    </div>
+  </main>
+  <script>
+    let ctx = null, isPlaying = false, timer = 0, interval = null;
+    const playBtn = document.getElementById("btn-play");
+    const timerEl = document.getElementById("timer");
+    const lyrics = [
+      document.getElementById("l1"),
+      document.getElementById("l2"),
+      document.getElementById("l3"),
+      document.getElementById("l4")
+    ];
+
+    function formatTime(sec) {
+      const s = Math.max(0, sec | 0);
+      return `00:${s < 10 ? "0" : ""}${s} / 00:32`;
+    }
+
+    function highlightLyric(sec) {
+      const idx = Math.min(3, Math.floor(sec / 8));
+      lyrics.forEach((el, i) => {
+        if (!el) return;
+        el.classList.toggle("lyrics-active", isPlaying && i === idx);
+      });
+    }
+
+    function updateUi() {
+      timerEl.innerText = formatTime(timer);
+      highlightLyric(timer);
+    }
+
+    function beat() {
+      if (!ctx) return;
+      try {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.setValueAtTime(100, ctx.currentTime);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.15);
+      } catch (e) {}
+    }
+
+    async function ensureAudio() {
+      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === "suspended") {
+        try { await ctx.resume(); } catch (e) {}
+      }
+      return ctx;
+    }
+
+    playBtn.addEventListener("click", async () => {
+      await ensureAudio();
+      if (!isPlaying) {
+        isPlaying = true;
+        playBtn.innerText = "השהה ביט";
+        updateUi();
+        beat();
+        interval = setInterval(() => {
+          timer++;
+          updateUi();
+          beat();
+          if (timer >= 32) {
+            clearInterval(interval);
+            interval = null;
+            isPlaying = false;
+            playBtn.innerText = "הפעל ביט מחדש";
+            timer = 0;
+            updateUi();
+            lyrics.forEach(el => el && el.classList.remove("lyrics-active"));
+          }
+        }, 1000);
+      } else {
+        clearInterval(interval);
+        interval = null;
+        isPlaying = false;
+        playBtn.innerText = "המשך ביט";
+        lyrics.forEach(el => el && el.classList.remove("lyrics-active"));
+      }
+    });
+  </script>
+</body>
+</html>
