@@ -1,0 +1,58 @@
+[
+  {
+    "word": "deliberate",
+    "translation": "מכוון, שקול",
+    "category": "adjective",
+    "difficulty": "Medium",
+    "sample_sentence": "Walking through the shadows with a deliberate stride."
+  },
+  {
+    "word": "crucial",
+    "translation": "חיוני, מכריע",
+    "category": "adjective",
+    "difficulty": "Medium",
+    "sample_sentence": "Facing every challenge, yeah it's crucial to try."
+  },
+  {
+    "word": "undermine",
+    "translation": "לערער, לחתור תחת",
+    "category": "verb",
+    "difficulty": "Hard",
+    "sample_sentence": "They tried to undermine the dreams we made."
+  },
+  {
+    "word": "subtle",
+    "translation": "עדין, דק",
+    "category": "adjective",
+    "difficulty": "Medium",
+    "sample_sentence": "With subtle little whispers in the shade."
+  },
+  {
+    "word": "nevertheless",
+    "translation": "אף על פי כן",
+    "category": "connector",
+    "difficulty": "Hard",
+    "sample_sentence": "Nevertheless, we stand up tall."
+  },
+  {
+    "word": "inevitable",
+    "translation": "בלתי נמנע",
+    "category": "adjective",
+    "difficulty": "Hard",
+    "sample_sentence": "Victory is coming, it's inevitable now."
+  },
+  {
+    "word": "hypothesis",
+    "translation": "השערה מדעית",
+    "category": "noun",
+    "difficulty": "Medium",
+    "sample_sentence": "We had a wild hypothesis and figured out how."
+  },
+  {
+    "word": "consequently",
+    "translation": "כתוצאה מכך",
+    "category": "connector",
+    "difficulty": "Medium",
+    "sample_sentence": "Consequently, there is no turning back!"
+  }
+]

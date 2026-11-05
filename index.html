@@ -2,116 +2,309 @@
 <html lang="he" dir="rtl" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ShirAmiram • שיראמיר'ם</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            neon: { purple: '#c084fc', pink: '#f472b6', cyan: '#22d3ee' },
+            stage: { 950: '#07060f', 900: '#0f0c1d', 800: '#1a1430' }
+          },
+          boxShadow: {
+            glow: '0 0 40px rgba(168,85,247,0.35)',
+            'glow-pink': '0 0 28px rgba(244,114,182,0.4)'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: system-ui, sans-serif; }
-    .lyrics-active { background: rgba(168,85,247,0.25); border-right: 4px solid #a855f7; }
+    body {font-family:'Heebo',system-ui,sans-serif;background:#0f0c1d;color:#faf5ff;}
+    .font-mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+    .lyrics-active{background:linear-gradient(90deg,rgba(192,132,252,0.28),rgba(244,114,182,0.12));border-right:3px solid #c084fc;color:#faf5ff;transform:translateX(-2px);}
+    .vocab-badge{cursor:pointer;background:#a855f7;padding:2px 6px;border-radius:4px;margin:0 2px;}
+    .vocab-badge:hover{background:#c084fc;}
+    .wave-bar{width:3px;border-radius:999px;background:linear-gradient(180deg,#22d3ee,#a855f7);animation:wave 1.1s ease-in-out infinite;opacity:.35;}
+    .wave-bar.on{opacity:1;}
+    @keyframes wave{0%,100%{transform:scaleY(.35);}50%{transform:scaleY(1);}}
+    .progress-track{background:rgba(148,163,184,.15);height:6px;border-radius:3px;}
+    .progress-fill{background:linear-gradient(90deg,#a855f7,#f472b6,#22d3ee);height:100%;border-radius:3px;transition:width .35s linear;}
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-4 flex flex-col items-center">
-  <header class="w-full max-w-xl border-b border-slate-800 pb-3 mb-4 flex justify-between items-center">
-    <h1 class="text-xl font-extrabold text-purple-400">ShirAmiram • שיראמיר'ם</h1>
-    <span class="text-xs bg-purple-950 text-purple-300 border border-purple-800 px-2 py-0.5 rounded font-mono">128 BPM</span>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="p-4 bg-stage-900 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-neon-purple">שיראמיר'ם</h1>
+    <div class="flex gap-2">
+      <button id="btn-play" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition">▶️</button>
+      <span id="timer" class="font-mono">00:00</span>
+    </div>
   </header>
-  <main class="w-full max-w-xl bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl space-y-4">
-    <div class="flex justify-between items-center text-xs">
-      <span class="text-pink-400 font-bold uppercase tracking-wider">Track #01 • Synth-Pop</span>
-      <span id="timer" class="font-mono text-slate-400">00:00 / 00:32</span>
-    </div>
-    <h2 class="text-lg font-bold text-white">The Inevitable Breakthrough</h2>
-    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 min-h-[140px] space-y-2 text-sm font-mono text-left" dir="ltr" id="lyrics-box">
-      <div id="l1" class="p-1 rounded transition">[deliberate] stride in the shadows</div>
-      <div id="l2" class="p-1 rounded transition">it is [crucial] to try</div>
-      <div id="l3" class="p-1 rounded transition">never let them [undermine]</div>
-      <div id="l4" class="p-1 rounded transition">victory is [inevitable] now!</div>
-    </div>
-    <div class="pt-2">
-      <button id="btn-play" type="button" class="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-bold text-white shadow-lg transition">הפעל ביט (Synth-Pop 128 BPM)</button>
-    </div>
+
+  <!-- Tabs -->
+  <nav class="flex bg-stage-800 p-2 gap-2">
+    <button class="tab-btn px-3 py-1 bg-neon-purple rounded" data-tab="song">שיר</button>
+    <button class="tab-btn px-3 py-1 bg-neon-purple rounded" data-tab="vocab">אוצר מילים</button>
+    <button class="tab-btn px-3 py-1 bg-neon-purple rounded" data-tab="quiz">מבחן</button>
+  </nav>
+
+  <!-- Content -->
+  <main class="flex-1 p-4 overflow-auto">
+    <!-- Song Tab -->
+    <section id="song" class="tab-content">
+      <div class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <input id="seek" type="range" min="0" max="100" value="0" class="flex-1 progress-track">
+          <select id="speed" class="bg-stage-900 text-neon-pink px-2 py-1 rounded">
+            <option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.25">1.25×</option>
+          </select>
+        </div>
+        <div class="flex gap-1 justify-center mb-2">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div>
+        </div>
+        <div id="insp-word" class="p-2 bg-stage-900 rounded text-sm"></div>
+      </div>
+
+      <article class="text-lg leading-relaxed">
+        <p class="mb-2">
+          <span class="vocab-badge">deliberate</span> steps echo in the night,
+          <span class="vocab-badge">crucial</span> hearts beat, we hold the light.
+        </p>
+        <p class="mb-2">
+          The <span class="vocab-badge">undermine</span> shadows try to sway,
+          but <span class="vocab-badge">subtle</span> whispers guide our way.
+        </p>
+        <p class="mb-2">
+          <span class="vocab-badge">nevertheless</span>, we rise, we sing,
+          <span class="vocab-badge">inevitable</span> dreams take wing.
+        </p>
+        <p class="mb-2">
+          A <span class="vocab-badge">hypothesis</span> of hope we chase,
+          <span class="vocab-badge">consequently</span> we find our place.
+        </p>
+        <p class="mt-4 text-sm opacity-75">
+          English: The deliberate stride, crucial moments, and subtle whispers shape our inevitable hypothesis.
+        </p>
+      </article>
+    </section>
+
+    <!-- Vocabulary Tab -->
+    <section id="vocab" class="tab-content hidden">
+      <div class="flex flex-col gap-2 mb-4">
+        <input id="vocab-search" type="text" placeholder="חפש מילים…" class="p-2 bg-stage-900 rounded text-neon-pink">
+        <div class="flex gap-2">
+          <button class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="connector">קונקטורים</button>
+          <button class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="science">מדע</button>
+          <button class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="society">חברה</button>
+          <button class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="all">הכל</button>
+        </div>
+      </div>
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-stage-800">
+          <tr><th class="p-2">מילה</th><th class="p-2">תרגום</th><th class="p-2">קטגוריה</th><th class="p-2">קושי</th></tr>
+        </thead>
+        <tbody id="vocab-table"></tbody>
+      </table>
+    </section>
+
+    <!-- Quiz Tab -->
+    <section id="quiz" class="tab-content hidden">
+      <div id="quiz-container" class="space-y-4">
+        <!-- Questions will be injected -->
+      </div>
+      <div class="mt-4 text-xl font-bold">ציון: <span id="quiz-score">0</span>/4</div>
+    </section>
   </main>
+
   <script>
-    let ctx = null, isPlaying = false, timer = 0, interval = null;
-    const playBtn = document.getElementById("btn-play");
-    const timerEl = document.getElementById("timer");
-    const lyrics = [
-      document.getElementById("l1"),
-      document.getElementById("l2"),
-      document.getElementById("l3"),
-      document.getElementById("l4")
+    // Vocabulary data
+    const vocab = [
+      {"word":"deliberate","translation":"מכוון, שקול","category":"adjective","difficulty":"Medium","sample_sentence":"Walking through the shadows with a deliberate stride."},
+      {"word":"crucial","translation":"חיוני, מכריע","category":"adjective","difficulty":"Medium","sample_sentence":"Facing every challenge, yeah it's crucial to try."},
+      {"word":"undermine","translation":"לערער, לחתור תחת","category":"verb","difficulty":"Hard","sample_sentence":"They tried to undermine the dreams we made."},
+      {"word":"subtle","translation":"עדין, דק","category":"adjective","difficulty":"Medium","sample_sentence":"With subtle little whispers in the shade."},
+      {"word":"nevertheless","translation":"אף על פי כן","category":"connector","difficulty":"Hard","sample_sentence":"Nevertheless, we stand up tall."},
+      {"word":"inevitable","translation":"בלתי נמנע","category":"adjective","difficulty":"Hard","sample_sentence":"Victory is coming, it's inevitable now."},
+      {"word":"hypothesis","translation":"השערה מדעית","category":"noun","difficulty":"Medium","sample_sentence":"We had a wild hypothesis and figured out how."},
+      {"word":"consequently","translation":"כתוצאה מכך","category":"connector","difficulty":"Medium","sample_sentence":"Consequently, there is no turning back!"}
     ];
 
-    function formatTime(sec) {
-      const s = Math.max(0, sec | 0);
-      return `00:${s < 10 ? "0" : ""}${s} / 00:32`;
-    }
+    // Tab handling
+    document.querySelectorAll('.tab-btn').forEach(btn=>{
+      btn.addEventListener('click',()=> {
+        document.querySelectorAll('.tab-content').forEach(sec=>sec.classList.add('hidden'));
+        document.getElementById(btn.dataset.tab).classList.remove('hidden');
+      });
+    });
 
-    function highlightLyric(sec) {
-      const idx = Math.min(3, Math.floor(sec / 8));
-      lyrics.forEach((el, i) => {
-        if (!el) return;
-        el.classList.toggle("lyrics-active", isPlaying && i === idx);
+    // Vocabulary table
+    const tbody = document.getElementById('vocab-table');
+    function renderVocab(filter='') {
+      tbody.innerHTML = '';
+      vocab.filter(v=>v.word.includes(filter)||v.translation.includes(filter)).forEach(v=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML=`<td class="p-2 border-t border-stage-800">${v.word}</td>
+                     <td class="p-2 border-t border-stage-800">${v.translation}</td>
+                     <td class="p-2 border-t border-stage-800">${v.category}</td>
+                     <td class="p-2 border-t border-stage-800">${v.difficulty}</td>`;
+        tbody.appendChild(tr);
       });
     }
-
-    function updateUi() {
-      timerEl.innerText = formatTime(timer);
-      highlightLyric(timer);
-    }
-
-    function beat() {
-      if (!ctx) return;
-      try {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.frequency.setValueAtTime(100, ctx.currentTime);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.15);
-      } catch (e) {}
-    }
-
-    async function ensureAudio() {
-      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-      if (ctx.state === "suspended") {
-        try { await ctx.resume(); } catch (e) {}
-      }
-      return ctx;
-    }
-
-    playBtn.addEventListener("click", async () => {
-      await ensureAudio();
-      if (!isPlaying) {
-        isPlaying = true;
-        playBtn.innerText = "השהה ביט";
-        updateUi();
-        beat();
-        interval = setInterval(() => {
-          timer++;
-          updateUi();
-          beat();
-          if (timer >= 32) {
-            clearInterval(interval);
-            interval = null;
-            isPlaying = false;
-            playBtn.innerText = "הפעל ביט מחדש";
-            timer = 0;
-            updateUi();
-            lyrics.forEach(el => el && el.classList.remove("lyrics-active"));
-          }
-        }, 1000);
-      } else {
-        clearInterval(interval);
-        interval = null;
-        isPlaying = false;
-        playBtn.innerText = "המשך ביט";
-        lyrics.forEach(el => el && el.classList.remove("lyrics-active"));
-      }
+    renderVocab();
+    document.getElementById('vocab-search').addEventListener('input',e=>renderVocab(e.target.value));
+    document.querySelectorAll('.playlist-btn').forEach(b=>{
+      b.addEventListener('click',()=> {
+        const cat=b.dataset.cat;
+        if(cat==='all') renderVocab();
+        else renderVocab(v=>v.category===cat);
+      });
     });
+
+    // Vocab badge click
+    document.querySelectorAll('.vocab-badge').forEach(b=>{
+      b.addEventListener('click',()=> {
+        const word=b.textContent.trim();
+        const entry=vocab.find(v=>v.word===word);
+        if(entry){
+          document.getElementById('insp-word').innerHTML=
+            `<strong>${entry.word}</strong> – ${entry.translation}<br>
+             <em>קטגוריה:</em> ${entry.category}<br>
+             <em>דוגמה:</em> ${entry.sample_sentence}`;
+        }
+      });
+    });
+
+    // Audio synth
+    let audioCtx, osc, gainNode, analyser, animationId;
+    const playBtn=document.getElementById('btn-play');
+    const timerEl=document.getElementById('timer');
+    const seekBar=document.getElementById('seek');
+    const speedSel=document.getElementById('speed');
+    let startTime, elapsed=0, playing=false;
+
+    function initAudio(){
+      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      window.__shirAC=audioCtx;
+      osc=audioCtx.createOscillator();
+      gainNode=audioCtx.createGain();
+      analyser=audioCtx.createAnalyser();
+      analyser.fftSize=32;
+      osc.type='sine';
+      osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+      osc.connect(gainNode).connect(analyser).connect(audioCtx.destination);
+      gainNode.gain.value=0.2;
+      osc.start();
+      osc.disconnect(); // start silent
+    }
+
+    function startPlayback(){
+      if(!audioCtx) initAudio();
+      osc.connect(gainNode);
+      startTime=audioCtx.currentTime - elapsed;
+      playing=true;
+      window.__shirPlaying=true;
+      updateTimer();
+      animateBars();
+    }
+
+    function stopPlayback(){
+      osc.disconnect(gainNode);
+      playing=false;
+      window.__shirPlaying=false;
+      cancelAnimationFrame(animationId);
+    }
+
+    playBtn.addEventListener('click',()=>{
+      if(playing) stopPlayback(); else startPlayback();
+    });
+
+    // Timer
+    function updateTimer(){
+      if(!playing) return;
+      elapsed=audioCtx.currentTime - startTime;
+      const mins=Math.floor(elapsed/60).toString().padStart(2,'0');
+      const secs=Math.floor(elapsed%60).toString().padStart(2,'0');
+      timerEl.textContent=`${mins}:${secs}`;
+      const perc=Math.min(100, (elapsed%30)/30*100); // loop every 30s
+      seekBar.value=perc;
+      requestAnimationFrame(updateTimer);
+    }
+
+    // Speed control
+    speedSel.addEventListener('change',()=> {
+      const mult=parseFloat(speedSel.value);
+      osc.frequency.setValueAtTime(220*mult, audioCtx.currentTime);
+    });
+
+    // Visualizer
+    const bars=document.querySelectorAll('.wave-bar');
+    function animateBars(){
+      const data=new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(data);
+      bars.forEach((b,i)=>{
+        const val=data[i]||0;
+        b.style.height=`${(val/255)*100}%`;
+        b.classList.toggle('on',val>100);
+      });
+      animationId=requestAnimationFrame(animateBars);
+    }
+
+    // Quiz
+    const quizData=[
+      {q:"What does 'deliberate' mean?", a:"מכוון, שקול", opts:["חסר משמעות","מכוון, שקול","קשה","מהיר"]},
+      {q:"Select the connector:", a:"אף על פי כן", opts:["חלק","אף על פי כן","קשה","חזק"]},
+      {q:"'Hypothesis' is a:", a:"השערה מדעית", opts:["מילה נרדפת","שם תואר","שם עצם","פועל"]},
+      {q:"'Inevitable' translates to:", a:"בלתי נמנע", opts:["בלתי אפשרי","בלתי נמנע","קשה","מהיר"]},
+    ];
+    const quizContainer=document.getElementById('quiz-container');
+    let score=0;
+    function renderQuiz(){
+      quizData.forEach((item,i)=>{
+        const div=document.createElement('div');
+        div.className='p-2 bg-stage-800 rounded';
+        div.innerHTML=`<p class="mb-2 font-bold">${i+1}. ${item.q}</p>`;
+        item.opts.forEach(opt=>{
+          const btn=document.createElement('button');
+          btn.className='quiz-opt mr-2 mb-1 px-2 py-1 bg-neon-pink rounded';
+          btn.textContent=opt;
+          btn.addEventListener('click',()=> checkAnswer(btn,item.a,div));
+          div.appendChild(btn);
+        });
+        const fb=document.createElement('div');
+        fb.className='quiz-fb mt-2 text-sm';
+        div.appendChild(fb);
+        quizContainer.appendChild(div);
+      });
+    }
+    function checkAnswer(btn,correct,container){
+      const fb=container.querySelector('.quiz-fb');
+      if(btn.textContent===correct){
+        fb.textContent='✅ נכון!';
+        fb.className='quiz-fb mt-2 text-green-400';
+        score++;
+      }else{
+        fb.textContent=`❌ לא נכון. התשובה היא: ${correct}`;
+        fb.className='quiz-fb mt-2 text-red-400';
+      }
+      document.getElementById('quiz-score').textContent=score;
+      // disable all options
+      container.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
+    }
+    renderQuiz();
+
+    // Initialize first tab
+    document.querySelector('.tab-btn').click();
   </script>
 </body>
 </html>
