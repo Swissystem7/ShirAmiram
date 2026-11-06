@@ -12,13 +12,13 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const C = A.validateContent(raw);
 
 test('import hash and counts preserved', () => {
-  assert.equal(crypto.createHash('sha256').update(rawBytes).digest('hex'), '6168a96c77434417fcd25ad43cad1df11159da2c86b09d005134471dacb8038c');
-  assert.equal(C.songs.length, 30); assert.equal(C.questions.length, 20); assert.ok(C.words.length >= 100);
+  assert.equal(crypto.createHash('sha256').update(rawBytes).digest('hex'), 'f9a5ebe87c8e0275dbbbce29cd0d1620a1f7f485b71b85dd17fb474747f5e4fd');
+  assert.equal(C.songs.length, 30); assert.equal(C.questions.length, 50); assert.ok(C.words.length >= 100);
   assert.deepEqual(C.errors, []);
 });
 
-test('exam coverage stays none_claimed; youtube ids validated when present', () => {
-  assert.equal(C.examCoverage, 'none_claimed');
+test('exam coverage is full_vocabulary_50; youtube ids validated when present', () => {
+  assert.equal(C.examCoverage, 'full_vocabulary_50');
   C.songs.forEach(s => {
     if (s.youtube_id == null) {
       assert.equal(s.youtube_url, null);
@@ -86,5 +86,6 @@ test('mobile quiz layout contract in CSS and constants', () => {
   assert.match(html, /quiz-opts/);
   assert.match(html, /id="songs"/); assert.match(html, /data-tab="songs"/);
   assert.match(html, /id="embed-tab-spotify"/); assert.match(html, /id="embed-tab-youtube"/);
+  assert.match(html, /id="quiz-mode-quick"/); assert.match(html, /id="quiz-mode-full"/); assert.match(html, /quiz-progress/);
   assert.doesNotMatch(html, /youtube\.com\/embed\/[A-Za-z0-9_-]{11}/); // no hardcoded embed id in markup
 });

@@ -1,8 +1,8 @@
 {
  "meta": {
   "version": "content_v2",
-  "built_at": "2026-11-05T23:37:26+02:00",
-  "exam_coverage": "none_claimed",
+  "built_at": "2026-11-06T17:02:21+02:00",
+  "exam_coverage": "full_vocabulary_50",
   "provenance": {
    "anchors": "itunes_search+public_spotify_url+spotify_oembed",
    "pedagogic": "lenovo content_worker + onefield deterministic story explanation fix",
@@ -10,15 +10,18 @@
   },
   "counts": {
    "songs": 30,
-   "questions": 20,
-   "highlight_words_ped2": 50
+   "questions": 50,
+   "highlight_words_ped2": 50,
+   "target_words": 50
   },
   "sources": {
    "ped1": "content_v2_ped1.json",
    "ped2": "content_v2_ped2.json",
    "ped3": "content_v2_ped3.json",
    "questions": "content_v2_questions.json",
-   "anchors": "content_v2_anchors_verified.json"
+   "anchors": "content_v2_anchors_verified.json",
+   "questions_1_20": "content_v2_questions_1_20.json",
+   "questions_21_50": "content_v2_questions_21_50.json"
   }
  },
  "songs": [
@@ -1527,242 +1530,752 @@
   {
    "id": 1,
    "song_id": 1,
-   "question": "What does the phrase 'Let it be' usually mean in English? (מה המשמעות של הביטוי 'Let it be'?)",
+   "word_id": "peace",
+   "word": "peace",
+   "question": "She found _____ while reading a quiet book.",
    "options": [
-    "To force a change",
-    "To leave things as they are",
-    "To start a fight",
-    "To hurry up"
+    "comfort",
+    "acceptance",
+    "wisdom",
+    "peace"
    ],
-   "answer": "To leave things as they are"
+   "answer": "peace",
+   "explanation": "שם עצם: תחושה של שלווה"
   },
   {
    "id": 2,
-   "song_id": 2,
-   "question": "Which word is the opposite of 'Yesterday'? (איזו מילה היא ההפך מ-'Yesterday'?)",
+   "song_id": 1,
+   "word_id": "comfort",
+   "word": "comfort",
+   "question": "A warm blanket gives me great _____ on cold nights.",
    "options": [
-    "Tomorrow",
-    "Today",
-    "Morning",
-    "Evening"
+    "wisdom",
+    "calm",
+    "comfort",
+    "acceptance"
    ],
-   "answer": "Tomorrow"
+   "answer": "comfort",
+   "explanation": "שם עצם: תחושת רגיעה ונוחות"
   },
   {
    "id": 3,
-   "song_id": 4,
-   "question": "To 'Imagine' something means to: (המשמעות של 'Imagine' היא:)",
+   "song_id": 1,
+   "word_id": "acceptance",
+   "word": "acceptance",
+   "question": "His _____ of the result helped the team move forward.",
    "options": [
-    "Remember a fact",
-    "Forget a name",
-    "Form a mental picture",
-    "Read a book"
+    "memory",
+    "acceptance",
+    "wisdom",
+    "calm"
    ],
-   "answer": "Form a mental picture"
+   "answer": "acceptance",
+   "explanation": "שם עצם: קבלת מצב ללא התנגדות"
   },
   {
    "id": 4,
-   "song_id": 6,
-   "question": "What is a synonym for 'Wonderful'? (מהי מילה נרדפת ל-'Wonderful'?)",
+   "song_id": 1,
+   "word_id": "wisdom",
+   "word": "wisdom",
+   "question": "Grandparents often share _____ from their long lives.",
    "options": [
-    "Terrible",
-    "Ordinary",
-    "Fantastic",
-    "Small"
+    "wisdom",
+    "calm",
+    "memory",
+    "regret"
    ],
-   "answer": "Fantastic"
+   "answer": "wisdom",
+   "explanation": "שם עצם: ידע עמוק וניסיון"
   },
   {
    "id": 5,
-   "song_id": 9,
-   "question": "In the context of travel, what is a 'Fast Car' characterized by? (בסביבב של נסיעות, במה מאופיין 'Fast Car'?)",
+   "song_id": 1,
+   "word_id": "calm",
+   "word": "calm",
+   "question": "She stayed _____ even when the traffic was terrible.",
    "options": [
-    "High speed",
-    "Low cost",
-    "Large size",
-    "Old age"
+    "memory",
+    "regret",
+    "time",
+    "calm"
    ],
-   "answer": "High speed"
+   "answer": "calm",
+   "explanation": "שם תואר: מצב של שלווה פנימית"
   },
   {
    "id": 6,
-   "song_id": 10,
-   "question": "What does it mean to 'Stand By' someone? (מה המשמעות של 'Stand By' מישהו?)",
+   "song_id": 2,
+   "word_id": "memory",
+   "word": "memory",
+   "question": "My _____ of the trip is still vivid after years.",
    "options": [
-    "To stand next to them physically",
-    "To support them",
-    "To ignore them",
-    "To argue with them"
+    "time",
+    "change",
+    "memory",
+    "regret"
    ],
-   "answer": "To support them"
+   "answer": "memory",
+   "explanation": "שם עצם: תזכורת מהעבר"
   },
   {
    "id": 7,
-   "song_id": 11,
-   "question": "To 'Lean on' someone metaphorically means: (המשמעות המטאפורית של 'Lean on' מישהו היא:)",
+   "song_id": 2,
+   "word_id": "regret",
+   "word": "regret",
+   "question": "She felt _____ after missing the interview.",
    "options": [
-    "To push them",
-    "To rely on them for help",
-    "To lean against a wall",
-    "To avoid them"
+    "reflection",
+    "regret",
+    "time",
+    "change"
    ],
-   "answer": "To rely on them for help"
+   "answer": "regret",
+   "explanation": "שם עצם: תחושת חרטה על מעשה"
   },
   {
    "id": 8,
-   "song_id": 13,
-   "question": "What is a 'Bird' in English? (מהו 'Bird' באנגלית?)",
+   "song_id": 2,
+   "word_id": "time",
+   "word": "time",
+   "question": "_____ flies when you are having fun.",
    "options": [
-    "A mammal",
-    "A reptile",
-    "A feathered animal",
-    "A fish"
+    "time",
+    "change",
+    "reflection",
+    "support"
    ],
-   "answer": "A feathered animal"
+   "answer": "time",
+   "explanation": "שם עצם: משך של אירועים"
   },
   {
    "id": 9,
-   "song_id": 14,
-   "question": "If you can 'Count on' someone, you: (אם אתה יכול 'Count on' מישהו, אתה:)",
+   "song_id": 2,
+   "word_id": "change",
+   "word": "change",
+   "question": "A small _____ in diet can improve health.",
    "options": [
-    "Count how many there are",
-    "Trust them",
-    "Dislike them",
-    "Forget them"
+    "change",
+    "reflection",
+    "support",
+    "encourage"
    ],
-   "answer": "Trust them"
+   "answer": "change",
+   "explanation": "שם עצם: שינוי במצב קיים"
   },
   {
    "id": 10,
-   "song_id": 15,
-   "question": "What is a 'Fight' in the context of a struggle or conflict? (מהו 'Fight' בהקשר של מאבק או קונפליקט?)",
+   "song_id": 2,
+   "word_id": "reflection",
+   "word": "reflection",
+   "question": "Morning _____ helps me set daily goals.",
    "options": [
-    "A peaceful walk",
-    "A disagreement or battle",
-    "A deep sleep",
-    "A quiet conversation"
+    "encourage",
+    "journey",
+    "reflection",
+    "support"
    ],
-   "answer": "A disagreement or battle"
+   "answer": "reflection",
+   "explanation": "שם עצם: מחשבה על אירועים"
   },
   {
    "id": 11,
-   "song_id": 16,
-   "question": "What does it mean to be 'Brave'? (מה המשמעות של להיות 'Brave'?)",
+   "song_id": 3,
+   "word_id": "support",
+   "word": "support",
+   "question": "Friends offer _____ during tough times.",
    "options": [
-    "To be afraid",
-    "To be courageous",
-    "To be shy",
-    "To be tired"
+    "hope",
+    "support",
+    "encourage",
+    "journey"
    ],
-   "answer": "To be courageous"
+   "answer": "support",
+   "explanation": "שם עצם: עזרה או חיזוק"
   },
   {
    "id": 12,
-   "song_id": 17,
-   "question": "A 'Firework' is typically associated with: (זיקוקים 'Firework' מקושרים בדרך כלל ל:)",
+   "song_id": 3,
+   "word_id": "encourage",
+   "word": "encourage",
+   "question": "Teachers _____ students to ask questions.",
    "options": [
-    "Rainy weather",
-    "Celebrations",
-    "Sleeping",
-    "Reading"
+    "encourage",
+    "journey",
+    "hope",
+    "dream"
    ],
-   "answer": "Celebrations"
+   "answer": "encourage",
+   "explanation": "פועל: לתת מוטיבציה למישהו"
   },
   {
    "id": 13,
-   "song_id": 18,
-   "question": "What animal is known for its 'Roar'? (איזו חיה ידועה ב-'Roar' שלה?)",
+   "song_id": 3,
+   "word_id": "journey",
+   "word": "journey",
+   "question": "Life is a _____ full of unexpected turns.",
    "options": [
-    "A cat",
-    "A lion",
-    "A bird",
-    "A fish"
+    "hope",
+    "dream",
+    "future",
+    "journey"
    ],
-   "answer": "A lion"
+   "answer": "journey",
+   "explanation": "שם עצם: תהליך של תנועה או שינוי"
   },
   {
    "id": 14,
-   "song_id": 19,
-   "question": "To 'Shake off' a feeling or a person means: (המשמעות של 'Shake off' רגש או אדם היא:)",
+   "song_id": 3,
+   "word_id": "hope",
+   "word": "hope",
+   "question": "She held onto _____ despite the challenges.",
    "options": [
-    "To hold on tightly",
-    "To get rid of",
-    "To welcome",
-    "To invite"
+    "future",
+    "unity",
+    "hope",
+    "dream"
    ],
-   "answer": "To get rid of"
+   "answer": "hope",
+   "explanation": "שם עצם: ציפייה חיובית לעתיד"
   },
   {
    "id": 15,
-   "song_id": 20,
-   "question": "A 'Story' is a: (מהו 'Story'?)",
+   "song_id": 4,
+   "word_id": "dream",
+   "word": "dream",
+   "question": "Her _____ is to become a marine biologist.",
    "options": [
-    "A type of building",
-    "A narrative or tale",
-    "A mathematical sum",
-    "A piece of furniture"
+    "possibility",
+    "dream",
+    "future",
+    "unity"
    ],
-   "answer": "A narrative or tale"
+   "answer": "dream",
+   "explanation": "שם עצם: חזון או משאלת לב"
   },
   {
    "id": 16,
-   "song_id": 22,
-   "question": "To 'Fix' something that is broken means to: (לתקן 'Fix' משהו שבור זה:)",
+   "song_id": 4,
+   "word_id": "future",
+   "word": "future",
+   "question": "Investing in education shapes a better _____.",
    "options": [
-    "Break it more",
-    "Repair it",
-    "Throw it away",
-    "Ignore it"
+    "future",
+    "unity",
+    "possibility",
+    "question"
    ],
-   "answer": "Repair it"
+   "answer": "future",
+   "explanation": "שם עצם: זמן שיבוא אחרי ההווה"
   },
   {
    "id": 17,
-   "song_id": 25,
-   "question": "What are 'Stars' in the context of the night sky? (מהם 'Stars' בהקשר של שמי הלילה?)",
+   "song_id": 4,
+   "word_id": "unity",
+   "word": "unity",
+   "question": "Community festivals promote _____ among neighbors.",
    "options": [
-    "Planets",
-    "Luminous celestial bodies",
-    "Clouds",
-    "Birds"
+    "unity",
+    "possibility",
+    "question",
+    "answer"
    ],
-   "answer": "Luminous celestial bodies"
+   "answer": "unity",
+   "explanation": "שם עצם: תחושת שייכות משותפת"
   },
   {
    "id": 18,
-   "song_id": 26,
-   "question": "What is a 'Demon' in a metaphorical sense? (מהו 'Demon' במובן המטאפורי?)",
+   "song_id": 4,
+   "word_id": "possibility",
+   "word": "possibility",
+   "question": "There is always a _____ of improvement.",
    "options": [
-    "A friendly pet",
-    "An inner struggle or evil",
-    "A happy memory",
-    "A bright light"
+    "answer",
+    "freedom",
+    "possibility",
+    "question"
    ],
-   "answer": "An inner struggle or evil"
+   "answer": "possibility",
+   "explanation": "שם עצם: אפשרות של תוצאה"
   },
   {
    "id": 19,
-   "song_id": 28,
-   "question": "Which word is a synonym for 'Happy'? (איזו מילה היא נרדפת ל-'Happy'?)",
+   "song_id": 5,
+   "word_id": "question",
+   "word": "question",
+   "question": "The teacher asked a _____ about the text.",
    "options": [
-    "Sad",
-    "Joyful",
-    "Angry",
-    "Bored"
+    "justice",
+    "question",
+    "answer",
+    "freedom"
    ],
-   "answer": "Joyful"
+   "answer": "question",
+   "explanation": "שם עצם: בקשה למידע"
   },
   {
    "id": 20,
-   "song_id": 30,
-   "question": "What does 'Someone Like You' imply? (למה הכוונה ב-'Someone Like You'?)",
+   "song_id": 5,
+   "word_id": "answer",
+   "word": "answer",
+   "question": "She gave a clear _____ during the interview.",
    "options": [
-    "Exactly the same person",
-    "A person with similar qualities",
-    "A complete stranger",
-    "Someone you hate"
+    "answer",
+    "freedom",
+    "justice",
+    "beauty"
    ],
-   "answer": "A person with similar qualities"
+   "answer": "answer",
+   "explanation": "שם עצם: פתרון לשאלה"
+  },
+  {
+   "id": 21,
+   "song_id": 5,
+   "word_id": "freedom",
+   "word": "freedom",
+   "question": "People need _____ to express their ideas openly.",
+   "options": [
+    "freedom",
+    "justice",
+    "beauty",
+    "nature"
+   ],
+   "answer": "freedom",
+   "explanation": "שם עצם: מצב של עצמאות"
+  },
+  {
+   "id": 22,
+   "song_id": 5,
+   "word_id": "justice",
+   "word": "justice",
+   "question": "The court strives to deliver _____ for all.",
+   "options": [
+    "justice",
+    "freedom",
+    "joy",
+    "beauty"
+   ],
+   "answer": "justice",
+   "explanation": "שם עצם: התנהגות נכונה והוגנת"
+  },
+  {
+   "id": 23,
+   "song_id": 6,
+   "word_id": "beauty",
+   "word": "beauty",
+   "question": "The sunrise revealed the _____ of the mountains.",
+   "options": [
+    "beauty",
+    "sky",
+    "nature",
+    "joy"
+   ],
+   "answer": "beauty",
+   "explanation": "שם עצם: תכונה של משהו מרהיב"
+  },
+  {
+   "id": 24,
+   "song_id": 6,
+   "word_id": "nature",
+   "word": "nature",
+   "question": "We should protect _____ for future generations.",
+   "options": [
+    "nature",
+    "beauty",
+    "sky",
+    "emotion"
+   ],
+   "answer": "nature",
+   "explanation": "שם עצם: העולם הטבעי סביבנו"
+  },
+  {
+   "id": 25,
+   "song_id": 6,
+   "word_id": "joy",
+   "word": "joy",
+   "question": "Children's laughter brings pure _____.",
+   "options": [
+    "joy",
+    "praise",
+    "faith",
+    "song"
+   ],
+   "answer": "joy",
+   "explanation": "שם עצם: תחושת אושר עמוקה"
+  },
+  {
+   "id": 26,
+   "song_id": 7,
+   "word_id": "sky",
+   "word": "sky",
+   "question": "The _____ turned pink at sunset.",
+   "options": [
+    "sky",
+    "nature",
+    "beauty",
+    "emotion"
+   ],
+   "answer": "sky",
+   "explanation": "שם עצם: המרחב מעל פני האדמה"
+  },
+  {
+   "id": 27,
+   "song_id": 8,
+   "word_id": "praise",
+   "word": "praise",
+   "question": "The audience gave loud _____ to the performer.",
+   "options": [
+    "praise",
+    "joy",
+    "faith",
+    "song"
+   ],
+   "answer": "praise",
+   "explanation": "שם עצם: הבעת הערכה"
+  },
+  {
+   "id": 28,
+   "song_id": 8,
+   "word_id": "faith",
+   "word": "faith",
+   "question": "Her _____ in the project never wavered.",
+   "options": [
+    "faith",
+    "praise",
+    "emotion",
+    "justice"
+   ],
+   "answer": "faith",
+   "explanation": "שם עצם: אמון במשהו או מישהו"
+  },
+  {
+   "id": 29,
+   "song_id": 8,
+   "word_id": "song",
+   "word": "song",
+   "question": "He wrote a _____ about his hometown.",
+   "options": [
+    "song",
+    "praise",
+    "joy",
+    "sky"
+   ],
+   "answer": "song",
+   "explanation": "שם עצם: יצירה מוזיקלית עם מילים"
+  },
+  {
+   "id": 30,
+   "song_id": 8,
+   "word_id": "emotion",
+   "word": "emotion",
+   "question": "The movie evoked strong _____ in viewers.",
+   "options": [
+    "emotion",
+    "beauty",
+    "nature",
+    "freedom"
+   ],
+   "answer": "emotion",
+   "explanation": "שם עצם: תחושה פנימית חזקה"
+  },
+  {
+   "id": 31,
+   "song_id": 8,
+   "word_id": "silence",
+   "word": "silence",
+   "question": "A moment of _____ followed the announcement, as everyone absorbed what had just been said.",
+   "options": [
+    "silence",
+    "noise",
+    "chaos",
+    "conversation"
+   ],
+   "answer": "silence",
+   "explanation": "שם עצם: חוסר קול או רעש"
+  },
+  {
+   "id": 32,
+   "song_id": 9,
+   "word_id": "escape",
+   "word": "escape",
+   "question": "Reading offers an _____ from daily stress and worries.",
+   "options": [
+    "escape",
+    "entrance",
+    "entry",
+    "exit"
+   ],
+   "answer": "escape",
+   "explanation": "שם עצם: יציאה ממצב קושי"
+  },
+  {
+   "id": 33,
+   "song_id": 10,
+   "word_id": "friendship",
+   "word": "friendship",
+   "question": "Their _____ lasted through many years, despite the challenges they faced.",
+   "options": [
+    "friendship",
+    "rivalry",
+    "competition",
+    "conflict"
+   ],
+   "answer": "friendship",
+   "explanation": "שם עצם: קשר קרוב בין אנשים"
+  },
+  {
+   "id": 34,
+   "song_id": 10,
+   "word_id": "loyalty",
+   "word": "loyalty",
+   "question": "His _____ to the team earned respect from his colleagues.",
+   "options": [
+    "loyalty",
+    "betrayal",
+    "doubt",
+    "anger"
+   ],
+   "answer": "loyalty",
+   "explanation": "שם עצם: מחויבות ונאמנות מתמשכת"
+  },
+  {
+   "id": 35,
+   "song_id": 10,
+   "word_id": "trust",
+   "word": "trust",
+   "question": "Building _____ takes time and honesty, especially in relationships.",
+   "options": [
+    "trust",
+    "suspicion",
+    "distrust",
+    "fear"
+   ],
+   "answer": "trust",
+   "explanation": "שם עצם: ביטחון במישהו או במשהו"
+  },
+  {
+   "id": 36,
+   "song_id": 11,
+   "word_id": "lean",
+   "word": "lean",
+   "question": "Please do not _____ against the wet paint on the wall.",
+   "options": [
+    "lean",
+    "stand",
+    "sit",
+    "walk"
+   ],
+   "answer": "lean",
+   "explanation": "פועל: להישען על משהו לתמיכה"
+  },
+  {
+   "id": 37,
+   "song_id": 11,
+   "word_id": "help",
+   "word": "help",
+   "question": "I will _____ you carry those heavy bags to the car.",
+   "options": [
+    "help",
+    "hinder",
+    "stop",
+    "ignore"
+   ],
+   "answer": "help",
+   "explanation": "פועל: להקל על מישהו לבצע פעולה"
+  },
+  {
+   "id": 38,
+   "song_id": 11,
+   "word_id": "shoulder",
+   "word": "shoulder",
+   "question": "He carried the heavy backpack on his right _____.",
+   "options": [
+    "shoulder",
+    "arm",
+    "head",
+    "hand"
+   ],
+   "answer": "shoulder",
+   "explanation": "שם עצם: המפרק המחבר את הזרוע לגוף"
+  },
+  {
+   "id": 39,
+   "song_id": 11,
+   "word_id": "burden",
+   "word": "burden",
+   "question": "Sharing your problems can help lighten the emotional _____.",
+   "options": [
+    "burden",
+    "weight",
+    "load",
+    "responsibility"
+   ],
+   "answer": "burden",
+   "explanation": "שם עצם: משא כבד או אחריות קשה"
+  },
+  {
+   "id": 40,
+   "song_id": 11,
+   "word_id": "strong",
+   "word": "strong",
+   "question": "You need to be _____ to lift those weights at the gym.",
+   "options": [
+    "strong",
+    "weak",
+    "tall",
+    "fast"
+   ],
+   "answer": "strong",
+   "explanation": "תואר: בעל כוח פיזי או מנטלי רב"
+  },
+  {
+   "id": 41,
+   "song_id": 12,
+   "word_id": "mountain",
+   "word": "mountain",
+   "question": "The _____ peak was covered in white snow.",
+   "options": [
+    "hill",
+    "valley",
+    "mountain",
+    "forest"
+   ],
+   "answer": "mountain",
+   "explanation": "שם עצם: גבעה גבוהה מאוד"
+  },
+  {
+   "id": 42,
+   "song_id": 12,
+   "word_id": "enough",
+   "word": "enough",
+   "question": "I have had _____ food for one meal.",
+   "options": [
+    "little",
+    "more",
+    "enough",
+    "less"
+   ],
+   "answer": "enough",
+   "explanation": "תואר/תואר הפועל: כמות מספקת לצרכים"
+  },
+  {
+   "id": 43,
+   "song_id": 12,
+   "word_id": "valley",
+   "word": "valley",
+   "question": "The river flows slowly through the green _____.",
+   "options": [
+    "mountain",
+    "desert",
+    "valley",
+    "ocean"
+   ],
+   "answer": "valley",
+   "explanation": "שם עצם: שטח נמוך בין גבעות או הרים"
+  },
+  {
+   "id": 44,
+   "song_id": 12,
+   "word_id": "reach",
+   "word": "reach",
+   "question": "We hope to _____ the city before sunset.",
+   "options": [
+    "leave",
+    "avoid",
+    "reach",
+    "build"
+   ],
+   "answer": "reach",
+   "explanation": "פועל: להגיע למקום מסוים"
+  },
+  {
+   "id": 45,
+   "song_id": 12,
+   "word_id": "distance",
+   "word": "distance",
+   "question": "The _____ between the two houses is very short.",
+   "options": [
+    "road",
+    "distance",
+    "bridge",
+    "path"
+   ],
+   "answer": "distance",
+   "explanation": "שם עצם: המרווח שבין שתי נקודות"
+  },
+  {
+   "id": 46,
+   "song_id": 13,
+   "word_id": "birds",
+   "word": "birds",
+   "question": "The _____ sing loudly every morning at dawn.",
+   "options": [
+    "fish",
+    "birds",
+    "cats",
+    "dogs"
+   ],
+   "answer": "birds",
+   "explanation": "שם עצם: בעלי כנף עם נוצות"
+  },
+  {
+   "id": 47,
+   "song_id": 13,
+   "word_id": "doorstep",
+   "word": "doorstep",
+   "question": "I left the package right on your _____.",
+   "options": [
+    "window",
+    "roof",
+    "doorstep",
+    "garden"
+   ],
+   "answer": "doorstep",
+   "explanation": "שם עצם: המדרגה שמחוץ לדלת"
+  },
+  {
+   "id": 48,
+   "song_id": 13,
+   "word_id": "worry",
+   "word": "worry",
+   "question": "There is no need to _____ about the test tomorrow.",
+   "options": [
+    "think",
+    "worry",
+    "sleep",
+    "eat"
+   ],
+   "answer": "worry",
+   "explanation": "פועל/שם עצם: להרגיש חרדה לגבי משהו"
+  },
+  {
+   "id": 49,
+   "song_id": 13,
+   "word_id": "morning",
+   "word": "morning",
+   "question": "I like to drink coffee in the _____.",
+   "options": [
+    "evening",
+    "night",
+    "morning",
+    "afternoon"
+   ],
+   "answer": "morning",
+   "explanation": "שם עצם: החלק המוקדם של היום"
+  },
+  {
+   "id": 50,
+   "song_id": 13,
+   "word_id": "little",
+   "word": "little",
+   "question": "The _____ kitten was hiding under the sofa.",
+   "options": [
+    "big",
+    "old",
+    "little",
+    "tall"
+   ],
+   "answer": "little",
+   "explanation": "תואר: קטן בגודלו או בכמותו"
   }
  ]
 }

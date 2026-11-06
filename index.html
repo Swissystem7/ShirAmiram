@@ -129,11 +129,17 @@
 
     <!-- Quiz Tab -->
     <section id="quiz" class="tab-content hidden">
+      <div class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
+        <button type="button" id="quiz-mode-quick" aria-pressed="true">מבחן מהיר (10 שאלות)</button>
+        <button type="button" id="quiz-mode-full" aria-pressed="false">מבחן מלא (50 שאלות)</button>
+      </div>
+      <div id="quiz-progress" aria-live="polite">שאלה 0 מתוך 0</div>
       <div id="quiz-container" class="space-y-4">
         <!-- Questions will be injected -->
       </div>
+      <p id="quiz-explanation" class="text-sm" aria-live="polite"></p>
       <div class="mt-4 text-xl font-bold" aria-live="polite">ציון: <span id="quiz-score">0</span>/<span id="quiz-total">0</span></div>
-      <button id="quiz-reset" type="button" class="mt-2 px-3 py-1 bg-neon-purple rounded">מתחילים מחדש</button>
+      <button id="quiz-reset" type="button" class="mt-2 px-3 py-1 bg-neon-purple rounded" style="min-height:44px">מתחילים מחדש</button>
     </section>
     <section id="songs" class="tab-content hidden">
       <p id="content-status" class="text-sm mb-2" aria-live="polite">טוען תוכן…</p>
@@ -289,37 +295,86 @@
       paint();
     });
 
-    // Quiz
+
+    // Quiz — content_v2 exam modes (quick 10 / full 50)
+    let quizMode = 'quick';
+    let quizPool = [];
+    let quizIndex = 0;
     let score = 0;
+    function setQuizMode(mode) {
+      quizMode = mode === 'full' ? 'full' : 'quick';
+      $('quiz-mode-quick').setAttribute('aria-pressed', String(quizMode === 'quick'));
+      $('quiz-mode-full').setAttribute('aria-pressed', String(quizMode === 'full'));
+      renderQuiz();
+    }
+    $('quiz-mode-quick').addEventListener('click', () => setQuizMode('quick'));
+    $('quiz-mode-full').addEventListener('click', () => setQuizMode('full'));
+    function pickQuizPool() {
+      const all = (CONTENT && Array.isArray(CONTENT.questions) && CONTENT.questions.length)
+        ? CONTENT.questions.slice().sort((a, b) => a.id - b.id)
+        : (A.QUIZ || []).map((q, i) => ({ id: i + 1, question: q.q, options: q.opts, answer: q.a, explanation: '', word: q.a }));
+      if (quizMode === 'full' || all.length <= 10) return all.slice(0, 50);
+      const start = (Date.now() / 60000 | 0) % Math.max(1, all.length - 9);
+      const out = all.slice(start, start + 10);
+      if (out.length < 10) out.push(...all.slice(0, 10 - out.length));
+      return out.slice(0, 10);
+    }
+    function updateQuizProgress() {
+      const y = quizPool.length;
+      const x = y ? Math.min(quizIndex + 1, y) : 0;
+      $('quiz-progress').textContent = 'שאלה ' + x + ' מתוך ' + y;
+    }
     function renderQuiz() {
       score = 0;
+      quizPool = pickQuizPool();
+      quizIndex = 0;
       $('quiz-score').textContent = '0';
-      $('quiz-total').textContent = String(A.QUIZ.length);
+      $('quiz-total').textContent = String(quizPool.length);
       $('quiz-container').innerHTML = '';
-      A.QUIZ.forEach((item, i) => {
+      $('quiz-explanation').textContent = '';
+      updateQuizProgress();
+      quizPool.forEach((item, i) => {
         const div = document.createElement('div');
-        div.className = 'quiz-q p-2 bg-stage-800 rounded';
+        div.className = 'quiz-q p-2 bg-stage-800 rounded' + (i === 0 ? '' : ' hidden');
+        div.dataset.qIndex = String(i);
         const p = document.createElement('p');
         p.className = 'mb-2 font-bold';
         p.dir = 'ltr';
-        p.textContent = (i + 1) + '. ' + item.q;
+        p.textContent = item.question || item.q;
         div.appendChild(p);
         const fb = document.createElement('div');
         fb.className = 'quiz-fb mt-2 text-sm';
         fb.setAttribute('aria-live', 'polite');
-        const optsBox = document.createElement('div'); optsBox.className='quiz-opts'; div.appendChild(optsBox);
-        item.opts.forEach((opt) => {
+        const optsBox = document.createElement('div');
+        optsBox.className = 'quiz-opts';
+        div.appendChild(optsBox);
+        const opts = item.options || item.opts || [];
+        const answer = item.answer != null ? item.answer : item.a;
+        opts.forEach((opt) => {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'quiz-opt bg-neon-pink rounded';
           btn.textContent = opt;
           btn.addEventListener('click', () => {
-            const right = A.isCorrect(item, opt);
-            fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + item.a;
+            const right = String(opt) === String(answer);
+            fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + answer;
             fb.className = 'quiz-fb mt-2 text-sm ' + (right ? 'text-green-400' : 'text-red-400');
+            $('quiz-explanation').textContent = item.explanation || '';
             if (right) score++;
             $('quiz-score').textContent = String(score);
             div.querySelectorAll('.quiz-opt').forEach((b) => { b.disabled = true; });
+            quizIndex = i;
+            updateQuizProgress();
+            const next = $('quiz-container').querySelector('[data-q-index="' + (i + 1) + '"]');
+            if (next) {
+              setTimeout(() => {
+                div.classList.add('hidden');
+                next.classList.remove('hidden');
+                quizIndex = i + 1;
+                updateQuizProgress();
+                $('quiz-explanation').textContent = '';
+              }, 650);
+            }
           });
           optsBox.appendChild(btn);
         });
@@ -329,6 +384,7 @@
     }
     $('quiz-reset').addEventListener('click', renderQuiz);
     renderQuiz();
+
 
     let CONTENT = null, timed = [];
     function renderSongs() {
@@ -365,7 +421,7 @@
         setEmbedTab(yid ? 'youtube' : 'spotify');
       }));
     }
-    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
+    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); if (typeof renderQuiz==='function') renderQuiz(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
     $('btn-recommend').addEventListener('click', renderSongs);
     $('btn-suno').addEventListener('click', ()=>{
       const targets=$('target-words').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);

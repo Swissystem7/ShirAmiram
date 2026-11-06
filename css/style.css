@@ -129,3 +129,15 @@ nav[aria-label="מסכים"] {
 .embed-frame-wrap.youtube iframe { height: 100%; min-height: 180px; }
 .embed-frame-wrap.spotify iframe { height: 152px; }
 #spotify-box, #youtube-box { max-width: 100%; overflow: hidden; }
+
+/* Exam quiz modes */
+.quiz-mode-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; margin-bottom: 12px; }
+.quiz-mode-bar button {
+  min-height: 44px; width: 100%; padding: 10px 12px; border-radius: 10px;
+  border: 2px solid #c084fc; background: #1a1430; color: #faf5ff; font: inherit; cursor: pointer;
+}
+.quiz-mode-bar button[aria-pressed="true"] { background: #c084fc; color: #0f0c1d; font-weight: 800; }
+#quiz-progress { min-height: 44px; display: flex; align-items: center; margin: 8px 0; font-weight: 700; }
+#quiz-explanation { margin-top: 8px; color: #e9d5ff; }
+#quiz .quiz-opts { gap: 12px; }
+#quiz .quiz-opt { min-height: 44px; }
