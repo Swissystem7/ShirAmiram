@@ -40,6 +40,11 @@
     @keyframes wave{0%,100%{transform:scaleY(.35);}50%{transform:scaleY(1);}}
     .progress-track{background:rgba(148,163,184,.15);height:6px;border-radius:3px;}
     .progress-fill{background:linear-gradient(90deg,#a855f7,#f472b6,#22d3ee);height:100%;border-radius:3px;transition:width .35s linear;}
+    *{box-sizing:border-box;}
+    .quiz-opts{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%;}
+    .quiz-opt{min-height:44px;width:100%;padding:10px 12px;text-align:right;overflow-wrap:anywhere;}
+    .song-link{display:inline-block;min-height:44px;padding:10px 12px;}
+    #songs-list{max-width:100%;overflow-wrap:anywhere;}
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -57,6 +62,7 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
   </nav>
 
   <!-- Content -->
@@ -126,6 +132,27 @@
       </div>
       <div class="mt-4 text-xl font-bold" aria-live="polite">ציון: <span id="quiz-score">0</span>/<span id="quiz-total">0</span></div>
       <button id="quiz-reset" type="button" class="mt-2 px-3 py-1 bg-neon-purple rounded">מתחילים מחדש</button>
+    </section>
+    <section id="songs" class="tab-content hidden">
+      <p id="content-status" class="text-sm mb-2" aria-live="polite">טוען תוכן…</p>
+      <p class="text-sm mb-2">כיסוי מבחן: <span id="exam-coverage">unknown</span> — לא נטען כיסוי שלא אומת. אין חיבור חשבון Spotify/YouTube Music; הקישורים וההטמעה הם ציבוריים בלבד.</p>
+      <label class="block mb-2">מילות יעד (מופרדות בפסיק) <input id="target-words" type="text" dir="ltr" class="w-full p-2 bg-stage-900 rounded" placeholder="peace, hope, dream"></label>
+      <button id="btn-recommend" type="button" class="song-link bg-neon-purple rounded mb-3">המלצות לפי מילות יעד</button>
+      <div id="songs-list" class="space-y-3"></div>
+      <div id="spotify-box" class="mt-3"></div>
+      <div id="youtube-box" class="mt-3 text-sm"></div>
+      <hr class="my-4 border-stage-800">
+      <h2 class="font-bold mb-2">שמע מקומי ותזמון</h2>
+      <p class="text-sm mb-2">לא מסופק קובץ שמע או תזמון מומצא. בחרו קובץ שמע שלכם וקובץ LRC/JSON שלכם.</p>
+      <input id="audio-file" type="file" accept="audio/*" class="block mb-2">
+      <audio id="local-audio" controls class="w-full mb-2"></audio>
+      <input id="timing-file" type="file" accept=".lrc,.json,text/plain,application/json" class="block mb-2">
+      <div id="timed-lines" dir="ltr" class="text-left space-y-1"></div>
+      <hr class="my-4 border-stage-800">
+      <h2 class="font-bold mb-2">Suno — ייצוא בלבד</h2>
+      <p class="text-sm mb-2">יצירת שיר בפועל ב-Suno היא ידנית/ממתינה. הכפתור רק מייצא מילים מקוריות ללימוד אוצר מילים ופרומפט — בלי שימוש בקרדיטים ובלי API לא רשמי.</p>
+      <button id="btn-suno" type="button" class="song-link bg-neon-pink rounded">צור ייצוא Suno ממילות היעד</button>
+      <textarea id="suno-out" dir="ltr" rows="8" class="w-full mt-2 p-2 bg-stage-900 rounded text-left" readonly></textarea>
     </section>
   </main>
 
@@ -247,10 +274,11 @@
         const fb = document.createElement('div');
         fb.className = 'quiz-fb mt-2 text-sm';
         fb.setAttribute('aria-live', 'polite');
+        const optsBox = document.createElement('div'); optsBox.className='quiz-opts'; div.appendChild(optsBox);
         item.opts.forEach((opt) => {
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'quiz-opt ml-2 mb-1 px-2 py-1 bg-neon-pink rounded';
+          btn.className = 'quiz-opt bg-neon-pink rounded';
           btn.textContent = opt;
           btn.addEventListener('click', () => {
             const right = A.isCorrect(item, opt);
@@ -260,7 +288,7 @@
             $('quiz-score').textContent = String(score);
             div.querySelectorAll('.quiz-opt').forEach((b) => { b.disabled = true; });
           });
-          div.appendChild(btn);
+          optsBox.appendChild(btn);
         });
         div.appendChild(fb);
         $('quiz-container').appendChild(div);
@@ -268,6 +296,43 @@
     }
     $('quiz-reset').addEventListener('click', renderQuiz);
     renderQuiz();
+
+    let CONTENT = null, timed = [];
+    function renderSongs() {
+      if (!CONTENT) return;
+      $('exam-coverage').textContent = CONTENT.examCoverage;
+      const targets = $('target-words').value.split(',').map(s=>s.trim()).filter(Boolean);
+      const recs = A.recommendSongs(CONTENT.songs, targets, 10);
+      $('songs-list').innerHTML = recs.map(r => {
+        const s=r.song, ym=A.youtubeMusicLink(s);
+        return '<article class="p-3 bg-stage-800 rounded"><h3 dir="ltr" class="font-bold text-left">'+esc(s.title)+' — '+esc(s.artist)+'</h3>'
+        +'<p class="text-sm">'+esc(r.reasons.join(' '))+'</p>'
+        +'<p class="text-sm" dir="ltr">'+esc(s.highlight_words.map(w=>w.word).join(', '))+'</p>'
+        +(A.spotifyTrackUrl(s.spotify_id)?'<a class="song-link bg-stage-900 rounded" target="_blank" rel="noopener" href="'+A.spotifyTrackUrl(s.spotify_id)+'">Spotify</a> ':'')
+        +'<button type="button" class="song-link bg-stage-900 rounded" data-spotify="'+esc(s.spotify_id||'')+'">הטמעת Spotify</button> '
+        +'<a class="song-link bg-stage-900 rounded" target="_blank" rel="noopener" href="'+ym.url+'">'+(ym.kind==='direct'?'YouTube Music':'YouTube Music — חיפוש (אין מזהה מאומת)')+'</a></article>';
+      }).join('');
+      document.querySelectorAll('[data-spotify]').forEach(b=>b.addEventListener('click',()=>{
+        const u=A.spotifyEmbedUrl(b.dataset.spotify);
+        $('spotify-box').innerHTML = u ? '<iframe title="Spotify embed" src="'+u+'" width="100%" height="152" loading="lazy" allow="encrypted-media"></iframe>' : '<p>אין מזהה Spotify תקין.</p>';
+        const song=CONTENT.songs.find(s=>s.spotify_id===b.dataset.spotify);
+        const yid=song?A.youtubeEmbedUrl(song.youtube_id):null;
+        $('youtube-box').innerHTML = yid ? '<iframe title="YouTube" src="'+yid+'" width="100%" height="200" loading="lazy"></iframe>' : 'אין מזהה YouTube מאומת לשיר זה (youtube_id=null) — לא מוצג נגן YouTube, רק קישור חיפוש ב-YouTube Music למעלה.';
+      }));
+    }
+    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
+    $('btn-recommend').addEventListener('click', renderSongs);
+    $('btn-suno').addEventListener('click', ()=>{
+      const targets=$('target-words').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+      const pool=(CONTENT?CONTENT.words:A.VOCAB);
+      const picked=pool.filter(w=>!targets.length||targets.includes(w.word)).slice(0,12);
+      const ex=A.buildSunoExport(picked.length?picked:A.VOCAB);
+      $('suno-out').value=ex.stylePrompt+'\n\n'+ex.lyrics+'\n\n['+ex.generation+'] '+ex.note;
+    });
+    $('audio-file').addEventListener('change', e=>{ const f=e.target.files[0]; const v=A.validateAudioFile(f||{}); if(v.ok) $('local-audio').src=URL.createObjectURL(f); else alert(v.reason); });
+    $('timing-file').addEventListener('change', async e=>{ const f=e.target.files[0]; if(!f) return; timed=A.parseTimingData(await f.text()); renderTimed(); });
+    function renderTimed(){ const idx=A.activeTimedLine(timed, $('local-audio').currentTime||0); $('timed-lines').innerHTML=timed.map((l,i)=>'<button type="button" class="quiz-opt '+(i===idx?'bg-neon-purple':'bg-stage-800')+' rounded" data-t="'+l.time+'">'+esc(l.text)+'</button>').join(''); document.querySelectorAll('#timed-lines [data-t]').forEach(b=>b.addEventListener('click',()=>{ $('local-audio').currentTime=Number(b.dataset.t); renderTimed(); })); }
+    $('local-audio').addEventListener('timeupdate', renderTimed);
 
     showTab('song');
     paint();

@@ -1,0 +1,1768 @@
+{
+ "meta": {
+  "version": "content_v2",
+  "built_at": "2026-11-05T23:37:26+02:00",
+  "exam_coverage": "none_claimed",
+  "provenance": {
+   "anchors": "itunes_search+public_spotify_url+spotify_oembed",
+   "pedagogic": "lenovo content_worker + onefield deterministic story explanation fix",
+   "note": "Not exam-sourced. Existing invented v1 outputs preserved separately."
+  },
+  "counts": {
+   "songs": 30,
+   "questions": 20,
+   "highlight_words_ped2": 50
+  },
+  "sources": {
+   "ped1": "content_v2_ped1.json",
+   "ped2": "content_v2_ped2.json",
+   "ped3": "content_v2_ped3.json",
+   "questions": "content_v2_questions.json",
+   "anchors": "content_v2_anchors_verified.json"
+  }
+ },
+ "songs": [
+  {
+   "id": 1,
+   "title": "Let It Be",
+   "artist": "The Beatles",
+   "spotify_id": "7iN1s7xHE4ifF5povM6A48",
+   "spotify_url": "https://open.spotify.com/track/7iN1s7xHE4ifF5povM6A48",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "peace",
+     "he": "שלום",
+     "explanation": "שם עצם: תחושה של שלווה",
+     "example": "She found peace while reading a quiet book.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "comfort",
+     "he": "נוחות",
+     "explanation": "שם עצם: תחושת רגיעה ונוחות",
+     "example": "A warm blanket gives me great comfort on cold nights.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "acceptance",
+     "he": "קבלה",
+     "explanation": "שם עצם: קבלת מצב ללא התנגדות",
+     "example": "His acceptance of the result helped the team move forward.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "wisdom",
+     "he": "חוכמה",
+     "explanation": "שם עצם: ידע עמוק וניסיון",
+     "example": "Grandparents often share wisdom from their long lives.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "calm",
+     "he": "רוגע",
+     "explanation": "שם תואר: מצב של שלווה פנימית",
+     "example": "She stayed calm even when the traffic was terrible.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 2,
+   "title": "Yesterday",
+   "artist": "The Beatles",
+   "spotify_id": "3iD2CCv5bsJRIaqJRYD0uJ",
+   "spotify_url": "https://open.spotify.com/track/3iD2CCv5bsJRIaqJRYD0uJ",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "memory",
+     "he": "זיכרון",
+     "explanation": "שם עצם: תזכורת מהעבר",
+     "example": "My memory of the trip is still vivid after years.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "regret",
+     "he": "חרטה",
+     "explanation": "שם עצם: תחושת חרטה על מעשה",
+     "example": "She felt regret after missing the interview.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "time",
+     "he": "זמן",
+     "explanation": "שם עצם: משך של אירועים",
+     "example": "Time flies when you are having fun.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "change",
+     "he": "שינוי",
+     "explanation": "שם עצם: שינוי במצב קיים",
+     "example": "Small changes in diet can improve health.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "reflection",
+     "he": "השתקפות",
+     "explanation": "שם עצם: מחשבה על אירועים",
+     "example": "Morning reflection helps me set daily goals.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 3,
+   "title": "Hey Jude",
+   "artist": "The Beatles",
+   "spotify_id": "3m7V717IKZqZLW5qUIOxdD",
+   "spotify_url": "https://open.spotify.com/track/3m7V717IKZqZLW5qUIOxdD",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "support",
+     "he": "תמיכה",
+     "explanation": "שם עצם: עזרה או חיזוק",
+     "example": "Friends offer support during tough times.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "encourage",
+     "he": "לעודד",
+     "explanation": "פועל: לתת מוטיבציה למישהו",
+     "example": "Teachers encourage students to ask questions.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "comfort",
+     "he": "נוחות",
+     "explanation": "שם עצם: תחושת רגיעה ונוחות",
+     "example": "A cup of tea brings comfort on rainy days.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "journey",
+     "he": "מסע",
+     "explanation": "שם עצם: תהליך של תנועה או שינוי",
+     "example": "Life is a journey full of unexpected turns.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "hope",
+     "he": "תקווה",
+     "explanation": "שם עצם: ציפייה חיובית לעתיד",
+     "example": "She held onto hope despite the challenges.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 4,
+   "title": "Imagine",
+   "artist": "John Lennon",
+   "spotify_id": "7pKfPomDEeI4TPT6EOYjn9",
+   "spotify_url": "https://open.spotify.com/track/7pKfPomDEeI4TPT6EOYjn9",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "peace",
+     "he": "שלום",
+     "explanation": "שם עצם: מצב של חוסר אלימות",
+     "example": "World leaders met to discuss lasting peace.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "dream",
+     "he": "חלום",
+     "explanation": "שם עצם: חזון או משאלת לב",
+     "example": "Her dream is to become a marine biologist.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "future",
+     "he": "עתיד",
+     "explanation": "שם עצם: זמן שיבוא אחרי ההווה",
+     "example": "Investing in education shapes a better future.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "unity",
+     "he": "אחדות",
+     "explanation": "שם עצם: תחושת שייכות משותפת",
+     "example": "Community festivals promote unity among neighbors.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "possibility",
+     "he": "אפשרות",
+     "explanation": "שם עצם: אפשרות של תוצאה",
+     "example": "There is always a possibility of improvement.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 5,
+   "title": "Blowin' in the Wind",
+   "artist": "Bob Dylan",
+   "spotify_id": "18GiV1BaXzPVYpp9rmOg0E",
+   "spotify_url": "https://open.spotify.com/track/18GiV1BaXzPVYpp9rmOg0E",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "question",
+     "he": "שאלה",
+     "explanation": "שם עצם: בקשה למידע",
+     "example": "The teacher asked a question about the text.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "answer",
+     "he": "תשובה",
+     "explanation": "שם עצם: פתרון לשאלה",
+     "example": "She gave a clear answer during the interview.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "freedom",
+     "he": "חירות",
+     "explanation": "שם עצם: מצב של עצמאות",
+     "example": "Freedom allows people to express their ideas.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "justice",
+     "he": "צדק",
+     "explanation": "שם עצם: התנהגות נכונה והוגנת",
+     "example": "The court strives to deliver justice for all.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "change",
+     "he": "שינוי",
+     "explanation": "שם עצם: שינוי במצב קיים",
+     "example": "Social movements often aim for change.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 6,
+   "title": "What a Wonderful World",
+   "artist": "Louis Armstrong",
+   "spotify_id": "29U7stRjqHU6rMiS8BfaI9",
+   "spotify_url": "https://open.spotify.com/track/29U7stRjqHU6rMiS8BfaI9",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "beauty",
+     "he": "יופי",
+     "explanation": "שם עצם: תכונה של משהו מרהיב",
+     "example": "The sunrise revealed the beauty of the mountains.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "nature",
+     "he": "טבע",
+     "explanation": "שם עצם: העולם הטבעי סביבנו",
+     "example": "We should protect nature for future generations.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "joy",
+     "he": "שמחה",
+     "explanation": "שם עצם: תחושת אושר עמוקה",
+     "example": "Children's laughter brings pure joy.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "hope",
+     "he": "תקווה",
+     "explanation": "שם עצם: ציפייה חיובית לעתיד",
+     "example": "Hope can motivate people during hardships.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "peace",
+     "he": "שלום",
+     "explanation": "שם עצם: מצב של חוסר אלימות",
+     "example": "A quiet garden offers a sense of peace.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 7,
+   "title": "Somewhere Over the Rainbow / What a Wonderful World",
+   "artist": "Israel Kamakawiwo'ole",
+   "spotify_id": "25U7raB3ZSszayTYClh4hF",
+   "spotify_url": "https://open.spotify.com/track/25U7raB3ZSszayTYClh4hF",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "dream",
+     "he": "חלום",
+     "explanation": "שם עצם: משאלת לב או חזון",
+     "example": "She chased her dream of becoming a chef.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "sky",
+     "he": "שמיים",
+     "explanation": "שם עצם: המרחב מעל פני האדמה",
+     "example": "The sky turned pink at sunset.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "hope",
+     "he": "תקווה",
+     "explanation": "שם עצם: ציפייה חיובית לעתיד",
+     "example": "Hope kept them moving forward after the loss.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "beauty",
+     "he": "יופי",
+     "explanation": "שם עצם: תכונה של משהו מרהיב",
+     "example": "The garden's beauty attracted many visitors.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "peace",
+     "he": "שלום",
+     "explanation": "שם עצם: מצב של חוסר אלימות",
+     "example": "Meditation helps me find inner peace.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 8,
+   "title": "Hallelujah",
+   "artist": "Leonard Cohen",
+   "spotify_id": "4oQwCrsnD59LwD4v794Sa3",
+   "spotify_url": "https://open.spotify.com/track/4oQwCrsnD59LwD4v794Sa3",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "praise",
+     "he": "שבח",
+     "explanation": "שם עצם: הבעת הערכה",
+     "example": "The audience gave loud praise to the performer.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "faith",
+     "he": "אמונה",
+     "explanation": "שם עצם: אמון במשהו או מישהו",
+     "example": "Her faith in the project never wavered.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "song",
+     "he": "שיר",
+     "explanation": "שם עצם: יצירה מוזיקלית עם מילים",
+     "example": "He wrote a song about his hometown.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "emotion",
+     "he": "רגש",
+     "explanation": "שם עצם: תחושה פנימית חזקה",
+     "example": "The movie evoked strong emotion in viewers.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "silence",
+     "he": "שתיקה",
+     "explanation": "שם עצם: חוסר קול או רעש",
+     "example": "A moment of silence followed the announcement.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 9,
+   "title": "Fast Car",
+   "artist": "Tracy Chapman",
+   "spotify_id": "2M9ro2krNb7nr7HSprkEgo",
+   "spotify_url": "https://open.spotify.com/track/2M9ro2krNb7nr7HSprkEgo",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "journey",
+     "he": "מסע",
+     "explanation": "שם עצם: תהליך של תנועה או שינוי",
+     "example": "Their road trip turned into an unforgettable journey.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "dream",
+     "he": "חלום",
+     "explanation": "שם עצם: משאלת לב או חזון",
+     "example": "He chased his dream of becoming an engineer.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "escape",
+     "he": "בריחה",
+     "explanation": "שם עצם: יציאה ממצב קושי",
+     "example": "Reading offers an escape from daily stress.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "hope",
+     "he": "תקווה",
+     "explanation": "שם עצם: ציפייה חיובית לעתיד",
+     "example": "Hope kept them motivated during the project.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "future",
+     "he": "עתיד",
+     "explanation": "שם עצם: זמן שיבוא אחרי ההווה",
+     "example": "Investing in education shapes a brighter future.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 10,
+   "title": "Stand By Me",
+   "artist": "Ben E. King",
+   "spotify_id": "3SdTKo2uVsxFblQjpScoHy",
+   "spotify_url": "https://open.spotify.com/track/3SdTKo2uVsxFblQjpScoHy",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "support",
+     "he": "תמיכה",
+     "explanation": "שם עצם: עזרה או חיזוק",
+     "example": "Family provides support during tough decisions.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "friendship",
+     "he": "חברות",
+     "explanation": "שם עצם: קשר קרוב בין אנשים",
+     "example": "Their friendship lasted through many years.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "loyalty",
+     "he": "נאמנות",
+     "explanation": "שם עצם: מחויבות מתמשכת",
+     "example": "Loyalty to the team earned his respect.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "trust",
+     "he": "אמון",
+     "explanation": "שם עצם: ביטחון במישהו או במשהו",
+     "example": "Building trust takes time and honesty.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "comfort",
+     "he": "נוחות",
+     "explanation": "שם עצם: תחושת רגיעה ונוחות",
+     "example": "A warm blanket gives comfort on cold nights.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 11,
+   "title": "Lean on Me",
+   "artist": "Bill Withers",
+   "spotify_id": "3M8FzayQWtkvOhqMn2V4T2",
+   "spotify_url": "https://open.spotify.com/track/3M8FzayQWtkvOhqMn2V4T2",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "lean",
+     "he": "להישען",
+     "explanation": "פועל: להישען על משהו לתמיכה",
+     "example": "Please do not lean against the wet paint on the wall.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "help",
+     "he": "עזרה",
+     "explanation": "פועל: להקל על מישהו לבצע פעולה",
+     "example": "I will help you carry those heavy bags to the car.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "shoulder",
+     "he": "כתף",
+     "explanation": "שם עצם: המפרק המחבר את הזרוע לגוף",
+     "example": "He carried the heavy backpack on his right shoulder.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "burden",
+     "he": "נטל",
+     "explanation": "שם עצם: משא כבד או אחריות קשה",
+     "example": "Sharing your problems can help lighten the emotional burden.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "strong",
+     "he": "חזק",
+     "explanation": "תואר: בעל כוח פיזי או מנטלי רב",
+     "example": "You need to be strong to lift those weights at the gym.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 12,
+   "title": "Ain't No Mountain High Enough",
+   "artist": "Marvin Gaye & Tammi Terrell",
+   "spotify_id": "2H3ZUSE54pST4ubRd5FzFR",
+   "spotify_url": "https://open.spotify.com/track/2H3ZUSE54pST4ubRd5FzFR",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "mountain",
+     "he": "הר",
+     "explanation": "שם עצם: גבעה גבוהה מאוד",
+     "example": "The mountain peak was covered in white snow.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "enough",
+     "he": "מספיק",
+     "explanation": "תואר/תואר הפועל: כמות מספקת לצרכים",
+     "example": "I have had enough food for one meal.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "valley",
+     "he": "עמק",
+     "explanation": "שם עצם: שטח נמוך בין גבעות או הרים",
+     "example": "The river flows slowly through the green valley.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "reach",
+     "he": "להגיע",
+     "explanation": "פועל: להגיע למקום מסוים",
+     "example": "We hope to reach the city before sunset.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "distance",
+     "he": "מרחק",
+     "explanation": "שם עצם: המרווח שבין שתי נקודות",
+     "example": "The distance between the two houses is very short.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 13,
+   "title": "Three Little Birds",
+   "artist": "Bob Marley & The Wailers",
+   "spotify_id": "26JRni5Lqiyd9GNnlaz6DI",
+   "spotify_url": "https://open.spotify.com/track/26JRni5Lqiyd9GNnlaz6DI",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "birds",
+     "he": "ציפורים",
+     "explanation": "שם עצם: בעלי כנף עם נוצות",
+     "example": "The birds sing loudly every morning at dawn.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "doorstep",
+     "he": "מפתן",
+     "explanation": "שם עצם: המדרגה שמחוץ לדלת",
+     "example": "I left the package right on your doorstep.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "worry",
+     "he": "דאגה",
+     "explanation": "פועל/שם עצם: להרגיש חרדה לגבי משהו",
+     "example": "There is no need to worry about the test tomorrow.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "morning",
+     "he": "בוקר",
+     "explanation": "שם עצם: החלק המוקדם של היום",
+     "example": "I like to drink coffee in the morning.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "little",
+     "he": "קטן",
+     "explanation": "תואר: קטן בגודלו או בכמותו",
+     "example": "The little kitten was hiding under the sofa.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 14,
+   "title": "Count on Me",
+   "artist": "Bruno Mars",
+   "spotify_id": "3B5UbSndRz907IZhhmUfLi",
+   "spotify_url": "https://open.spotify.com/track/3B5UbSndRz907IZhhmUfLi",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "count",
+     "he": "לספור",
+     "explanation": "פועל: לקבוע את המספר הכולל של פריטים",
+     "example": "Can you count how many students are in the room?",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "friend",
+     "he": "חבר",
+     "explanation": "שם עצם: אדם שמישהו מכיר ואוהב",
+     "example": "Sarah has been my best friend since kindergarten.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "find",
+     "he": "למצוא",
+     "explanation": "פועל: לגלות משהו באמצעות חיפוש",
+     "example": "I cannot find my keys anywhere in the house.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "light",
+     "he": "אור",
+     "explanation": "שם עצם: דבר הגורם לדברים להיות נראים",
+     "example": "Please turn on the light so I can read.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "guide",
+     "he": "להדריך",
+     "explanation": "פועל: להראות את הדרך למישהו",
+     "example": "The tour guide showed us the most famous museums.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 15,
+   "title": "Fight Song",
+   "artist": "Rachel Platten",
+   "spotify_id": "2vOymVk9Y21PqXdxpcUbD9",
+   "spotify_url": "https://open.spotify.com/track/2vOymVk9Y21PqXdxpcUbD9",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "fight",
+     "he": "להילחם",
+     "explanation": "פועל: להיאבק או לשאוף נגד משהו",
+     "example": "We must fight for our rights to have a fair trial.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "song",
+     "he": "שיר",
+     "explanation": "שם עצם: קטע מוזיקלי קצר עם מילים",
+     "example": "She sang a beautiful song at the wedding.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "believe",
+     "he": "להאמין",
+     "explanation": "פועל: לקבל דבר מה כאמת",
+     "example": "I believe that hard work leads to success.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "small",
+     "he": "קטן",
+     "explanation": "תואר: לא גדול בממדיו",
+     "example": "The small dog barked at the mailman.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "power",
+     "he": "כוח",
+     "explanation": "שם עצם: היכולת לעשות או לשלוט במשהו",
+     "example": "Knowledge is the most important power in the world.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 16,
+   "title": "Brave",
+   "artist": "Sara Bareilles",
+   "spotify_id": "4uernaqrGGvb2ncMd4wibP",
+   "spotify_url": "https://open.spotify.com/track/4uernaqrGGvb2ncMd4wibP",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "brave",
+     "he": "אמיץ",
+     "explanation": "תואר: מוכן להתמודד עם סכנה או כאב",
+     "example": "The brave firefighter entered the burning building.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "speak",
+     "he": "לדבר",
+     "explanation": "פועל: לומר משהו כדי לתקשר",
+     "example": "Please speak clearly so everyone can hear you.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "truth",
+     "he": "אמת",
+     "explanation": "שם עצם: העובדות הממשיות על דבר מה",
+     "example": "It is always better to tell the truth than to lie.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "word",
+     "he": "מילה",
+     "explanation": "שם עצם: יחידה בסיסית ובעלת משמעות של דיבור",
+     "example": "I don't know the meaning of this English word.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "loud",
+     "he": "רועש",
+     "explanation": "תואר: המפיק עוצמת קול גבוהה",
+     "example": "The music was so loud that the windows shook.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 17,
+   "title": "Firework",
+   "artist": "Katy Perry",
+   "spotify_id": "3lXbHd0EoryoQh3vpevNEP",
+   "spotify_url": "https://open.spotify.com/track/3lXbHd0EoryoQh3vpevNEP",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "firework",
+     "he": "זיקוק",
+     "explanation": "שם עצם: מכשיר המייצר פיצוץ צבעוני",
+     "example": "We watched a beautiful firework display on New Year's Eve.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "spark",
+     "he": "ניצוץ",
+     "explanation": "שם עצם: חלקיק אש קטן",
+     "example": "A single spark can start a large forest fire.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "bright",
+     "he": "בהיר",
+     "explanation": "תואר: פולט או מחזיר הרבה אור",
+     "example": "The sun is very bright today, so wear sunglasses.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "burst",
+     "he": "להתפוצץ",
+     "explanation": "פועל: להיפתח או להיסדק לפתע",
+     "example": "The balloon will burst if you poke it with a needle.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "light",
+     "he": "להאיר",
+     "explanation": "פועל: להדליק או להאיר",
+     "example": "Can you light the candles on the birthday cake?",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 18,
+   "title": "Roar",
+   "artist": "Katy Perry",
+   "spotify_id": "27tNWlhdAryQY04Gb2ZhUI",
+   "spotify_url": "https://open.spotify.com/track/27tNWlhdAryQY04Gb2ZhUI",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "roar",
+     "he": "שאגה",
+     "explanation": "שם עצם: קריאה עמוקה וארוכה של אריה",
+     "example": "We heard the loud roar of the lion at the zoo.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "strong",
+     "he": "חזק",
+     "explanation": "תואר: בעל כוח להזיז חפצים כבדים",
+     "example": "He is strong enough to lift the heavy table alone.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "eye",
+     "he": "עין",
+     "explanation": "שם עצם: איבר הראייה",
+     "example": "She has a small piece of dust in her left eye.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "storm",
+     "he": "סערה",
+     "explanation": "שם עצם: הפרעה אטמוספרית עם רוחות וגשם",
+     "example": "The heavy storm caused many trees to fall in the park.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "champion",
+     "he": "אלוף",
+     "explanation": "שם עצם: אדם שניצח את כל יריביו בתחרות",
+     "example": "The tennis champion won the tournament for the third year.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 19,
+   "title": "Shake It Off",
+   "artist": "Taylor Swift",
+   "spotify_id": "0cqRj7pUJDkTCEsJkx8snD",
+   "spotify_url": "https://open.spotify.com/track/0cqRj7pUJDkTCEsJkx8snD",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "shake",
+     "he": "לנער",
+     "explanation": "פועל: לזוז במהירות למעלה ומטה או מצד לצד",
+     "example": "You should shake the bottle of juice before opening it.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "off",
+     "he": "מכובה / הרחק",
+     "explanation": "תואר/מילת יחס: הרחק ממקום או מיקום",
+     "example": "Please take your shoes off before entering the house.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "heart",
+     "he": "לב",
+     "explanation": "שם עצם: האיבר השואב דם בגוף",
+     "example": "Exercise is very good for keeping your heart healthy.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "dance",
+     "he": "לרקוד",
+     "explanation": "פועל: לזוז באופן קצבי לצלילי מוזיקה",
+     "example": "They like to dance together at parties.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "player",
+     "he": "שחקן",
+     "explanation": "שם עצם: אדם הלוקח חלק במשחק",
+     "example": "He is the best soccer player on the school team.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 20,
+   "title": "Love Story",
+   "artist": "Taylor Swift",
+   "spotify_id": "6SgBWLgjMQdoVQytBgATGx",
+   "spotify_url": "https://open.spotify.com/track/6SgBWLgjMQdoVQytBgATGx",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "story",
+     "he": "סיפור",
+     "explanation": "שם עצם: סיפור על אירועים ואנשים, דמיוניים או אמיתיים",
+     "example": "My grandfather told me an interesting story about the war.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "love",
+     "he": "אהבה",
+     "explanation": "שם עצם: רגש עז של חיבה עמוקה",
+     "example": "The parents feel a lot of love for their children.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "garden",
+     "he": "גינה",
+     "explanation": "שם עצם: שטח קרקע לגידול פרחים או ירקות",
+     "example": "We spent the afternoon planting roses in the garden.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "secret",
+     "he": "סוד",
+     "explanation": "שם עצם: דבר שנשמר נסתר מאחרים",
+     "example": "I have a secret that I cannot tell anyone.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "balcony",
+     "he": "מרפסת",
+     "explanation": "שם עצם: פלטפורמה חיצונית לבניין",
+     "example": "She stood on the balcony to look at the city lights.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 21,
+   "title": "Viva La Vida",
+   "artist": "Coldplay",
+   "spotify_id": "1mea3bSkSGXuIRvnydlB5b",
+   "spotify_url": "https://open.spotify.com/track/1mea3bSkSGXuIRvnydlB5b",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "king",
+     "he": "מלך",
+     "explanation": "שם עצם: שליט של מדינה",
+     "example": "The king addressed the crowd from the balcony.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "empire",
+     "he": "אימפריה",
+     "explanation": "שם עצם: מדינה גדולה עם שלטון רחב",
+     "example": "The Roman empire lasted for centuries.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "reign",
+     "he": "שלטון",
+     "explanation": "שם עצם: תקופת שלטון של שליט",
+     "example": "Her reign as queen lasted ten years.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "silence",
+     "he": "שתיקה",
+     "explanation": "שם עצם: חוסר קול או רעש",
+     "example": "A deep silence fell over the empty hall.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "memory",
+     "he": "זיכרון",
+     "explanation": "שם עצם: תזכורת של אירוע עבר",
+     "example": "He kept the memory of his childhood alive.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 22,
+   "title": "Fix You",
+   "artist": "Coldplay",
+   "spotify_id": "7LVHVU3tWfcxj5aiPFEW4Q",
+   "spotify_url": "https://open.spotify.com/track/7LVHVU3tWfcxj5aiPFEW4Q",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "heal",
+     "he": "לרפא",
+     "explanation": "פועל: לשקם פציעה או מחלה",
+     "example": "Time can heal even the deepest wounds.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "support",
+     "he": "תמיכה",
+     "explanation": "שם עצם: עזרה או עידוד למישהו",
+     "example": "She offered her support during the exam period.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "light",
+     "he": "אור",
+     "explanation": "שם עצם: קרן שמפיצה חום או ראייה",
+     "example": "The morning light streamed through the window.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "break",
+     "he": "שבירה",
+     "explanation": "פועל: לגרום למשהו להיפרד לחלקים",
+     "example": "He tried not to break the fragile vase.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "comfort",
+     "he": "נוחות",
+     "explanation": "שם עצם: תחושת רוגע או הקלה",
+     "example": "A warm blanket gave her comfort on a cold night.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 23,
+   "title": "Yellow",
+   "artist": "Coldplay",
+   "spotify_id": "3AJwUDP919kvQ9QcozQPxg",
+   "spotify_url": "https://open.spotify.com/track/3AJwUDP919kvQ9QcozQPxg",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "bright",
+     "he": "בהיר",
+     "explanation": "תואר: מלא אור, ניכר בבהירות",
+     "example": "The bright sun made the snow melt quickly.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "sunshine",
+     "he": "שמש",
+     "explanation": "שם עצם: אור השמש ביום",
+     "example": "She loves the warm sunshine in spring.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "color",
+     "he": "צבע",
+     "explanation": "שם עצם: תכונה של אור שנראית לעין",
+     "example": "Blue is my favorite color for the walls.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "glow",
+     "he": "זוהר",
+     "explanation": "פועל: להאיר ברכות עדינה",
+     "example": "The fireflies began to glow as night fell.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "horizon",
+     "he": "אופק",
+     "explanation": "שם עצם: קו המפגש בין שמים לארץ",
+     "example": "The plane disappeared beyond the horizon.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 24,
+   "title": "Somebody That I Used to Know",
+   "artist": "Gotye",
+   "spotify_id": "1qDrWA6lyx8cLECdZE7TV7",
+   "spotify_url": "https://open.spotify.com/track/1qDrWA6lyx8cLECdZE7TV7",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "relationship",
+     "he": "מערכת יחסים",
+     "explanation": "שם עצם: קשר בין שני אנשים",
+     "example": "Their relationship improved after the talk.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "memory",
+     "he": "זיכרון",
+     "explanation": "שם עצם: תזכורת של אירוע מהעבר",
+     "example": "A vivid memory of the concert stayed with him.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "distance",
+     "he": "מרחק",
+     "explanation": "שם עצם: הפרש פיזי או רגשי בין שניים",
+     "example": "The distance between the cities is 300 km.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "apology",
+     "he": "התנצלות",
+     "explanation": "שם עצם: הבעת חרטה על טעות",
+     "example": "She offered a sincere apology for being late.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "trust",
+     "he": "אמון",
+     "explanation": "שם עצם: ביטחון במישהו או במשהו",
+     "example": "Building trust takes time and honesty.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 25,
+   "title": "Counting Stars",
+   "artist": "OneRepublic",
+   "spotify_id": "2tpWsVSb9UEmDRxAl1zhX1",
+   "spotify_url": "https://open.spotify.com/track/2tpWsVSb9UEmDRxAl1zhX1",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "dream",
+     "he": "חלום",
+     "explanation": "שם עצם: רצון עמוק או חוויה בלילה",
+     "example": "She chased her dream of becoming a pilot.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "ambition",
+     "he": "שאיפה",
+     "explanation": "שם עצם: רצון חזק להצלחה",
+     "example": "His ambition drove him to study late at night.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "budget",
+     "he": "תקציב",
+     "explanation": "שם עצם: תכנון כספי לתקופה",
+     "example": "The family set a monthly budget for groceries.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "night",
+     "he": "לילה",
+     "explanation": "שם עצם: זמן החשוך אחרי השקיעה",
+     "example": "Stars shine brightest during a clear night.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "sky",
+     "he": "שמיים",
+     "explanation": "שם עצם: מרחב מעל פני האדמה",
+     "example": "The blue sky promised a warm day ahead.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 26,
+   "title": "Demons",
+   "artist": "Imagine Dragons",
+   "spotify_id": "5SdnVC02PImMYBdI7IYgN0",
+   "spotify_url": "https://open.spotify.com/track/5SdnVC02PImMYBdI7IYgN0",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "inner",
+     "he": "פנימי",
+     "explanation": "תואר: שנמצא בתוכך, לא חיצוני",
+     "example": "She reflected on her inner thoughts before speaking.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "struggle",
+     "he": "מאבק",
+     "explanation": "שם עצם: מאמץ קשה להתגבר על קושי",
+     "example": "His struggle with math improved after tutoring.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "fear",
+     "he": "פחד",
+     "explanation": "שם עצם: תחושת חשש או חרדה",
+     "example": "Fear of heights kept her from climbing the tower.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "shadow",
+     "he": "צל",
+     "explanation": "שם עצם: אזור חשוך שנוצר מאור חסר",
+     "example": "A lone tree cast a long shadow on the road.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "overcome",
+     "he": "להתגבר",
+     "explanation": "פועל: לנצח קושי או מכשול",
+     "example": "She managed to overcome her anxiety before the interview.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 27,
+   "title": "Radioactive",
+   "artist": "Imagine Dragons",
+   "spotify_id": "62yJjFtgkhUrXktIoSjgP2",
+   "spotify_url": "https://open.spotify.com/track/62yJjFtgkhUrXktIoSjgP2",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "energy",
+     "he": "אנרגיה",
+     "explanation": "שם עצם: כוח שמאפשר תנועה או שינוי",
+     "example": "Solar panels convert sunlight into energy.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "mutation",
+     "he": "מוטציה",
+     "explanation": "שם עצם: שינוי גנטי במבנה DNA",
+     "example": "Scientists study mutation to understand evolution.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "danger",
+     "he": "סכנה",
+     "explanation": "שם עצם: מצב שמסכן חיים או בריאות",
+     "example": "The sign warned of danger near the cliff.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "glow",
+     "he": "זוהר",
+     "explanation": "פועל: להאיר ברכות, להבריק",
+     "example": "The lantern began to glow as the night grew dark.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "survival",
+     "he": "הישרדות",
+     "explanation": "שם עצם: היכולת לחיות בתנאים קשים",
+     "example": "The desert trek required careful planning for survival.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 28,
+   "title": "Happy",
+   "artist": "Pharrell Williams",
+   "spotify_id": "6pAh09a7Dp2KiYZSspTLLv",
+   "spotify_url": "https://open.spotify.com/track/6pAh09a7Dp2KiYZSspTLLv",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "joy",
+     "he": "שמחה",
+     "explanation": "שם עצם: תחושת אושר עמוקה",
+     "example": "The children's laughter filled the room with joy.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "smile",
+     "he": "חיוך",
+     "explanation": "שם עצם: הבעה של קימוטי הפה",
+     "example": "She greeted everyone with a warm smile.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "celebrate",
+     "he": "לחגוג",
+     "explanation": "פועל: לציין אירוע בשמחה",
+     "example": "We will celebrate his birthday with a party.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "positive",
+     "he": "חיובי",
+     "explanation": "תואר: מעודד, טוב, לא שלילי",
+     "example": "A positive attitude can improve your performance.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "moment",
+     "he": "רגע",
+     "explanation": "שם עצם: פרק זמן קצר מאוד",
+     "example": "Capture the moment before it passes.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 29,
+   "title": "Skyfall",
+   "artist": "Adele",
+   "spotify_id": "6VObnIkLVruX4UVyxWhlqm",
+   "spotify_url": "https://open.spotify.com/track/6VObnIkLVruX4UVyxWhlqm",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "fall",
+     "he": "נפילה",
+     "explanation": "שם עצם: תנועה מטה, ירידה",
+     "example": "The autumn leaves began their fall from the trees.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "gravity",
+     "he": "כוח משיכה",
+     "explanation": "שם עצם: כוח שמושך גופים למרכז כדור הארץ",
+     "example": "Gravity keeps us grounded on the planet.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "secret",
+     "he": "סוד",
+     "explanation": "שם עצם: מידע שמוחזק מוסתר",
+     "example": "He whispered a secret to his best friend.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "mission",
+     "he": "משימה",
+     "explanation": "שם עצם: משימה או משימה מיוחדת",
+     "example": "The astronaut's mission lasted six months.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "danger",
+     "he": "סכנה",
+     "explanation": "שם עצם: מצב שמסכן חיים או בריאות",
+     "example": "The sign warned of danger ahead on the trail.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  },
+  {
+   "id": 30,
+   "title": "Someone Like You",
+   "artist": "Adele",
+   "spotify_id": "4kflIGfjdZJW4ot2ioixTB",
+   "spotify_url": "https://open.spotify.com/track/4kflIGfjdZJW4ot2ioixTB",
+   "youtube_id": null,
+   "youtube_url": null,
+   "highlight_words": [
+    {
+     "word": "friendship",
+     "he": "חברות",
+     "explanation": "שם עצם: קשר של קרבה ותמיכה בין שניים",
+     "example": "Their friendship lasted through many challenges.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "memory",
+     "he": "זיכרון",
+     "explanation": "שם עצם: תזכורת של אירוע מהעבר",
+     "example": "A sweet memory of the picnic stayed with her.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "hope",
+     "he": "תקווה",
+     "explanation": "שם עצם: ציפייה חיובית למשהו טוב",
+     "example": "He held onto hope despite the setbacks.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "future",
+     "he": "עתיד",
+     "explanation": "שם עצם: זמן שיבוא אחרי ההווה",
+     "example": "She plans her career with the future in mind.",
+     "example_kind": "original_not_lyrics"
+    },
+    {
+     "word": "letter",
+     "he": "מכתב",
+     "explanation": "שם עצם: כתיבה על נייר שנשלחת למישהו",
+     "example": "He wrote a heartfelt letter to his grandparents.",
+     "example_kind": "original_not_lyrics"
+    }
+   ],
+   "provenance": {
+    "exam_coverage": "none_claimed",
+    "source": "verified_spotify_anchor"
+   }
+  }
+ ],
+ "questions": [
+  {
+   "id": 1,
+   "song_id": 1,
+   "question": "What does the phrase 'Let it be' usually mean in English? (מה המשמעות של הביטוי 'Let it be'?)",
+   "options": [
+    "To force a change",
+    "To leave things as they are",
+    "To start a fight",
+    "To hurry up"
+   ],
+   "answer": "To leave things as they are"
+  },
+  {
+   "id": 2,
+   "song_id": 2,
+   "question": "Which word is the opposite of 'Yesterday'? (איזו מילה היא ההפך מ-'Yesterday'?)",
+   "options": [
+    "Tomorrow",
+    "Today",
+    "Morning",
+    "Evening"
+   ],
+   "answer": "Tomorrow"
+  },
+  {
+   "id": 3,
+   "song_id": 4,
+   "question": "To 'Imagine' something means to: (המשמעות של 'Imagine' היא:)",
+   "options": [
+    "Remember a fact",
+    "Forget a name",
+    "Form a mental picture",
+    "Read a book"
+   ],
+   "answer": "Form a mental picture"
+  },
+  {
+   "id": 4,
+   "song_id": 6,
+   "question": "What is a synonym for 'Wonderful'? (מהי מילה נרדפת ל-'Wonderful'?)",
+   "options": [
+    "Terrible",
+    "Ordinary",
+    "Fantastic",
+    "Small"
+   ],
+   "answer": "Fantastic"
+  },
+  {
+   "id": 5,
+   "song_id": 9,
+   "question": "In the context of travel, what is a 'Fast Car' characterized by? (בסביבב של נסיעות, במה מאופיין 'Fast Car'?)",
+   "options": [
+    "High speed",
+    "Low cost",
+    "Large size",
+    "Old age"
+   ],
+   "answer": "High speed"
+  },
+  {
+   "id": 6,
+   "song_id": 10,
+   "question": "What does it mean to 'Stand By' someone? (מה המשמעות של 'Stand By' מישהו?)",
+   "options": [
+    "To stand next to them physically",
+    "To support them",
+    "To ignore them",
+    "To argue with them"
+   ],
+   "answer": "To support them"
+  },
+  {
+   "id": 7,
+   "song_id": 11,
+   "question": "To 'Lean on' someone metaphorically means: (המשמעות המטאפורית של 'Lean on' מישהו היא:)",
+   "options": [
+    "To push them",
+    "To rely on them for help",
+    "To lean against a wall",
+    "To avoid them"
+   ],
+   "answer": "To rely on them for help"
+  },
+  {
+   "id": 8,
+   "song_id": 13,
+   "question": "What is a 'Bird' in English? (מהו 'Bird' באנגלית?)",
+   "options": [
+    "A mammal",
+    "A reptile",
+    "A feathered animal",
+    "A fish"
+   ],
+   "answer": "A feathered animal"
+  },
+  {
+   "id": 9,
+   "song_id": 14,
+   "question": "If you can 'Count on' someone, you: (אם אתה יכול 'Count on' מישהו, אתה:)",
+   "options": [
+    "Count how many there are",
+    "Trust them",
+    "Dislike them",
+    "Forget them"
+   ],
+   "answer": "Trust them"
+  },
+  {
+   "id": 10,
+   "song_id": 15,
+   "question": "What is a 'Fight' in the context of a struggle or conflict? (מהו 'Fight' בהקשר של מאבק או קונפליקט?)",
+   "options": [
+    "A peaceful walk",
+    "A disagreement or battle",
+    "A deep sleep",
+    "A quiet conversation"
+   ],
+   "answer": "A disagreement or battle"
+  },
+  {
+   "id": 11,
+   "song_id": 16,
+   "question": "What does it mean to be 'Brave'? (מה המשמעות של להיות 'Brave'?)",
+   "options": [
+    "To be afraid",
+    "To be courageous",
+    "To be shy",
+    "To be tired"
+   ],
+   "answer": "To be courageous"
+  },
+  {
+   "id": 12,
+   "song_id": 17,
+   "question": "A 'Firework' is typically associated with: (זיקוקים 'Firework' מקושרים בדרך כלל ל:)",
+   "options": [
+    "Rainy weather",
+    "Celebrations",
+    "Sleeping",
+    "Reading"
+   ],
+   "answer": "Celebrations"
+  },
+  {
+   "id": 13,
+   "song_id": 18,
+   "question": "What animal is known for its 'Roar'? (איזו חיה ידועה ב-'Roar' שלה?)",
+   "options": [
+    "A cat",
+    "A lion",
+    "A bird",
+    "A fish"
+   ],
+   "answer": "A lion"
+  },
+  {
+   "id": 14,
+   "song_id": 19,
+   "question": "To 'Shake off' a feeling or a person means: (המשמעות של 'Shake off' רגש או אדם היא:)",
+   "options": [
+    "To hold on tightly",
+    "To get rid of",
+    "To welcome",
+    "To invite"
+   ],
+   "answer": "To get rid of"
+  },
+  {
+   "id": 15,
+   "song_id": 20,
+   "question": "A 'Story' is a: (מהו 'Story'?)",
+   "options": [
+    "A type of building",
+    "A narrative or tale",
+    "A mathematical sum",
+    "A piece of furniture"
+   ],
+   "answer": "A narrative or tale"
+  },
+  {
+   "id": 16,
+   "song_id": 22,
+   "question": "To 'Fix' something that is broken means to: (לתקן 'Fix' משהו שבור זה:)",
+   "options": [
+    "Break it more",
+    "Repair it",
+    "Throw it away",
+    "Ignore it"
+   ],
+   "answer": "Repair it"
+  },
+  {
+   "id": 17,
+   "song_id": 25,
+   "question": "What are 'Stars' in the context of the night sky? (מהם 'Stars' בהקשר של שמי הלילה?)",
+   "options": [
+    "Planets",
+    "Luminous celestial bodies",
+    "Clouds",
+    "Birds"
+   ],
+   "answer": "Luminous celestial bodies"
+  },
+  {
+   "id": 18,
+   "song_id": 26,
+   "question": "What is a 'Demon' in a metaphorical sense? (מהו 'Demon' במובן המטאפורי?)",
+   "options": [
+    "A friendly pet",
+    "An inner struggle or evil",
+    "A happy memory",
+    "A bright light"
+   ],
+   "answer": "An inner struggle or evil"
+  },
+  {
+   "id": 19,
+   "song_id": 28,
+   "question": "Which word is a synonym for 'Happy'? (איזו מילה היא נרדפת ל-'Happy'?)",
+   "options": [
+    "Sad",
+    "Joyful",
+    "Angry",
+    "Bored"
+   ],
+   "answer": "Joyful"
+  },
+  {
+   "id": 20,
+   "song_id": 30,
+   "question": "What does 'Someone Like You' imply? (למה הכוונה ב-'Someone Like You'?)",
+   "options": [
+    "Exactly the same person",
+    "A person with similar qualities",
+    "A complete stranger",
+    "Someone you hate"
+   ],
+   "answer": "A person with similar qualities"
+  }
+ ]
+}
