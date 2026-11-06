@@ -80,9 +80,102 @@
 
   function isCorrect(question, picked) { return !!question && picked === question.a; }
 
+  // --- Task H: validated content_v2, platform links, recommendations, timing, Suno export ---
+  var SPOTIFY_ID_RE = /^[A-Za-z0-9]{22}$/;
+  var YOUTUBE_ID_RE = /^[A-Za-z0-9_-]{11}$/;
+  var QUIZ_LAYOUT = { gapPx: 12, minTapPx: 44, singleColumn: true };
+
+  function validateContent(raw) {
+    var errors = [];
+    if (!raw || typeof raw !== 'object') return { songs: [], questions: [], words: [], errors: ['content is not an object'], examCoverage: 'unknown' };
+    var examCoverage = (raw.meta && raw.meta.exam_coverage) || 'unknown'; // never upgrade unknown/none_claimed
+    var songs = (Array.isArray(raw.songs) ? raw.songs : []).map(function (s, i) {
+      var c = Object.assign({}, s);
+      if (!c.title || !c.artist) errors.push('song ' + (c.id != null ? c.id : i) + ': missing title/artist');
+      if (c.spotify_id != null && !SPOTIFY_ID_RE.test(String(c.spotify_id))) { errors.push('song ' + c.id + ': invalid spotify_id'); c.spotify_id = null; }
+      if (c.spotify_id && c.spotify_url && String(c.spotify_url).indexOf(c.spotify_id) === -1) errors.push('song ' + c.id + ': spotify_url does not contain spotify_id');
+      if (c.youtube_id != null && !YOUTUBE_ID_RE.test(String(c.youtube_id))) { errors.push('song ' + c.id + ': invalid youtube_id'); c.youtube_id = null; }
+      if (c.youtube_id == null) { c.youtube_id = null; c.youtube_url = null; } // null stays null — no fabrication
+      c.exam_coverage = (c.provenance && c.provenance.exam_coverage) || 'unknown';
+      c.highlight_words = Array.isArray(c.highlight_words) ? c.highlight_words : [];
+      return c;
+    });
+    var words = [];
+    songs.forEach(function (s) { s.highlight_words.forEach(function (w) { if (w && w.word && w.he) words.push({ word: String(w.word).toLowerCase(), translation: w.he, explanation: w.explanation || '', example: w.example || '', example_kind: w.example_kind || '', songId: s.id, songTitle: s.title }); else errors.push('song ' + s.id + ': highlight word missing word/he'); }); });
+    var questions = (Array.isArray(raw.questions) ? raw.questions : []).filter(function (q) {
+      var ok = q && Array.isArray(q.options) && q.options.filter(function (o) { return o === q.answer; }).length === 1;
+      if (!ok) errors.push('question ' + (q && q.id) + ': answer must appear exactly once in options');
+      return ok;
+    });
+    return { songs: songs, questions: questions, words: words, errors: errors, examCoverage: examCoverage };
+  }
+
+  function loadContent(fetchImpl, url) {
+    return Promise.resolve(fetchImpl(url || 'data/imports/content_v2.json')).then(function (r) {
+      if (!r || !r.ok) throw new Error('content fetch failed');
+      return r.json();
+    }).then(validateContent);
+  }
+
+  function spotifyEmbedUrl(id) { return SPOTIFY_ID_RE.test(String(id || '')) ? 'https://open.spotify.com/embed/track/' + id : null; }
+  function spotifyTrackUrl(id) { return SPOTIFY_ID_RE.test(String(id || '')) ? 'https://open.spotify.com/track/' + id : null; }
+  function youtubeEmbedUrl(id) { return YOUTUBE_ID_RE.test(String(id || '')) ? 'https://www.youtube.com/embed/' + id : null; }
+  function youtubeMusicLink(song) {
+    if (song && YOUTUBE_ID_RE.test(String(song.youtube_id || ''))) return { kind: 'direct', url: 'https://music.youtube.com/watch?v=' + song.youtube_id };
+    var q = encodeURIComponent(((song && song.title) || '') + ' ' + ((song && song.artist) || ''));
+    return { kind: 'search', url: 'https://music.youtube.com/search?q=' + q }; // explicitly a search link, not a verified track
+  }
+
+  function recommendSongs(songs, targetWords, limit) {
+    var targets = (targetWords || []).map(function (w) { return String(w).trim().toLowerCase(); }).filter(Boolean);
+    var out = (songs || []).map(function (s) {
+      var have = (s.highlight_words || []).map(function (w) { return String(w.word).toLowerCase(); });
+      var matched = targets.filter(function (t) { return have.indexOf(t) !== -1; });
+      return { song: s, score: matched.length, matchedWords: matched,
+        reasons: matched.length ? ['כולל ' + matched.length + ' ממילות היעד: ' + matched.join(', ')] : ['ללא חפיפה למילות היעד'] };
+    });
+    out.sort(function (a, b) { return b.score - a.score || String(a.song.title).localeCompare(String(b.song.title)) || a.song.id - b.song.id; });
+    return out.slice(0, limit > 0 ? limit : out.length);
+  }
+
+  function parseLRC(text) {
+    var lines = [];
+    String(text || '').split(/\r?\n/).forEach(function (row) {
+      var m = row.match(/^\[(\d+):(\d+(?:\.\d+)?)\]\s*(.*)$/);
+      if (m) lines.push({ time: Number(m[1]) * 60 + Number(m[2]), text: m[3] });
+    });
+    return lines.sort(function (a, b) { return a.time - b.time; });
+  }
+  function parseTimingData(input) {
+    if (typeof input === 'string' && input.trim().charAt(0) !== '{' && input.trim().charAt(0) !== '[') return parseLRC(input);
+    var obj = typeof input === 'string' ? JSON.parse(input) : input;
+    var arr = Array.isArray(obj) ? obj : (obj && obj.lines) || [];
+    return arr.map(function (l) { return { time: Number(l.time), text: String(l.text || '') }; })
+      .filter(function (l) { return isFinite(l.time) && l.time >= 0; }).sort(function (a, b) { return a.time - b.time; });
+  }
+  function activeTimedLine(lines, sec) {
+    var idx = -1; var t = Number(sec) || 0;
+    (lines || []).forEach(function (l, i) { if (l.time <= t) idx = i; });
+    return idx;
+  }
+  function validateAudioFile(f) {
+    if (!f || !f.name) return { ok: false, reason: 'no file' };
+    var okType = /^audio\//.test(f.type || '') || /\.(mp3|wav|m4a|ogg|webm)$/i.test(f.name);
+    return okType ? { ok: true, name: f.name } : { ok: false, reason: 'not an audio file' };
+  }
+  function buildSunoExport(words, title) {
+    var ws = (words || []).slice(0, 12);
+    var lyrics = ws.map(function (w) { return (w.example || (w.word + ' — ' + (w.translation || ''))); }).join('\n');
+    return { title: title || 'ShirAmiram vocabulary song', generation: 'pending_manual',
+      note: 'Export only. No Suno generation performed; paste manually in Suno if you choose.',
+      stylePrompt: 'educational English vocabulary song, clear slow singing, simple melody, words: ' + ws.map(function (w) { return w.word; }).join(', '),
+      lyrics: lyrics, words: ws.map(function (w) { return w.word; }) };
+  }
+
   return {
     VOCAB: VOCAB, CATEGORIES: CATEGORIES, CATEGORY_HE: CATEGORY_HE, DIFFICULTY_HE: DIFFICULTY_HE, QUIZ: QUIZ,
     LINES: LINES, LINE_SEC: LINE_SEC, LOOP_SEC: LOOP_SEC, TUNE: TUNE, NOTE_SEC: NOTE_SEC,
-    filterVocab: filterVocab, findWord: findWord, formatTime: formatTime, positionAt: positionAt, isCorrect: isCorrect
+    filterVocab: filterVocab, findWord: findWord, formatTime: formatTime, positionAt: positionAt, isCorrect: isCorrect,
+    validateContent: validateContent, loadContent: loadContent, spotifyEmbedUrl: spotifyEmbedUrl, spotifyTrackUrl: spotifyTrackUrl, youtubeEmbedUrl: youtubeEmbedUrl, youtubeMusicLink: youtubeMusicLink, recommendSongs: recommendSongs, parseLRC: parseLRC, parseTimingData: parseTimingData, activeTimedLine: activeTimedLine, validateAudioFile: validateAudioFile, buildSunoExport: buildSunoExport, QUIZ_LAYOUT: QUIZ_LAYOUT
   };
 });
