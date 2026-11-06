@@ -114,3 +114,18 @@ nav[aria-label="מסכים"] {
   max-width: 100%;
 }
 .karaoke-panel, #karaoke, main { max-width: 100%; overflow-x: hidden; }
+
+/* Platform embed player */
+.embed-player { max-width: 100%; overflow: hidden; }
+.embed-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; width: 100%; }
+.embed-toggle button {
+  min-height: 44px; width: 100%; padding: 10px 12px; border-radius: 10px;
+  border: 2px solid #c084fc; background: #1a1430; color: #faf5ff; font: inherit; cursor: pointer;
+}
+.embed-toggle button[aria-pressed="true"] { background: #c084fc; color: #0f0c1d; font-weight: 800; }
+.embed-frame-wrap { position: relative; width: 100%; max-width: 100%; overflow: hidden; border-radius: 12px; background: #0f0c1d; }
+.embed-frame-wrap iframe { display: block; width: 100%; max-width: 100%; border: 0; }
+.embed-frame-wrap.youtube { aspect-ratio: 16 / 9; }
+.embed-frame-wrap.youtube iframe { height: 100%; min-height: 180px; }
+.embed-frame-wrap.spotify iframe { height: 152px; }
+#spotify-box, #youtube-box { max-width: 100%; overflow: hidden; }
