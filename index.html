@@ -141,8 +141,14 @@
       <label class="block mb-2">מילות יעד (מופרדות בפסיק) <input id="target-words" type="text" dir="ltr" class="w-full p-2 bg-stage-900 rounded" placeholder="peace, hope, dream"></label>
       <button id="btn-recommend" type="button" class="song-link bg-neon-purple rounded mb-3">המלצות לפי מילות יעד</button>
       <div id="songs-list" class="space-y-3"></div>
-      <div id="spotify-box" class="mt-3"></div>
-      <div id="youtube-box" class="mt-3 text-sm"></div>
+      <div class="embed-player mt-3" id="embed-player">
+        <div class="embed-toggle" role="group" aria-label="בחירת נגן">
+          <button type="button" id="embed-tab-spotify" aria-pressed="true">Spotify</button>
+          <button type="button" id="embed-tab-youtube" aria-pressed="false">YouTube</button>
+        </div>
+        <div id="spotify-box" class="embed-frame-wrap spotify"></div>
+        <div id="youtube-box" class="embed-frame-wrap youtube hidden text-sm"></div>
+      </div>
       <hr class="my-4 border-stage-800">
       <h2 class="font-bold mb-2">שמע מקומי ותזמון</h2>
       <p class="text-sm mb-2">לא מסופק קובץ שמע או תזמון מומצא. בחרו קובץ שמע שלכם וקובץ LRC/JSON שלכם.</p>
@@ -336,15 +342,27 @@
         +'<p class="text-sm">'+esc(r.reasons.join(' '))+'</p>'
         +'<p class="text-sm" dir="ltr">'+esc(s.highlight_words.map(w=>w.word).join(', '))+'</p>'
         +(A.spotifyTrackUrl(s.spotify_id)?'<a class="song-link bg-stage-900 rounded" target="_blank" rel="noopener" href="'+A.spotifyTrackUrl(s.spotify_id)+'">Spotify</a> ':'')
-        +'<button type="button" class="song-link bg-stage-900 rounded" data-spotify="'+esc(s.spotify_id||'')+'">הטמעת Spotify</button> '
+        +'<button type="button" class="song-link bg-stage-900 rounded" data-spotify="'+esc(s.spotify_id||'')+'" data-play-song="'+s.id+'">הטמעת נגן</button> '
         +'<a class="song-link bg-stage-900 rounded" target="_blank" rel="noopener" href="'+ym.url+'">'+(ym.kind==='direct'?'YouTube Music':'YouTube Music — חיפוש (אין מזהה מאומת)')+'</a></article>';
       }).join('');
+      function setEmbedTab(which) {
+        const sp = which === 'spotify';
+        $('embed-tab-spotify').setAttribute('aria-pressed', String(sp));
+        $('embed-tab-youtube').setAttribute('aria-pressed', String(!sp));
+        $('spotify-box').classList.toggle('hidden', !sp);
+        $('youtube-box').classList.toggle('hidden', sp);
+      }
+      $('embed-tab-spotify').onclick = () => setEmbedTab('spotify');
+      $('embed-tab-youtube').onclick = () => setEmbedTab('youtube');
       document.querySelectorAll('[data-spotify]').forEach(b=>b.addEventListener('click',()=>{
         const u=A.spotifyEmbedUrl(b.dataset.spotify);
         $('spotify-box').innerHTML = u ? '<iframe title="Spotify embed" src="'+u+'" width="100%" height="152" loading="lazy" allow="encrypted-media"></iframe>' : '<p>אין מזהה Spotify תקין.</p>';
         const song=CONTENT.songs.find(s=>s.spotify_id===b.dataset.spotify);
         const yid=song?A.youtubeEmbedUrl(song.youtube_id):null;
-        $('youtube-box').innerHTML = yid ? '<iframe title="YouTube" src="'+yid+'" width="100%" height="200" loading="lazy"></iframe>' : 'אין מזהה YouTube מאומת לשיר זה (youtube_id=null) — לא מוצג נגן YouTube, רק קישור חיפוש ב-YouTube Music למעלה.';
+        $('youtube-box').innerHTML = yid
+          ? '<iframe title="YouTube" src="'+yid+'" width="100%" height="100%" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'
+          : '<p>אין מזהה YouTube מאומת לשיר זה — מוצג רק קישור חיפוש ב-YouTube Music בכרטיס השיר.</p>';
+        setEmbedTab(yid ? 'youtube' : 'spotify');
       }));
     }
     if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });

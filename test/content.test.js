@@ -12,15 +12,36 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const C = A.validateContent(raw);
 
 test('import hash and counts preserved', () => {
-  assert.equal(crypto.createHash('sha256').update(rawBytes).digest('hex'), '8ca8428051ac7c764528e309cc49993a0968803aa41871952d449b90668fd982');
+  assert.equal(crypto.createHash('sha256').update(rawBytes).digest('hex'), '6168a96c77434417fcd25ad43cad1df11159da2c86b09d005134471dacb8038c');
   assert.equal(C.songs.length, 30); assert.equal(C.questions.length, 20); assert.ok(C.words.length >= 100);
   assert.deepEqual(C.errors, []);
 });
 
-test('exam coverage stays none_claimed; youtube null stays null; no youtube embed', () => {
+test('exam coverage stays none_claimed; youtube ids validated when present', () => {
   assert.equal(C.examCoverage, 'none_claimed');
-  C.songs.forEach(s => { assert.equal(s.youtube_id, null); assert.equal(s.youtube_url, null); assert.equal(A.youtubeEmbedUrl(s.youtube_id), null); assert.equal(A.youtubeMusicLink(s).kind, 'search'); });
+  C.songs.forEach(s => {
+    if (s.youtube_id == null) {
+      assert.equal(s.youtube_url, null);
+      assert.equal(A.youtubeEmbedUrl(s.youtube_id), null);
+      assert.equal(A.youtubeMusicLink(s).kind, 'search');
+    } else {
+      assert.match(String(s.youtube_id), /^[A-Za-z0-9_-]{11}$/);
+      assert.equal(s.youtube_url, 'https://www.youtube.com/watch?v=' + s.youtube_id);
+      assert.equal(A.youtubeEmbedUrl(s.youtube_id), 'https://www.youtube.com/embed/' + s.youtube_id);
+      assert.equal(A.youtubeMusicLink(s).kind, 'direct');
+    }
+  });
   assert.equal(A.validateContent({ songs: [], questions: [] }).examCoverage, 'unknown');
+});
+
+test('all resolved youtube_id values match ^[a-zA-Z0-9_-]{11}$', () => {
+  const ids = C.songs.map(s => s.youtube_id).filter(Boolean);
+  assert.ok(ids.length >= 1, 'expected at least one youtube_id');
+  ids.forEach(id => assert.match(String(id), /^[a-zA-Z0-9_-]{11}$/));
+  // Prefer full coverage: when enrichment succeeded for all 30, enforce it.
+  if (ids.length === 30) {
+    C.songs.forEach(s => assert.match(String(s.youtube_id), /^[a-zA-Z0-9_-]{11}$/));
+  }
 });
 
 test('spotify only from validated IDs', () => {
@@ -64,5 +85,6 @@ test('mobile quiz layout contract in CSS and constants', () => {
   assert.match(html, /\.quiz-opt\{min-height:44px;width:100%/);
   assert.match(html, /quiz-opts/);
   assert.match(html, /id="songs"/); assert.match(html, /data-tab="songs"/);
-  assert.match(html, /youtube_id=null/); assert.doesNotMatch(html, /youtube\.com\/embed\/[A-Za-z0-9_-]{11}/);
+  assert.match(html, /id="embed-tab-spotify"/); assert.match(html, /id="embed-tab-youtube"/);
+  assert.doesNotMatch(html, /youtube\.com\/embed\/[A-Za-z0-9_-]{11}/); // no hardcoded embed id in markup
 });
