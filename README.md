@@ -10,7 +10,11 @@
 
 - **שיר:** מילות שיר עם מילים מודגשות. לחיצה על מילה מציגה תרגום לעברית, סוג המילה ומשפט לדוגמה. כפתור הניגון מפעיל מנגינה קצרה שחוזרת, טיימר, והשורה הנוכחית מודגשת. אפשר לשנות מהירות ולגרור את סרגל ההתקדמות.
 - **אוצר מילים:** טבלה של כל המילים, עם חיפוש (באנגלית או בעברית) וסינון לפי סוג המילה.
-- **מבחן:** ארבע שאלות אמריקאיות עם משוב מיידי, ציון וכפתור להתחלה מחדש.
+- **מבחן:** ארבע שאלות אמריקאיות עם משוב מיידי, ציון וכפתור להתחלה מחדש. במובייל כל תשובה היא כרטיס/כפתור עצמאי (ריווח 12px, גובה מגע 44px לפחות).
+- **שירים והמלצות:** 30 שירים ו-20 שאלות מקובץ `data/imports/content_v2.json` (SHA256 `8ca8428051ac7c764528e309cc49993a0968803aa41871952d449b90668fd982`), עם המלצות דטרמיניסטיות לפי מילות יעד וסיבות מפורשות. כיסוי מבחן נשאר `none_claimed`.
+- **פלטפורמות:** הטמעה וקישורי Spotify רק ממזהים מאומתים שבנתונים. לכל השירים `youtube_id=null`, ולכן אין נגן YouTube — רק קישורי חיפוש מסומנים ב-YouTube Music. אין חיבור חשבון.
+- **שמע ותזמון:** נגן מקומי לקובץ שמע של המשתמש, עם ייבוא תזמון LRC/JSON ושורות לחיצות. אין קבצי שמע, תזמונים או מילים מוגנות מומצאים.
+- **Suno:** ייצוא פרומפט ומילים מקוריות ללימוד בלבד. יצירה בפועל ב-Suno נשארת ידנית/ממתינה — בלי API לא רשמי ובלי קרדיטים.
 
 ## מקור התוכן
 
@@ -48,3 +52,8 @@ npm test
 - **שמע:** המנגינה היא צליל מסונתז פשוט, לא שירה של המילים.
 
 </div>
+
+## Voice Karaoke Challenge
+Static client-side mode: melody-only Web Audio instrumental (no vocals) + LRC-style teleprompter.
+Speak target words into the mic (`SpeechRecognition` en-US, continuous + interim). Matching uses sanitize, exact includes, Levenshtein (≤1 short / ≤2 if >6 letters), and predefined inflections — hits only inside word time → +1.5s.
+Fallback: Rhythm Tap Mode with 3 choice buttons when mic/API unavailable.

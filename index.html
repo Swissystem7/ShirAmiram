@@ -40,7 +40,13 @@
     @keyframes wave{0%,100%{transform:scaleY(.35);}50%{transform:scaleY(1);}}
     .progress-track{background:rgba(148,163,184,.15);height:6px;border-radius:3px;}
     .progress-fill{background:linear-gradient(90deg,#a855f7,#f472b6,#22d3ee);height:100%;border-radius:3px;transition:width .35s linear;}
+    *{box-sizing:border-box;}
+    .quiz-opts{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%;}
+    .quiz-opt{min-height:44px;width:100%;padding:10px 12px;text-align:right;overflow-wrap:anywhere;}
+    .song-link{display:inline-block;min-height:44px;padding:10px 12px;}
+    #songs-list{max-width:100%;overflow-wrap:anywhere;}
   </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="min-h-screen flex flex-col">
   <!-- Header -->
@@ -57,6 +63,8 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
   </nav>
 
   <!-- Content -->
@@ -127,9 +135,55 @@
       <div class="mt-4 text-xl font-bold" aria-live="polite">ציון: <span id="quiz-score">0</span>/<span id="quiz-total">0</span></div>
       <button id="quiz-reset" type="button" class="mt-2 px-3 py-1 bg-neon-purple rounded">מתחילים מחדש</button>
     </section>
+    <section id="songs" class="tab-content hidden">
+      <p id="content-status" class="text-sm mb-2" aria-live="polite">טוען תוכן…</p>
+      <p class="text-sm mb-2">כיסוי מבחן: <span id="exam-coverage">unknown</span> — לא נטען כיסוי שלא אומת. אין חיבור חשבון Spotify/YouTube Music; הקישורים וההטמעה הם ציבוריים בלבד.</p>
+      <label class="block mb-2">מילות יעד (מופרדות בפסיק) <input id="target-words" type="text" dir="ltr" class="w-full p-2 bg-stage-900 rounded" placeholder="peace, hope, dream"></label>
+      <button id="btn-recommend" type="button" class="song-link bg-neon-purple rounded mb-3">המלצות לפי מילות יעד</button>
+      <div id="songs-list" class="space-y-3"></div>
+      <div id="spotify-box" class="mt-3"></div>
+      <div id="youtube-box" class="mt-3 text-sm"></div>
+      <hr class="my-4 border-stage-800">
+      <h2 class="font-bold mb-2">שמע מקומי ותזמון</h2>
+      <p class="text-sm mb-2">לא מסופק קובץ שמע או תזמון מומצא. בחרו קובץ שמע שלכם וקובץ LRC/JSON שלכם.</p>
+      <input id="audio-file" type="file" accept="audio/*" class="block mb-2">
+      <audio id="local-audio" controls class="w-full mb-2"></audio>
+      <input id="timing-file" type="file" accept=".lrc,.json,text/plain,application/json" class="block mb-2">
+      <div id="timed-lines" dir="ltr" class="text-left space-y-1"></div>
+      <hr class="my-4 border-stage-800">
+      <h2 class="font-bold mb-2">Suno — ייצוא בלבד</h2>
+      <p class="text-sm mb-2">יצירת שיר בפועל ב-Suno היא ידנית/ממתינה. הכפתור רק מייצא מילים מקוריות ללימוד אוצר מילים ופרומפט — בלי שימוש בקרדיטים ובלי API לא רשמי.</p>
+      <button id="btn-suno" type="button" class="song-link bg-neon-pink rounded">צור ייצוא Suno ממילות היעד</button>
+      <textarea id="suno-out" dir="ltr" rows="8" class="w-full mt-2 p-2 bg-stage-900 rounded text-left" readonly></textarea>
+    </section>
+
+    <section id="karaoke" class="tab-content hidden karaoke-panel" aria-label="Voice Karaoke Challenge">
+      <h2 class="text-xl font-bold mb-2">Voice Karaoke Challenge</h2>
+      <p class="text-sm mb-2">בתחילת השיר מתנגנת <strong>רק המנגינה</strong> (בלי שירה). בחלון של כל מילת יעד שרים/אומרים למיקרופון — הזיהוי חייב להיות טוב. אם אין מיקרופון: Rhythm Tap.</p>
+      <div id="karaoke-status" class="karaoke-status karaoke-status-idle" role="status" aria-live="polite">
+        <span id="karaoke-mic-indicator" aria-hidden="true"></span>
+        <span id="karaoke-status-text">מוכן</span>
+      </div>
+      <div class="karaoke-scoreboard" id="karaoke-scoreboard" aria-label="לוח תוצאות">
+        <div class="cell">ציון<br><strong id="karaoke-score">0</strong></div>
+        <div class="cell">רצף<br><strong id="karaoke-streak">0</strong></div>
+        <div class="cell">דיוק<br><strong id="karaoke-accuracy">0%</strong></div>
+      </div>
+      <div id="karaoke-teleprompter" dir="ltr" lang="en" aria-live="polite"></div>
+      <p id="karaoke-feedback" class="mt-2 min-h-[1.5rem]" aria-live="assertive"></p>
+      <div id="karaoke-fallback-msg" class="hidden" role="alert"></div>
+      <div class="karaoke-actions mt-3">
+        <button id="karaoke-start-btn" type="button">התחל קריוקי (מנגינה)</button>
+        <button id="karaoke-mic-btn" type="button">Start Mic</button>
+      </div>
+      <div id="karaoke-choices" class="karaoke-actions mt-3 hidden" aria-label="Rhythm Tap choices"></div>
+      <div id="karaoke-end" class="hidden" aria-live="polite"></div>
+    </section>
+
   </main>
 
   <script src="app.js"></script>
+  <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
     const $ = (id) => document.getElementById(id);
@@ -247,10 +301,11 @@
         const fb = document.createElement('div');
         fb.className = 'quiz-fb mt-2 text-sm';
         fb.setAttribute('aria-live', 'polite');
+        const optsBox = document.createElement('div'); optsBox.className='quiz-opts'; div.appendChild(optsBox);
         item.opts.forEach((opt) => {
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'quiz-opt ml-2 mb-1 px-2 py-1 bg-neon-pink rounded';
+          btn.className = 'quiz-opt bg-neon-pink rounded';
           btn.textContent = opt;
           btn.addEventListener('click', () => {
             const right = A.isCorrect(item, opt);
@@ -260,7 +315,7 @@
             $('quiz-score').textContent = String(score);
             div.querySelectorAll('.quiz-opt').forEach((b) => { b.disabled = true; });
           });
-          div.appendChild(btn);
+          optsBox.appendChild(btn);
         });
         div.appendChild(fb);
         $('quiz-container').appendChild(div);
@@ -268,6 +323,242 @@
     }
     $('quiz-reset').addEventListener('click', renderQuiz);
     renderQuiz();
+
+    let CONTENT = null, timed = [];
+    function renderSongs() {
+      if (!CONTENT) return;
+      $('exam-coverage').textContent = CONTENT.examCoverage;
+      const targets = $('target-words').value.split(',').map(s=>s.trim()).filter(Boolean);
+      const recs = A.recommendSongs(CONTENT.songs, targets, 10);
+      $('songs-list').innerHTML = recs.map(r => {
+        const s=r.song, ym=A.youtubeMusicLink(s);
+        return '<article class="p-3 bg-stage-800 rounded"><h3 dir="ltr" class="font-bold text-left">'+esc(s.title)+' — '+esc(s.artist)+'</h3>'
+        +'<p class="text-sm">'+esc(r.reasons.join(' '))+'</p>'
+        +'<p class="text-sm" dir="ltr">'+esc(s.highlight_words.map(w=>w.word).join(', '))+'</p>'
+        +(A.spotifyTrackUrl(s.spotify_id)?'<a class="song-link bg-stage-900 rounded" target="_blank" rel="noopener" href="'+A.spotifyTrackUrl(s.spotify_id)+'">Spotify</a> ':'')
+        +'<button type="button" class="song-link bg-stage-900 rounded" data-spotify="'+esc(s.spotify_id||'')+'">הטמעת Spotify</button> '
+        +'<a class="song-link bg-stage-900 rounded" target="_blank" rel="noopener" href="'+ym.url+'">'+(ym.kind==='direct'?'YouTube Music':'YouTube Music — חיפוש (אין מזהה מאומת)')+'</a></article>';
+      }).join('');
+      document.querySelectorAll('[data-spotify]').forEach(b=>b.addEventListener('click',()=>{
+        const u=A.spotifyEmbedUrl(b.dataset.spotify);
+        $('spotify-box').innerHTML = u ? '<iframe title="Spotify embed" src="'+u+'" width="100%" height="152" loading="lazy" allow="encrypted-media"></iframe>' : '<p>אין מזהה Spotify תקין.</p>';
+        const song=CONTENT.songs.find(s=>s.spotify_id===b.dataset.spotify);
+        const yid=song?A.youtubeEmbedUrl(song.youtube_id):null;
+        $('youtube-box').innerHTML = yid ? '<iframe title="YouTube" src="'+yid+'" width="100%" height="200" loading="lazy"></iframe>' : 'אין מזהה YouTube מאומת לשיר זה (youtube_id=null) — לא מוצג נגן YouTube, רק קישור חיפוש ב-YouTube Music למעלה.';
+      }));
+    }
+    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
+    $('btn-recommend').addEventListener('click', renderSongs);
+    $('btn-suno').addEventListener('click', ()=>{
+      const targets=$('target-words').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+      const pool=(CONTENT?CONTENT.words:A.VOCAB);
+      const picked=pool.filter(w=>!targets.length||targets.includes(w.word)).slice(0,12);
+      const ex=A.buildSunoExport(picked.length?picked:A.VOCAB);
+      $('suno-out').value=ex.stylePrompt+'\n\n'+ex.lyrics+'\n\n['+ex.generation+'] '+ex.note;
+    });
+    $('audio-file').addEventListener('change', e=>{ const f=e.target.files[0]; const v=A.validateAudioFile(f||{}); if(v.ok) $('local-audio').src=URL.createObjectURL(f); else alert(v.reason); });
+    $('timing-file').addEventListener('change', async e=>{ const f=e.target.files[0]; if(!f) return; timed=A.parseTimingData(await f.text()); renderTimed(); });
+    function renderTimed(){ const idx=A.activeTimedLine(timed, $('local-audio').currentTime||0); $('timed-lines').innerHTML=timed.map((l,i)=>'<button type="button" class="quiz-opt '+(i===idx?'bg-neon-purple':'bg-stage-800')+' rounded" data-t="'+l.time+'">'+esc(l.text)+'</button>').join(''); document.querySelectorAll('#timed-lines [data-t]').forEach(b=>b.addEventListener('click',()=>{ $('local-audio').currentTime=Number(b.dataset.t); renderTimed(); })); }
+    $('local-audio').addEventListener('timeupdate', renderTimed);
+
+
+    // --- Voice Karaoke Challenge ---
+    (function initKaraoke() {
+      const K = window.ShirAmiramKaraoke;
+      if (!K) return;
+      const demoWords = [
+        { word: 'deliberate', he: 'מכוון, שקול', timeMs: 500 },
+        { word: 'crucial', he: 'חיוני, מכריע', timeMs: 3500 },
+        { word: 'undermine', he: 'לערער', timeMs: 6500 },
+        { word: 'subtle', he: 'עדין', timeMs: 9500 },
+        { word: 'nevertheless', he: 'אף על פי כן', timeMs: 12500 },
+        { word: 'inevitable', he: 'בלתי נמנע', timeMs: 15500 },
+        { word: 'hypothesis', he: 'השערה', timeMs: 18500 },
+        { word: 'consequently', he: 'כתוצאה מכך', timeMs: 21500 }
+      ];
+      let session = null;
+      let player = null;
+      let recog = null;
+      let raf = 0;
+      let ac = null;
+
+      function $(id) { return document.getElementById(id); }
+      function setStatus(status, text) {
+        const el = $('karaoke-status');
+        el.className = 'karaoke-status ' + K.statusClass(status);
+        $('karaoke-status-text').textContent = text;
+        const ind = $('karaoke-mic-indicator');
+        ind.className = '';
+        if (status === 'listening') ind.className = 'on';
+        else if (status === 'processing') ind.className = 'warn';
+        if (session) session.state.status = status;
+      }
+      function beep(ok) {
+        try {
+          const ctx = ac || new (window.AudioContext || window.webkitAudioContext)();
+          ac = ctx;
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = ok ? 880 : 220;
+          g.gain.value = 0.05;
+          o.connect(g); g.connect(ctx.destination);
+          o.start();
+          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+          o.stop(ctx.currentTime + 0.16);
+        } catch (e) {}
+      }
+      function renderPrompt() {
+        if (!session) return;
+        const now = player ? player.currentTimeMs() : 0;
+        const html = session.state.words.map((w, i) => {
+          let cls = 'karaoke-word';
+          if (session.state.hits.some(h => h.word === w.word && session.state.words.indexOf(w) === i)) cls += ' hit';
+          else if (session.state.misses.some(m => m.word === w.word)) cls += ' miss';
+          else if (session.state.index === i && K.isInWindow(now, w.timeMs, w.windowMs)) cls += ' active';
+          return '<span class="' + cls + '" data-i="' + i + '">' + w.word + '</span>';
+        }).join(' ');
+        $('karaoke-teleprompter').innerHTML = html;
+        $('karaoke-score').textContent = String(session.state.score);
+        $('karaoke-streak').textContent = String(session.state.streak);
+        $('karaoke-accuracy').textContent = session.accuracy() + '%';
+      }
+      function showEnd() {
+        const end = session.endScreen();
+        const box = $('karaoke-end');
+        box.classList.remove('hidden');
+        box.innerHTML = '<h3 class="font-bold mb-2">סיכום</h3>'
+          + '<p>דיוק: <strong>' + end.accuracy + '%</strong> · ציון: <strong>' + end.score + '</strong></p>'
+          + (end.missed.length
+            ? '<p class="mt-2">מילים שפספסת:</p><ul>' + end.missed.map(m => '<li dir="ltr"><strong>' + m.word + '</strong> — ' + (m.he || m.translation || '') + '</li>').join('') + '</ul>'
+            : '<p class="mt-2">כל המילים נקלט! 🎉</p>');
+        setStatus('done', 'הסתיים');
+        if (player) player.stop();
+        stopMic();
+      }
+      function renderChoices() {
+        const wrap = $('karaoke-choices');
+        if (!session || session.state.mode !== 'rhythm' || session.state.ended) {
+          wrap.classList.add('hidden'); wrap.innerHTML = ''; return;
+        }
+        const distractors = demoWords.map(w => w.word);
+        const choices = session.rhythmChoices(distractors);
+        wrap.classList.remove('hidden');
+        wrap.innerHTML = choices.map(c => '<button type="button" class="karaoke-choice" data-c="' + c + '">' + c + '</button>').join('');
+        wrap.querySelectorAll('.karaoke-choice').forEach(btn => btn.addEventListener('click', () => {
+          const res = session.tryRhythmTap(btn.dataset.c);
+          $('karaoke-feedback').textContent = res.ok ? '✅ נכון!' : '❌ לא נכון';
+          $('karaoke-feedback').className = res.ok ? 'hit' : 'miss';
+          beep(!!res.ok);
+          renderPrompt();
+          if (session.state.ended) showEnd();
+          else renderChoices();
+        }));
+      }
+      function stopMic() {
+        if (recog) { try { recog.onresult = null; recog.onerror = null; recog.stop(); } catch (e) {} recog = null; }
+      }
+      function startMic() {
+        const support = K.detectSpeechSupport();
+        if (!support.ok) {
+          enableFallback(support.reason + ' — מצב Rhythm Tap.');
+          return;
+        }
+        stopMic();
+        try {
+          recog = new support.ctor();
+          recog.lang = 'en-US';
+          recog.continuous = true;
+          recog.interimResults = true;
+          recog.onstart = () => setStatus('listening', 'מאזין…');
+          recog.onresult = (ev) => {
+            setStatus('processing', 'מעבד…');
+            let heard = '';
+            for (let i = ev.resultIndex; i < ev.results.length; i++) {
+              heard += ev.results[i][0].transcript + ' ';
+            }
+            const now = player ? player.currentTimeMs() : 0;
+            const res = session.tryVoice(heard, now);
+            if (res.ok) {
+              $('karaoke-feedback').textContent = '✅ ' + heard.trim();
+              $('karaoke-feedback').className = 'hit';
+              beep(true);
+              renderPrompt();
+              if (session.state.ended) showEnd();
+            } else if (res.reason === 'no-match') {
+              $('karaoke-feedback').textContent = '… ' + heard.trim();
+              $('karaoke-feedback').className = '';
+            }
+            setStatus('listening', 'מאזין…');
+          };
+          recog.onerror = (ev) => {
+            if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') {
+              enableFallback('הגישה למיקרופון נחסמה. עברו למצב Rhythm Tap.');
+            } else {
+              setStatus('idle', 'שגיאת מיקרופון: ' + ev.error);
+            }
+          };
+          recog.onend = () => {
+            if (session && !session.state.ended && session.state.mode === 'voice') {
+              try { recog.start(); } catch (e) {}
+            }
+          };
+          recog.start();
+          setStatus('listening', 'מאזין…');
+        } catch (e) {
+          enableFallback('לא ניתן להפעיל מיקרופון: ' + (e && e.message ? e.message : e));
+        }
+      }
+      function enableFallback(msg) {
+        stopMic();
+        if (!session) session = K.createSession({ words: demoWords });
+        session.enableFallback(msg);
+        const box = $('karaoke-fallback-msg');
+        box.textContent = session.state.fallbackMessage;
+        box.classList.remove('hidden');
+        setStatus('fallback', 'Rhythm Tap');
+        renderChoices();
+        renderPrompt();
+      }
+      function loop() {
+        if (!session || session.state.ended) return;
+        const now = player ? player.currentTimeMs() : 0;
+        const cur = session.current();
+        if (cur && now > cur.timeMs + cur.windowMs) {
+          session.skipCurrent('timeout');
+          $('karaoke-feedback').textContent = '⌛ פספסת: ' + cur.word;
+          $('karaoke-feedback').className = 'miss';
+          beep(false);
+          if (session.state.mode === 'rhythm') renderChoices();
+          if (session.state.ended) { showEnd(); return; }
+        }
+        renderPrompt();
+        raf = requestAnimationFrame(loop);
+      }
+      $('karaoke-start-btn').addEventListener('click', () => {
+        $('karaoke-end').classList.add('hidden');
+        $('karaoke-fallback-msg').classList.add('hidden');
+        $('karaoke-choices').classList.add('hidden');
+        $('karaoke-feedback').textContent = '';
+        session = K.createSession({ words: demoWords, target_window_ms: 1500 });
+        try {
+          ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+          window.__shirAC = ac;
+        } catch (e) { ac = null; }
+        if (player) player.stop();
+        player = K.createInstrumentalPlayer(ac, (window.ShirAmiram && ShirAmiram.TUNE) || null, (window.ShirAmiram && ShirAmiram.NOTE_SEC) || 0.5);
+        player.start();
+        window.__shirPlaying = true;
+        setStatus('idle', 'מנגינה מתנגנת — לחצו Start Mic כשמוכנים');
+        renderPrompt();
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(loop);
+      });
+      $('karaoke-mic-btn').addEventListener('click', () => {
+        if (!session) $('karaoke-start-btn').click();
+        startMic();
+      });
+    })();
 
     showTab('song');
     paint();
