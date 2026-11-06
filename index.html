@@ -28,7 +28,12 @@
     body {font-family:'Heebo',system-ui,sans-serif;background:#0f0c1d;color:#faf5ff;}
     .font-mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
     .lyrics-active{background:linear-gradient(90deg,rgba(192,132,252,0.28),rgba(244,114,182,0.12));border-right:3px solid #c084fc;color:#faf5ff;transform:translateX(-2px);}
-    .vocab-badge{cursor:pointer;background:#a855f7;padding:2px 6px;border-radius:4px;margin:0 2px;}
+    .vocab-badge{cursor:pointer;background:#a855f7;color:inherit;font:inherit;padding:2px 6px;border-radius:4px;margin:0 2px;border:0;}
+    .tab-btn{background:#1a1430;border:2px solid #c084fc;}
+    .tab-btn[aria-pressed="true"]{background:#c084fc;color:#0f0c1d;font-weight:800;}
+    .playlist-btn[aria-pressed="true"]{outline:2px solid #22d3ee;}
+    .lyric-line{border-right:3px solid transparent;transition:background .2s;}
+    button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #22d3ee;outline-offset:2px;}
     .vocab-badge:hover{background:#c084fc;}
     .wave-bar{width:3px;border-radius:999px;background:linear-gradient(180deg,#22d3ee,#a855f7);animation:wave 1.1s ease-in-out infinite;opacity:.35;}
     .wave-bar.on{opacity:1;}
@@ -42,16 +47,16 @@
   <header class="p-4 bg-stage-900 flex justify-between items-center">
     <h1 class="text-2xl font-bold text-neon-purple">שיראמיר'ם</h1>
     <div class="flex gap-2">
-      <button id="btn-play" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition">▶️</button>
-      <span id="timer" class="font-mono">00:00</span>
+      <button id="btn-play" type="button" aria-label="ניגון" aria-pressed="false" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition">▶️</button>
+      <span id="timer" class="font-mono" aria-label="זמן ניגון">00:00</span>
     </div>
   </header>
 
   <!-- Tabs -->
-  <nav class="flex bg-stage-800 p-2 gap-2">
-    <button class="tab-btn px-3 py-1 bg-neon-purple rounded" data-tab="song">שיר</button>
-    <button class="tab-btn px-3 py-1 bg-neon-purple rounded" data-tab="vocab">אוצר מילים</button>
-    <button class="tab-btn px-3 py-1 bg-neon-purple rounded" data-tab="quiz">מבחן</button>
+  <nav class="flex bg-stage-800 p-2 gap-2" aria-label="מסכים">
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
   </nav>
 
   <!-- Content -->
@@ -60,8 +65,8 @@
     <section id="song" class="tab-content">
       <div class="mb-4">
         <div class="flex items-center gap-2 mb-2">
-          <input id="seek" type="range" min="0" max="100" value="0" class="flex-1 progress-track">
-          <select id="speed" class="bg-stage-900 text-neon-pink px-2 py-1 rounded">
+          <input id="seek" type="range" min="0" max="100" value="0" aria-label="מיקום בשיר" class="flex-1 progress-track">
+          <select id="speed" aria-label="מהירות" class="bg-stage-900 text-neon-pink px-2 py-1 rounded">
             <option value="0.75">0.75×</option>
             <option value="1" selected>1×</option>
             <option value="1.25">1.25×</option>
@@ -73,28 +78,28 @@
           <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
           <div class="wave-bar"></div><div class="wave-bar"></div>
         </div>
-        <div id="insp-word" class="p-2 bg-stage-900 rounded text-sm"></div>
+        <div id="insp-word" class="p-2 bg-stage-900 rounded text-sm" aria-live="polite">לחצו על מילה מודגשת בשיר כדי לראות תרגום ודוגמה.</div>
       </div>
 
-      <article class="text-lg leading-relaxed">
-        <p class="mb-2">
-          <span class="vocab-badge">deliberate</span> steps echo in the night,
-          <span class="vocab-badge">crucial</span> hearts beat, we hold the light.
+      <article class="text-lg leading-relaxed" dir="ltr" lang="en">
+        <p class="lyric-line mb-2 px-2 rounded" data-line="0">
+          <button type="button" class="vocab-badge" data-word="deliberate">deliberate</button> steps echo in the night,
+          <button type="button" class="vocab-badge" data-word="crucial">crucial</button> hearts beat, we hold the light.
         </p>
-        <p class="mb-2">
-          The <span class="vocab-badge">undermine</span> shadows try to sway,
-          but <span class="vocab-badge">subtle</span> whispers guide our way.
+        <p class="lyric-line mb-2 px-2 rounded" data-line="1">
+          The <button type="button" class="vocab-badge" data-word="undermine">undermine</button> shadows try to sway,
+          but <button type="button" class="vocab-badge" data-word="subtle">subtle</button> whispers guide our way.
         </p>
-        <p class="mb-2">
-          <span class="vocab-badge">nevertheless</span>, we rise, we sing,
-          <span class="vocab-badge">inevitable</span> dreams take wing.
+        <p class="lyric-line mb-2 px-2 rounded" data-line="2">
+          <button type="button" class="vocab-badge" data-word="nevertheless">nevertheless</button>, we rise, we sing,
+          <button type="button" class="vocab-badge" data-word="inevitable">inevitable</button> dreams take wing.
         </p>
-        <p class="mb-2">
-          A <span class="vocab-badge">hypothesis</span> of hope we chase,
-          <span class="vocab-badge">consequently</span> we find our place.
+        <p class="lyric-line mb-2 px-2 rounded" data-line="3">
+          A <button type="button" class="vocab-badge" data-word="hypothesis">hypothesis</button> of hope we chase,
+          <button type="button" class="vocab-badge" data-word="consequently">consequently</button> we find our place.
         </p>
         <p class="mt-4 text-sm opacity-75">
-          English: The deliberate stride, crucial moments, and subtle whispers shape our inevitable hypothesis.
+          The lyrics were written for this app; they are not from a published song.
         </p>
       </article>
     </section>
@@ -102,13 +107,8 @@
     <!-- Vocabulary Tab -->
     <section id="vocab" class="tab-content hidden">
       <div class="flex flex-col gap-2 mb-4">
-        <input id="vocab-search" type="text" placeholder="חפש מילים…" class="p-2 bg-stage-900 rounded text-neon-pink">
-        <div class="flex gap-2">
-          <button class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="connector">קונקטורים</button>
-          <button class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="science">מדע</button>
-          <button class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="society">חברה</button>
-          <button class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="all">הכל</button>
-        </div>
+        <input id="vocab-search" type="search" placeholder="חפש מילים…" aria-label="חיפוש מילה" class="p-2 bg-stage-900 rounded text-neon-pink">
+        <div id="vocab-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי סוג מילה"></div>
       </div>
       <table class="w-full text-sm border-collapse">
         <thead class="bg-stage-800">
@@ -116,6 +116,7 @@
         </thead>
         <tbody id="vocab-table"></tbody>
       </table>
+      <p id="vocab-empty" class="mt-2 text-sm opacity-75 hidden">לא נמצאו מילים.</p>
     </section>
 
     <!-- Quiz Tab -->
@@ -123,188 +124,153 @@
       <div id="quiz-container" class="space-y-4">
         <!-- Questions will be injected -->
       </div>
-      <div class="mt-4 text-xl font-bold">ציון: <span id="quiz-score">0</span>/4</div>
+      <div class="mt-4 text-xl font-bold" aria-live="polite">ציון: <span id="quiz-score">0</span>/<span id="quiz-total">0</span></div>
+      <button id="quiz-reset" type="button" class="mt-2 px-3 py-1 bg-neon-purple rounded">מתחילים מחדש</button>
     </section>
   </main>
 
+  <script src="app.js"></script>
   <script>
-    // Vocabulary data
-    const vocab = [
-      {"word":"deliberate","translation":"מכוון, שקול","category":"adjective","difficulty":"Medium","sample_sentence":"Walking through the shadows with a deliberate stride."},
-      {"word":"crucial","translation":"חיוני, מכריע","category":"adjective","difficulty":"Medium","sample_sentence":"Facing every challenge, yeah it's crucial to try."},
-      {"word":"undermine","translation":"לערער, לחתור תחת","category":"verb","difficulty":"Hard","sample_sentence":"They tried to undermine the dreams we made."},
-      {"word":"subtle","translation":"עדין, דק","category":"adjective","difficulty":"Medium","sample_sentence":"With subtle little whispers in the shade."},
-      {"word":"nevertheless","translation":"אף על פי כן","category":"connector","difficulty":"Hard","sample_sentence":"Nevertheless, we stand up tall."},
-      {"word":"inevitable","translation":"בלתי נמנע","category":"adjective","difficulty":"Hard","sample_sentence":"Victory is coming, it's inevitable now."},
-      {"word":"hypothesis","translation":"השערה מדעית","category":"noun","difficulty":"Medium","sample_sentence":"We had a wild hypothesis and figured out how."},
-      {"word":"consequently","translation":"כתוצאה מכך","category":"connector","difficulty":"Medium","sample_sentence":"Consequently, there is no turning back!"}
-    ];
+    const A = window.ShirAmiram;
+    const $ = (id) => document.getElementById(id);
+    const esc = (v) => String(v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-    // Tab handling
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
-      btn.addEventListener('click',()=> {
-        document.querySelectorAll('.tab-content').forEach(sec=>sec.classList.add('hidden'));
-        document.getElementById(btn.dataset.tab).classList.remove('hidden');
-      });
-    });
-
-    // Vocabulary table
-    const tbody = document.getElementById('vocab-table');
-    function renderVocab(filter='') {
-      tbody.innerHTML = '';
-      vocab.filter(v=>v.word.includes(filter)||v.translation.includes(filter)).forEach(v=>{
-        const tr=document.createElement('tr');
-        tr.innerHTML=`<td class="p-2 border-t border-stage-800">${v.word}</td>
-                     <td class="p-2 border-t border-stage-800">${v.translation}</td>
-                     <td class="p-2 border-t border-stage-800">${v.category}</td>
-                     <td class="p-2 border-t border-stage-800">${v.difficulty}</td>`;
-        tbody.appendChild(tr);
-      });
+    // Tabs
+    function showTab(id) {
+      document.querySelectorAll('.tab-content').forEach((sec) => sec.classList.toggle('hidden', sec.id !== id));
+      document.querySelectorAll('.tab-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tab === id)));
     }
+    document.querySelectorAll('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
+
+    // Vocabulary table: the search box and the category buttons work together
+    let category = 'all';
+    function renderVocab() {
+      const rows = A.filterVocab($('vocab-search').value, category);
+      $('vocab-table').innerHTML = rows.map((v) => '<tr><td class="p-2 border-t border-stage-800" dir="ltr">' + esc(v.word)
+        + '</td><td class="p-2 border-t border-stage-800">' + esc(v.translation)
+        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.CATEGORY_HE[v.category] || v.category)
+        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty) + '</td></tr>').join('');
+      $('vocab-empty').classList.toggle('hidden', rows.length > 0);
+      document.querySelectorAll('.playlist-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === category)));
+    }
+    $('vocab-filters').innerHTML = A.CATEGORIES.map((c) => '<button type="button" class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.he) + '</button>').join('');
+    document.querySelectorAll('.playlist-btn').forEach((b) => b.addEventListener('click', () => { category = b.dataset.cat; renderVocab(); }));
+    $('vocab-search').addEventListener('input', renderVocab);
     renderVocab();
-    document.getElementById('vocab-search').addEventListener('input',e=>renderVocab(e.target.value));
-    document.querySelectorAll('.playlist-btn').forEach(b=>{
-      b.addEventListener('click',()=> {
-        const cat=b.dataset.cat;
-        if(cat==='all') renderVocab();
-        else renderVocab(v=>v.category===cat);
-      });
-    });
 
-    // Vocab badge click
-    document.querySelectorAll('.vocab-badge').forEach(b=>{
-      b.addEventListener('click',()=> {
-        const word=b.textContent.trim();
-        const entry=vocab.find(v=>v.word===word);
-        if(entry){
-          document.getElementById('insp-word').innerHTML=
-            `<strong>${entry.word}</strong> – ${entry.translation}<br>
-             <em>קטגוריה:</em> ${entry.category}<br>
-             <em>דוגמה:</em> ${entry.sample_sentence}`;
+    // A highlighted word in the song shows its translation and example
+    document.querySelectorAll('.vocab-badge').forEach((b) => b.addEventListener('click', () => {
+      const entry = A.findWord(b.dataset.word);
+      if (!entry) return;
+      $('insp-word').innerHTML = '<strong dir="ltr">' + esc(entry.word) + '</strong> – ' + esc(entry.translation)
+        + '<br><em>סוג:</em> ' + esc(A.CATEGORY_HE[entry.category] || entry.category)
+        + '<br><em>דוגמה:</em> <span dir="ltr">' + esc(entry.sample_sentence) + '</span>';
+    }));
+
+    // The song: a short tune that loops, a timer, and the line being sung is highlighted.
+    // elapsed counts "song seconds", so the speed changes the tempo and not the pitch.
+    let audioCtx = null, osc = null, gainNode = null;
+    let playing = false, elapsed = 0, lastTick = 0, frame = 0;
+    const bars = document.querySelectorAll('.wave-bar');
+    const lines = document.querySelectorAll('.lyric-line');
+
+    function paint() {
+      const pos = A.positionAt(elapsed);
+      $('timer').textContent = A.formatTime(elapsed);
+      $('seek').value = pos.percent;
+      lines.forEach((l, i) => l.classList.toggle('lyrics-active', (playing || elapsed > 0) && i === pos.line));
+      bars.forEach((b) => b.classList.toggle('on', playing));
+      if (osc && audioCtx) osc.frequency.setValueAtTime(pos.hz, audioCtx.currentTime);
+    }
+    function tick(now) {
+      if (!playing) return;
+      elapsed += (now - lastTick) / 1000 * parseFloat($('speed').value);
+      lastTick = now;
+      paint();
+      frame = requestAnimationFrame(tick);
+    }
+    function startPlayback() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          gainNode = audioCtx.createGain();
+          gainNode.gain.value = 0;
+          gainNode.connect(audioCtx.destination);
+          osc = audioCtx.createOscillator();
+          osc.type = 'triangle';
+          osc.connect(gainNode);
+          osc.start();
         }
-      });
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        gainNode.gain.setTargetAtTime(0.12, audioCtx.currentTime, 0.02);
+      } catch (e) { audioCtx = null; osc = null; gainNode = null; } // no sound: the timer and the highlight still run
+      playing = true;
+      window.__shirPlaying = true;
+      $('btn-play').textContent = '⏸️';
+      $('btn-play').setAttribute('aria-label', 'השהיה');
+      $('btn-play').setAttribute('aria-pressed', 'true');
+      lastTick = performance.now();
+      frame = requestAnimationFrame(tick);
+    }
+    function stopPlayback() {
+      if (gainNode && audioCtx) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.02);
+      playing = false;
+      window.__shirPlaying = false;
+      cancelAnimationFrame(frame);
+      $('btn-play').textContent = '▶️';
+      $('btn-play').setAttribute('aria-label', 'ניגון');
+      $('btn-play').setAttribute('aria-pressed', 'false');
+      paint();
+    }
+    $('btn-play').addEventListener('click', () => { if (playing) stopPlayback(); else startPlayback(); });
+    // Dragging the bar moves inside the current loop
+    $('seek').addEventListener('input', () => {
+      elapsed = Math.floor(elapsed / A.LOOP_SEC) * A.LOOP_SEC + Number($('seek').value) / 100 * A.LOOP_SEC;
+      paint();
     });
-
-    // Audio synth
-    let audioCtx, osc, gainNode, analyser, animationId;
-    const playBtn=document.getElementById('btn-play');
-    const timerEl=document.getElementById('timer');
-    const seekBar=document.getElementById('seek');
-    const speedSel=document.getElementById('speed');
-    let startTime, elapsed=0, playing=false;
-
-    function initAudio(){
-      audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-      window.__shirAC=audioCtx;
-      osc=audioCtx.createOscillator();
-      gainNode=audioCtx.createGain();
-      analyser=audioCtx.createAnalyser();
-      analyser.fftSize=32;
-      osc.type='sine';
-      osc.frequency.setValueAtTime(220, audioCtx.currentTime);
-      osc.connect(gainNode).connect(analyser).connect(audioCtx.destination);
-      gainNode.gain.value=0.2;
-      osc.start();
-      osc.disconnect(); // start silent
-    }
-
-    function startPlayback(){
-      if(!audioCtx) initAudio();
-      osc.connect(gainNode);
-      startTime=audioCtx.currentTime - elapsed;
-      playing=true;
-      window.__shirPlaying=true;
-      updateTimer();
-      animateBars();
-    }
-
-    function stopPlayback(){
-      osc.disconnect(gainNode);
-      playing=false;
-      window.__shirPlaying=false;
-      cancelAnimationFrame(animationId);
-    }
-
-    playBtn.addEventListener('click',()=>{
-      if(playing) stopPlayback(); else startPlayback();
-    });
-
-    // Timer
-    function updateTimer(){
-      if(!playing) return;
-      elapsed=audioCtx.currentTime - startTime;
-      const mins=Math.floor(elapsed/60).toString().padStart(2,'0');
-      const secs=Math.floor(elapsed%60).toString().padStart(2,'0');
-      timerEl.textContent=`${mins}:${secs}`;
-      const perc=Math.min(100, (elapsed%30)/30*100); // loop every 30s
-      seekBar.value=perc;
-      requestAnimationFrame(updateTimer);
-    }
-
-    // Speed control
-    speedSel.addEventListener('change',()=> {
-      const mult=parseFloat(speedSel.value);
-      osc.frequency.setValueAtTime(220*mult, audioCtx.currentTime);
-    });
-
-    // Visualizer
-    const bars=document.querySelectorAll('.wave-bar');
-    function animateBars(){
-      const data=new Uint8Array(analyser.frequencyBinCount);
-      analyser.getByteFrequencyData(data);
-      bars.forEach((b,i)=>{
-        const val=data[i]||0;
-        b.style.height=`${(val/255)*100}%`;
-        b.classList.toggle('on',val>100);
-      });
-      animationId=requestAnimationFrame(animateBars);
-    }
 
     // Quiz
-    const quizData=[
-      {q:"What does 'deliberate' mean?", a:"מכוון, שקול", opts:["חסר משמעות","מכוון, שקול","קשה","מהיר"]},
-      {q:"Select the connector:", a:"אף על פי כן", opts:["חלק","אף על פי כן","קשה","חזק"]},
-      {q:"'Hypothesis' is a:", a:"השערה מדעית", opts:["מילה נרדפת","שם תואר","שם עצם","פועל"]},
-      {q:"'Inevitable' translates to:", a:"בלתי נמנע", opts:["בלתי אפשרי","בלתי נמנע","קשה","מהיר"]},
-    ];
-    const quizContainer=document.getElementById('quiz-container');
-    let score=0;
-    function renderQuiz(){
-      quizData.forEach((item,i)=>{
-        const div=document.createElement('div');
-        div.className='p-2 bg-stage-800 rounded';
-        div.innerHTML=`<p class="mb-2 font-bold">${i+1}. ${item.q}</p>`;
-        item.opts.forEach(opt=>{
-          const btn=document.createElement('button');
-          btn.className='quiz-opt mr-2 mb-1 px-2 py-1 bg-neon-pink rounded';
-          btn.textContent=opt;
-          btn.addEventListener('click',()=> checkAnswer(btn,item.a,div));
+    let score = 0;
+    function renderQuiz() {
+      score = 0;
+      $('quiz-score').textContent = '0';
+      $('quiz-total').textContent = String(A.QUIZ.length);
+      $('quiz-container').innerHTML = '';
+      A.QUIZ.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'quiz-q p-2 bg-stage-800 rounded';
+        const p = document.createElement('p');
+        p.className = 'mb-2 font-bold';
+        p.dir = 'ltr';
+        p.textContent = (i + 1) + '. ' + item.q;
+        div.appendChild(p);
+        const fb = document.createElement('div');
+        fb.className = 'quiz-fb mt-2 text-sm';
+        fb.setAttribute('aria-live', 'polite');
+        item.opts.forEach((opt) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'quiz-opt ml-2 mb-1 px-2 py-1 bg-neon-pink rounded';
+          btn.textContent = opt;
+          btn.addEventListener('click', () => {
+            const right = A.isCorrect(item, opt);
+            fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + item.a;
+            fb.className = 'quiz-fb mt-2 text-sm ' + (right ? 'text-green-400' : 'text-red-400');
+            if (right) score++;
+            $('quiz-score').textContent = String(score);
+            div.querySelectorAll('.quiz-opt').forEach((b) => { b.disabled = true; });
+          });
           div.appendChild(btn);
         });
-        const fb=document.createElement('div');
-        fb.className='quiz-fb mt-2 text-sm';
         div.appendChild(fb);
-        quizContainer.appendChild(div);
+        $('quiz-container').appendChild(div);
       });
     }
-    function checkAnswer(btn,correct,container){
-      const fb=container.querySelector('.quiz-fb');
-      if(btn.textContent===correct){
-        fb.textContent='✅ נכון!';
-        fb.className='quiz-fb mt-2 text-green-400';
-        score++;
-      }else{
-        fb.textContent=`❌ לא נכון. התשובה היא: ${correct}`;
-        fb.className='quiz-fb mt-2 text-red-400';
-      }
-      document.getElementById('quiz-score').textContent=score;
-      // disable all options
-      container.querySelectorAll('.quiz-opt').forEach(b=>b.disabled=true);
-    }
+    $('quiz-reset').addEventListener('click', renderQuiz);
     renderQuiz();
 
-    // Initialize first tab
-    document.querySelector('.tab-btn').click();
-  </script>
+    showTab('song');
+    paint();
+</script>
 </body>
 </html>
