@@ -52,3 +52,8 @@ npm test
 - **שמע:** המנגינה היא צליל מסונתז פשוט, לא שירה של המילים.
 
 </div>
+
+## Voice Karaoke Challenge
+Static client-side mode: melody-only Web Audio instrumental (no vocals) + LRC-style teleprompter.
+Speak target words into the mic (`SpeechRecognition` en-US, continuous + interim). Matching uses sanitize, exact includes, Levenshtein (≤1 short / ≤2 if >6 letters), and predefined inflections — hits only inside word time → +1.5s.
+Fallback: Rhythm Tap Mode with 3 choice buttons when mic/API unavailable.
