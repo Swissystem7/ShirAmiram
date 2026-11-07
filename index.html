@@ -48,11 +48,19 @@
     #songs-list{max-width:100%;overflow-wrap:anywhere;}
   </style>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6366f1">
 </head>
 <body class="min-h-screen flex flex-col">
   <!-- Header -->
   <header class="p-4 bg-stage-900 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-neon-purple">שיראמיר'ם</h1>
+    <div class="flex items-center gap-3">
+      <h1 class="text-2xl font-bold text-neon-purple">שיראמיר'ם</h1>
+      <span id="offline-badge" class="hidden text-xs px-2 py-0.5 rounded bg-amber-900/80 text-amber-200 border border-amber-700">מצב אופליין</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="btn-install-pwa" type="button" class="hidden text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 shadow" style="min-height:36px">📲 התקן אפליקציה</button>
+    </div>
     <div class="flex gap-2">
       <button id="btn-play" type="button" aria-label="ניגון" aria-pressed="false" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition">▶️</button>
       <span id="timer" class="font-mono" aria-label="זמן ניגון">00:00</span>
@@ -407,6 +415,7 @@
   <script src="src/exam_simulator.js"></script>
   <script src="src/srs_leitner.js"></script>
   <script src="src/analytics.js"></script>
+  <script src="src/speech.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -429,10 +438,17 @@
         const levelCode = currentLevel.replace('_foundational', '').replace('_intermediate', '').replace('_advanced', '').toLowerCase();
         rows = rows.filter(v => (v.difficulty && v.difficulty.toLowerCase() === levelCode) || (v.level && v.level === currentLevel));
       }
-      $('vocab-table').innerHTML = rows.map((v) => '<tr><td class="p-2 border-t border-stage-800" dir="ltr">' + esc(v.word)
+      $('vocab-table').innerHTML = rows.map((v) => '<tr><td class="p-2 border-t border-stage-800" dir="ltr"><span class="font-bold">' + esc(v.word)
+        + '</span> <button type="button" class="btn-vocab-speak text-xs px-1.5 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" data-speak="' + esc(v.word) + '" title="השמע הגייה" style="min-height:30px">🔊</button>'
         + '</td><td class="p-2 border-t border-stage-800">' + esc(v.translation)
         + '</td><td class="p-2 border-t border-stage-800">' + esc(A.CATEGORY_HE[v.category] || v.category)
         + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty || v.level) + '</td></tr>').join('');
+      document.querySelectorAll('.btn-vocab-speak').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(btn.dataset.speak);
+        };
+      });
       $('vocab-empty').classList.toggle('hidden', rows.length > 0);
       document.querySelectorAll('.playlist-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === category)));
       document.querySelectorAll('.level-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === currentLevel)));
@@ -447,9 +463,11 @@
     document.querySelectorAll('.vocab-badge').forEach((b) => b.addEventListener('click', () => {
       const entry = A.findWord(b.dataset.word);
       if (!entry) return;
-      $('insp-word').innerHTML = '<strong dir="ltr">' + esc(entry.word) + '</strong> – ' + esc(entry.translation)
+      $('insp-word').innerHTML = '<strong dir="ltr">' + esc(entry.word) + '</strong> <button type="button" id="btn-insp-speak" class="text-xs px-2 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" style="min-height:30px">🔊 השמע</button> – ' + esc(entry.translation)
         + '<br><em>סוג:</em> ' + esc(A.CATEGORY_HE[entry.category] || entry.category)
         + '<br><em>דוגמה:</em> <span dir="ltr">' + esc(entry.sample_sentence) + '</span>';
+      const spk = $('btn-insp-speak');
+      if (spk) spk.onclick = () => { if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(entry.word); };
     }));
 
     // The song: a short tune that loops, a timer, and the line being sung is highlighted.
@@ -1120,6 +1138,44 @@
       $('karaoke-mic-btn').addEventListener('click', () => {
         if (!session) $('karaoke-start-btn').click();
         startMic();
+      });
+    })();
+
+    // --- PWA Service Worker & Offline Manager ---
+    (function initPWA() {
+      function updateNetwork() {
+        const off = !navigator.onLine;
+        if ($('offline-badge')) $('offline-badge').classList.toggle('hidden', !off);
+      }
+      window.addEventListener('online', updateNetwork);
+      window.addEventListener('offline', updateNetwork);
+      updateNetwork();
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        });
+      }
+
+      let deferredPrompt = null;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if ($('btn-install-pwa')) $('btn-install-pwa').classList.remove('hidden');
+      });
+
+      if ($('btn-install-pwa')) {
+        $('btn-install-pwa').addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt = null;
+            $('btn-install-pwa').classList.add('hidden');
+          }
+        });
+      }
+
+      window.addEventListener('appinstalled', () => {
+        if ($('btn-install-pwa')) $('btn-install-pwa').classList.add('hidden');
       });
     })();
 
