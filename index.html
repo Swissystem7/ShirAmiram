@@ -337,6 +337,38 @@
         <div id="spotify-box" class="embed-frame-wrap spotify"></div>
         <div id="youtube-box" class="embed-frame-wrap youtube hidden text-sm"></div>
       </div>
+
+      <!-- 30-Song Karaoke Teleprompter Engine -->
+      <div class="p-4 bg-stage-800 rounded-xl border border-white/10 mt-4">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-bold text-base text-indigo-300">🎤 טלפרומפטר קריוקי ואוצר מילים לכל 30 השירים</h3>
+          <span class="text-xs px-2 py-0.5 rounded bg-indigo-950 text-indigo-200 border border-indigo-700 font-bold">סנכרון חי</span>
+        </div>
+        
+        <label class="block text-xs text-muted mb-1">בחרו שיר מהמאגר לתרגול וטלפרומפטר:</label>
+        <select id="karaoke-30-select" class="w-full p-2 bg-stage-900 border border-white/10 rounded-lg text-sm text-gray-200 mb-3"></select>
+
+        <!-- Current Song Details -->
+        <div class="flex flex-wrap items-center justify-between p-3 bg-stage-900 rounded-lg border border-white/5 mb-3 gap-2">
+          <div>
+            <h4 id="teleprompter-song-title" class="font-bold text-sm text-white" dir="ltr">Let It Be — The Beatles</h4>
+            <div id="teleprompter-vocab-tags" class="flex flex-wrap gap-1 mt-1"></div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-teleprompter-play" type="button" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow" style="min-height:36px">▶ נגן סנכרון</button>
+          </div>
+        </div>
+
+        <!-- Teleprompter Container -->
+        <div id="teleprompter-viewport" class="p-4 bg-stage-950 rounded-lg border border-indigo-900/50 max-h-60 overflow-y-auto space-y-2 mb-3">
+          <!-- Lines rendered dynamically -->
+        </div>
+
+        <!-- Word Inspector Card -->
+        <div id="karaoke-word-inspector" class="p-3 bg-stage-900/90 rounded-lg border border-indigo-500/30 text-sm">
+          <p class="text-xs text-muted">לחצו על מילת אמיר"ם צבעונית בטלפרומפטר להשמעת הגייה, תרגום והוספה ל-SRS.</p>
+        </div>
+      </div>
       <hr class="my-4 border-stage-800">
       <h2 class="font-bold mb-2">שמע מקומי ותזמון</h2>
       <p class="text-sm mb-2">לא מסופק קובץ שמע או תזמון מומצא. בחרו קובץ שמע שלכם וקובץ LRC/JSON שלכם.</p>
@@ -431,6 +463,7 @@
   <script src="src/analytics.js"></script>
   <script src="src/speech.js"></script>
   <script src="src/restatement_simulator.js"></script>
+  <script src="src/song_karaoke.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -784,7 +817,121 @@
         setEmbedTab(yid ? 'youtube' : 'spotify');
       }));
     }
-    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); if (typeof renderQuiz==='function') renderQuiz(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
+
+    // --- 30-Song Karaoke Teleprompter Controller ---
+    let activeKaraokeIndex = null;
+    let teleprompterTimer = null;
+    let teleprompterCurrentTime = 0;
+
+    function init30SongKaraoke(songs) {
+      const sel = $('karaoke-30-select');
+      if (!sel || !songs || !songs.length) return;
+      sel.innerHTML = songs.map(s => '<option value="' + s.id + '">' + esc(s.title) + ' — ' + esc(s.artist) + '</option>').join('');
+      sel.onchange = () => loadTeleprompterSong(Number(sel.value));
+      loadTeleprompterSong(songs[0].id);
+    }
+
+    function loadTeleprompterSong(songId) {
+      if (!CONTENT || !window.ShirAmiramSongKaraoke) return;
+      const song = CONTENT.songs.find(s => s.id === songId) || CONTENT.songs[0];
+      if (!song) return;
+
+      activeKaraokeIndex = window.ShirAmiramSongKaraoke.buildSongKaraokeIndex(song, AMIRAM_VOCAB);
+      if (!activeKaraokeIndex) return;
+
+      $('teleprompter-song-title').textContent = activeKaraokeIndex.title + ' — ' + activeKaraokeIndex.artist;
+      $('teleprompter-vocab-tags').innerHTML = activeKaraokeIndex.targetWords.map(tw => {
+        return '<span class="text-xs px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/60 font-bold">' + esc(tw.word) + ' (' + esc(tw.hebrew_translation) + ')</span>';
+      }).join('');
+
+      renderTeleprompterLines(0);
+    }
+
+    function renderTeleprompterLines(currentTime) {
+      const viewport = $('teleprompter-viewport');
+      if (!viewport || !activeKaraokeIndex) return;
+
+      const activeIdx = window.ShirAmiramSongKaraoke.getActiveLineIndex(activeKaraokeIndex.lines, currentTime);
+
+      viewport.innerHTML = activeKaraokeIndex.lines.map((line, idx) => {
+        const isActive = idx === activeIdx;
+        const lineClass = 'p-2 rounded-lg transition-all ' + (isActive ? 'bg-indigo-950/80 border-r-4 border-indigo-500 text-white font-bold' : 'text-gray-400 opacity-70');
+        
+        const tokenHtml = line.tokens.map(t => {
+          if (t.isTarget && t.wordData) {
+            return '<button type="button" class="teleprompter-token-btn font-extrabold text-pink-400 hover:text-white underline mx-0.5" data-word="' + esc(t.wordData.word) + '" data-he="' + esc(t.wordData.hebrew_translation) + '" data-def="' + esc(t.wordData.hebrew_definition) + '">' + esc(t.text) + '</button>';
+          }
+          return esc(t.text);
+        }).join('');
+
+        return '<div class="' + lineClass + '" data-line-idx="' + idx + '" dir="ltr">' + tokenHtml + '</div>';
+      }).join('');
+
+      const activeEl = viewport.querySelector('[data-line-idx="' + activeIdx + '"]');
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      viewport.querySelectorAll('.teleprompter-token-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const word = btn.dataset.word;
+          const he = btn.dataset.he;
+          const def = btn.dataset.def;
+          
+          if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(word);
+          if (window.ShirAmiramSongKaraoke) window.ShirAmiramSongKaraoke.trackEvent('word_inspected', { word });
+
+          const inspector = $('karaoke-word-inspector');
+          if (inspector) {
+            inspector.innerHTML = '<div class="flex items-start justify-between">'
+              + '<div><strong class="text-base text-indigo-300" dir="ltr">' + esc(word) + '</strong> – <span class="font-bold text-white">' + esc(he) + '</span>'
+              + '<p class="text-xs text-gray-300 mt-1">' + esc(def) + '</p></div>'
+              + '<div class="flex gap-2">'
+              + '<button type="button" id="btn-add-word-srs" class="text-xs px-2.5 py-1 rounded bg-indigo-600 text-white font-bold hover:bg-indigo-500" style="min-height:30px">➕ הוסף ל-SRS</button>'
+              + '<button type="button" id="btn-speak-inspected" class="text-xs px-2 py-1 rounded bg-stage-800 text-indigo-300 font-bold hover:text-white" style="min-height:30px">🔊</button>'
+              + '</div></div>';
+
+            const addSrsBtn = $('btn-add-word-srs');
+            if (addSrsBtn && window.ShirAmiramSRS) {
+              addSrsBtn.onclick = () => {
+                const srsState = window.ShirAmiramSRS.loadState();
+                srsState.cards[word] = srsState.cards[word] || window.ShirAmiramSRS.initProgress(word);
+                window.ShirAmiramSRS.saveState(srsState);
+                addSrsBtn.textContent = 'התווסף!';
+                addSrsBtn.disabled = true;
+              };
+            }
+
+            const spkBtn = $('btn-speak-inspected');
+            if (spkBtn && window.ShirAmiramSpeech) {
+              spkBtn.onclick = () => window.ShirAmiramSpeech.speak(word);
+            }
+          }
+        };
+      });
+    }
+
+    if ($('btn-teleprompter-play')) {
+      $('btn-teleprompter-play').onclick = () => {
+        if (teleprompterTimer) {
+          clearInterval(teleprompterTimer);
+          teleprompterTimer = null;
+          $('btn-teleprompter-play').textContent = '▶ נגן סנכרון';
+        } else {
+          $('btn-teleprompter-play').textContent = '⏸ עצור';
+          teleprompterTimer = setInterval(() => {
+            teleprompterCurrentTime += 0.5;
+            if (activeKaraokeIndex && teleprompterCurrentTime >= activeKaraokeIndex.durationSec) {
+              teleprompterCurrentTime = 0;
+            }
+            renderTeleprompterLines(teleprompterCurrentTime);
+          }, 500);
+        }
+      };
+    }
+
+    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); init30SongKaraoke(c.songs); if (typeof renderQuiz==='function') renderQuiz(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
     $('btn-recommend').addEventListener('click', renderSongs);
     $('btn-suno').addEventListener('click', ()=>{
       const targets=$('target-words').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
