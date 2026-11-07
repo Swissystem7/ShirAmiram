@@ -10,11 +10,12 @@
       theme: {
         extend: {
           colors: {
-            neon: { purple: '#c084fc', pink: '#f472b6', cyan: '#22d3ee' },
-            stage: { 950: '#07060f', 900: '#0f0c1d', 800: '#1a1430' }
+            brand: { primary: '#6366f1', hover: '#4f46e5', success: '#10b981', error: '#ef4444' },
+            neon: { purple: '#6366f1', pink: '#f472b6', cyan: '#22d3ee' },
+            stage: { 950: '#07060f', 900: '#0f172a', 800: '#1e293b' }
           },
           boxShadow: {
-            glow: '0 0 40px rgba(168,85,247,0.35)',
+            glow: '0 0 40px rgba(99,102,241,0.35)',
             'glow-pink': '0 0 28px rgba(244,114,182,0.4)'
           }
         }
@@ -25,21 +26,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {font-family:'Heebo',system-ui,sans-serif;background:#0f0c1d;color:#faf5ff;}
+    body {font-family:'Heebo',system-ui,sans-serif;background:#0f172a;color:#f8fafc;}
     .font-mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
-    .lyrics-active{background:linear-gradient(90deg,rgba(192,132,252,0.28),rgba(244,114,182,0.12));border-right:3px solid #c084fc;color:#faf5ff;transform:translateX(-2px);}
-    .vocab-badge{cursor:pointer;background:#a855f7;color:inherit;font:inherit;padding:2px 6px;border-radius:4px;margin:0 2px;border:0;}
-    .tab-btn{background:#1a1430;border:2px solid #c084fc;}
-    .tab-btn[aria-pressed="true"]{background:#c084fc;color:#0f0c1d;font-weight:800;}
+    .lyrics-active{background:linear-gradient(90deg,rgba(99,102,241,0.28),rgba(244,114,182,0.12));border-right:3px solid #6366f1;color:#f8fafc;transform:translateX(-2px);}
+    .vocab-badge{cursor:pointer;background:#6366f1;color:inherit;font:inherit;padding:2px 6px;border-radius:4px;margin:0 2px;border:0;}
+    .tab-btn{background:#1e293b;border:2px solid #6366f1;}
+    .tab-btn[aria-pressed="true"]{background:#6366f1;color:#ffffff;font-weight:800;}
     .playlist-btn[aria-pressed="true"]{outline:2px solid #22d3ee;}
     .lyric-line{border-right:3px solid transparent;transition:background .2s;}
     button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #22d3ee;outline-offset:2px;}
-    .vocab-badge:hover{background:#c084fc;}
-    .wave-bar{width:3px;border-radius:999px;background:linear-gradient(180deg,#22d3ee,#a855f7);animation:wave 1.1s ease-in-out infinite;opacity:.35;}
+    .vocab-badge:hover{background:#818cf8;}
+    .wave-bar{width:3px;border-radius:999px;background:linear-gradient(180deg,#22d3ee,#6366f1);animation:wave 1.1s ease-in-out infinite;opacity:.35;}
     .wave-bar.on{opacity:1;}
     @keyframes wave{0%,100%{transform:scaleY(.35);}50%{transform:scaleY(1);}}
     .progress-track{background:rgba(148,163,184,.15);height:6px;border-radius:3px;}
-    .progress-fill{background:linear-gradient(90deg,#a855f7,#f472b6,#22d3ee);height:100%;border-radius:3px;transition:width .35s linear;}
+    .progress-fill{background:linear-gradient(90deg,#6366f1,#f472b6,#22d3ee);height:100%;border-radius:3px;transition:width .35s linear;}
     *{box-sizing:border-box;}
     .quiz-opts{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%;}
     .quiz-opt{min-height:44px;width:100%;padding:10px 12px;text-align:right;overflow-wrap:anywhere;}
@@ -63,7 +64,9 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false">כרטיסיות SRS</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
   </nav>
 
@@ -116,7 +119,19 @@
     <section id="vocab" class="tab-content hidden">
       <div class="flex flex-col gap-2 mb-4">
         <input id="vocab-search" type="search" placeholder="חפש מילים…" aria-label="חיפוש מילה" class="p-2 bg-stage-900 rounded text-neon-pink">
-        <div id="vocab-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי סוג מילה"></div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs text-slate-400 font-bold">רמת קושי:</span>
+          <div id="vocab-level-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי רמת קושי">
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="all" aria-pressed="true" style="min-height:44px">הכול</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="A_foundational" aria-pressed="false" style="min-height:44px">רמה A (בסיסי)</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="B_intermediate" aria-pressed="false" style="min-height:44px">רמה B (בינוני)</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="C_advanced" aria-pressed="false" style="min-height:44px">רמה C (מתקדם)</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs text-slate-400 font-bold">סוג מילה:</span>
+          <div id="vocab-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי סוג מילה"></div>
+        </div>
       </div>
       <table class="w-full text-sm border-collapse">
         <thead class="bg-stage-800">
@@ -132,6 +147,10 @@
       <div class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
         <button type="button" id="quiz-mode-quick" aria-pressed="true">מבחן מהיר (10 שאלות)</button>
         <button type="button" id="quiz-mode-full" aria-pressed="false">מבחן מלא (50 שאלות)</button>
+        <button type="button" id="quiz-mode-amiram-mix" aria-pressed="false">סימולציית אמיר"ם (25 שאלות)</button>
+        <button type="button" id="quiz-mode-amiram-a" aria-pressed="false">אמיר"ם רמה A</button>
+        <button type="button" id="quiz-mode-amiram-b" aria-pressed="false">אמיר"ם רמה B</button>
+        <button type="button" id="quiz-mode-amiram-c" aria-pressed="false">אמיר"ם רמה C</button>
       </div>
       <div id="quiz-progress" aria-live="polite">שאלה 0 מתוך 0</div>
       <div id="quiz-container" class="space-y-4">
@@ -141,6 +160,63 @@
       <div class="mt-4 text-xl font-bold" aria-live="polite">ציון: <span id="quiz-score">0</span>/<span id="quiz-total">0</span></div>
       <button id="quiz-reset" type="button" class="mt-2 px-3 py-1 bg-neon-purple rounded" style="min-height:44px">מתחילים מחדש</button>
     </section>
+
+    <!-- Flashcards SRS Tab -->
+    <section id="flashcards" class="tab-content hidden">
+      <div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="סינון רמת כרטיסיות">
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="all" aria-pressed="true">הכול</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="A" aria-pressed="false">רמה A</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="B" aria-pressed="false">רמה B</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="C" aria-pressed="false">רמה C</button>
+      </div>
+
+      <div class="flex items-center justify-between mb-3 text-sm opacity-90">
+        <div id="srs-counter" aria-live="polite">כרטיסייה 0 מתוך 0</div>
+        <div id="srs-box-badge" class="px-2 py-0.5 rounded bg-indigo-900 text-indigo-200 border border-indigo-700 font-bold">קופסה 1</div>
+      </div>
+
+      <!-- 3D Card Container -->
+      <div class="srs-card-wrapper mb-4">
+        <div id="srs-card" class="srs-card">
+          <!-- Front Side -->
+          <div class="srs-card-front p-6 flex flex-col justify-between rounded-xl">
+            <div class="flex items-center justify-between">
+              <span id="srs-card-level" class="text-xs px-2 py-1 rounded bg-stage-900 text-neon-pink font-semibold">רמה A</span>
+              <button id="srs-btn-speak" type="button" class="text-xs px-2 py-1 bg-stage-900 rounded hover:bg-stage-800 text-indigo-300 font-bold" title="השמע הגייה" style="min-height:36px">🔊 השמע</button>
+            </div>
+            <div class="my-6 text-center">
+              <h2 id="srs-card-word" dir="ltr" class="text-3xl font-black text-indigo-300 mb-2">word</h2>
+              <p id="srs-card-pos" class="text-xs text-muted">חלק דיבר</p>
+            </div>
+            <p id="srs-card-cloze" dir="ltr" class="text-sm text-center opacity-80 italic">sample sentence with ______</p>
+          </div>
+          <!-- Back Side -->
+          <div class="srs-card-back p-6 flex flex-col justify-between rounded-xl">
+            <div class="text-center">
+              <h3 id="srs-card-trans" class="text-2xl font-bold text-white mb-2">תרגום</h3>
+              <p id="srs-card-def" class="text-sm text-indigo-200 mb-4">הגדרה בעברית</p>
+            </div>
+            <div class="p-3 bg-stage-900/60 rounded border border-white/5 text-center">
+              <p id="srs-card-full-sentence" dir="ltr" class="text-sm text-gray-200">Full English sentence</p>
+            </div>
+            <div class="text-xs text-center opacity-60">לחץ להפיכה חוזרת</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mb-4">
+        <button id="srs-btn-flip" type="button" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-500 rounded font-bold transition shadow" style="min-height:44px">הצג תשובה / הפוך כרטיסייה</button>
+      </div>
+
+      <!-- Rating Buttons (Leitner SRS) -->
+      <div id="srs-actions" class="grid grid-cols-4 gap-2 hidden">
+        <button type="button" id="srs-btn-again" class="py-2 bg-red-900/80 hover:bg-red-800 text-red-200 rounded font-bold text-xs" style="min-height:44px">שוב (Box 1)</button>
+        <button type="button" id="srs-btn-hard" class="py-2 bg-amber-900/80 hover:bg-amber-800 text-amber-200 rounded font-bold text-xs" style="min-height:44px">קשה</button>
+        <button type="button" id="srs-btn-good" class="py-2 bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 rounded font-bold text-xs" style="min-height:44px">טוב (+1)</button>
+        <button type="button" id="srs-btn-easy" class="py-2 bg-sky-900/80 hover:bg-sky-800 text-sky-200 rounded font-bold text-xs" style="min-height:44px">קל (+2)</button>
+      </div>
+    </section>
+
     <section id="songs" class="tab-content hidden">
       <p id="content-status" class="text-sm mb-2" aria-live="polite">טוען תוכן…</p>
       <p class="text-sm mb-2">כיסוי מבחן: <span id="exam-coverage">unknown</span> — לא נטען כיסוי שלא אומת. אין חיבור חשבון Spotify/YouTube Music; הקישורים וההטמעה הם ציבוריים בלבד.</p>
@@ -167,6 +243,52 @@
       <p class="text-sm mb-2">יצירת שיר בפועל ב-Suno היא ידנית/ממתינה. הכפתור רק מייצא מילים מקוריות ללימוד אוצר מילים ופרומפט — בלי שימוש בקרדיטים ובלי API לא רשמי.</p>
       <button id="btn-suno" type="button" class="song-link bg-neon-pink rounded">צור ייצוא Suno ממילות היעד</button>
       <textarea id="suno-out" dir="ltr" rows="8" class="w-full mt-2 p-2 bg-stage-900 rounded text-left" readonly></textarea>
+    </section>
+ 
+    <!-- Suno Studio Tab -->
+    <section id="suno" class="tab-content hidden glass-card p-4">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-xl font-bold text-neon-purple">Suno Studio • מחולל שירים למילות אמיר"ם</h2>
+          <p class="text-sm text-slate-300">הפקת שירים מלאים עבור מילות היעד שאין להן שיר קיים במאגר. העתיקו את הפרומפט והמילים ליצירה ב-Suno.</p>
+        </div>
+      </div>
+      <div class="mb-4 flex flex-wrap gap-2 items-center">
+        <label class="text-sm font-bold text-slate-300">בחר שיר להפקה:</label>
+        <select id="suno-song-select" class="p-2 bg-stage-900 border border-slate-700 rounded text-sm text-slate-100 flex-1 max-w-md" style="min-height:44px"></select>
+      </div>
+      <div id="suno-card" class="p-4 bg-stage-900/80 rounded-xl border border-slate-700/80 space-y-4">
+        <div class="flex justify-between items-start flex-wrap gap-2">
+          <div>
+            <h3 id="suno-title" class="text-lg font-bold text-indigo-400"></h3>
+            <p id="suno-meta" class="text-xs text-slate-400"></p>
+          </div>
+          <span id="suno-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-900/60 text-amber-200 border border-amber-500/40">סטטוס: pending_manual</span>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-slate-400 mb-1">מילות היעד בשיר:</h4>
+          <div id="suno-words-tags" class="flex flex-wrap gap-1"></div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="text-xs font-bold text-slate-400">פרומפט סגנון (Style Prompt):</h4>
+            <button type="button" id="btn-copy-suno-style" class="text-xs px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-500 font-bold" style="min-height:44px">העתק סגנון</button>
+          </div>
+          <div id="suno-style-text" class="p-2 bg-slate-950 rounded text-xs text-slate-300 font-mono text-left" dir="ltr"></div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="text-xs font-bold text-slate-400">מילות השיר (Lyrics):</h4>
+            <button type="button" id="btn-copy-suno-lyrics" class="text-xs px-3 py-1 rounded bg-pink-600 hover:bg-pink-500 font-bold" style="min-height:44px">העתק מילים מלאות</button>
+          </div>
+          <pre id="suno-lyrics-text" class="p-3 bg-slate-950 rounded text-xs text-slate-200 font-mono whitespace-pre-wrap text-left max-h-60 overflow-y-auto" dir="ltr"></pre>
+        </div>
+        <div class="pt-2 border-t border-slate-800">
+          <h4 class="text-xs font-bold text-slate-400 mb-2">נגן שמע מקומי:</h4>
+          <div id="suno-audio-status" class="text-xs text-amber-300 mb-2">ממתין להפקת אודיו ב-Suno (העתיקו את המילים והפרומפט)</div>
+          <audio id="suno-audio-player" controls class="w-full hidden"></audio>
+        </div>
+      </div>
     </section>
 
     <section id="karaoke" class="tab-content hidden karaoke-panel" aria-label="Voice Karaoke Challenge">
@@ -195,6 +317,11 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="src/vocab.js"></script>
+  <script src="src/suno_generator.js"></script>
+  <script src="src/audio_player.js"></script>
+  <script src="src/exam_simulator.js"></script>
+  <script src="src/srs_leitner.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -208,17 +335,24 @@
     }
     document.querySelectorAll('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
 
-    // Vocabulary table: the search box and the category buttons work together
+    // Vocabulary table: the search box, level buttons and category buttons work together
     let category = 'all';
+    let currentLevel = 'all';
     function renderVocab() {
-      const rows = A.filterVocab($('vocab-search').value, category);
+      let rows = A.filterVocab($('vocab-search').value, category);
+      if (currentLevel !== 'all') {
+        const levelCode = currentLevel.replace('_foundational', '').replace('_intermediate', '').replace('_advanced', '').toLowerCase();
+        rows = rows.filter(v => (v.difficulty && v.difficulty.toLowerCase() === levelCode) || (v.level && v.level === currentLevel));
+      }
       $('vocab-table').innerHTML = rows.map((v) => '<tr><td class="p-2 border-t border-stage-800" dir="ltr">' + esc(v.word)
         + '</td><td class="p-2 border-t border-stage-800">' + esc(v.translation)
         + '</td><td class="p-2 border-t border-stage-800">' + esc(A.CATEGORY_HE[v.category] || v.category)
-        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty) + '</td></tr>').join('');
+        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty || v.level) + '</td></tr>').join('');
       $('vocab-empty').classList.toggle('hidden', rows.length > 0);
       document.querySelectorAll('.playlist-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === category)));
+      document.querySelectorAll('.level-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === currentLevel)));
     }
+    document.querySelectorAll('.level-btn').forEach((b) => b.addEventListener('click', () => { currentLevel = b.dataset.level; renderVocab(); }));
     $('vocab-filters').innerHTML = A.CATEGORIES.map((c) => '<button type="button" class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.he) + '</button>').join('');
     document.querySelectorAll('.playlist-btn').forEach((b) => b.addEventListener('click', () => { category = b.dataset.cat; renderVocab(); }));
     $('vocab-search').addEventListener('input', renderVocab);
@@ -296,20 +430,45 @@
     });
 
 
-    // Quiz — content_v2 exam modes (quick 10 / full 50)
+    // Quiz — content_v2 exam modes (quick 10 / full 50) + Amiram Exam Simulator
     let quizMode = 'quick';
     let quizPool = [];
     let quizIndex = 0;
     let score = 0;
+    let AMIRAM_VOCAB = [];
+
+    if (window.fetch) {
+      fetch('data/imports/amiram_vocab_full.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) AMIRAM_VOCAB = data;
+        })
+        .catch(() => {});
+    }
+
     function setQuizMode(mode) {
-      quizMode = mode === 'full' ? 'full' : 'quick';
-      $('quiz-mode-quick').setAttribute('aria-pressed', String(quizMode === 'quick'));
-      $('quiz-mode-full').setAttribute('aria-pressed', String(quizMode === 'full'));
+      quizMode = mode;
+      const modes = ['quick', 'full', 'amiram-mix', 'amiram-a', 'amiram-b', 'amiram-c'];
+      modes.forEach(m => {
+        const el = $('quiz-mode-' + m);
+        if (el) el.setAttribute('aria-pressed', String(quizMode === m));
+      });
       renderQuiz();
     }
     $('quiz-mode-quick').addEventListener('click', () => setQuizMode('quick'));
     $('quiz-mode-full').addEventListener('click', () => setQuizMode('full'));
+    if ($('quiz-mode-amiram-mix')) $('quiz-mode-amiram-mix').addEventListener('click', () => setQuizMode('amiram-mix'));
+    if ($('quiz-mode-amiram-a')) $('quiz-mode-amiram-a').addEventListener('click', () => setQuizMode('amiram-a'));
+    if ($('quiz-mode-amiram-b')) $('quiz-mode-amiram-b').addEventListener('click', () => setQuizMode('amiram-b'));
+    if ($('quiz-mode-amiram-c')) $('quiz-mode-amiram-c').addEventListener('click', () => setQuizMode('amiram-c'));
+
     function pickQuizPool() {
+      if (window.ShirAmiramExam && Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) {
+        if (quizMode === 'amiram-mix') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'mixed_25');
+        if (quizMode === 'amiram-a') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'A', 20);
+        if (quizMode === 'amiram-b') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'B', 20);
+        if (quizMode === 'amiram-c') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'C', 20);
+      }
       const all = (CONTENT && Array.isArray(CONTENT.questions) && CONTENT.questions.length)
         ? CONTENT.questions.slice().sort((a, b) => a.id - b.id)
         : (A.QUIZ || []).map((q, i) => ({ id: i + 1, question: q.q, options: q.opts, answer: q.a, explanation: '', word: q.a }));
@@ -357,6 +516,7 @@
           btn.textContent = opt;
           btn.addEventListener('click', () => {
             const right = String(opt) === String(answer);
+            btn.classList.add('selected');
             fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + answer;
             fb.className = 'quiz-fb mt-2 text-sm ' + (right ? 'text-green-400' : 'text-red-400');
             $('quiz-explanation').textContent = item.explanation || '';
@@ -435,6 +595,167 @@
     function renderTimed(){ const idx=A.activeTimedLine(timed, $('local-audio').currentTime||0); $('timed-lines').innerHTML=timed.map((l,i)=>'<button type="button" class="quiz-opt '+(i===idx?'bg-neon-purple':'bg-stage-800')+' rounded" data-t="'+l.time+'">'+esc(l.text)+'</button>').join(''); document.querySelectorAll('#timed-lines [data-t]').forEach(b=>b.addEventListener('click',()=>{ $('local-audio').currentTime=Number(b.dataset.t); renderTimed(); })); }
     $('local-audio').addEventListener('timeupdate', renderTimed);
 
+
+    // --- Suno Studio Controller ---
+    let SUNO_SONGS = [];
+    async function initSunoStudio() {
+      try {
+        const res = await fetch('data/suno_prompts/generated_songs.json');
+        if (res.ok) {
+          SUNO_SONGS = await res.json();
+          renderSunoStudio();
+        }
+      } catch (e) {}
+    }
+    function renderSunoStudio() {
+      const sel = $('suno-song-select');
+      if (!sel || !SUNO_SONGS.length) return;
+      sel.innerHTML = SUNO_SONGS.map(s => '<option value="' + s.id + '">' + esc(s.title) + ' (' + s.target_words.slice(0, 3).join(', ') + '...)</option>').join('');
+      sel.onchange = () => updateSunoCard(Number(sel.value));
+      updateSunoCard(SUNO_SONGS[0].id);
+    }
+    function updateSunoCard(id) {
+      const song = SUNO_SONGS.find(s => s.id === id) || SUNO_SONGS[0];
+      if (!song) return;
+      $('suno-title').textContent = song.title;
+      $('suno-meta').textContent = song.genre + ' • ' + song.bpm + ' BPM';
+      $('suno-words-tags').innerHTML = song.target_words.map(w => '<span class="px-2 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/50 text-xs font-bold">' + esc(w) + '</span>').join('');
+      $('suno-style-text').textContent = song.style_prompt;
+      $('suno-lyrics-text').textContent = song.lyrics;
+
+      $('btn-copy-suno-style').onclick = () => {
+        navigator.clipboard.writeText(song.style_prompt).then(() => {
+          $('btn-copy-suno-style').textContent = 'הועתק!';
+          setTimeout(() => { $('btn-copy-suno-style').textContent = 'העתק סגנון'; }, 1500);
+        });
+      };
+      $('btn-copy-suno-lyrics').onclick = () => {
+        const fullPrompt = song.style_prompt + '\n\n' + song.lyrics;
+        navigator.clipboard.writeText(fullPrompt).then(() => {
+          $('btn-copy-suno-lyrics').textContent = 'הועתק!';
+          setTimeout(() => { $('btn-copy-suno-lyrics').textContent = 'העתק מילים מלאות'; }, 1500);
+        });
+      };
+    }
+    initSunoStudio();
+
+    // --- Flashcards SRS Controller ---
+    (function initFlashcards() {
+      const SRS = window.ShirAmiramSRS;
+      if (!SRS) return;
+
+      let srsState = SRS.loadState();
+      let srsSession = [];
+      let srsIndex = 0;
+      let srsLevel = 'all';
+      let isFlipped = false;
+
+      function speakCurrentWord() {
+        if (!srsSession.length) return;
+        const card = srsSession[srsIndex];
+        if (card && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(card.word);
+          u.lang = 'en-US';
+          u.rate = 0.9;
+          window.speechSynthesis.speak(u);
+        }
+      }
+
+      function flipCard(force) {
+        isFlipped = typeof force === 'boolean' ? force : !isFlipped;
+        const el = $('srs-card');
+        if (el) el.classList.toggle('flipped', isFlipped);
+        const actions = $('srs-actions');
+        if (actions) actions.classList.toggle('hidden', !isFlipped);
+      }
+
+      function renderCurrentCard() {
+        flipCard(false);
+        const total = srsSession.length;
+        if (!total) {
+          $('srs-counter').textContent = 'אין כרטיסיות להצגה';
+          $('srs-card-word').textContent = 'מצוין!';
+          $('srs-card-pos').textContent = '';
+          $('srs-card-cloze').textContent = 'סיימת את כל הכרטיסיות לסבב זה.';
+          $('srs-card-trans').textContent = 'השלמת סשן';
+          $('srs-card-def').textContent = '';
+          $('srs-card-full-sentence').textContent = '';
+          return;
+        }
+
+        const card = srsSession[srsIndex];
+        const prog = srsState.cards[String(card.id || card.word)] || SRS.initProgress(card.id || card.word);
+        
+        $('srs-counter').textContent = 'כרטיסייה ' + (srsIndex + 1) + ' מתוך ' + total;
+        $('srs-box-badge').textContent = 'קופסה ' + (prog.box || 1);
+        $('srs-card-level').textContent = card.level ? ('רמה ' + card.level.replace('A_foundational', 'A').replace('B_intermediate', 'B').replace('C_advanced', 'C')) : 'רמה A';
+        $('srs-card-word').textContent = card.word;
+        $('srs-card-pos').textContent = card.part_of_speech || '';
+        
+        // Cloze sentence
+        const sent = card.sample_sentence || '';
+        const regex = new RegExp('\\b' + card.word + '\\b', 'i');
+        const cloze = sent.replace(regex, '______');
+        $('srs-card-cloze').textContent = cloze;
+
+        // Back side
+        $('srs-card-trans').textContent = card.hebrew_translation || card.translation || '';
+        $('srs-card-def').textContent = card.hebrew_definition || '';
+        $('srs-card-full-sentence').textContent = sent;
+      }
+
+      function startSrsSession() {
+        const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : (CONTENT ? CONTENT.words : A.VOCAB);
+        srsSession = SRS.createSession(pool, srsState.cards, {
+          level: srsLevel === 'all' ? undefined : srsLevel,
+          batchSize: 15
+        });
+        srsIndex = 0;
+        renderCurrentCard();
+      }
+
+      function handleRating(result) {
+        if (!srsSession.length) return;
+        const card = srsSession[srsIndex];
+        const key = String(card.id || card.word);
+        const currentProg = srsState.cards[key] || SRS.initProgress(key);
+        const nextProg = SRS.calculateNextState(currentProg, result);
+        srsState.cards[key] = nextProg;
+        SRS.saveState(srsState);
+
+        srsIndex++;
+        if (srsIndex >= srsSession.length) {
+          startSrsSession();
+        } else {
+          renderCurrentCard();
+        }
+      }
+
+      // Event listeners
+      if ($('srs-card')) $('srs-card').addEventListener('click', () => flipCard());
+      if ($('srs-btn-flip')) $('srs-btn-flip').addEventListener('click', () => flipCard());
+      if ($('srs-btn-speak')) $('srs-btn-speak').addEventListener('click', (e) => { e.stopPropagation(); speakCurrentWord(); });
+      if ($('srs-btn-again')) $('srs-btn-again').addEventListener('click', () => handleRating('again'));
+      if ($('srs-btn-hard')) $('srs-btn-hard').addEventListener('click', () => handleRating('hard'));
+      if ($('srs-btn-good')) $('srs-btn-good').addEventListener('click', () => handleRating('good'));
+      if ($('srs-btn-easy')) $('srs-btn-easy').addEventListener('click', () => handleRating('easy'));
+
+      document.querySelectorAll('.srs-level-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          srsLevel = btn.dataset.level;
+          document.querySelectorAll('.srs-level-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.level === srsLevel)));
+          startSrsSession();
+        });
+      });
+
+      const flashTabBtn = document.querySelector('[data-tab="flashcards"]');
+      if (flashTabBtn) {
+        flashTabBtn.addEventListener('click', () => {
+          if (!srsSession.length) startSrsSession();
+        });
+      }
+    })();
 
     // --- Voice Karaoke Challenge ---
     (function initKaraoke() {
