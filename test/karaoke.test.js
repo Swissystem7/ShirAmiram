@@ -360,6 +360,7 @@ test('finishSession session state unwrapping, streak extraction and totalTargets
     totalTargets: 0,
     accuracy: 0,
     bestStreak: 0,
+    maxMultiplier: 1,
     isNewHighScore: false
   });
   assert.deepEqual(K.finishSession(undefined), {
@@ -368,6 +369,7 @@ test('finishSession session state unwrapping, streak extraction and totalTargets
     totalTargets: 0,
     accuracy: 0,
     bestStreak: 0,
+    maxMultiplier: 1,
     isNewHighScore: false
   });
 
@@ -432,5 +434,162 @@ test('finishSession session state unwrapping, streak extraction and totalTargets
   const hitsAloneFallback = K.finishSession({ hits: 4 });
   assert.equal(hitsAloneFallback.totalTargets, 4);
   assert.equal(hitsAloneFallback.accuracy, 100);
+});
+
+test('getStreakMultiplier threshold boundaries and input robustness', () => {
+  // Boundaries
+  assert.equal(K.getStreakMultiplier(0), 1.0);
+  assert.equal(K.getStreakMultiplier(1), 1.0);
+  assert.equal(K.getStreakMultiplier(2), 1.0);
+  assert.equal(K.getStreakMultiplier(3), 1.5);
+  assert.equal(K.getStreakMultiplier(4), 1.5);
+  assert.equal(K.getStreakMultiplier(5), 2.0);
+  assert.equal(K.getStreakMultiplier(6), 2.0);
+  assert.equal(K.getStreakMultiplier(7), 2.0);
+  assert.equal(K.getStreakMultiplier(8), 3.0);
+  assert.equal(K.getStreakMultiplier(10), 3.0);
+
+  // Robustness (negative, null, undefined, NaN, invalid strings -> 1.0)
+  assert.equal(K.getStreakMultiplier(-1), 1.0);
+  assert.equal(K.getStreakMultiplier(-50), 1.0);
+  assert.equal(K.getStreakMultiplier(null), 1.0);
+  assert.equal(K.getStreakMultiplier(undefined), 1.0);
+  assert.equal(K.getStreakMultiplier(NaN), 1.0);
+  assert.equal(K.getStreakMultiplier('invalid'), 1.0);
+  assert.equal(K.getStreakMultiplier(''), 1.0);
+  assert.equal(K.getStreakMultiplier('three'), 1.0);
+  assert.equal(K.getStreakMultiplier({}), 1.0);
+});
+
+test('point calculation Math.round(basePoints * multiplier) across tiers with base 100 and custom base points', () => {
+  const words = [
+    { word: 'w1', timeMs: 0 }, { word: 'w2', timeMs: 0 }, { word: 'w3', timeMs: 0 },
+    { word: 'w4', timeMs: 0 }, { word: 'w5', timeMs: 0 }, { word: 'w6', timeMs: 0 },
+    { word: 'w7', timeMs: 0 }, { word: 'w8', timeMs: 0 }
+  ];
+
+  // Base 100 across tiers: 100 (streak 1, 2), 150 (streak 3, 4), 200 (streak 5, 6, 7), 300 (streak 8)
+  const session100 = K.createSession({ words, useStreakMultipliers: true });
+  assert.equal(session100.tryVoice('w1', 100).points, 100);
+  assert.equal(session100.tryVoice('w2', 100).points, 100);
+  assert.equal(session100.tryVoice('w3', 100).points, 150);
+  assert.equal(session100.tryVoice('w4', 100).points, 150);
+  assert.equal(session100.tryVoice('w5', 100).points, 200);
+  assert.equal(session100.tryVoice('w6', 100).points, 200);
+  assert.equal(session100.tryVoice('w7', 100).points, 200);
+  assert.equal(session100.tryVoice('w8', 100).points, 300);
+
+  // Custom base points (e.g. 75) with getStreakMultiplier option passed
+  const sessionCustom = K.createSession({
+    words,
+    basePoints: 75,
+    getStreakMultiplier: K.getStreakMultiplier
+  });
+  assert.equal(sessionCustom.tryVoice('w1', 100).points, Math.round(75 * 1.0)); // 75
+  assert.equal(sessionCustom.tryVoice('w2', 100).points, Math.round(75 * 1.0)); // 75
+  assert.equal(sessionCustom.tryVoice('w3', 100).points, Math.round(75 * 1.5)); // 113
+  assert.equal(sessionCustom.tryVoice('w4', 100).points, Math.round(75 * 1.5)); // 113
+  assert.equal(sessionCustom.tryVoice('w5', 100).points, Math.round(75 * 2.0)); // 150
+  assert.equal(sessionCustom.tryVoice('w6', 100).points, Math.round(75 * 2.0)); // 150
+  assert.equal(sessionCustom.tryVoice('w7', 100).points, Math.round(75 * 2.0)); // 150
+  assert.equal(sessionCustom.tryVoice('w8', 100).points, Math.round(75 * 3.0)); // 225
+
+  // Custom base points (e.g. 120) with opts.useStreakMultipliers
+  const session120 = K.createSession({
+    words: words.slice(0, 3),
+    basePoints: 120,
+    useStreakMultipliers: true
+  });
+  assert.equal(session120.tryVoice('w1', 100).points, Math.round(120 * 1.0)); // 120
+  assert.equal(session120.tryVoice('w2', 100).points, Math.round(120 * 1.0)); // 120
+  assert.equal(session120.tryVoice('w3', 100).points, Math.round(120 * 1.5)); // 180
+});
+
+test('session streak progression and miss streak reset to 0 via skipCurrent and wrong tap', () => {
+  const session = K.createSession({
+    words: [
+      { word: 'first', timeMs: 0 },
+      { word: 'second', timeMs: 0 },
+      { word: 'third', timeMs: 0 },
+      { word: 'fourth', timeMs: 0 },
+      { word: 'fifth', timeMs: 0 },
+      { word: 'sixth', timeMs: 0 }
+    ],
+    useStreakMultipliers: true
+  });
+
+  // Progression: hit 1 and hit 2
+  const h1 = session.tryVoice('first', 100);
+  assert.equal(h1.ok, true);
+  assert.equal(h1.streak, 1);
+  assert.equal(session.state.streak, 1);
+
+  const h2 = session.tryVoice('second', 100);
+  assert.equal(h2.ok, true);
+  assert.equal(h2.streak, 2);
+  assert.equal(session.state.streak, 2);
+
+  // Miss streak reset via skipCurrent
+  const missSkip = session.skipCurrent('timeout');
+  assert.equal(missSkip.ok, false);
+  assert.equal(missSkip.streak, 0);
+  assert.equal(session.state.streak, 0);
+
+  // Next hit after skip starts streak back at 1
+  const h3 = session.tryVoice('fourth', 100);
+  assert.equal(h3.ok, true);
+  assert.equal(h3.streak, 1);
+  assert.equal(session.state.streak, 1);
+
+  // Enable rhythm mode to test wrong tap reset
+  session.enableFallback();
+  assert.equal(session.state.mode, 'rhythm');
+
+  // Correct rhythm tap continues streak to 2
+  const tapHit = session.tryRhythmTap('fifth');
+  assert.equal(tapHit.ok, true);
+  assert.equal(tapHit.streak, 2);
+  assert.equal(session.state.streak, 2);
+
+  // Wrong tap resets streak to 0
+  const wrongTap = session.tryRhythmTap('incorrect');
+  assert.equal(wrongTap.ok, false);
+  assert.equal(wrongTap.streak, 0);
+  assert.equal(session.state.streak, 0);
+});
+
+test('finishSession reporting maxMultiplier across different streak levels and explicit override', () => {
+  // Streak 0 -> 1.0
+  const res0 = K.finishSession({ bestStreak: 0 });
+  assert.equal(res0.maxMultiplier, 1.0);
+
+  // Streak 3 -> 1.5
+  const res3 = K.finishSession({ bestStreak: 3 });
+  assert.equal(res3.maxMultiplier, 1.5);
+
+  // Streak 6 -> 2.0
+  const res6 = K.finishSession({ bestStreak: 6 });
+  assert.equal(res6.maxMultiplier, 2.0);
+
+  // Streak 8 -> 3.0
+  const res8 = K.finishSession({ bestStreak: 8 });
+  assert.equal(res8.maxMultiplier, 3.0);
+
+  // Explicit maxMultiplier override on top-level sessionState
+  const resOverride = K.finishSession({ bestStreak: 0, maxMultiplier: 4.5 });
+  assert.equal(resOverride.maxMultiplier, 4.5);
+
+  // Explicit maxMultiplier override on unwrapped st.maxMultiplier
+  const resUnwrappedOverride = K.finishSession({
+    state: { bestStreak: 1, maxMultiplier: 2.5 }
+  });
+  assert.equal(resUnwrappedOverride.maxMultiplier, 2.5);
+
+  // Explicit maxMultiplier numeric string conversion
+  const resStringOverride = K.finishSession({
+    bestStreak: 2,
+    maxMultiplier: '3.0'
+  });
+  assert.equal(resStringOverride.maxMultiplier, 3.0);
 });
 

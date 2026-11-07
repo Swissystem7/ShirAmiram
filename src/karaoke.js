@@ -234,6 +234,14 @@
     return 1;
   }
 
+  function getStreakMultiplier(streak) {
+    var s = Math.max(0, Number(streak) || 0);
+    if (s >= 8) return 3.0;
+    if (s >= 5) return 2.0;
+    if (s >= 3) return 1.5;
+    return 1.0;
+  }
+
   function pointsForHit(streakBefore) {
     // streakBefore is the streak count AFTER this hit is counted
     return Math.round(BASE_POINTS * streakMultiplier(streakBefore));
@@ -250,6 +258,14 @@
 
   function createSession(opts) {
     opts = opts || {};
+    var basePoints = (opts.basePoints != null && isFinite(Number(opts.basePoints)))
+      ? Number(opts.basePoints)
+      : (opts.base_points != null && isFinite(Number(opts.base_points)) ? Number(opts.base_points) : BASE_POINTS);
+    var useStreakMultipliers = Boolean(opts.useStreakMultipliers || opts.getStreakMultiplier);
+    var multiplierFn = typeof opts.getStreakMultiplier === 'function'
+      ? opts.getStreakMultiplier
+      : (useStreakMultipliers ? getStreakMultiplier : streakMultiplier);
+
     var words = (opts.words || []).map(function (w, i) {
       return {
         id: w.id != null ? w.id : i,
@@ -270,7 +286,8 @@
       status: 'idle', // idle | listening | processing | done | fallback
       fallbackMessage: '',
       started: false,
-      ended: false
+      ended: false,
+      maxMultiplier: (opts.maxMultiplier != null && isFinite(Number(opts.maxMultiplier))) ? Number(opts.maxMultiplier) : undefined
     };
 
     function current() {
@@ -297,7 +314,18 @@
 
     function registerHit(wordObj, heard) {
       state.streak += 1;
-      var pts = pointsForHit(state.streak);
+      var pts;
+      if (useStreakMultipliers) {
+        var mult = multiplierFn(state.streak);
+        pts = Math.round(basePoints * mult);
+        if (state.maxMultiplier == null || mult > state.maxMultiplier) {
+          state.maxMultiplier = mult;
+        }
+      } else {
+        pts = (opts.basePoints != null || opts.base_points != null)
+          ? Math.round(basePoints * streakMultiplier(state.streak))
+          : pointsForHit(state.streak);
+      }
       state.score += pts;
       state.hits.push({ word: wordObj.word, he: wordObj.he, heard: heard, points: pts, streak: state.streak });
       state.index += 1;
@@ -386,6 +414,7 @@
       enableFallback: enableFallback,
       endScreen: endScreen,
       accuracy: accuracy,
+      getStreakMultiplier: multiplierFn,
       DEFAULT_WINDOW_MS: DEFAULT_WINDOW_MS,
       BASE_POINTS: BASE_POINTS
     };
@@ -519,6 +548,14 @@
       bestStreak = maxStreak;
     }
 
+    var rawMaxMultiplier = s.maxMultiplier != null ? s.maxMultiplier : (st ? st.maxMultiplier : undefined);
+    var maxMultiplier;
+    if (rawMaxMultiplier != null && rawMaxMultiplier !== '' && typeof rawMaxMultiplier !== 'boolean' && isFinite(Number(rawMaxMultiplier))) {
+      maxMultiplier = Number(rawMaxMultiplier);
+    } else {
+      maxMultiplier = getStreakMultiplier(bestStreak);
+    }
+
     var totalTargets;
     var rawTotal = s.totalTargets != null ? s.totalTargets : st.totalTargets;
     if (rawTotal != null && isFinite(Number(rawTotal))) {
@@ -594,6 +631,7 @@
       totalTargets: totalTargets,
       accuracy: accuracy,
       bestStreak: bestStreak,
+      maxMultiplier: maxMultiplier,
       isNewHighScore: isNewHighScore
     };
   }
@@ -607,6 +645,7 @@
     utteranceMatches: utteranceMatches,
     isInWindow: isInWindow,
     streakMultiplier: streakMultiplier,
+    getStreakMultiplier: getStreakMultiplier,
     pointsForHit: pointsForHit,
     detectSpeechSupport: detectSpeechSupport,
     createSession: createSession,
