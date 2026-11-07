@@ -233,3 +233,204 @@ test('createSession edge cases: initial accuracy, rhythm tap in voice mode, tryV
   assert.deepEqual(session.tryVoice('peace', 1200), { ok: false, reason: 'ended' });
 });
 
+function createMockStorage(initial = {}) {
+  const store = new Map(Object.entries(initial));
+  return {
+    store,
+    getItem(key) {
+      return store.has(key) ? store.get(key) : null;
+    },
+    setItem(key, val) {
+      store.set(key, String(val));
+    }
+  };
+}
+
+test('finishSession accuracy calculation: 100% when all hit, 0% when 0 hit, and 0% when totalTargets is 0', () => {
+  // 100% when all targets hit
+  const allHit = K.finishSession({ hits: 5, totalTargets: 5 });
+  assert.equal(allHit.accuracy, 100);
+  assert.equal(allHit.hits, 5);
+  assert.equal(allHit.totalTargets, 5);
+
+  // 0% when 0 targets hit
+  const zeroHit = K.finishSession({ hits: 0, totalTargets: 5 });
+  assert.equal(zeroHit.accuracy, 0);
+
+  // 0% when totalTargets is 0
+  const zeroTargets = K.finishSession({ hits: 0, totalTargets: 0 });
+  assert.equal(zeroTargets.accuracy, 0);
+
+  const zeroTargetsWithHits = K.finishSession({ hits: 4, totalTargets: 0 });
+  assert.equal(zeroTargetsWithHits.accuracy, 0);
+
+  const negativeTargets = K.finishSession({ hits: 0, totalTargets: -2 });
+  assert.equal(negativeTargets.accuracy, 0);
+
+  // Rounded percentage
+  const oneOfThree = K.finishSession({ hits: 1, totalTargets: 3 });
+  assert.equal(oneOfThree.accuracy, 33);
+
+  const twoOfThree = K.finishSession({ hits: 2, totalTargets: 3 });
+  assert.equal(twoOfThree.accuracy, 67);
+});
+
+test('finishSession high score persistence: writes new high score when score exceeds stored high score', () => {
+  const storage = createMockStorage({ shiramiram_karaoke_high_song1: '100' });
+  const res = K.finishSession({ songId: 'song1', score: 250, hits: 2, totalTargets: 2 }, storage);
+
+  assert.equal(res.isNewHighScore, true);
+  assert.equal(res.score, 250);
+  assert.equal(storage.getItem('shiramiram_karaoke_high_song1'), '250');
+
+  // When no previous score exists in storage
+  const emptyStorage = createMockStorage();
+  const resEmpty = K.finishSession({ score: 120, hits: 1, totalTargets: 1 }, emptyStorage);
+  assert.equal(resEmpty.isNewHighScore, true);
+  assert.equal(resEmpty.score, 120);
+  assert.equal(emptyStorage.getItem('shiramiram_karaoke_high_default'), '120');
+});
+
+test('finishSession existing high score preserved: does not overwrite when score is lower or equal', () => {
+  const storage = createMockStorage({ shiramiram_karaoke_high_song2: '500' });
+
+  // Score is lower than stored high score
+  const resLower = K.finishSession({ songId: 'song2', score: 300, hits: 2, totalTargets: 3 }, storage);
+  assert.equal(resLower.isNewHighScore, false);
+  assert.equal(storage.getItem('shiramiram_karaoke_high_song2'), '500');
+
+  // Score is equal to stored high score
+  let setItemCalled = false;
+  const storageEqual = {
+    getItem() { return '500'; },
+    setItem() { setItemCalled = true; }
+  };
+  const resEqual = K.finishSession({ songId: 'song2', score: 500, hits: 3, totalTargets: 3 }, storageEqual);
+  assert.equal(resEqual.isNewHighScore, false);
+  assert.equal(setItemCalled, false);
+});
+
+test('finishSession storage robustness: handles getItem/setItem exceptions gracefully without throwing', () => {
+  // getItem throws SecurityError
+  let setVal = null;
+  const storageGetThrows = {
+    getItem() {
+      throw new Error('SecurityError: localStorage is disabled');
+    },
+    setItem(k, v) {
+      setVal = v;
+    }
+  };
+  const res1 = K.finishSession({ songId: 'default', score: 100, hits: 1, totalTargets: 1 }, storageGetThrows);
+  assert.equal(res1.score, 100);
+  assert.equal(res1.isNewHighScore, true);
+  assert.equal(setVal, '100');
+
+  // setItem throws QuotaExceededError
+  const storageSetThrows = {
+    getItem() { return '50'; },
+    setItem() {
+      throw new Error('QuotaExceededError: DOM exception 22');
+    }
+  };
+  const res2 = K.finishSession({ songId: 'default', score: 150, hits: 1, totalTargets: 1 }, storageSetThrows);
+  assert.equal(res2.score, 150);
+  assert.equal(res2.isNewHighScore, true);
+
+  // Both throw
+  const storageBothThrow = {
+    getItem() { throw new Error('SecurityError'); },
+    setItem() { throw new Error('QuotaExceededError'); }
+  };
+  const res3 = K.finishSession({ score: 200, hits: 2, totalTargets: 2 }, storageBothThrow);
+  assert.equal(res3.score, 200);
+  assert.equal(res3.isNewHighScore, true);
+
+  // Missing / null storage safely handled
+  const resNoStorage = K.finishSession({ score: 100, hits: 1, totalTargets: 1 }, null);
+  assert.equal(resNoStorage.score, 100);
+  assert.equal(resNoStorage.isNewHighScore, true);
+});
+
+test('finishSession session state unwrapping, streak extraction and totalTargets fallbacks', () => {
+  // null / undefined input
+  assert.deepEqual(K.finishSession(null), {
+    score: 0,
+    hits: 0,
+    totalTargets: 0,
+    accuracy: 0,
+    bestStreak: 0,
+    isNewHighScore: false
+  });
+  assert.deepEqual(K.finishSession(undefined), {
+    score: 0,
+    hits: 0,
+    totalTargets: 0,
+    accuracy: 0,
+    bestStreak: 0,
+    isNewHighScore: false
+  });
+
+  // Session instance from createSession
+  const session = K.createSession({
+    words: [
+      { word: 'peace', timeMs: 0 },
+      { word: 'hope', timeMs: 0 }
+    ]
+  });
+  session.tryVoice('peace', 100);
+  session.skipCurrent('timeout');
+  const storage = createMockStorage();
+  const sessionRes = K.finishSession(session, storage);
+  assert.equal(sessionRes.score, 100);
+  assert.equal(sessionRes.hits, 1);
+  assert.equal(sessionRes.totalTargets, 2);
+  assert.equal(sessionRes.accuracy, 50);
+  assert.equal(sessionRes.bestStreak, 1);
+  assert.equal(sessionRes.isNewHighScore, true);
+  assert.equal(storage.getItem('shiramiram_karaoke_high_default'), '100');
+
+  // bestStreak from hits array
+  const streakFromHits = K.finishSession({
+    hits: [{ streak: 1 }, { streak: 4 }, { streak: 2 }]
+  });
+  assert.equal(streakFromHits.bestStreak, 4);
+  assert.equal(streakFromHits.hits, 3);
+
+  // explicit bestStreak overrides hits
+  const streakExplicit = K.finishSession({
+    hits: [{ streak: 2 }],
+    bestStreak: 6
+  });
+  assert.equal(streakExplicit.bestStreak, 6);
+
+  // totalTargets fallback to words.length
+  const wordsFallback = K.finishSession({
+    hits: 2,
+    words: [{ word: 'a' }, { word: 'b' }, { word: 'c' }, { word: 'd' }]
+  });
+  assert.equal(wordsFallback.totalTargets, 4);
+  assert.equal(wordsFallback.accuracy, 50);
+
+  // totalTargets fallback to hits + misses array length
+  const missesArrayFallback = K.finishSession({
+    hits: 3,
+    misses: [{ word: 'x' }]
+  });
+  assert.equal(missesArrayFallback.totalTargets, 4);
+  assert.equal(missesArrayFallback.accuracy, 75);
+
+  // totalTargets fallback to hits + misses numeric
+  const missesNumFallback = K.finishSession({
+    hits: 2,
+    misses: 2
+  });
+  assert.equal(missesNumFallback.totalTargets, 4);
+  assert.equal(missesNumFallback.accuracy, 50);
+
+  // totalTargets fallback to hits alone
+  const hitsAloneFallback = K.finishSession({ hits: 4 });
+  assert.equal(hitsAloneFallback.totalTargets, 4);
+  assert.equal(hitsAloneFallback.accuracy, 100);
+});
+
