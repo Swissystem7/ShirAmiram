@@ -480,6 +480,9 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="src/amiram_vocab_data.js"></script>
+  <script src="src/amiram_restatements_data.js"></script>
+  <script src="src/amiram_reading_data.js"></script>
   <script src="src/vocab.js"></script>
   <script src="src/suno_generator.js"></script>
   <script src="src/audio_player.js"></script>
@@ -506,23 +509,77 @@
     // Vocabulary table: the search box, level buttons and category buttons work together
     let category = 'all';
     let currentLevel = 'all';
+    let AMIRAM_VOCAB = window.AMIRAM_VOCAB_DATA || [];
+    let AMIRAM_RESTATEMENTS = window.AMIRAM_RESTATEMENTS_DATA || [];
+    let AMIRAM_READING_PASSAGES = window.AMIRAM_READING_DATA || [];
+
     function renderVocab() {
-      let rows = A.filterVocab($('vocab-search').value, category);
-      if (currentLevel !== 'all') {
-        const levelCode = currentLevel.replace('_foundational', '').replace('_intermediate', '').replace('_advanced', '').toLowerCase();
-        rows = rows.filter(v => (v.difficulty && v.difficulty.toLowerCase() === levelCode) || (v.level && v.level === currentLevel));
-      }
-      $('vocab-table').innerHTML = rows.map((v) => '<tr><td class="p-2 border-t border-stage-800" dir="ltr"><span class="font-bold">' + esc(v.word)
-        + '</span> <button type="button" class="btn-vocab-speak text-xs px-1.5 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" data-speak="' + esc(v.word) + '" title="השמע הגייה" style="min-height:30px">🔊</button>'
-        + '</td><td class="p-2 border-t border-stage-800">' + esc(v.translation)
-        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.CATEGORY_HE[v.category] || v.category)
-        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty || v.level) + '</td></tr>').join('');
+      const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : A.VOCAB;
+      const q = ($('vocab-search') ? $('vocab-search').value : '').trim().toLowerCase();
+
+      let rows = pool.filter(v => {
+        // Level filter
+        if (currentLevel !== 'all') {
+          const itemLvl = v.level || (v.difficulty ? (v.difficulty.toLowerCase() === 'medium' ? 'B_intermediate' : (v.difficulty.toLowerCase() === 'hard' ? 'C_advanced' : 'A_foundational')) : '');
+          if (itemLvl !== currentLevel) return false;
+        }
+
+        // Category / part of speech filter
+        if (category !== 'all') {
+          const itemCat = v.part_of_speech || v.category;
+          if (itemCat !== category) return false;
+        }
+
+        // Search query filter
+        if (q) {
+          const w = String(v.word || '').toLowerCase();
+          const tr = String(v.hebrew_translation || v.translation || '').toLowerCase();
+          const def = String(v.hebrew_definition || v.sample_sentence || v.example || '').toLowerCase();
+          if (!w.includes(q) && !tr.includes(q) && !def.includes(q)) return false;
+        }
+
+        return true;
+      });
+
+      const levelBadges = {
+        'A_foundational': '<span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-300 border border-emerald-800">רמה A (בסיס)</span>',
+        'B_intermediate': '<span class="px-2 py-0.5 rounded text-xs font-bold bg-amber-950 text-amber-300 border border-amber-800">רמה B (ביניים)</span>',
+        'C_advanced': '<span class="px-2 py-0.5 rounded text-xs font-bold bg-indigo-950 text-indigo-300 border border-indigo-800">רמה C (פטור)</span>'
+      };
+
+      const posNames = {
+        'verb': 'פועל',
+        'noun': 'שם עצם',
+        'adjective': 'שם תואר',
+        'adverb': 'תואר הפועל',
+        'connector': 'מילת קישור',
+        'conjunction': 'מילת קישור'
+      };
+
+      $('vocab-table').innerHTML = rows.map((v) => {
+        const wordText = esc(v.word);
+        const trText = esc(v.hebrew_translation || v.translation || '');
+        const defText = v.hebrew_definition ? '<div class="text-xs text-slate-400 mt-0.5">' + esc(v.hebrew_definition) + '</div>' : '';
+        const catText = esc(posNames[v.part_of_speech || v.category] || A.CATEGORY_HE[v.category] || v.category || '');
+        const lvlHtml = levelBadges[v.level] || ('<span class="text-xs text-slate-300">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty || v.level || '') + '</span>');
+
+        return '<tr>'
+          + '<td class="p-2 border-t border-stage-800" dir="ltr"><span class="font-bold text-indigo-300">' + wordText + '</span>'
+          + ' <button type="button" class="btn-vocab-speak text-xs px-1.5 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" data-speak="' + wordText + '" title="השמע הגייה" style="min-height:30px">🔊</button>'
+          + '</td>'
+          + '<td class="p-2 border-t border-stage-800"><span class="font-semibold text-slate-100">' + trText + '</span>' + defText + '</td>'
+          + '<td class="p-2 border-t border-stage-800 text-xs text-slate-300">' + catText + '</td>'
+          + '<td class="p-2 border-t border-stage-800">' + lvlHtml + '</td>'
+          + '</tr>';
+      }).join('');
+
       document.querySelectorAll('.btn-vocab-speak').forEach(btn => {
         btn.onclick = (e) => {
           e.stopPropagation();
           if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(btn.dataset.speak);
         };
       });
+
       $('vocab-empty').classList.toggle('hidden', rows.length > 0);
       document.querySelectorAll('.playlist-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === category)));
       document.querySelectorAll('.level-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === currentLevel)));
@@ -624,21 +681,30 @@
       fetch('data/imports/amiram_vocab_full.json')
         .then(res => res.json())
         .then(data => {
-          if (Array.isArray(data)) AMIRAM_VOCAB = data;
+          if (Array.isArray(data)) {
+            AMIRAM_VOCAB = data;
+            renderVocab();
+          }
         })
         .catch(() => {});
 
       fetch('data/imports/amiram_restatements.json')
         .then(res => res.json())
         .then(data => {
-          if (Array.isArray(data)) AMIRAM_RESTATEMENTS = data;
+          if (Array.isArray(data)) {
+            AMIRAM_RESTATEMENTS = data;
+            if (examType === 'restatement') renderQuiz();
+          }
         })
         .catch(() => {});
 
       fetch('data/imports/amiram_reading_passages.json')
         .then(res => res.json())
         .then(data => {
-          if (Array.isArray(data)) AMIRAM_READING_PASSAGES = data;
+          if (Array.isArray(data)) {
+            AMIRAM_READING_PASSAGES = data;
+            if (examType === 'reading') renderQuiz();
+          }
         })
         .catch(() => {});
     }
@@ -1555,7 +1621,7 @@
       });
     })();
 
-    showTab('song');
+    showTab('vocab');
     paint();
 </script>
 </body>
