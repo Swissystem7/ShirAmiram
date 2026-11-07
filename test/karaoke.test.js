@@ -41,6 +41,25 @@ test('predefined inflections accepted', () => {
   assert.equal(K.wordMatches('calming', 'calm'), true);
 });
 
+test('regression: do not match when heard token is merely a substring of target', () => {
+  // Substring words/letters must return false
+  assert.equal(K.wordMatches('a', 'peace'), false);
+  assert.equal(K.wordMatches('i', 'inevitable'), false);
+  assert.equal(K.wordMatches('to', 'stop'), false);
+
+  // Utterances with unrelated words must return false
+  assert.equal(K.utteranceMatches('I went there', 'inevitable'), false);
+
+  // Legitimate exact matches, inflections, and fuzzy matches still return true
+  assert.equal(K.wordMatches('peace', 'peace'), true);
+  assert.equal(K.utteranceMatches('peace', 'peace'), true);
+  assert.equal(K.utteranceMatches('I went there to find peace', 'peace'), true);
+  assert.equal(K.wordMatches('stopped', 'stop'), true);
+  assert.equal(K.wordMatches('inevitably', 'inevitable'), true);
+  assert.equal(K.wordMatches('peac', 'peace'), true);
+  assert.equal(K.wordMatches('inevitabl', 'inevitable'), true);
+});
+
 test('reject wrong word and out-of-window hits', () => {
   const session = K.createSession({
     words: [

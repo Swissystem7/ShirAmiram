@@ -193,7 +193,7 @@
     var t = sanitize(target);
     if (!h || !t) return false;
     if (h === t) return true;
-    if (h.includes(t) || t.includes(h)) return true;
+    if (h.includes(t)) return true;
     var infl = inflectionSet(t);
     if (infl[h]) return true;
     if (levenshtein(h, t) <= maxDistance(t)) return true;
