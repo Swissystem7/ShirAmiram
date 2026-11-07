@@ -507,6 +507,8 @@
     document.querySelectorAll('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
 
     // Vocabulary table: the search box, level buttons and category buttons work together
+    let CONTENT = null;
+    let timed = [];
     let category = 'all';
     let currentLevel = 'all';
     let AMIRAM_VOCAB = window.AMIRAM_VOCAB_DATA || [];
@@ -673,9 +675,6 @@
     let quizPool = [];
     let quizIndex = 0;
     let score = 0;
-    let AMIRAM_VOCAB = [];
-    let AMIRAM_RESTATEMENTS = [];
-    let AMIRAM_READING_PASSAGES = [];
 
     if (window.fetch) {
       fetch('data/imports/amiram_vocab_full.json')
@@ -971,16 +970,10 @@
         $('quiz-container').appendChild(div);
       });
     }
-        });
-        div.appendChild(fb);
-        $('quiz-container').appendChild(div);
-      });
-    }
     $('quiz-reset').addEventListener('click', renderQuiz);
     renderQuiz();
 
 
-    let CONTENT = null, timed = [];
     function renderSongs() {
       if (!CONTENT) return;
       $('exam-coverage').textContent = CONTENT.examCoverage;
