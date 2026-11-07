@@ -3,10 +3,10 @@
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-ROOT = Path.home() / "shiramiram"
+ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "index.html"
 VIEWPORTS = [(375, 812), (390, 844)]
-TABS = ["song", "vocab", "quiz", "songs", "karaoke"]
+TABS = ["song", "vocab", "quiz", "songs", "suno", "karaoke"]
 
 def test_mobile():
     url = "file://" + str(INDEX)

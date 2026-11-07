@@ -180,7 +180,7 @@ article,
 /* Exam quiz modes */
 .quiz-mode-bar {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 12px;
   width: 100%;
   margin-bottom: 12px;

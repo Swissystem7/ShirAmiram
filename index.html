@@ -146,6 +146,10 @@
       <div class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
         <button type="button" id="quiz-mode-quick" aria-pressed="true">מבחן מהיר (10 שאלות)</button>
         <button type="button" id="quiz-mode-full" aria-pressed="false">מבחן מלא (50 שאלות)</button>
+        <button type="button" id="quiz-mode-amiram-mix" aria-pressed="false">סימולציית אמיר"ם (25 שאלות)</button>
+        <button type="button" id="quiz-mode-amiram-a" aria-pressed="false">אמיר"ם רמה A</button>
+        <button type="button" id="quiz-mode-amiram-b" aria-pressed="false">אמיר"ם רמה B</button>
+        <button type="button" id="quiz-mode-amiram-c" aria-pressed="false">אמיר"ם רמה C</button>
       </div>
       <div id="quiz-progress" aria-live="polite">שאלה 0 מתוך 0</div>
       <div id="quiz-container" class="space-y-4">
@@ -258,6 +262,7 @@
   <script src="src/vocab.js"></script>
   <script src="src/suno_generator.js"></script>
   <script src="src/audio_player.js"></script>
+  <script src="src/exam_simulator.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -366,20 +371,45 @@
     });
 
 
-    // Quiz — content_v2 exam modes (quick 10 / full 50)
+    // Quiz — content_v2 exam modes (quick 10 / full 50) + Amiram Exam Simulator
     let quizMode = 'quick';
     let quizPool = [];
     let quizIndex = 0;
     let score = 0;
+    let AMIRAM_VOCAB = [];
+
+    if (window.fetch) {
+      fetch('data/imports/amiram_vocab_full.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) AMIRAM_VOCAB = data;
+        })
+        .catch(() => {});
+    }
+
     function setQuizMode(mode) {
-      quizMode = mode === 'full' ? 'full' : 'quick';
-      $('quiz-mode-quick').setAttribute('aria-pressed', String(quizMode === 'quick'));
-      $('quiz-mode-full').setAttribute('aria-pressed', String(quizMode === 'full'));
+      quizMode = mode;
+      const modes = ['quick', 'full', 'amiram-mix', 'amiram-a', 'amiram-b', 'amiram-c'];
+      modes.forEach(m => {
+        const el = $('quiz-mode-' + m);
+        if (el) el.setAttribute('aria-pressed', String(quizMode === m));
+      });
       renderQuiz();
     }
     $('quiz-mode-quick').addEventListener('click', () => setQuizMode('quick'));
     $('quiz-mode-full').addEventListener('click', () => setQuizMode('full'));
+    if ($('quiz-mode-amiram-mix')) $('quiz-mode-amiram-mix').addEventListener('click', () => setQuizMode('amiram-mix'));
+    if ($('quiz-mode-amiram-a')) $('quiz-mode-amiram-a').addEventListener('click', () => setQuizMode('amiram-a'));
+    if ($('quiz-mode-amiram-b')) $('quiz-mode-amiram-b').addEventListener('click', () => setQuizMode('amiram-b'));
+    if ($('quiz-mode-amiram-c')) $('quiz-mode-amiram-c').addEventListener('click', () => setQuizMode('amiram-c'));
+
     function pickQuizPool() {
+      if (window.ShirAmiramExam && Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) {
+        if (quizMode === 'amiram-mix') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'mixed_25');
+        if (quizMode === 'amiram-a') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'A', 20);
+        if (quizMode === 'amiram-b') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'B', 20);
+        if (quizMode === 'amiram-c') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'C', 20);
+      }
       const all = (CONTENT && Array.isArray(CONTENT.questions) && CONTENT.questions.length)
         ? CONTENT.questions.slice().sort((a, b) => a.id - b.id)
         : (A.QUIZ || []).map((q, i) => ({ id: i + 1, question: q.q, options: q.opts, answer: q.a, explanation: '', word: q.a }));
