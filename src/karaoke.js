@@ -468,6 +468,136 @@
     return 'karaoke-status-idle';
   }
 
+  function finishSession(sessionState, storage) {
+    var s = sessionState || {};
+    var st = (s && typeof s.state === 'object' && s.state !== null) ? s.state : s;
+
+    var songId = s.songId != null ? s.songId : st.songId;
+    if (songId == null || songId === '') {
+      songId = 'default';
+    } else {
+      songId = String(songId);
+    }
+
+    var rawScore = s.score != null ? s.score : st.score;
+    var score = Number(rawScore);
+    if (!isFinite(score)) {
+      score = 0;
+    }
+
+    var rawHits = s.hits != null ? s.hits : st.hits;
+    var hits = 0;
+    if (Array.isArray(rawHits)) {
+      hits = rawHits.length;
+    } else if (rawHits != null) {
+      var numHits = Number(rawHits);
+      if (isFinite(numHits)) {
+        hits = numHits;
+      }
+    }
+
+    var rawBestStreak = s.bestStreak != null ? s.bestStreak : st.bestStreak;
+    var bestStreak = 0;
+    if (rawBestStreak != null && isFinite(Number(rawBestStreak))) {
+      bestStreak = Number(rawBestStreak);
+    } else if (Array.isArray(rawHits)) {
+      var maxStreak = 0;
+      for (var i = 0; i < rawHits.length; i++) {
+        var h = rawHits[i];
+        var sVal = 0;
+        if (h != null) {
+          if (typeof h === 'object' && h.streak != null) {
+            sVal = Number(h.streak);
+          } else if (typeof h === 'number') {
+            sVal = h;
+          }
+        }
+        if (isFinite(sVal) && sVal > maxStreak) {
+          maxStreak = sVal;
+        }
+      }
+      bestStreak = maxStreak;
+    }
+
+    var totalTargets;
+    var rawTotal = s.totalTargets != null ? s.totalTargets : st.totalTargets;
+    if (rawTotal != null && isFinite(Number(rawTotal))) {
+      totalTargets = Number(rawTotal);
+    } else {
+      var words = s.words != null ? s.words : st.words;
+      if (words && (Array.isArray(words) || typeof words.length === 'number')) {
+        totalTargets = words.length;
+      } else {
+        var rawMisses = s.misses != null ? s.misses : st.misses;
+        if (rawMisses != null) {
+          var missesLen = Array.isArray(rawMisses) ? rawMisses.length : (isFinite(Number(rawMisses)) ? Number(rawMisses) : 0);
+          totalTargets = hits + missesLen;
+        } else {
+          totalTargets = hits;
+        }
+      }
+    }
+
+    var accuracy = 0;
+    if (totalTargets > 0) {
+      accuracy = Math.round((hits / totalTargets) * 100);
+    }
+
+    var targetStorage = storage;
+    if (!targetStorage) {
+      try {
+        if (typeof globalThis !== 'undefined' && globalThis.localStorage) {
+          targetStorage = globalThis.localStorage;
+        } else if (typeof window !== 'undefined' && window.localStorage) {
+          targetStorage = window.localStorage;
+        }
+      } catch (e) {
+        targetStorage = null;
+      }
+    }
+
+    var key = 'shiramiram_karaoke_high_' + songId;
+    var prevHighScore = 0;
+    if (targetStorage) {
+      try {
+        if (typeof targetStorage.getItem === 'function') {
+          var stored = targetStorage.getItem(key);
+          if (stored !== null && stored !== undefined && stored !== '') {
+            var parsed = Number(stored);
+            if (isFinite(parsed)) {
+              prevHighScore = parsed;
+            }
+          }
+        }
+      } catch (e) {
+        prevHighScore = 0;
+      }
+    }
+
+    var isNewHighScore = false;
+    if (score > prevHighScore) {
+      isNewHighScore = true;
+      if (targetStorage) {
+        try {
+          if (typeof targetStorage.setItem === 'function') {
+            targetStorage.setItem(key, String(score));
+          }
+        } catch (e) {
+          // Any storage error must not throw.
+        }
+      }
+    }
+
+    return {
+      score: score,
+      hits: hits,
+      totalTargets: totalTargets,
+      accuracy: accuracy,
+      bestStreak: bestStreak,
+      isNewHighScore: isNewHighScore
+    };
+  }
+
   return {
     sanitize: sanitize,
     tokens: tokens,
@@ -482,6 +612,7 @@
     createSession: createSession,
     createInstrumentalPlayer: createInstrumentalPlayer,
     statusClass: statusClass,
+    finishSession: finishSession,
     INFLECTIONS: INFLECTIONS,
     DEFAULT_WINDOW_MS: DEFAULT_WINDOW_MS,
     BASE_POINTS: BASE_POINTS,
