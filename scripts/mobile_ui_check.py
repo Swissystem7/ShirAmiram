@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parent.parent
 INDEX = ROOT / "index.html"
 VIEWPORTS = [(375, 812), (390, 844)]
-TABS = ["song", "vocab", "quiz", "flashcards", "songs", "suno", "karaoke"]
+TABS = ["song", "vocab", "quiz", "flashcards", "dashboard", "songs", "suno", "karaoke"]
 
 def test_mobile():
     url = "file://" + str(INDEX)

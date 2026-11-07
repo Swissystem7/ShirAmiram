@@ -65,6 +65,7 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false">כרטיסיות SRS</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false">מדד אמיר"ם</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
@@ -217,6 +218,89 @@
       </div>
     </section>
 
+    <!-- Amiram Analytics Dashboard Tab -->
+    <section id="dashboard" class="tab-content hidden">
+      <!-- Hero Score Card -->
+      <div class="p-6 bg-stage-800 rounded-xl border border-white/10 shadow-xl mb-4 text-center">
+        <p class="text-xs text-muted uppercase tracking-wider mb-1">ציון אמיר"ם משוער (מדד 50–150)</p>
+        <div class="flex items-center justify-center gap-2 my-2">
+          <span id="amiram-score-display" class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">50</span>
+          <span class="text-xl text-muted font-bold">/ 150</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 mt-2">
+          <span id="amiram-cefr-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-950 text-indigo-200 border border-indigo-700/60">רמה טרום בסיסי</span>
+        </div>
+        <p id="amiram-academic-desc" class="text-xs text-indigo-300 mt-2 font-medium">חיזוק מילים בסיסיות מומלץ לקראת מבחן ראשון</p>
+        <p id="amiram-confidence" class="text-xs text-muted mt-1 opacity-70">רמת מהימנות: נמוכה (מדגם ראשוני)</p>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div class="p-3 bg-stage-800 rounded border border-white/5 text-center">
+          <div class="text-xs text-muted mb-1">דיוק Cloze</div>
+          <div id="metric-cloze" class="text-xl font-bold text-emerald-400">0%</div>
+        </div>
+        <div class="p-3 bg-stage-800 rounded border border-white/5 text-center">
+          <div class="text-xs text-muted mb-1">עוצמת שימור (SRS)</div>
+          <div id="metric-retention" class="text-xl font-bold text-indigo-400">0%</div>
+        </div>
+        <div class="p-3 bg-stage-800 rounded border border-white/5 text-center">
+          <div class="text-xs text-muted mb-1">כיסוי אוצר מילים</div>
+          <div id="metric-coverage" class="text-xl font-bold text-purple-400">0%</div>
+        </div>
+        <div class="p-3 bg-stage-800 rounded border border-white/5 text-center">
+          <div class="text-xs text-muted mb-1">עקביות תרגול</div>
+          <div id="metric-consistency" class="text-xl font-bold text-pink-400">0%</div>
+        </div>
+      </div>
+
+      <!-- Level Mastery Breakdown -->
+      <div class="p-4 bg-stage-800 rounded border border-white/5 mb-4 space-y-3">
+        <h3 class="font-bold text-sm text-indigo-200">שליטה באוצר מילים לפי רמות (300 מילים)</h3>
+        
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>רמה A (בסיסי - 100 מילים)</span>
+            <span id="level-a-stats">0% שליטה</span>
+          </div>
+          <div class="w-full bg-stage-900 rounded-full h-2.5 overflow-hidden">
+            <div id="bar-level-a" class="bg-emerald-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>רמה B (בינוני - 100 מילים)</span>
+            <span id="level-b-stats">0% שליטה</span>
+          </div>
+          <div class="w-full bg-stage-900 rounded-full h-2.5 overflow-hidden">
+            <div id="bar-level-b" class="bg-indigo-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>רמה C (מתקדם - 100 מילים)</span>
+            <span id="level-c-stats">0% שליטה</span>
+          </div>
+          <div class="w-full bg-stage-900 rounded-full h-2.5 overflow-hidden">
+            <div id="bar-level-c" class="bg-pink-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weak Words Review Queue -->
+      <div class="p-4 bg-stage-800 rounded border border-white/5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-sm text-amber-300">🎯 מילים מומלצות לחיזוק (טעויות Cloze ו-SRS)</h3>
+          <span id="weak-words-count" class="text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-bold">0 מילים</span>
+        </div>
+        <div id="weak-words-list" class="space-y-2 mt-3">
+          <p class="text-xs text-muted">עדיין אין מילים מסומנות לחיזוק. בצע מבחן או כרטיסיות כדי לעקוב אחר טעויות.</p>
+        </div>
+      </div>
+    </section>
+
     <section id="songs" class="tab-content hidden">
       <p id="content-status" class="text-sm mb-2" aria-live="polite">טוען תוכן…</p>
       <p class="text-sm mb-2">כיסוי מבחן: <span id="exam-coverage">unknown</span> — לא נטען כיסוי שלא אומת. אין חיבור חשבון Spotify/YouTube Music; הקישורים וההטמעה הם ציבוריים בלבד.</p>
@@ -322,6 +406,7 @@
   <script src="src/audio_player.js"></script>
   <script src="src/exam_simulator.js"></script>
   <script src="src/srs_leitner.js"></script>
+  <script src="src/analytics.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -522,6 +607,9 @@
             $('quiz-explanation').textContent = item.explanation || '';
             if (right) score++;
             $('quiz-score').textContent = String(score);
+            if (typeof window.recordQuizAttempt === 'function') {
+              window.recordQuizAttempt(item.id || item.word || i, right);
+            }
             div.querySelectorAll('.quiz-opt').forEach((b) => { b.disabled = true; });
             quizIndex = i;
             updateQuizProgress();
@@ -755,6 +843,86 @@
           if (!srsSession.length) startSrsSession();
         });
       }
+    })();
+
+    // --- Amiram Analytics Dashboard Controller ---
+    (function initAnalytics() {
+      const AN = window.ShirAmiramAnalytics;
+      if (!AN) return;
+
+      let state = AN.loadAnalyticsState();
+
+      window.recordQuizAttempt = function(cardId, isRight) {
+        state = AN.recordAttempt(state, cardId, 'cloze', isRight);
+        AN.saveAnalyticsState(state);
+        renderDashboard();
+      };
+
+      function renderDashboard() {
+        const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : (CONTENT ? CONTENT.words : A.VOCAB);
+        
+        if (window.ShirAmiramSRS) {
+          const srsState = window.ShirAmiramSRS.loadState();
+          if (srsState && srsState.cards) {
+            Object.keys(srsState.cards).forEach(k => {
+              if (!state.cards[k]) {
+                state.cards[k] = { box: srsState.cards[k].box, correct: srsState.cards[k].correctCount, incorrect: 0 };
+              } else {
+                state.cards[k].box = Math.max(state.cards[k].box || 1, srsState.cards[k].box || 1);
+              }
+            });
+          }
+        }
+
+        const scoreRes = AN.calculateAmiramScore(state, pool);
+        const cefrRes = AN.estimateCefr(scoreRes.score);
+        const mastery = AN.summarizeMastery(pool, state.cards);
+        const weakWords = AN.buildReviewQueue(state, pool, 6);
+
+        if ($('amiram-score-display')) $('amiram-score-display').textContent = String(scoreRes.score);
+        if ($('amiram-cefr-badge')) $('amiram-cefr-badge').textContent = 'רמה ' + cefrRes.cefr + ' • ' + cefrRes.academicLevel;
+        if ($('amiram-academic-desc')) $('amiram-academic-desc').textContent = cefrRes.description;
+        if ($('amiram-confidence')) $('amiram-confidence').textContent = 'רמת מהימנות: ' + scoreRes.confidence + ' (' + scoreRes.sampleSize + ' דגימות)';
+
+        if ($('metric-cloze')) $('metric-cloze').textContent = scoreRes.metrics.clozeAccuracy + '%';
+        if ($('metric-retention')) $('metric-retention').textContent = scoreRes.metrics.retentionStrength + '%';
+        if ($('metric-coverage')) $('metric-coverage').textContent = scoreRes.metrics.vocabularyCoverage + '%';
+        if ($('metric-consistency')) $('metric-consistency').textContent = scoreRes.metrics.consistency + '%';
+
+        const pctA = mastery.A.total ? Math.round((mastery.A.mastered / mastery.A.total) * 100) : 0;
+        const pctB = mastery.B.total ? Math.round((mastery.B.mastered / mastery.B.total) * 100) : 0;
+        const pctC = mastery.C.total ? Math.round((mastery.C.mastered / mastery.C.total) * 100) : 0;
+
+        if ($('level-a-stats')) $('level-a-stats').textContent = pctA + '% שליטה (' + mastery.A.mastered + '/' + mastery.A.total + ')';
+        if ($('bar-level-a')) $('bar-level-a').style.width = pctA + '%';
+
+        if ($('level-b-stats')) $('level-b-stats').textContent = pctB + '% שליטה (' + mastery.B.mastered + '/' + mastery.B.total + ')';
+        if ($('bar-level-b')) $('bar-level-b').style.width = pctB + '%';
+
+        if ($('level-c-stats')) $('level-c-stats').textContent = pctC + '% שליטה (' + mastery.C.mastered + '/' + mastery.C.total + ')';
+        if ($('bar-level-c')) $('bar-level-c').style.width = pctC + '%';
+
+        if ($('weak-words-count')) $('weak-words-count').textContent = weakWords.length + ' מילים';
+        const listEl = $('weak-words-list');
+        if (listEl) {
+          if (!weakWords.length) {
+            listEl.innerHTML = '<p class="text-xs text-muted">כל הכבוד! אין מילים חלשות הדורשות תרגול כעת.</p>';
+          } else {
+            listEl.innerHTML = weakWords.map(w => {
+              return '<div class="p-2 bg-stage-900 rounded flex items-center justify-between border border-white/5">'
+                + '<div><strong dir="ltr" class="text-indigo-300 mr-2">' + esc(w.word) + '</strong><span class="text-xs opacity-75">' + esc(w.hebrew_translation || w.translation || '') + '</span></div>'
+                + '<span class="text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-400 font-bold">' + esc(w.level ? w.level.replace('_foundational', '').replace('_intermediate', '').replace('_advanced', '') : 'A') + '</span>'
+                + '</div>';
+            }).join('');
+          }
+        }
+      }
+
+      const dashTabBtn = document.querySelector('[data-tab="dashboard"]');
+      if (dashTabBtn) {
+        dashTabBtn.addEventListener('click', renderDashboard);
+      }
+      renderDashboard();
     })();
 
     // --- Voice Karaoke Challenge ---
