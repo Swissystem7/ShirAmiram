@@ -65,6 +65,7 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
   </nav>
 
@@ -117,7 +118,19 @@
     <section id="vocab" class="tab-content hidden">
       <div class="flex flex-col gap-2 mb-4">
         <input id="vocab-search" type="search" placeholder="חפש מילים…" aria-label="חיפוש מילה" class="p-2 bg-stage-900 rounded text-neon-pink">
-        <div id="vocab-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי סוג מילה"></div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs text-slate-400 font-bold">רמת קושי:</span>
+          <div id="vocab-level-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי רמת קושי">
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="all" aria-pressed="true" style="min-height:44px">הכול</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="A_foundational" aria-pressed="false" style="min-height:44px">רמה A (בסיסי)</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="B_intermediate" aria-pressed="false" style="min-height:44px">רמה B (בינוני)</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="C_advanced" aria-pressed="false" style="min-height:44px">רמה C (מתקדם)</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs text-slate-400 font-bold">סוג מילה:</span>
+          <div id="vocab-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי סוג מילה"></div>
+        </div>
       </div>
       <table class="w-full text-sm border-collapse">
         <thead class="bg-stage-800">
@@ -169,6 +182,52 @@
       <button id="btn-suno" type="button" class="song-link bg-neon-pink rounded">צור ייצוא Suno ממילות היעד</button>
       <textarea id="suno-out" dir="ltr" rows="8" class="w-full mt-2 p-2 bg-stage-900 rounded text-left" readonly></textarea>
     </section>
+ 
+    <!-- Suno Studio Tab -->
+    <section id="suno" class="tab-content hidden glass-card p-4">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-xl font-bold text-neon-purple">Suno Studio • מחולל שירים למילות אמיר"ם</h2>
+          <p class="text-sm text-slate-300">הפקת שירים מלאים עבור מילות היעד שאין להן שיר קיים במאגר. העתיקו את הפרומפט והמילים ליצירה ב-Suno.</p>
+        </div>
+      </div>
+      <div class="mb-4 flex flex-wrap gap-2 items-center">
+        <label class="text-sm font-bold text-slate-300">בחר שיר להפקה:</label>
+        <select id="suno-song-select" class="p-2 bg-stage-900 border border-slate-700 rounded text-sm text-slate-100 flex-1 max-w-md" style="min-height:44px"></select>
+      </div>
+      <div id="suno-card" class="p-4 bg-stage-900/80 rounded-xl border border-slate-700/80 space-y-4">
+        <div class="flex justify-between items-start flex-wrap gap-2">
+          <div>
+            <h3 id="suno-title" class="text-lg font-bold text-indigo-400"></h3>
+            <p id="suno-meta" class="text-xs text-slate-400"></p>
+          </div>
+          <span id="suno-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-900/60 text-amber-200 border border-amber-500/40">סטטוס: pending_manual</span>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-slate-400 mb-1">מילות היעד בשיר:</h4>
+          <div id="suno-words-tags" class="flex flex-wrap gap-1"></div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="text-xs font-bold text-slate-400">פרומפט סגנון (Style Prompt):</h4>
+            <button type="button" id="btn-copy-suno-style" class="text-xs px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-500 font-bold" style="min-height:44px">העתק סגנון</button>
+          </div>
+          <div id="suno-style-text" class="p-2 bg-slate-950 rounded text-xs text-slate-300 font-mono text-left" dir="ltr"></div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="text-xs font-bold text-slate-400">מילות השיר (Lyrics):</h4>
+            <button type="button" id="btn-copy-suno-lyrics" class="text-xs px-3 py-1 rounded bg-pink-600 hover:bg-pink-500 font-bold" style="min-height:44px">העתק מילים מלאות</button>
+          </div>
+          <pre id="suno-lyrics-text" class="p-3 bg-slate-950 rounded text-xs text-slate-200 font-mono whitespace-pre-wrap text-left max-h-60 overflow-y-auto" dir="ltr"></pre>
+        </div>
+        <div class="pt-2 border-t border-slate-800">
+          <h4 class="text-xs font-bold text-slate-400 mb-2">נגן שמע מקומי:</h4>
+          <div id="suno-audio-status" class="text-xs text-amber-300 mb-2">ממתין להפקת אודיו ב-Suno (העתיקו את המילים והפרומפט)</div>
+          <audio id="suno-audio-player" controls class="w-full hidden"></audio>
+        </div>
+      </div>
+    </section>
 
     <section id="karaoke" class="tab-content hidden karaoke-panel" aria-label="Voice Karaoke Challenge">
       <h2 class="text-xl font-bold mb-2">Voice Karaoke Challenge</h2>
@@ -196,6 +255,9 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="src/vocab.js"></script>
+  <script src="src/suno_generator.js"></script>
+  <script src="src/audio_player.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -209,17 +271,24 @@
     }
     document.querySelectorAll('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
 
-    // Vocabulary table: the search box and the category buttons work together
+    // Vocabulary table: the search box, level buttons and category buttons work together
     let category = 'all';
+    let currentLevel = 'all';
     function renderVocab() {
-      const rows = A.filterVocab($('vocab-search').value, category);
+      let rows = A.filterVocab($('vocab-search').value, category);
+      if (currentLevel !== 'all') {
+        const levelCode = currentLevel.replace('_foundational', '').replace('_intermediate', '').replace('_advanced', '').toLowerCase();
+        rows = rows.filter(v => (v.difficulty && v.difficulty.toLowerCase() === levelCode) || (v.level && v.level === currentLevel));
+      }
       $('vocab-table').innerHTML = rows.map((v) => '<tr><td class="p-2 border-t border-stage-800" dir="ltr">' + esc(v.word)
         + '</td><td class="p-2 border-t border-stage-800">' + esc(v.translation)
         + '</td><td class="p-2 border-t border-stage-800">' + esc(A.CATEGORY_HE[v.category] || v.category)
-        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty) + '</td></tr>').join('');
+        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty || v.level) + '</td></tr>').join('');
       $('vocab-empty').classList.toggle('hidden', rows.length > 0);
       document.querySelectorAll('.playlist-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === category)));
+      document.querySelectorAll('.level-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === currentLevel)));
     }
+    document.querySelectorAll('.level-btn').forEach((b) => b.addEventListener('click', () => { currentLevel = b.dataset.level; renderVocab(); }));
     $('vocab-filters').innerHTML = A.CATEGORIES.map((c) => '<button type="button" class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.he) + '</button>').join('');
     document.querySelectorAll('.playlist-btn').forEach((b) => b.addEventListener('click', () => { category = b.dataset.cat; renderVocab(); }));
     $('vocab-search').addEventListener('input', renderVocab);
@@ -437,6 +506,49 @@
     function renderTimed(){ const idx=A.activeTimedLine(timed, $('local-audio').currentTime||0); $('timed-lines').innerHTML=timed.map((l,i)=>'<button type="button" class="quiz-opt '+(i===idx?'bg-neon-purple':'bg-stage-800')+' rounded" data-t="'+l.time+'">'+esc(l.text)+'</button>').join(''); document.querySelectorAll('#timed-lines [data-t]').forEach(b=>b.addEventListener('click',()=>{ $('local-audio').currentTime=Number(b.dataset.t); renderTimed(); })); }
     $('local-audio').addEventListener('timeupdate', renderTimed);
 
+
+    // --- Suno Studio Controller ---
+    let SUNO_SONGS = [];
+    async function initSunoStudio() {
+      try {
+        const res = await fetch('data/suno_prompts/generated_songs.json');
+        if (res.ok) {
+          SUNO_SONGS = await res.json();
+          renderSunoStudio();
+        }
+      } catch (e) {}
+    }
+    function renderSunoStudio() {
+      const sel = $('suno-song-select');
+      if (!sel || !SUNO_SONGS.length) return;
+      sel.innerHTML = SUNO_SONGS.map(s => '<option value="' + s.id + '">' + esc(s.title) + ' (' + s.target_words.slice(0, 3).join(', ') + '...)</option>').join('');
+      sel.onchange = () => updateSunoCard(Number(sel.value));
+      updateSunoCard(SUNO_SONGS[0].id);
+    }
+    function updateSunoCard(id) {
+      const song = SUNO_SONGS.find(s => s.id === id) || SUNO_SONGS[0];
+      if (!song) return;
+      $('suno-title').textContent = song.title;
+      $('suno-meta').textContent = song.genre + ' • ' + song.bpm + ' BPM';
+      $('suno-words-tags').innerHTML = song.target_words.map(w => '<span class="px-2 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/50 text-xs font-bold">' + esc(w) + '</span>').join('');
+      $('suno-style-text').textContent = song.style_prompt;
+      $('suno-lyrics-text').textContent = song.lyrics;
+
+      $('btn-copy-suno-style').onclick = () => {
+        navigator.clipboard.writeText(song.style_prompt).then(() => {
+          $('btn-copy-suno-style').textContent = 'הועתק!';
+          setTimeout(() => { $('btn-copy-suno-style').textContent = 'העתק סגנון'; }, 1500);
+        });
+      };
+      $('btn-copy-suno-lyrics').onclick = () => {
+        const fullPrompt = song.style_prompt + '\n\n' + song.lyrics;
+        navigator.clipboard.writeText(fullPrompt).then(() => {
+          $('btn-copy-suno-lyrics').textContent = 'הועתק!';
+          setTimeout(() => { $('btn-copy-suno-lyrics').textContent = 'העתק מילים מלאות'; }, 1500);
+        });
+      };
+    }
+    initSunoStudio();
 
     // --- Voice Karaoke Challenge ---
     (function initKaraoke() {
