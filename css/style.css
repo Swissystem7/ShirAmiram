@@ -536,6 +536,43 @@ article,
   margin: 10px 0;
 }
 
+/* Flashcards SRS styles */
+.srs-card-wrapper {
+  perspective: 1000px;
+  width: 100%;
+  min-height: 280px;
+}
+.srs-card {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  cursor: pointer;
+}
+.srs-card.flipped {
+  transform: rotateY(180deg);
+}
+.srs-card-front, .srs-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: rgba(30, 41, 59, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+.srs-card-back {
+  transform: rotateY(180deg);
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
 /* Mobile responsive adjustments */
 @media (max-width: 390px) {
   .karaoke-scoreboard { grid-template-columns: 1fr; }

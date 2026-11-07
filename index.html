@@ -64,6 +64,7 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false">כרטיסיות SRS</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
@@ -159,6 +160,63 @@
       <div class="mt-4 text-xl font-bold" aria-live="polite">ציון: <span id="quiz-score">0</span>/<span id="quiz-total">0</span></div>
       <button id="quiz-reset" type="button" class="mt-2 px-3 py-1 bg-neon-purple rounded" style="min-height:44px">מתחילים מחדש</button>
     </section>
+
+    <!-- Flashcards SRS Tab -->
+    <section id="flashcards" class="tab-content hidden">
+      <div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="סינון רמת כרטיסיות">
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="all" aria-pressed="true">הכול</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="A" aria-pressed="false">רמה A</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="B" aria-pressed="false">רמה B</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="C" aria-pressed="false">רמה C</button>
+      </div>
+
+      <div class="flex items-center justify-between mb-3 text-sm opacity-90">
+        <div id="srs-counter" aria-live="polite">כרטיסייה 0 מתוך 0</div>
+        <div id="srs-box-badge" class="px-2 py-0.5 rounded bg-indigo-900 text-indigo-200 border border-indigo-700 font-bold">קופסה 1</div>
+      </div>
+
+      <!-- 3D Card Container -->
+      <div class="srs-card-wrapper mb-4">
+        <div id="srs-card" class="srs-card">
+          <!-- Front Side -->
+          <div class="srs-card-front p-6 flex flex-col justify-between rounded-xl">
+            <div class="flex items-center justify-between">
+              <span id="srs-card-level" class="text-xs px-2 py-1 rounded bg-stage-900 text-neon-pink font-semibold">רמה A</span>
+              <button id="srs-btn-speak" type="button" class="text-xs px-2 py-1 bg-stage-900 rounded hover:bg-stage-800 text-indigo-300 font-bold" title="השמע הגייה" style="min-height:36px">🔊 השמע</button>
+            </div>
+            <div class="my-6 text-center">
+              <h2 id="srs-card-word" dir="ltr" class="text-3xl font-black text-indigo-300 mb-2">word</h2>
+              <p id="srs-card-pos" class="text-xs text-muted">חלק דיבר</p>
+            </div>
+            <p id="srs-card-cloze" dir="ltr" class="text-sm text-center opacity-80 italic">sample sentence with ______</p>
+          </div>
+          <!-- Back Side -->
+          <div class="srs-card-back p-6 flex flex-col justify-between rounded-xl">
+            <div class="text-center">
+              <h3 id="srs-card-trans" class="text-2xl font-bold text-white mb-2">תרגום</h3>
+              <p id="srs-card-def" class="text-sm text-indigo-200 mb-4">הגדרה בעברית</p>
+            </div>
+            <div class="p-3 bg-stage-900/60 rounded border border-white/5 text-center">
+              <p id="srs-card-full-sentence" dir="ltr" class="text-sm text-gray-200">Full English sentence</p>
+            </div>
+            <div class="text-xs text-center opacity-60">לחץ להפיכה חוזרת</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mb-4">
+        <button id="srs-btn-flip" type="button" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-500 rounded font-bold transition shadow" style="min-height:44px">הצג תשובה / הפוך כרטיסייה</button>
+      </div>
+
+      <!-- Rating Buttons (Leitner SRS) -->
+      <div id="srs-actions" class="grid grid-cols-4 gap-2 hidden">
+        <button type="button" id="srs-btn-again" class="py-2 bg-red-900/80 hover:bg-red-800 text-red-200 rounded font-bold text-xs" style="min-height:44px">שוב (Box 1)</button>
+        <button type="button" id="srs-btn-hard" class="py-2 bg-amber-900/80 hover:bg-amber-800 text-amber-200 rounded font-bold text-xs" style="min-height:44px">קשה</button>
+        <button type="button" id="srs-btn-good" class="py-2 bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 rounded font-bold text-xs" style="min-height:44px">טוב (+1)</button>
+        <button type="button" id="srs-btn-easy" class="py-2 bg-sky-900/80 hover:bg-sky-800 text-sky-200 rounded font-bold text-xs" style="min-height:44px">קל (+2)</button>
+      </div>
+    </section>
+
     <section id="songs" class="tab-content hidden">
       <p id="content-status" class="text-sm mb-2" aria-live="polite">טוען תוכן…</p>
       <p class="text-sm mb-2">כיסוי מבחן: <span id="exam-coverage">unknown</span> — לא נטען כיסוי שלא אומת. אין חיבור חשבון Spotify/YouTube Music; הקישורים וההטמעה הם ציבוריים בלבד.</p>
@@ -263,6 +321,7 @@
   <script src="src/suno_generator.js"></script>
   <script src="src/audio_player.js"></script>
   <script src="src/exam_simulator.js"></script>
+  <script src="src/srs_leitner.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -579,6 +638,124 @@
       };
     }
     initSunoStudio();
+
+    // --- Flashcards SRS Controller ---
+    (function initFlashcards() {
+      const SRS = window.ShirAmiramSRS;
+      if (!SRS) return;
+
+      let srsState = SRS.loadState();
+      let srsSession = [];
+      let srsIndex = 0;
+      let srsLevel = 'all';
+      let isFlipped = false;
+
+      function speakCurrentWord() {
+        if (!srsSession.length) return;
+        const card = srsSession[srsIndex];
+        if (card && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(card.word);
+          u.lang = 'en-US';
+          u.rate = 0.9;
+          window.speechSynthesis.speak(u);
+        }
+      }
+
+      function flipCard(force) {
+        isFlipped = typeof force === 'boolean' ? force : !isFlipped;
+        const el = $('srs-card');
+        if (el) el.classList.toggle('flipped', isFlipped);
+        const actions = $('srs-actions');
+        if (actions) actions.classList.toggle('hidden', !isFlipped);
+      }
+
+      function renderCurrentCard() {
+        flipCard(false);
+        const total = srsSession.length;
+        if (!total) {
+          $('srs-counter').textContent = 'אין כרטיסיות להצגה';
+          $('srs-card-word').textContent = 'מצוין!';
+          $('srs-card-pos').textContent = '';
+          $('srs-card-cloze').textContent = 'סיימת את כל הכרטיסיות לסבב זה.';
+          $('srs-card-trans').textContent = 'השלמת סשן';
+          $('srs-card-def').textContent = '';
+          $('srs-card-full-sentence').textContent = '';
+          return;
+        }
+
+        const card = srsSession[srsIndex];
+        const prog = srsState.cards[String(card.id || card.word)] || SRS.initProgress(card.id || card.word);
+        
+        $('srs-counter').textContent = 'כרטיסייה ' + (srsIndex + 1) + ' מתוך ' + total;
+        $('srs-box-badge').textContent = 'קופסה ' + (prog.box || 1);
+        $('srs-card-level').textContent = card.level ? ('רמה ' + card.level.replace('A_foundational', 'A').replace('B_intermediate', 'B').replace('C_advanced', 'C')) : 'רמה A';
+        $('srs-card-word').textContent = card.word;
+        $('srs-card-pos').textContent = card.part_of_speech || '';
+        
+        // Cloze sentence
+        const sent = card.sample_sentence || '';
+        const regex = new RegExp('\\b' + card.word + '\\b', 'i');
+        const cloze = sent.replace(regex, '______');
+        $('srs-card-cloze').textContent = cloze;
+
+        // Back side
+        $('srs-card-trans').textContent = card.hebrew_translation || card.translation || '';
+        $('srs-card-def').textContent = card.hebrew_definition || '';
+        $('srs-card-full-sentence').textContent = sent;
+      }
+
+      function startSrsSession() {
+        const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : (CONTENT ? CONTENT.words : A.VOCAB);
+        srsSession = SRS.createSession(pool, srsState.cards, {
+          level: srsLevel === 'all' ? undefined : srsLevel,
+          batchSize: 15
+        });
+        srsIndex = 0;
+        renderCurrentCard();
+      }
+
+      function handleRating(result) {
+        if (!srsSession.length) return;
+        const card = srsSession[srsIndex];
+        const key = String(card.id || card.word);
+        const currentProg = srsState.cards[key] || SRS.initProgress(key);
+        const nextProg = SRS.calculateNextState(currentProg, result);
+        srsState.cards[key] = nextProg;
+        SRS.saveState(srsState);
+
+        srsIndex++;
+        if (srsIndex >= srsSession.length) {
+          startSrsSession();
+        } else {
+          renderCurrentCard();
+        }
+      }
+
+      // Event listeners
+      if ($('srs-card')) $('srs-card').addEventListener('click', () => flipCard());
+      if ($('srs-btn-flip')) $('srs-btn-flip').addEventListener('click', () => flipCard());
+      if ($('srs-btn-speak')) $('srs-btn-speak').addEventListener('click', (e) => { e.stopPropagation(); speakCurrentWord(); });
+      if ($('srs-btn-again')) $('srs-btn-again').addEventListener('click', () => handleRating('again'));
+      if ($('srs-btn-hard')) $('srs-btn-hard').addEventListener('click', () => handleRating('hard'));
+      if ($('srs-btn-good')) $('srs-btn-good').addEventListener('click', () => handleRating('good'));
+      if ($('srs-btn-easy')) $('srs-btn-easy').addEventListener('click', () => handleRating('easy'));
+
+      document.querySelectorAll('.srs-level-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          srsLevel = btn.dataset.level;
+          document.querySelectorAll('.srs-level-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.level === srsLevel)));
+          startSrsSession();
+        });
+      });
+
+      const flashTabBtn = document.querySelector('[data-tab="flashcards"]');
+      if (flashTabBtn) {
+        flashTabBtn.addEventListener('click', () => {
+          if (!srsSession.length) startSrsSession();
+        });
+      }
+    })();
 
     // --- Voice Karaoke Challenge ---
     (function initKaraoke() {
