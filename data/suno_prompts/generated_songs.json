@@ -1,0 +1,3144 @@
+[
+  {
+    "id": 1,
+    "title": "Anthem of Achieve",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "achieve",
+      "adapt",
+      "affect",
+      "annual",
+      "apparent",
+      "approach"
+    ],
+    "word_details": [
+      {
+        "word": "achieve",
+        "tr": "להשיג",
+        "def": "פועל: להגיע לתוצאה או למטרה בעבודה קשה",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "adapt",
+        "tr": "להסתגל",
+        "def": "פועל: להתאים את עצמך לתנאים חדשים",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "affect",
+        "tr": "להשפיע על",
+        "def": "פועל: לחולל שינוי באדם או בדבר מה",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "annual",
+        "tr": "שנתי",
+        "def": "שם תואר: שקורה או מתפרסם פעם בשנה",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "apparent",
+        "tr": "גלוי, נראה לעין",
+        "def": "שם תואר: ברור ומובן מאליו לכל צופה",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "approach",
+        "tr": "גישה",
+        "def": "שם עצם: דרך להתמודד עם נושא או בעיה",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [ACHIEVE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [ADAPT] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [AFFECT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [ANNUAL] the balance when the heavy skies turn gray,\nAnd [APPARENT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [APPROACH] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_1.mp3",
+    "timing_path": "assets/timing/suno_1.lrc"
+  },
+  {
+    "id": 2,
+    "title": "Anthem of Appropriate",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "appropriate",
+      "assume",
+      "attitude",
+      "authority",
+      "available",
+      "benefit"
+    ],
+    "word_details": [
+      {
+        "word": "appropriate",
+        "tr": "מתאים, הולם",
+        "def": "שם תואר: נכון ונאות לנסיבות מסוימות",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "assume",
+        "tr": "להניח",
+        "def": "פועל: לקבל דבר כאמיתי בלי הוכחה ודאית",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "attitude",
+        "tr": "עמדה, גישה",
+        "def": "שם עצם: צורת חשיבה והרגשה כלפי דבר מסוים",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "authority",
+        "tr": "סמכות",
+        "def": "שם עצם: הכוח או הזכות לתת פקודות ולקבל החלטות",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "available",
+        "tr": "זמין",
+        "def": "שם תואר: מוכן ונגיש לשימוש או להשגה",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "benefit",
+        "tr": "יתרון, תועלת",
+        "def": "שם עצם: רווח או עזרה שמתקבלים מדבר מה",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [APPROPRIATE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [ASSUME] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [ATTITUDE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [AUTHORITY] the balance when the heavy skies turn gray,\nAnd [AVAILABLE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [BENEFIT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_2.mp3",
+    "timing_path": "assets/timing/suno_2.lrc"
+  },
+  {
+    "id": 3,
+    "title": "Anthem of Category",
+    "genre": "Modern Alt-Rock",
+    "bpm": 130,
+    "target_words": [
+      "category",
+      "challenge",
+      "circumstance",
+      "collapse",
+      "communicate",
+      "community"
+    ],
+    "word_details": [
+      {
+        "word": "category",
+        "tr": "קטגוריה, סוג",
+        "def": "שם עצם: קבוצת דברים בעלי תכונות משותפות",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "challenge",
+        "tr": "אתגר",
+        "def": "שם עצם: משימה קשה שדורשת מאמץ רב",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "circumstance",
+        "tr": "נסיבה",
+        "def": "שם עצם: עובדה או מצב הקשורים לאירוע מסוים",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "collapse",
+        "tr": "לקרוס",
+        "def": "פועל: ליפול או להישבר באופן פתאומי",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "communicate",
+        "tr": "לתקשר",
+        "def": "פועל: לחלוק מידע ורעיונות עם אחרים",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "community",
+        "tr": "קהילה",
+        "def": "שם עצם: קבוצת אנשים החיים באותו אזור או בעלי עניין משותף",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Modern Alt-Rock, 130 BPM, driving electric bass, soaring guitars, punchy drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [CATEGORY] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CHALLENGE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [CIRCUMSTANCE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [COLLAPSE] the balance when the heavy skies turn gray,\nAnd [COMMUNICATE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [COMMUNITY] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_3.mp3",
+    "timing_path": "assets/timing/suno_3.lrc"
+  },
+  {
+    "id": 4,
+    "title": "Anthem of Complex",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "target_words": [
+      "complex",
+      "concept",
+      "conclude",
+      "conduct",
+      "conflict",
+      "consent"
+    ],
+    "word_details": [
+      {
+        "word": "complex",
+        "tr": "מורכב",
+        "def": "שם תואר: מורכב מחלקים רבים ולא פשוט להבנה",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "concept",
+        "tr": "מושג, רעיון",
+        "def": "שם עצם: רעיון כללי או תפיסה מופשטת של דבר",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "conclude",
+        "tr": "להסיק, לסכם",
+        "def": "פועל: להגיע להחלטה או לסיום לאחר עיון",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "conduct",
+        "tr": "לנהל, לערוך",
+        "def": "פועל: לבצע או לארגן פעילות מסוימת",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "conflict",
+        "tr": "סכסוך, קונפליקט",
+        "def": "שם עצם: מאבק או אי הסכמה חריפה בין צדדים",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "consent",
+        "tr": "הסכמה",
+        "def": "שם עצם: אישור או רשות לעשות דבר מסוים",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Lo-Fi Chillhop, 85 BPM, mellow rhodes piano, vinyl crackle, laid-back groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [COMPLEX] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CONCEPT] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [CONCLUDE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [CONDUCT] the balance when the heavy skies turn gray,\nAnd [CONFLICT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [CONSENT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_4.mp3",
+    "timing_path": "assets/timing/suno_4.lrc"
+  },
+  {
+    "id": 5,
+    "title": "Anthem of Consequence",
+    "genre": "Cinematic Orchestral Pop",
+    "bpm": 110,
+    "target_words": [
+      "consequence",
+      "considerable",
+      "consistent",
+      "constant",
+      "constitute",
+      "consume"
+    ],
+    "word_details": [
+      {
+        "word": "consequence",
+        "tr": "תוצאה",
+        "def": "שם עצם: דבר שקורה כפועל יוצא ממעשה קודם",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "considerable",
+        "tr": "ניכר, משמעותי",
+        "def": "שם תואר: גדול למדי וראוי לתשומת לב",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "consistent",
+        "tr": "עקבי",
+        "def": "שם תואר: פועל תמיד באותו אופן בלי סתירות",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "constant",
+        "tr": "מתמיד, קבוע",
+        "def": "שם תואר: מתרחש ברציפות בלי הפסקה",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "constitute",
+        "tr": "להוות",
+        "def": "פועל: להרכיב או לייצג חלק שלם",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "consume",
+        "tr": "לצרוך",
+        "def": "פועל: להשתמש במשאבים או לאכול ולשתות",
+        "pos": "verb",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Cinematic Orchestral Pop, 110 BPM, stirring strings, grand piano, building emotional crescendo, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [CONSEQUENCE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CONSIDERABLE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [CONSISTENT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [CONSTANT] the balance when the heavy skies turn gray,\nAnd [CONSTITUTE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [CONSUME] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_5.mp3",
+    "timing_path": "assets/timing/suno_5.lrc"
+  },
+  {
+    "id": 6,
+    "title": "Anthem of Context",
+    "genre": "Retro 80s City Pop",
+    "bpm": 118,
+    "target_words": [
+      "context",
+      "contract",
+      "contribute",
+      "create",
+      "credit",
+      "culture"
+    ],
+    "word_details": [
+      {
+        "word": "context",
+        "tr": "הקשר",
+        "def": "שם עצם: הנסיבות והרקע שבהם אירוע מתרחש",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "contract",
+        "tr": "חוזה",
+        "def": "שם עצם: הסכם רשמי ומחייב בין שני צדדים",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "contribute",
+        "tr": "לתרום",
+        "def": "פועל: לתת כסף, עזרה או רעיונות למען מטרה",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "create",
+        "tr": "ליצור",
+        "def": "פועל: לגרום לדבר חדש להתקיים",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "credit",
+        "tr": "הערכה, אשראי",
+        "def": "שם עצם: הכרה בהישג או מתן אמון כספי",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "culture",
+        "tr": "תרבות",
+        "def": "שם עצם: המנהגים, האמנות והאמונות של חברה מסוימת",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Retro 80s City Pop, 118 BPM, funky bassline, brass hits, nostalgic city groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [CONTEXT] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CONTRACT] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [CONTRIBUTE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [CREATE] the balance when the heavy skies turn gray,\nAnd [CREDIT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [CULTURE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_6.mp3",
+    "timing_path": "assets/timing/suno_6.lrc"
+  },
+  {
+    "id": 7,
+    "title": "Anthem of Data",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "data",
+      "define",
+      "demonstrate",
+      "derive",
+      "design",
+      "distinct"
+    ],
+    "word_details": [
+      {
+        "word": "data",
+        "tr": "נתונים",
+        "def": "שם עצם: עובדות ומספרים הנאספים לצורך ניתוח",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "define",
+        "tr": "להגדיר",
+        "def": "פועל: להסביר את המשמעות המדויקת של מושג",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "demonstrate",
+        "tr": "להדגים, להראות",
+        "def": "פועל: להראות בבירור באמצעות ראיות או דוגמאות",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "derive",
+        "tr": "להפיק, לנבוע",
+        "def": "פועל: להוציא דבר ממקור מסוים או לצמוח ממנו",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "design",
+        "tr": "עיצוב, תכנון",
+        "def": "שם עצם: תוכנית או שרטוט של מבנה או מוצר",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "distinct",
+        "tr": "מובחן, שונה",
+        "def": "שם תואר: ברור ונבדל באופן מוחלט מאחרים",
+        "pos": "adjective",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [DATA] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [DEFINE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [DEMONSTRATE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [DERIVE] the balance when the heavy skies turn gray,\nAnd [DESIGN] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [DISTINCT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_7.mp3",
+    "timing_path": "assets/timing/suno_7.lrc"
+  },
+  {
+    "id": 8,
+    "title": "Anthem of Distribute",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "distribute",
+      "economy",
+      "element",
+      "emphasize",
+      "ensure",
+      "environment"
+    ],
+    "word_details": [
+      {
+        "word": "distribute",
+        "tr": "לחלק, להפיץ",
+        "def": "פועל: להעביר פריטים לקבוצה של אנשים או מקומות",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "economy",
+        "tr": "כלכלה",
+        "def": "שם עצם: המערכת של ייצור וצריכת מוצרים וכסף",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "element",
+        "tr": "יסוד, רכיב",
+        "def": "שם עצם: חלק בסיסי מתוך מערכת שלמה",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "emphasize",
+        "tr": "להדגיש",
+        "def": "פועל: לתת חשיבות ותשומת לב מיוחדת לרעיון",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "ensure",
+        "tr": "להבטיח, לוודא",
+        "def": "פועל: לוודא שדבר מסוים יקרה ללא תקלות",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "environment",
+        "tr": "סביבה",
+        "def": "שם עצם: העולם הטבעי או התנאים שבהם חיים",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [DISTRIBUTE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [ECONOMY] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [ELEMENT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [EMPHASIZE] the balance when the heavy skies turn gray,\nAnd [ENSURE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [ENVIRONMENT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_8.mp3",
+    "timing_path": "assets/timing/suno_8.lrc"
+  },
+  {
+    "id": 9,
+    "title": "Anthem of Estimate",
+    "genre": "Modern Alt-Rock",
+    "bpm": 130,
+    "target_words": [
+      "estimate",
+      "evident",
+      "expand",
+      "expert",
+      "factor",
+      "feature"
+    ],
+    "word_details": [
+      {
+        "word": "estimate",
+        "tr": "להעריך, לאמוד",
+        "def": "פועל: לקבוע ערך משוער על סמך נתונים קיימים",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "evident",
+        "tr": "ברור, גלוי",
+        "def": "שם תואר: נראה בבירור ואינו מוטל בספק",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "expand",
+        "tr": "להרחיב, להתרחב",
+        "def": "פועל: להגדיל שטח, כמות או גודל של דבר",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "expert",
+        "tr": "מומחה",
+        "def": "שם עצם: אדם בעל ידע מעמיק ומיומנות בתחום מסוים",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "factor",
+        "tr": "גורם",
+        "def": "שם עצם: עובדה או נסיבה המשפיעה על תוצאה",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "feature",
+        "tr": "מאפיין, תכונה",
+        "def": "שם עצם: חלק בולט או ייחודי של מוצר או אדם",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Modern Alt-Rock, 130 BPM, driving electric bass, soaring guitars, punchy drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [ESTIMATE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [EVIDENT] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [EXPAND] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [EXPERT] the balance when the heavy skies turn gray,\nAnd [FACTOR] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [FEATURE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_9.mp3",
+    "timing_path": "assets/timing/suno_9.lrc"
+  },
+  {
+    "id": 10,
+    "title": "Anthem of Final",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "target_words": [
+      "final",
+      "focus",
+      "function",
+      "fundamental",
+      "generate",
+      "identify"
+    ],
+    "word_details": [
+      {
+        "word": "final",
+        "tr": "סופי",
+        "def": "שם תואר: שמגיע בסוף ואינו פתוח לשינוי נוסף",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "focus",
+        "tr": "להתרכז, למקד",
+        "def": "פועל: להפנות תשומת לב מלאה לנושא מסוים",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "function",
+        "tr": "תפקיד, פעולה",
+        "def": "שם עצם: הפעילות הטבעית או המטרה של דבר מסוים",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "fundamental",
+        "tr": "בסיסי, יסודי",
+        "def": "שם תואר: מהווה את הבסיס העיקרי שממנו נבנה הכל",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "generate",
+        "tr": "לייצר, לחולל",
+        "def": "פועל: ליצור אנרגיה, רעיונות או תנועה",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "identify",
+        "tr": "לזהות",
+        "def": "פועל: לדעת מי או מה הדבר על פי סימנים",
+        "pos": "verb",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Lo-Fi Chillhop, 85 BPM, mellow rhodes piano, vinyl crackle, laid-back groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [FINAL] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [FOCUS] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [FUNCTION] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [FUNDAMENTAL] the balance when the heavy skies turn gray,\nAnd [GENERATE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [IDENTIFY] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_10.mp3",
+    "timing_path": "assets/timing/suno_10.lrc"
+  },
+  {
+    "id": 11,
+    "title": "Anthem of Impact",
+    "genre": "Cinematic Orchestral Pop",
+    "bpm": 110,
+    "target_words": [
+      "impact",
+      "indicate",
+      "individual",
+      "initial",
+      "injure",
+      "instance"
+    ],
+    "word_details": [
+      {
+        "word": "impact",
+        "tr": "השפעה, רושם",
+        "def": "שם עצם: תוצאה חזקה ומשמעותית של פעולה",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "indicate",
+        "tr": "להצביע על, להראות",
+        "def": "פועל: לשמש סימן או הוכחה לקיומו של דבר",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "individual",
+        "tr": "יחיד, פרט",
+        "def": "שם עצם: אדם בודד הנבדל מתוך הקבוצה",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "initial",
+        "tr": "ראשוני",
+        "def": "שם תואר: שמתרחש בהתחלה לפני כל השאר",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "injure",
+        "tr": "לפצוע",
+        "def": "פועל: לגרום נזק גופני לאדם או לבעל חיים",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "instance",
+        "tr": "מקרה, דוגמה",
+        "def": "שם עצם: אירוע ספציפי המייצג תופעה כללית",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Cinematic Orchestral Pop, 110 BPM, stirring strings, grand piano, building emotional crescendo, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [IMPACT] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [INDICATE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [INDIVIDUAL] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [INITIAL] the balance when the heavy skies turn gray,\nAnd [INJURE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [INSTANCE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_11.mp3",
+    "timing_path": "assets/timing/suno_11.lrc"
+  },
+  {
+    "id": 12,
+    "title": "Anthem of Institute",
+    "genre": "Retro 80s City Pop",
+    "bpm": 118,
+    "target_words": [
+      "institute",
+      "interpret",
+      "invest",
+      "issue",
+      "item",
+      "journal"
+    ],
+    "word_details": [
+      {
+        "word": "institute",
+        "tr": "מוסד, מכון",
+        "def": "שם עצם: ארגון המוקדש למחקר או למטרה מוגדרת",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "interpret",
+        "tr": "לפרש",
+        "def": "פועל: להסביר את המשמעות של מידע או יצירה",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "invest",
+        "tr": "להשקיע",
+        "def": "פועל: להקדיש כסף, זמן או מאמץ לרווח עתידי",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "issue",
+        "tr": "סוגיה, נושא",
+        "def": "שם עצם: נושא חשוב שמעורר דיון או דאגה",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "item",
+        "tr": "פריט",
+        "def": "שם עצם: חפץ או יחידה מתוך רשימה או אוסף",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "journal",
+        "tr": "כתב עת, יומן",
+        "def": "שם עצם: פרסום תקופתי המכיל מאמרים מדעיים או אישיים",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Retro 80s City Pop, 118 BPM, funky bassline, brass hits, nostalgic city groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [INSTITUTE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [INTERPRET] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [INVEST] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [ISSUE] the balance when the heavy skies turn gray,\nAnd [ITEM] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [JOURNAL] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_12.mp3",
+    "timing_path": "assets/timing/suno_12.lrc"
+  },
+  {
+    "id": 13,
+    "title": "Anthem of Labor",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "labor",
+      "legal",
+      "legislate",
+      "major",
+      "method",
+      "modify"
+    ],
+    "word_details": [
+      {
+        "word": "labor",
+        "tr": "עבודה, עמל",
+        "def": "שם עצם: עבודה מאומצת פיזית או מחשבתית",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "legal",
+        "tr": "חוקי",
+        "def": "שם תואר: מותר ומעוגן על פי חוקי המדינה",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "legislate",
+        "tr": "לחוקק",
+        "def": "פועל: לקבוע חוקים חדשים באופן רשמי",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "major",
+        "tr": "עיקרי, מרכזי",
+        "def": "שם תואר: חשוב או גדול בהשוואה לאחרים",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "method",
+        "tr": "שיטה",
+        "def": "שם עצם: דרך מסודרת ומתוכננת לביצוע פעולה",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "modify",
+        "tr": "לשנות, לעדכן",
+        "def": "פועל: לבצע שינויים קלים כדי לשפר דבר",
+        "pos": "verb",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [LABOR] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [LEGAL] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [LEGISLATE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [MAJOR] the balance when the heavy skies turn gray,\nAnd [METHOD] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [MODIFY] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_13.mp3",
+    "timing_path": "assets/timing/suno_13.lrc"
+  },
+  {
+    "id": 14,
+    "title": "Anthem of Neglect",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "neglect",
+      "normal",
+      "obtain",
+      "occur",
+      "participate",
+      "period"
+    ],
+    "word_details": [
+      {
+        "word": "neglect",
+        "tr": "להזניח",
+        "def": "פועל: לא להעניק את הטיפול או תשומת הלב הדרושים",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "normal",
+        "tr": "רגיל, נורמלי",
+        "def": "שם תואר: תואם את הכלל המקובל והשגרתי",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "obtain",
+        "tr": "להשיג, לקבל",
+        "def": "פועל: להגיע להחזקה בדבר לאחר מאמץ",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "occur",
+        "tr": "להתרחש, לקרות",
+        "def": "פועל: להתקיים או לקרות במועד ובמקום מסוימים",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "participate",
+        "tr": "להשתתף",
+        "def": "פועל: לקחת חלק בפעילות משותפת",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "period",
+        "tr": "תקופה",
+        "def": "שם עצם: משך זמן מוגדר בעל מאפיינים ייחודיים",
+        "pos": "noun",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [NEGLECT] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [NORMAL] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [OBTAIN] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [OCCUR] the balance when the heavy skies turn gray,\nAnd [PARTICIPATE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [PERIOD] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_14.mp3",
+    "timing_path": "assets/timing/suno_14.lrc"
+  },
+  {
+    "id": 15,
+    "title": "Anthem of Policy",
+    "genre": "Modern Alt-Rock",
+    "bpm": 130,
+    "target_words": [
+      "policy",
+      "potential",
+      "previous",
+      "primary",
+      "principle",
+      "proceed"
+    ],
+    "word_details": [
+      {
+        "word": "policy",
+        "tr": "מדיניות",
+        "def": "שם עצם: קו פעולה מנחה ומחייב של ארגון",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "potential",
+        "tr": "פוטנציאל",
+        "def": "שם עצם: יכולת קיימת שעשויה להתפתח בעתיד",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "previous",
+        "tr": "קודם",
+        "def": "שם תואר: שקרה או היה קיים לפני הזמן הנוכחי",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "primary",
+        "tr": "עיקרי, ראשוני",
+        "def": "שם תואר: בעל החשיבות העליונה ביותר",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "principle",
+        "tr": "עיקרון",
+        "def": "שם עצם: חוק יסוד מוסרי או מדעי מנחה",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "proceed",
+        "tr": "להמשיך, להתקדם",
+        "def": "פועל: להמשיך קדימה בפעולה או בדרך",
+        "pos": "verb",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Modern Alt-Rock, 130 BPM, driving electric bass, soaring guitars, punchy drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [POLICY] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [POTENTIAL] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [PREVIOUS] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [PRIMARY] the balance when the heavy skies turn gray,\nAnd [PRINCIPLE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [PROCEED] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_15.mp3",
+    "timing_path": "assets/timing/suno_15.lrc"
+  },
+  {
+    "id": 16,
+    "title": "Anthem of Process",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "target_words": [
+      "process",
+      "range",
+      "region",
+      "require",
+      "research",
+      "respond"
+    ],
+    "word_details": [
+      {
+        "word": "process",
+        "tr": "תהליך",
+        "def": "שם עצם: סדרת פעולות המובילות לתוצאה מוגדרת",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "range",
+        "tr": "טווח, מגוון",
+        "def": "שם עצם: המרחק בין גבול עליון לתחתון או אוסף אפשרויות",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "region",
+        "tr": "אזור, חבל ארץ",
+        "def": "שם עצם: שטח גיאוגרפי בעל מאפיינים ייחודיים",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "require",
+        "tr": "לדרוש, להצריך",
+        "def": "פועל: לקבוע דבר כתנאי הכרחי",
+        "pos": "verb",
+        "level": "A_foundational"
+      },
+      {
+        "word": "research",
+        "tr": "מחקר",
+        "def": "שם עצם: בדיקה מעמיקה ושיטתית של עובדות",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "respond",
+        "tr": "להגיב, להשיב",
+        "def": "פועל: לענות בדיבור או לפעול בתגובה למשהו",
+        "pos": "verb",
+        "level": "A_foundational"
+      }
+    ],
+    "style_prompt": "Lo-Fi Chillhop, 85 BPM, mellow rhodes piano, vinyl crackle, laid-back groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [PROCESS] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [RANGE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [REGION] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [REQUIRE] the balance when the heavy skies turn gray,\nAnd [RESEARCH] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [RESPOND] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_16.mp3",
+    "timing_path": "assets/timing/suno_16.lrc"
+  },
+  {
+    "id": 17,
+    "title": "Anthem of Role",
+    "genre": "Cinematic Orchestral Pop",
+    "bpm": 110,
+    "target_words": [
+      "role",
+      "section",
+      "significant",
+      "accumulate",
+      "adequate",
+      "advocate"
+    ],
+    "word_details": [
+      {
+        "word": "role",
+        "tr": "תפקיד",
+        "def": "שם עצם: החלק שמישהו ממלא במערכת או בחברה",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "section",
+        "tr": "חלק, סעיף",
+        "def": "שם עצם: קטע מובדל מתוך יצירה, מסמך או מקום",
+        "pos": "noun",
+        "level": "A_foundational"
+      },
+      {
+        "word": "significant",
+        "tr": "משמעותי, ניכר",
+        "def": "שם תואר: בעל חשיבות גדולה והשפעה ברורה",
+        "pos": "adjective",
+        "level": "A_foundational"
+      },
+      {
+        "word": "accumulate",
+        "tr": "לצבור",
+        "def": "פועל: לאסוף ולהגדיל כמות לאורך זמן",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "adequate",
+        "tr": "מספק, הולם",
+        "def": "שם תואר: מספיק במידתו או באיכותו לצורך מסוים",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "advocate",
+        "tr": "לתמוך ב, לצדד ב",
+        "def": "פועל: להביע תמיכה פומבית ברעיון או בעמדה",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Cinematic Orchestral Pop, 110 BPM, stirring strings, grand piano, building emotional crescendo, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [ROLE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [SECTION] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [SIGNIFICANT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [ACCUMULATE] the balance when the heavy skies turn gray,\nAnd [ADEQUATE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [ADVOCATE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_17.mp3",
+    "timing_path": "assets/timing/suno_17.lrc"
+  },
+  {
+    "id": 18,
+    "title": "Anthem of Ambiguous",
+    "genre": "Retro 80s City Pop",
+    "bpm": 118,
+    "target_words": [
+      "ambiguous",
+      "amend",
+      "anticipate",
+      "arbitrary",
+      "aspect",
+      "attain"
+    ],
+    "word_details": [
+      {
+        "word": "ambiguous",
+        "tr": "דו משמעי, מעורפל",
+        "def": "שם תואר: בעל יותר ממשמעות אחת ולא ברור",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "amend",
+        "tr": "לתקן, לשנות",
+        "def": "פועל: לבצע שינויים רשמיים בחוק או במסמך",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "anticipate",
+        "tr": "לצפות מראש",
+        "def": "פועל: לחזות התרחשות עתידית ולהתכונן אליה",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "arbitrary",
+        "tr": "שרירותי",
+        "def": "שם תואר: מבוסס על גחמה אישית ולא על היגיון",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "aspect",
+        "tr": "היבט",
+        "def": "שם עצם: צד מסוים או חלק מנושא מורכב",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "attain",
+        "tr": "להשיג, להגיע ל",
+        "def": "פועל: להגיע למטרה לאחר מאמץ ממושך",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Retro 80s City Pop, 118 BPM, funky bassline, brass hits, nostalgic city groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [AMBIGUOUS] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [AMEND] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [ANTICIPATE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [ARBITRARY] the balance when the heavy skies turn gray,\nAnd [ASPECT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [ATTAIN] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_18.mp3",
+    "timing_path": "assets/timing/suno_18.lrc"
+  },
+  {
+    "id": 19,
+    "title": "Anthem of Cease",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "cease",
+      "clarify",
+      "cohere",
+      "commodity",
+      "compensate",
+      "complement"
+    ],
+    "word_details": [
+      {
+        "word": "cease",
+        "tr": "להפסיק, לחדול",
+        "def": "פועל: לעצור פעולה או לגרום לה להסתיים",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "clarify",
+        "tr": "להבהיר",
+        "def": "פועל: להסביר דבר בצורה מובנת וברורה יותר",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "cohere",
+        "tr": "להתלכד, להיות עקבי",
+        "def": "פועל: להתחבר יחד באופן הגיוני ושלם",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "commodity",
+        "tr": "מצרך, סחורה",
+        "def": "שם עצם: מוצר בסיסי או חומר גלם הנמכר בשוק",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "compensate",
+        "tr": "לפצות",
+        "def": "פועל: לשלם או לתת תמורה על נזק או חסרון",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "complement",
+        "tr": "להשלים",
+        "def": "פועל: להוסיף לדבר כדי להפוך אותו למושלם",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [CEASE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CLARIFY] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [COHERE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [COMMODITY] the balance when the heavy skies turn gray,\nAnd [COMPENSATE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [COMPLEMENT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_19.mp3",
+    "timing_path": "assets/timing/suno_19.lrc"
+  },
+  {
+    "id": 20,
+    "title": "Anthem of Comprehensive",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "comprehensive",
+      "conceive",
+      "concurrent",
+      "conform",
+      "consequent",
+      "contradict"
+    ],
+    "word_details": [
+      {
+        "word": "comprehensive",
+        "tr": "מקיף, כולל",
+        "def": "שם תואר: כולל את כל הפרטים וההיבטים הדרושים",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "conceive",
+        "tr": "להגות, לתפוס במחשבה",
+        "def": "פועל: לפתח רעיון או תוכנית בראש",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "concurrent",
+        "tr": "בו זמני",
+        "def": "שם תואר: שמתרחש או פועל באותו זמן בדיוק",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "conform",
+        "tr": "להתאים את עצמו, לציית",
+        "def": "פועל: לפעול בהתאם לכללים או למוסכמות מקובלות",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "consequent",
+        "tr": "הנובע מכך",
+        "def": "שם תואר: שבא כתוצאה ישירה מאירוע מסוים",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "contradict",
+        "tr": "לסתור",
+        "def": "פועל: לטעון את ההפך או להיות בניגוד מוחלט",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [COMPREHENSIVE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CONCEIVE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [CONCURRENT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [CONFORM] the balance when the heavy skies turn gray,\nAnd [CONSEQUENT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [CONTRADICT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_20.mp3",
+    "timing_path": "assets/timing/suno_20.lrc"
+  },
+  {
+    "id": 21,
+    "title": "Anthem of Crucial",
+    "genre": "Modern Alt-Rock",
+    "bpm": 130,
+    "target_words": [
+      "crucial",
+      "decline",
+      "deliberate",
+      "denote",
+      "depict",
+      "deviate"
+    ],
+    "word_details": [
+      {
+        "word": "crucial",
+        "tr": "מכריע, קריטי",
+        "def": "שם תואר: בעל חשיבות מכרעת להצלחת דבר",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "decline",
+        "tr": "לרדת, לסרב",
+        "def": "פועל: להצטמצם בכמות או לדחות בנימוס הצעה",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "deliberate",
+        "tr": "מכוון, שקול",
+        "def": "שם תואר: שנעשה בכוונה תחילה ולא במקרה",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "denote",
+        "tr": "לציין, לסמן",
+        "def": "פועל: להוות סימן מוסכם למשמעות מסוימת",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "depict",
+        "tr": "לתאר, להציג",
+        "def": "פועל: להמחיש בציור או במילים מראה או מצב",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "deviate",
+        "tr": "לסטות",
+        "def": "פועל: לנטות הצידה ממסלול או מתקן מקובל",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Modern Alt-Rock, 130 BPM, driving electric bass, soaring guitars, punchy drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [CRUCIAL] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [DECLINE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [DELIBERATE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [DENOTE] the balance when the heavy skies turn gray,\nAnd [DEPICT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [DEVIATE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_21.mp3",
+    "timing_path": "assets/timing/suno_21.lrc"
+  },
+  {
+    "id": 22,
+    "title": "Anthem of Diminish",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "target_words": [
+      "diminish",
+      "discrete",
+      "displace",
+      "diverse",
+      "domain",
+      "domestic"
+    ],
+    "word_details": [
+      {
+        "word": "diminish",
+        "tr": "להפחית, להצטמצם",
+        "def": "פועל: להקטין בגודל, בעוצמה או בחשיבות",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "discrete",
+        "tr": "נפרד, בדיד",
+        "def": "שם תואר: קיים כיחידה עצמאית ונפרדת",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "displace",
+        "tr": "להזיז, לנשל",
+        "def": "פועל: להזיז דבר ממקומו הטבעי או הרגיל",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "diverse",
+        "tr": "מגוון",
+        "def": "שם תואר: מורכב מפריטים שונים ומגוונים",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "domain",
+        "tr": "תחום",
+        "def": "שם עצם: תחום ידע, פעילות או שליטה מסוים",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "domestic",
+        "tr": "ביתי, מקומי",
+        "def": "שם תואר: קשור לבית המשפחה או לפנים המדינה",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Lo-Fi Chillhop, 85 BPM, mellow rhodes piano, vinyl crackle, laid-back groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [DIMINISH] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [DISCRETE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [DISPLACE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [DIVERSE] the balance when the heavy skies turn gray,\nAnd [DOMAIN] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [DOMESTIC] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_22.mp3",
+    "timing_path": "assets/timing/suno_22.lrc"
+  },
+  {
+    "id": 23,
+    "title": "Anthem of Draft",
+    "genre": "Cinematic Orchestral Pop",
+    "bpm": 110,
+    "target_words": [
+      "draft",
+      "duration",
+      "emerge",
+      "empirical",
+      "enable",
+      "encounter"
+    ],
+    "word_details": [
+      {
+        "word": "draft",
+        "tr": "טיוטה",
+        "def": "שם עצם: גרסה ראשונית של מסמך המיועדת לעריכה",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "duration",
+        "tr": "משך זמן",
+        "def": "שם עצם: פרק הזמן שלאורכו אירוע נמשך",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "emerge",
+        "tr": "להופיע, לצוץ",
+        "def": "פועל: לצאת מתוך מקום סמוי או להתגלות",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "empirical",
+        "tr": "אמפירי, ניסויי",
+        "def": "שם תואר: מבוסס על תצפיות וניסויים מעשיים",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "enable",
+        "tr": "לאפשר",
+        "def": "פועל: לתת לאדם את היכולת או האמצעי לעשות דבר",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "encounter",
+        "tr": "להיתקל ב, לפגוש",
+        "def": "פועל: לפגוש אדם או להתמודד עם קושי במפתיע",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Cinematic Orchestral Pop, 110 BPM, stirring strings, grand piano, building emotional crescendo, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [DRAFT] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [DURATION] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [EMERGE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [EMPIRICAL] the balance when the heavy skies turn gray,\nAnd [ENABLE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [ENCOUNTER] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_23.mp3",
+    "timing_path": "assets/timing/suno_23.lrc"
+  },
+  {
+    "id": 24,
+    "title": "Anthem of Enhance",
+    "genre": "Retro 80s City Pop",
+    "bpm": 118,
+    "target_words": [
+      "enhance",
+      "equate",
+      "equivalent",
+      "erode",
+      "estate",
+      "ethnic"
+    ],
+    "word_details": [
+      {
+        "word": "enhance",
+        "tr": "להעצים, לשפר",
+        "def": "פועל: להגביר את האיכות, הערך או היופי",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "equate",
+        "tr": "להשוות, להשוות ערך",
+        "def": "פועל: להתייחס לשני דברים כשווים בחשיבותם",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "equivalent",
+        "tr": "שווה ערך",
+        "def": "שם תואר: זהה בערכו, בכמותו או במשמעותו",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "erode",
+        "tr": "לשחוק, להישחק",
+        "def": "פועל: להרוס בהדרגה באמצעות רוח, מים או שימוש",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "estate",
+        "tr": "אחוזה, עיזבון",
+        "def": "שם עצם: שטח אדמה גדול עם בית או כלל רכוש הנפטר",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "ethnic",
+        "tr": "אתני, עדתי",
+        "def": "שם תואר: קשור לקבוצת אנשים בעלי מוצא משותף",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Retro 80s City Pop, 118 BPM, funky bassline, brass hits, nostalgic city groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [ENHANCE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [EQUATE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [EQUIVALENT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [ERODE] the balance when the heavy skies turn gray,\nAnd [ESTATE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [ETHNIC] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_24.mp3",
+    "timing_path": "assets/timing/suno_24.lrc"
+  },
+  {
+    "id": 25,
+    "title": "Anthem of Evaluate",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "evaluate",
+      "evolve",
+      "exceed",
+      "exclude",
+      "explicit",
+      "exploit"
+    ],
+    "word_details": [
+      {
+        "word": "evaluate",
+        "tr": "להעריך, לאמוד איכות",
+        "def": "פועל: לבחון ולשפוט את ערכו או איכותו של דבר",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "evolve",
+        "tr": "להתפתח",
+        "def": "פועל: להשתנות ולהתפתח בהדרגה לאורך זמן",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "exceed",
+        "tr": "לחרוג מ, לעלות על",
+        "def": "פועל: להיות גדול יותר מגבול או מכמות מותרת",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "exclude",
+        "tr": "להדיר, לשלול",
+        "def": "פועל: להשאיר מחוץ לקבוצה או לא לכלול",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "explicit",
+        "tr": "מפורש, ברור",
+        "def": "שם תואר: נאמר בצורה ישירה וחד משמעית",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "exploit",
+        "tr": "לנצל",
+        "def": "פועל: להשתמש במשאב או באדם לרווח אישי",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [EVALUATE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [EVOLVE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [EXCEED] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [EXCLUDE] the balance when the heavy skies turn gray,\nAnd [EXPLICIT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [EXPLOIT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_25.mp3",
+    "timing_path": "assets/timing/suno_25.lrc"
+  },
+  {
+    "id": 26,
+    "title": "Anthem of Facilitate",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "facilitate",
+      "finite",
+      "fluctuate",
+      "framework",
+      "hierarchy",
+      "hypothesis"
+    ],
+    "word_details": [
+      {
+        "word": "facilitate",
+        "tr": "להקל על, לקדם",
+        "def": "פועל: להפוך תהליך לפשוט ונוח יותר לביצוע",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "finite",
+        "tr": "סופי, מוגבל",
+        "def": "שם תואר: בעל גבולות מוגדרים ואינו אינסופי",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "fluctuate",
+        "tr": "להתנדנד, להשתנות",
+        "def": "פועל: לעלות ולרדת באופן לא סדיר",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "framework",
+        "tr": "מסגרת",
+        "def": "שם עצם: מבנה תומך בסיסי או מערכת עקרונות",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "hierarchy",
+        "tr": "היררכיה, מדרג",
+        "def": "שם עצם: מערכת שבה אנשים או דברים מדורגים לפי חשיבות",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "hypothesis",
+        "tr": "השערה",
+        "def": "שם עצם: הסבר אפשרי לתופעה שנבדק בניסוי",
+        "pos": "noun",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [FACILITATE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [FINITE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [FLUCTUATE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [FRAMEWORK] the balance when the heavy skies turn gray,\nAnd [HIERARCHY] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [HYPOTHESIS] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_26.mp3",
+    "timing_path": "assets/timing/suno_26.lrc"
+  },
+  {
+    "id": 27,
+    "title": "Anthem of Ideology",
+    "genre": "Modern Alt-Rock",
+    "bpm": 130,
+    "target_words": [
+      "ideology",
+      "illustrate",
+      "implicit",
+      "incentive",
+      "inevitable",
+      "infrastructure"
+    ],
+    "word_details": [
+      {
+        "word": "ideology",
+        "tr": "אידיאולוגיה",
+        "def": "שם עצם: מערכת של רעיונות ואמונות פוליטיות או חברתיות",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "illustrate",
+        "tr": "להמחיש, לאייר",
+        "def": "פועל: להבהיר רעיון באמצעות דוגמאות או תמונות",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "implicit",
+        "tr": "מרומז, משתמע",
+        "def": "שם תואר: מובן מתוך הדברים אך לא נאמר במפורש",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "incentive",
+        "tr": "תמריץ",
+        "def": "שם עצם: דבר המעודד אדם לפעול ולהתאמץ",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "inevitable",
+        "tr": "בלתי נמנע",
+        "def": "שם תואר: ודאי שיקרה ואי אפשר למנוע אותו",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "infrastructure",
+        "tr": "תשתית",
+        "def": "שם עצם: המבנים והמערכות הבסיסיים של חברה",
+        "pos": "noun",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Modern Alt-Rock, 130 BPM, driving electric bass, soaring guitars, punchy drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [IDEOLOGY] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [ILLUSTRATE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [IMPLICIT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [INCENTIVE] the balance when the heavy skies turn gray,\nAnd [INEVITABLE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [INFRASTRUCTURE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_27.mp3",
+    "timing_path": "assets/timing/suno_27.lrc"
+  },
+  {
+    "id": 28,
+    "title": "Anthem of Inherent",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "target_words": [
+      "inherent",
+      "innovate",
+      "insight",
+      "integrate",
+      "interact",
+      "intervene"
+    ],
+    "word_details": [
+      {
+        "word": "inherent",
+        "tr": "טבוע, אינהרנטי",
+        "def": "שם תואר: קיים כחלק בלתי נפרד מאופיו של דבר",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "innovate",
+        "tr": "לחדש",
+        "def": "פועל: להציג רעיונות, שיטות או מוצרים חדשים",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "insight",
+        "tr": "תובנה",
+        "def": "שם עצם: הבנה מעמיקה ופתאומית של מצב או בעיה",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "integrate",
+        "tr": "לשלב",
+        "def": "פועל: לאחד חלקים שונים לכדי מערכת אחת שלמה",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "interact",
+        "tr": "לפעול הדדית, לתקשר",
+        "def": "פועל: להשפיע זה על זה או לקיים קשר",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "intervene",
+        "tr": "להתערב",
+        "def": "פועל: להיכנס לתוך מצב כדי לשנות את מהלכו",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Lo-Fi Chillhop, 85 BPM, mellow rhodes piano, vinyl crackle, laid-back groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [INHERENT] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [INNOVATE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [INSIGHT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [INTEGRATE] the balance when the heavy skies turn gray,\nAnd [INTERACT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [INTERVENE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_28.mp3",
+    "timing_path": "assets/timing/suno_28.lrc"
+  },
+  {
+    "id": 29,
+    "title": "Anthem of Intrinsic",
+    "genre": "Cinematic Orchestral Pop",
+    "bpm": 110,
+    "target_words": [
+      "intrinsic",
+      "justify",
+      "maintain",
+      "mediate",
+      "mutual",
+      "notion"
+    ],
+    "word_details": [
+      {
+        "word": "intrinsic",
+        "tr": "פנימי, מהותי",
+        "def": "שם תואר: שייך לטבעו הפנימי והבסיסי של הדבר",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "justify",
+        "tr": "להצדיק",
+        "def": "פועל: להראות שמעשה או החלטה הם מוצדקים ונכונים",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "maintain",
+        "tr": "לתחזק, לטעון",
+        "def": "פועל: לשמור על מצב תקין או להמשיך להחזיק בעמדה",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "mediate",
+        "tr": "לגשר, לתווך",
+        "def": "פועל: לעזור לשני צדדים מסוכסכים להגיע להסכמה",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "mutual",
+        "tr": "הדדי",
+        "def": "שם תואר: משותף לשני צדדים או מופנה זה כלפי זה",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "notion",
+        "tr": "מושג, רעיון",
+        "def": "שם עצם: דעה כללית או אמונה לגבי נושא מסוים",
+        "pos": "noun",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Cinematic Orchestral Pop, 110 BPM, stirring strings, grand piano, building emotional crescendo, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [INTRINSIC] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [JUSTIFY] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [MAINTAIN] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [MEDIATE] the balance when the heavy skies turn gray,\nAnd [MUTUAL] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [NOTION] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_29.mp3",
+    "timing_path": "assets/timing/suno_29.lrc"
+  },
+  {
+    "id": 30,
+    "title": "Anthem of Objective",
+    "genre": "Retro 80s City Pop",
+    "bpm": 118,
+    "target_words": [
+      "objective",
+      "offset",
+      "ongoing",
+      "orient",
+      "paradigm",
+      "parallel"
+    ],
+    "word_details": [
+      {
+        "word": "objective",
+        "tr": "יעד, מטרה",
+        "def": "שם עצם: תוצאה מוגדרת שאדם שואף להגיע אליה",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "offset",
+        "tr": "לקזז, לאזן",
+        "def": "פועל: לפצות על השפעה של דבר אחד באמצעות אחר",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "ongoing",
+        "tr": "מתמשך",
+        "def": "שם תואר: שנמשך ברציפות בהווה וטרם הסתיים",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "orient",
+        "tr": "לכוון, להתמצא",
+        "def": "פועל: להתאים דבר למטרה מסוימת או למצוא כיוון",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "paradigm",
+        "tr": "פרדיגמה, דפוס חשיבה",
+        "def": "שם עצם: מודל או תבנית חשיבה מקובלת בתחום מסוים",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "parallel",
+        "tr": "מקביל",
+        "def": "שם תואר: נע באותו כיוון במרחק שווה או דומה מאוד",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Retro 80s City Pop, 118 BPM, funky bassline, brass hits, nostalgic city groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [OBJECTIVE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [OFFSET] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [ONGOING] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [ORIENT] the balance when the heavy skies turn gray,\nAnd [PARADIGM] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [PARALLEL] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_30.mp3",
+    "timing_path": "assets/timing/suno_30.lrc"
+  },
+  {
+    "id": 31,
+    "title": "Anthem of Passive",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "passive",
+      "perceive",
+      "persist",
+      "perspective",
+      "precise",
+      "predominant"
+    ],
+    "word_details": [
+      {
+        "word": "passive",
+        "tr": "סביל, פסיבי",
+        "def": "שם תואר: מקבל פעולה בלי להגיב או ליזום בעצמו",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "perceive",
+        "tr": "לתפוס, להבחין ב",
+        "def": "פועל: לקלוט דרך החושים או להבין בצורה מסוימת",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "persist",
+        "tr": "להתמיד, להתעקש",
+        "def": "פועל: להמשיך בפעולה למרות קשיים והתנגדות",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "perspective",
+        "tr": "נקודת מבט",
+        "def": "שם עצם: זווית ראייה מסוימת שממנה בוחנים מצב",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "precise",
+        "tr": "מדויק",
+        "def": "שם תואר: מוגדר בבירור ובפרטי פרטים ללא סטייה",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "predominant",
+        "tr": "שולט, בולט ביותר",
+        "def": "שם תואר: בעל הכוח או הנוכחות הגדולה ביותר בקבוצה",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [PASSIVE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [PERCEIVE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [PERSIST] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [PERSPECTIVE] the balance when the heavy skies turn gray,\nAnd [PRECISE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [PREDOMINANT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_31.mp3",
+    "timing_path": "assets/timing/suno_31.lrc"
+  },
+  {
+    "id": 32,
+    "title": "Anthem of Preliminary",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "preliminary",
+      "presume",
+      "prior",
+      "promote",
+      "proportion",
+      "prospective"
+    ],
+    "word_details": [
+      {
+        "word": "preliminary",
+        "tr": "מוקדם, ראשוני",
+        "def": "שם תואר: שנעשה כהכנה לפני השלב העיקרי",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "presume",
+        "tr": "להניח מראש",
+        "def": "פועל: להניח שדבר נכון על סמך סבירות גבוהה",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "prior",
+        "tr": "קודם",
+        "def": "שם תואר: שקיים או קרה לפני דבר אחר",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "promote",
+        "tr": "לקדם",
+        "def": "פועל: לסייע להתפתחות דבר או להעלות בדרגה",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "proportion",
+        "tr": "יחס, חלק יחסי",
+        "def": "שם עצם: היחס בין חלק מסוים לכלל השלם",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "prospective",
+        "tr": "עתידי, פוטנציאלי",
+        "def": "שם תואר: שצפוי או עשוי להיות בעתיד",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [PRELIMINARY] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [PRESUME] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [PRIOR] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [PROMOTE] the balance when the heavy skies turn gray,\nAnd [PROPORTION] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [PROSPECTIVE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_32.mp3",
+    "timing_path": "assets/timing/suno_32.lrc"
+  },
+  {
+    "id": 33,
+    "title": "Anthem of Pursue",
+    "genre": "Modern Alt-Rock",
+    "bpm": 130,
+    "target_words": [
+      "pursue",
+      "quote",
+      "radical",
+      "rational",
+      "refine",
+      "regulate"
+    ],
+    "word_details": [
+      {
+        "word": "pursue",
+        "tr": "לרדוף אחרי, לשאוף ל",
+        "def": "פועל: לפעול בהתמדה כדי להשיג מטרה או חלום",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "quote",
+        "tr": "לצטט",
+        "def": "פועל: לחזור במדויק על מילותיו של אדם אחר",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "radical",
+        "tr": "קיצוני, מהפכני",
+        "def": "שם תואר: יסודי, מרחיק לכת ושונה לגמרי מהמקובל",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "rational",
+        "tr": "הגיוני, רציונלי",
+        "def": "שם תואר: מבוסס על תבונה ושיקול דעת ולא על רגש",
+        "pos": "adjective",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "refine",
+        "tr": "ללטש, לזקק",
+        "def": "פועל: לשפר דבר על ידי ביצוע שינויים מדויקים",
+        "pos": "verb",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "regulate",
+        "tr": "לווסת, להסדיר",
+        "def": "פועל: לשלוט בתהליך באמצעות כללים מוגדרים",
+        "pos": "verb",
+        "level": "B_intermediate"
+      }
+    ],
+    "style_prompt": "Modern Alt-Rock, 130 BPM, driving electric bass, soaring guitars, punchy drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [PURSUE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [QUOTE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [RADICAL] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [RATIONAL] the balance when the heavy skies turn gray,\nAnd [REFINE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [REGULATE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_33.mp3",
+    "timing_path": "assets/timing/suno_33.lrc"
+  },
+  {
+    "id": 34,
+    "title": "Anthem of Adjacent",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "target_words": [
+      "adjacent",
+      "aggregate",
+      "albeit",
+      "allocate",
+      "anomaly",
+      "antiquity"
+    ],
+    "word_details": [
+      {
+        "word": "adjacent",
+        "tr": "סמוך, צמוד",
+        "def": "שם תואר: נמצא ליד דבר מה או חולק איתו גבול",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "aggregate",
+        "tr": "מכלול, סך הכל",
+        "def": "שם עצם: סך כל החלקים המחוברים יחד לכדי שלם",
+        "pos": "noun",
+        "level": "B_intermediate"
+      },
+      {
+        "word": "albeit",
+        "tr": "אם כי, אף על פי",
+        "def": "מילת קישור: מילת הסתייגות המקבילה ל-אף ש",
+        "pos": "conjunction",
+        "level": "C_advanced"
+      },
+      {
+        "word": "allocate",
+        "tr": "להקציב מחדש",
+        "def": "פועל: לחלק משאבים באופן מדוד ומדויק",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "anomaly",
+        "tr": "חריגה, אנומליה",
+        "def": "שם עצם: תופעה חריגה שאינה תואמת את הכלל",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "antiquity",
+        "tr": "העת העתיקה, ימי קדם",
+        "def": "שם עצם: תקופה קדומה בהיסטוריה האנושית",
+        "pos": "noun",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Lo-Fi Chillhop, 85 BPM, mellow rhodes piano, vinyl crackle, laid-back groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [ADJACENT] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [AGGREGATE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [ALBEIT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [ALLOCATE] the balance when the heavy skies turn gray,\nAnd [ANOMALY] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [ANTIQUITY] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_34.mp3",
+    "timing_path": "assets/timing/suno_34.lrc"
+  },
+  {
+    "id": 35,
+    "title": "Anthem of Arbitrate",
+    "genre": "Cinematic Orchestral Pop",
+    "bpm": 110,
+    "target_words": [
+      "arbitrate",
+      "augment",
+      "bolster",
+      "brevity",
+      "catalyst",
+      "circumscribe"
+    ],
+    "word_details": [
+      {
+        "word": "arbitrate",
+        "tr": "לפסוק בבוררות",
+        "def": "פועל: לשפוט ולהכריע בסכסוך כגורם מוסכם",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "augment",
+        "tr": "להגדיל, לתגבר",
+        "def": "פועל: להוסיף כמות או עוצמה לדבר קיים",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "bolster",
+        "tr": "לחזק, לתמוך",
+        "def": "פועל: לספק תמיכה וחיזוק לרעיון או למבנה",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "brevity",
+        "tr": "קיצור, תמציתיות",
+        "def": "שם עצם: שימוש במילים מועטות ומדויקות",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "catalyst",
+        "tr": "זרז, קטליזטור",
+        "def": "שם עצם: גורם המאיץ התרחשות של תהליך או שינוי",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "circumscribe",
+        "tr": "לתחום, להגביל",
+        "def": "פועל: להציב גבולות ברורים סביב פעולה",
+        "pos": "verb",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Cinematic Orchestral Pop, 110 BPM, stirring strings, grand piano, building emotional crescendo, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [ARBITRATE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [AUGMENT] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [BOLSTER] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [BREVITY] the balance when the heavy skies turn gray,\nAnd [CATALYST] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [CIRCUMSCRIBE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_35.mp3",
+    "timing_path": "assets/timing/suno_35.lrc"
+  },
+  {
+    "id": 36,
+    "title": "Anthem of Coalesce",
+    "genre": "Retro 80s City Pop",
+    "bpm": 118,
+    "target_words": [
+      "coalesce",
+      "coerce",
+      "cognizant",
+      "collaborate",
+      "commensurate",
+      "compelling"
+    ],
+    "word_details": [
+      {
+        "word": "coalesce",
+        "tr": "להתמזג, להתאחד",
+        "def": "פועל: לחבור יחד לכדי גוף או רעיון אחד",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "coerce",
+        "tr": "לאלץ, לכפות",
+        "def": "פועל: להכריח אדם לעשות דבר באמצעות איומים",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "cognizant",
+        "tr": "מודע ל",
+        "def": "שם תואר: בעל ידיעה והבנה ברורה של מצב",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "collaborate",
+        "tr": "לשתף פעולה",
+        "def": "פועל: לעבוד יחד למען מטרה משותפת",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "commensurate",
+        "tr": "מידתי, תואם",
+        "def": "שם תואר: מתאים בגודלו או בחשיבותו לדבר אחר",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "compelling",
+        "tr": "משכנע, מרתק",
+        "def": "שם תואר: חזק ומעורר עניין כך שאי אפשר להתעלם ממנו",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Retro 80s City Pop, 118 BPM, funky bassline, brass hits, nostalgic city groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [COALESCE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [COERCE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [COGNIZANT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [COLLABORATE] the balance when the heavy skies turn gray,\nAnd [COMMENSURATE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [COMPELLING] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_36.mp3",
+    "timing_path": "assets/timing/suno_36.lrc"
+  },
+  {
+    "id": 37,
+    "title": "Anthem of Concomitant",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "concomitant",
+      "condone",
+      "conducive",
+      "conjecture",
+      "connoisseur",
+      "consensus"
+    ],
+    "word_details": [
+      {
+        "word": "concomitant",
+        "tr": "נלווה, מתלווה",
+        "def": "שם תואר: שמתרחש באופן טבעי יחד עם דבר אחר",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "condone",
+        "tr": "להבליג על, למחול",
+        "def": "פועל: לקבל התנהגות פסולה בלי למחות נגדה",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "conducive",
+        "tr": "תורם ל, מסייע ל",
+        "def": "שם תואר: שמקל על התרחשות של תוצאה חיובית",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "conjecture",
+        "tr": "השערה בלתי מבוססת",
+        "def": "שם עצם: דעה המבוססת על ניחוש ולא על עובדות מוכחות",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "connoisseur",
+        "tr": "מומחה, אנין טעם",
+        "def": "שם עצם: אדם בעל הבנה וטעם מעולים באמנות או באוכל",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "consensus",
+        "tr": "הסכמה כללית, קונצנזוס",
+        "def": "שם עצם: דעה משותפת המוסכמת על כל חברי הקבוצה",
+        "pos": "noun",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [CONCOMITANT] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CONDONE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [CONDUCIVE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [CONJECTURE] the balance when the heavy skies turn gray,\nAnd [CONNOISSEUR] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [CONSENSUS] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_37.mp3",
+    "timing_path": "assets/timing/suno_37.lrc"
+  },
+  {
+    "id": 38,
+    "title": "Anthem of Conspicuous",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "conspicuous",
+      "constrain",
+      "contemplate",
+      "contentious",
+      "contingent",
+      "corroborate"
+    ],
+    "word_details": [
+      {
+        "word": "conspicuous",
+        "tr": "בולט לעין",
+        "def": "שם תואר: נראה בבירור ומושך תשומת לב מידית",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "constrain",
+        "tr": "להגביל, לכפות",
+        "def": "פועל: להגביל את חופש הפעולה או התנועה של מישהו",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "contemplate",
+        "tr": "להרהר ב, לשקול",
+        "def": "פועל: לחשוב לעומק ובכובד ראש על אפשרות",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "contentious",
+        "tr": "שנוי במחלוקת",
+        "def": "שם תואר: מעורר ויכוחים חריפים ואי הסכמה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "contingent",
+        "tr": "מותנה ב",
+        "def": "שם תואר: תלוי בקיומו של תנאי או אירוע אחר",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "corroborate",
+        "tr": "לאשש, לחזק ראיות",
+        "def": "פועל: לאשר טענה באמצעות עדויות נוספות",
+        "pos": "verb",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [CONSPICUOUS] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CONSTRAIN] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [CONTEMPLATE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [CONTENTIOUS] the balance when the heavy skies turn gray,\nAnd [CONTINGENT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [CORROBORATE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_38.mp3",
+    "timing_path": "assets/timing/suno_38.lrc"
+  },
+  {
+    "id": 39,
+    "title": "Anthem of Cursory",
+    "genre": "Modern Alt-Rock",
+    "bpm": 130,
+    "target_words": [
+      "cursory",
+      "curtail",
+      "daunting",
+      "dearth",
+      "debilitate",
+      "decipher"
+    ],
+    "word_details": [
+      {
+        "word": "cursory",
+        "tr": "חטוף, שטחי",
+        "def": "שם תואר: שנעשה במהירות בלי בדיקה יסודית",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "curtail",
+        "tr": "לקצץ, לקצר",
+        "def": "פועל: לצמצם או להגביל היקף של פעילות",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "daunting",
+        "tr": "מרתיע, מאיים",
+        "def": "שם תואר: נראה קשה ומפחיד לביצוע",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "dearth",
+        "tr": "מחסור חמור",
+        "def": "שם עצם: חוסר משמעותי במשאב חיוני מסוים",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "debilitate",
+        "tr": "להחליש, להתיש",
+        "def": "פועל: לגזול כוח ובריאות מאדם או ממערכת",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "decipher",
+        "tr": "לפענח",
+        "def": "פועל: להבין טקסט סודי או כתב יד בלתי קריא",
+        "pos": "verb",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Modern Alt-Rock, 130 BPM, driving electric bass, soaring guitars, punchy drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [CURSORY] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [CURTAIL] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [DAUNTING] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [DEARTH] the balance when the heavy skies turn gray,\nAnd [DEBILITATE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [DECIPHER] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_39.mp3",
+    "timing_path": "assets/timing/suno_39.lrc"
+  },
+  {
+    "id": 40,
+    "title": "Anthem of Deference",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "target_words": [
+      "deference",
+      "delineate",
+      "demise",
+      "deprecate",
+      "deride",
+      "desiccate"
+    ],
+    "word_details": [
+      {
+        "word": "deference",
+        "tr": "כבוד, רחשי כבוד",
+        "def": "שם עצם: התנהגות מנומסת המביעה הערכה וציות",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "delineate",
+        "tr": "לתאר במדויק, לשרטט",
+        "def": "פועל: להתוות גבולות או להסביר בפירוט מלא",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "demise",
+        "tr": "קץ, מוות, שקיעה",
+        "def": "שם עצם: סיום קיומו של ארגון או חייו של אדם",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "deprecate",
+        "tr": "להביע מורת רוח, לגנות",
+        "def": "פועל: להסתייג בחריפות ממעשה או מדעה",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "deride",
+        "tr": "ללעוג ל, לצחוק על",
+        "def": "פועל: לבוז לאדם או לרעיון בצורה פוגענית",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "desiccate",
+        "tr": "לייבש לחלוטין",
+        "def": "פועל: להסיר את כל הנוזלים והלחות מדבר מה",
+        "pos": "verb",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Lo-Fi Chillhop, 85 BPM, mellow rhodes piano, vinyl crackle, laid-back groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [DEFERENCE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [DELINEATE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [DEMISE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [DEPRECATE] the balance when the heavy skies turn gray,\nAnd [DERIDE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [DESICCATE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_40.mp3",
+    "timing_path": "assets/timing/suno_40.lrc"
+  },
+  {
+    "id": 41,
+    "title": "Anthem of Deter",
+    "genre": "Cinematic Orchestral Pop",
+    "bpm": 110,
+    "target_words": [
+      "deter",
+      "detrimental",
+      "dichotomy",
+      "diffident",
+      "diligent",
+      "discerning"
+    ],
+    "word_details": [
+      {
+        "word": "deter",
+        "tr": "להרתיע",
+        "def": "פועל: למנוע מאדם לעשות דבר באמצעות הצבת מחיר",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "detrimental",
+        "tr": "מזיק, פוגעני",
+        "def": "שם תואר: גורם נזק והפסד לבריאות או לתהליך",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "dichotomy",
+        "tr": "חלוקה לשניים, דיכוטומיה",
+        "def": "שם עצם: פיצול חד בין שני דברים מנוגדים לחלוטין",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "diffident",
+        "tr": "חסר ביטחון, ביישן",
+        "def": "שם תואר: מהסס לפעול מחמת חוסר אמון ביכולתו",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "diligent",
+        "tr": "שקדן, חרוץ",
+        "def": "שם תואר: עובד בהתמדה ובקפדנות על כל פרט",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "discerning",
+        "tr": "בעל הבחנה דקה",
+        "def": "שם תואר: מסוגל לשפוט איכות בצורה חדה ומדויקת",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Cinematic Orchestral Pop, 110 BPM, stirring strings, grand piano, building emotional crescendo, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [DETER] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [DETRIMENTAL] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [DICHOTOMY] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [DIFFIDENT] the balance when the heavy skies turn gray,\nAnd [DILIGENT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [DISCERNING] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_41.mp3",
+    "timing_path": "assets/timing/suno_41.lrc"
+  },
+  {
+    "id": 42,
+    "title": "Anthem of Discordant",
+    "genre": "Retro 80s City Pop",
+    "bpm": 118,
+    "target_words": [
+      "discordant",
+      "discrepancy",
+      "disseminate",
+      "divergent",
+      "divisive",
+      "dogmatic"
+    ],
+    "word_details": [
+      {
+        "word": "discordant",
+        "tr": "צורם, בלתי הרמוני",
+        "def": "שם תואר: שאינו מתאים ומשמיע צליל לא נעים",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "discrepancy",
+        "tr": "סתירה, אי התאמה",
+        "def": "שם עצם: הבדל בלתי מוסבר בין שני נתונים",
+        "pos": "noun",
+        "level": "C_advanced"
+      },
+      {
+        "word": "disseminate",
+        "tr": "להפיץ מידע ברבים",
+        "def": "פועל: לפזר ידיעות ורעיונות לציבור הרחב",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "divergent",
+        "tr": "מסתעף, חלוק",
+        "def": "שם תואר: מתרחק מנקודה משותפת או שונה בעמדות",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "divisive",
+        "tr": "מפלג, מעורר מחלוקת",
+        "def": "שם תואר: גורם לפילוג ולמריבות בתוך קבוצה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "dogmatic",
+        "tr": "דוגמטי, עקשני",
+        "def": "שם תואר: דבק בעקרונות בלי להיות מוכן להקשיב לדעות אחרות",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Retro 80s City Pop, 118 BPM, funky bassline, brass hits, nostalgic city groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [DISCORDANT] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [DISCREPANCY] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [DISSEMINATE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [DIVERGENT] the balance when the heavy skies turn gray,\nAnd [DIVISIVE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [DOGMATIC] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_42.mp3",
+    "timing_path": "assets/timing/suno_42.lrc"
+  },
+  {
+    "id": 43,
+    "title": "Anthem of Eclectic",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "eclectic",
+      "efficacious",
+      "elicit",
+      "elucidate",
+      "elusive",
+      "emulate"
+    ],
+    "word_details": [
+      {
+        "word": "eclectic",
+        "tr": "אקלקטי, מגוון מקורות",
+        "def": "שם תואר: נבחר מתוך מגוון רחב של סגנונות ומקורות",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "efficacious",
+        "tr": "יעיל, בעל סגולה",
+        "def": "שם תואר: מסוגל לייצר את התוצאה הרצויה באופן מוכח",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "elicit",
+        "tr": "לחלץ, להוציא תגובה",
+        "def": "פועל: לגרום למידע, רגש או תגובה להתגלות",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "elucidate",
+        "tr": "להבהיר, להאיר סוגיה",
+        "def": "פועל: להסביר דבר מעורפל בצורה ברורה ומפורטת",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "elusive",
+        "tr": "חמקמק, קשה להשגה",
+        "def": "שם תואר: קשה לתפיסה, לזיהוי או להשגה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "emulate",
+        "tr": "לחקות, ללכת בעקבות",
+        "def": "פועל: לנסות להשתוות לאדם מוערך או להצליח כמוהו",
+        "pos": "verb",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [ECLECTIC] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [EFFICACIOUS] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [ELICIT] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [ELUCIDATE] the balance when the heavy skies turn gray,\nAnd [ELUSIVE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [EMULATE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_43.mp3",
+    "timing_path": "assets/timing/suno_43.lrc"
+  },
+  {
+    "id": 44,
+    "title": "Anthem of Enervate",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "enervate",
+      "engender",
+      "ephemeral",
+      "equivocal",
+      "erratic",
+      "esoteric"
+    ],
+    "word_details": [
+      {
+        "word": "enervate",
+        "tr": "להחליש, לרוקן מכוח",
+        "def": "פועל: להתיש אדם פיזית או נפשית",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "engender",
+        "tr": "לחולל, לעורר",
+        "def": "פועל: לגרום לקיומו של רגש או מצב מסוים",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "ephemeral",
+        "tr": "חולף, בר חלוף",
+        "def": "שם תואר: נמשך זמן קצר מאוד ונעלם במהירות",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "equivocal",
+        "tr": "מעורפל, מתחמק",
+        "def": "שם תואר: נאמר בכוונה בצורה דו משמעית ומטעה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "erratic",
+        "tr": "בלתי יציב, תזזיתי",
+        "def": "שם תואר: שאינו מתנהל באופן סדיר או צפוי",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "esoteric",
+        "tr": "אזוטרי, ליודי ח\"ן",
+        "def": "שם תואר: מובן רק למעטים בעלי ידע מיוחד",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [ENERVATE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [ENGENDER] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [EPHEMERAL] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [EQUIVOCAL] the balance when the heavy skies turn gray,\nAnd [ERRATIC] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [ESOTERIC] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_44.mp3",
+    "timing_path": "assets/timing/suno_44.lrc"
+  },
+  {
+    "id": 45,
+    "title": "Anthem of Exacerbate",
+    "genre": "Modern Alt-Rock",
+    "bpm": 130,
+    "target_words": [
+      "exacerbate",
+      "exemplary",
+      "exonerate",
+      "expedient",
+      "fallacious",
+      "fastidious"
+    ],
+    "word_details": [
+      {
+        "word": "exacerbate",
+        "tr": "להחמיר, להחריף",
+        "def": "פועל: לגרום למצב גרוע או למחלה להפוך לרעים יותר",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "exemplary",
+        "tr": "למופת, ראוי לחיקוי",
+        "def": "שם תואר: מצוין ומהווה דוגמה טובה לאחרים",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "exonerate",
+        "tr": "לזכות, לנקות מאשמה",
+        "def": "פועל: להצהיר רשמית שאדם נקי מכל חשד או אשמה",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "expedient",
+        "tr": "מועיל, תועלתי",
+        "def": "שם תואר: מעשי ונוח לשימוש גם אם אינו מוסרי לגמרי",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "fallacious",
+        "tr": "מוטעה, כוזב",
+        "def": "שם תואר: מבוסס על היגיון פגום וטענות שגויות",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "fastidious",
+        "tr": "קפדן, דקדקן",
+        "def": "שם תואר: שם לב לכל פרט קטן וקשה לרצותו",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Modern Alt-Rock, 130 BPM, driving electric bass, soaring guitars, punchy drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [EXACERBATE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [EXEMPLARY] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [EXONERATE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [EXPEDIENT] the balance when the heavy skies turn gray,\nAnd [FALLACIOUS] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [FASTIDIOUS] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_45.mp3",
+    "timing_path": "assets/timing/suno_45.lrc"
+  },
+  {
+    "id": 46,
+    "title": "Anthem of Feasible",
+    "genre": "Lo-Fi Chillhop",
+    "bpm": 85,
+    "target_words": [
+      "feasible",
+      "formidable",
+      "fortuitous",
+      "foster",
+      "frivolous",
+      "futile"
+    ],
+    "word_details": [
+      {
+        "word": "feasible",
+        "tr": "בר ביצוע, ישיש",
+        "def": "שם תואר: אפשרי לביצוע בתנאים ובמשאבים הקיימים",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "formidable",
+        "tr": "אימתני, מעורר כבוד",
+        "def": "שם תואר: מרשים בעוצמתו או בקושיו ומעורר יראה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "fortuitous",
+        "tr": "מקרי ובר מזל",
+        "def": "שם תואר: שקורה במקרה ומביא תועלת מפתיעה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "foster",
+        "tr": "לטפח, לעודד",
+        "def": "פועל: לסייע להתפתחות של רעיון, הרגל או יחסים",
+        "pos": "verb",
+        "level": "C_advanced"
+      },
+      {
+        "word": "frivolous",
+        "tr": "קל דעת, חסר חשיבות",
+        "def": "שם תואר: שאינו רציני וחסר ערך ממשי",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "futile",
+        "tr": "עקר, חסר תועלת",
+        "def": "שם תואר: שאינו מוביל לשום תוצאה מעשית",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Lo-Fi Chillhop, 85 BPM, mellow rhodes piano, vinyl crackle, laid-back groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [FEASIBLE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [FORMIDABLE] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [FORTUITOUS] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [FOSTER] the balance when the heavy skies turn gray,\nAnd [FRIVOLOUS] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [FUTILE] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_46.mp3",
+    "timing_path": "assets/timing/suno_46.lrc"
+  },
+  {
+    "id": 47,
+    "title": "Anthem of Garrulous",
+    "genre": "Cinematic Orchestral Pop",
+    "bpm": 110,
+    "target_words": [
+      "garrulous",
+      "gregarious",
+      "hackneyed",
+      "haphazard",
+      "imperative",
+      "impetuous"
+    ],
+    "word_details": [
+      {
+        "word": "garrulous",
+        "tr": "פטפטן, להגן",
+        "def": "שם תואר: מדבר ללא הרף על דברים פעוטים",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "gregarious",
+        "tr": "חברותי, אוהב חברה",
+        "def": "שם תואר: נהנה מחברתם של אנשים אחרים",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "hackneyed",
+        "tr": "שחוק, נדוש",
+        "def": "שם תואר: שנעשה בו שימוש יתר עד שאיבד ממשמעותו",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "haphazard",
+        "tr": "מקרי, אקראי",
+        "def": "שם תואר: שנעשה בלי שום סדר או תכנון",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "imperative",
+        "tr": "הכרחי, דחוף",
+        "def": "שם תואר: בעל חשיבות מכרעת שחובה לעשותו מיד",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "impetuous",
+        "tr": "פזיז, נמהר",
+        "def": "שם תואר: פועל מתוך דחף רגעי בלי לשקול תוצאות",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Cinematic Orchestral Pop, 110 BPM, stirring strings, grand piano, building emotional crescendo, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [GARRULOUS] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [GREGARIOUS] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [HACKNEYED] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [HAPHAZARD] the balance when the heavy skies turn gray,\nAnd [IMPERATIVE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [IMPETUOUS] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_47.mp3",
+    "timing_path": "assets/timing/suno_47.lrc"
+  },
+  {
+    "id": 48,
+    "title": "Anthem of Implausible",
+    "genre": "Retro 80s City Pop",
+    "bpm": 118,
+    "target_words": [
+      "implausible",
+      "inadvertent",
+      "incisive",
+      "incongruous",
+      "indifferent",
+      "indolent"
+    ],
+    "word_details": [
+      {
+        "word": "implausible",
+        "tr": "בלתי סביר",
+        "def": "שם תואר: קשה להאמין לו ואינו נראה הגיוני",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "inadvertent",
+        "tr": "שלא בכוונה, בשוגג",
+        "def": "שם תואר: שקרה בלי כוונה תחילה אלא בהיסח הדעת",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "incisive",
+        "tr": "חד, נוקב",
+        "def": "שם תואר: חודר ישר לעיקר בצורה חדה ובהירה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "incongruous",
+        "tr": "לא מתאים, צורם",
+        "def": "שם תואר: שאינו משתלב בסביבתו ונראה תלוש",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "indifferent",
+        "tr": "אדיש",
+        "def": "שם תואר: שאינו מגלה שום עניין או דאגה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "indolent",
+        "tr": "עצל, בטלן",
+        "def": "שם תואר: נוטה להימנע מכל מאמץ פיזי או שכלי",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Retro 80s City Pop, 118 BPM, funky bassline, brass hits, nostalgic city groove, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [IMPLAUSIBLE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [INADVERTENT] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [INCISIVE] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [INCONGRUOUS] the balance when the heavy skies turn gray,\nAnd [INDIFFERENT] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [INDOLENT] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_48.mp3",
+    "timing_path": "assets/timing/suno_48.lrc"
+  },
+  {
+    "id": 49,
+    "title": "Anthem of Ineffable",
+    "genre": "Upbeat Synthpop",
+    "bpm": 120,
+    "target_words": [
+      "ineffable",
+      "ingenuous",
+      "innocuous",
+      "insatiable",
+      "inscrutable",
+      "insidious"
+    ],
+    "word_details": [
+      {
+        "word": "ineffable",
+        "tr": "נשגב, בלתי ניתן לתיאור",
+        "def": "שם תואר: כה מרהיב או קדוש שאי אפשר לבטאו במילים",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "ingenuous",
+        "tr": "תמים, ישר",
+        "def": "שם תואר: כן, פשוט וחסר כל כוונה להונות",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "innocuous",
+        "tr": "בלתי מזיק, תמים",
+        "def": "שם תואר: שאינו גורם כל נזק או פגיעה",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "insatiable",
+        "tr": "שאינו יודע שובע",
+        "def": "שם תואר: שאי אפשר להשביע או לספק את רצונו",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "inscrutable",
+        "tr": "בלתי מפוענח, חידתי",
+        "def": "שם תואר: בלתי ניתן להבנה או לפענוח",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "insidious",
+        "tr": "חתרני, בוגדני",
+        "def": "שם תואר: מתפשט בהדרגה ובחשאי וגורם נזק כבד",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Upbeat Synthpop, 120 BPM, energetic, catchy synth leads, crisp electronic drums, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [INEFFABLE] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [INGENUOUS] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [INNOCUOUS] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [INSATIABLE] the balance when the heavy skies turn gray,\nAnd [INSCRUTABLE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith minds so [INSIDIOUS] embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_49.mp3",
+    "timing_path": "assets/timing/suno_49.lrc"
+  },
+  {
+    "id": 50,
+    "title": "Anthem of Intrepid",
+    "genre": "Indie Folk Acoustic",
+    "bpm": 95,
+    "target_words": [
+      "intrepid",
+      "judicious",
+      "lucid",
+      "meticulous",
+      "mundane"
+    ],
+    "word_details": [
+      {
+        "word": "intrepid",
+        "tr": "אמיץ לב, ללא חת",
+        "def": "שם תואר: חסר פחד לנוכח סכנות גדולות",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "judicious",
+        "tr": "שקול, נבון",
+        "def": "שם תואר: מבוסס על שיקול דעת מעמיק וזהיר",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "lucid",
+        "tr": "צלול, ברור",
+        "def": "שם תואר: בהיר להבנה ומנוסח בצורה מובנת",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "meticulous",
+        "tr": "דקדקן, קפדני",
+        "def": "שם תואר: מקפיד על כל פרט קטן בדיוק רב",
+        "pos": "adjective",
+        "level": "C_advanced"
+      },
+      {
+        "word": "mundane",
+        "tr": "יומיומי, שגרתי",
+        "def": "שם תואר: רגיל, פשוט וחסר ייחוד או עניין מיוחד",
+        "pos": "adjective",
+        "level": "C_advanced"
+      }
+    ],
+    "style_prompt": "Indie Folk Acoustic, 95 BPM, warm acoustic guitar, gentle percussion, heartfelt harmonies, clear crisp English vocals, anthemic melody, memorable hook",
+    "lyrics": "[Verse 1]\nWe start the morning when the light begins to play,\nWith every step we [INTREPID] our journey day by day.\nThe winds of time will challenge every single heart,\nYet with deep hope we [JUDICIOUS] right from the very start.\n\n[Chorus]\nHold the melody, listen to the call,\nA vision so [LUCID] that echoes through the hall!\nNo shadow can defeat us, no wall can break our voice,\nWhen we stand united, we celebrate the choice!\n\n[Verse 2]\nWalking down the quiet street where memories reside,\nWe search for answers that the silent nights provide.\nTo [METICULOUS] the balance when the heavy skies turn gray,\nAnd [MUNDANE] the courage that carries us away.\n\n[Bridge]\nThrough all the trials we learn to stand upright and true,\nWith open minds embracing all that's new.\nAnd when tomorrow comes we sing without fear,\nThe song of victory is crystal pure and clear!\n\n[Outro]\nThe rhythm keeps on beating strong,\nWe carry this eternal song,\nLight shines on, forever free.",
+    "status": "pending_manual",
+    "audio_path": "assets/audio/suno_50.mp3",
+    "timing_path": "assets/timing/suno_50.lrc"
+  }
+]
