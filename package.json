@@ -4,6 +4,6 @@
   "private": true,
   "description": "Learn English vocabulary through song lyrics",
   "scripts": {
-    "test": "node --test test/app.test.js test/content.test.js test/karaoke.test.js test/quiz.test.js"
+    "test": "node --test test/app.test.js test/content.test.js test/karaoke.test.js test/quiz.test.js test/full_amiram_suno.test.js test/vocab_expansion.test.js test/exam_simulator.test.js test/srs_leitner.test.js test/analytics.test.js test/speech_pwa.test.js test/restatement_simulator.test.js test/song_karaoke.test.js test/reading_comprehension.test.js"
   }
 }

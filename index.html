@@ -10,11 +10,12 @@
       theme: {
         extend: {
           colors: {
-            neon: { purple: '#c084fc', pink: '#f472b6', cyan: '#22d3ee' },
-            stage: { 950: '#07060f', 900: '#0f0c1d', 800: '#1a1430' }
+            brand: { primary: '#6366f1', hover: '#4f46e5', success: '#10b981', error: '#ef4444' },
+            neon: { purple: '#6366f1', pink: '#f472b6', cyan: '#22d3ee' },
+            stage: { 950: '#07060f', 900: '#0f172a', 800: '#1e293b' }
           },
           boxShadow: {
-            glow: '0 0 40px rgba(168,85,247,0.35)',
+            glow: '0 0 40px rgba(99,102,241,0.35)',
             'glow-pink': '0 0 28px rgba(244,114,182,0.4)'
           }
         }
@@ -25,21 +26,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {font-family:'Heebo',system-ui,sans-serif;background:#0f0c1d;color:#faf5ff;}
+    body {font-family:'Heebo',system-ui,sans-serif;background:#0f172a;color:#f8fafc;}
     .font-mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
-    .lyrics-active{background:linear-gradient(90deg,rgba(192,132,252,0.28),rgba(244,114,182,0.12));border-right:3px solid #c084fc;color:#faf5ff;transform:translateX(-2px);}
-    .vocab-badge{cursor:pointer;background:#a855f7;color:inherit;font:inherit;padding:2px 6px;border-radius:4px;margin:0 2px;border:0;}
-    .tab-btn{background:#1a1430;border:2px solid #c084fc;}
-    .tab-btn[aria-pressed="true"]{background:#c084fc;color:#0f0c1d;font-weight:800;}
+    .lyrics-active{background:linear-gradient(90deg,rgba(99,102,241,0.28),rgba(244,114,182,0.12));border-right:3px solid #6366f1;color:#f8fafc;transform:translateX(-2px);}
+    .vocab-badge{cursor:pointer;background:#6366f1;color:inherit;font:inherit;padding:2px 6px;border-radius:4px;margin:0 2px;border:0;}
+    .tab-btn{background:#1e293b;border:2px solid #6366f1;}
+    .tab-btn[aria-pressed="true"]{background:#6366f1;color:#ffffff;font-weight:800;}
     .playlist-btn[aria-pressed="true"]{outline:2px solid #22d3ee;}
     .lyric-line{border-right:3px solid transparent;transition:background .2s;}
     button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #22d3ee;outline-offset:2px;}
-    .vocab-badge:hover{background:#c084fc;}
-    .wave-bar{width:3px;border-radius:999px;background:linear-gradient(180deg,#22d3ee,#a855f7);animation:wave 1.1s ease-in-out infinite;opacity:.35;}
+    .vocab-badge:hover{background:#818cf8;}
+    .wave-bar{width:3px;border-radius:999px;background:linear-gradient(180deg,#22d3ee,#6366f1);animation:wave 1.1s ease-in-out infinite;opacity:.35;}
     .wave-bar.on{opacity:1;}
     @keyframes wave{0%,100%{transform:scaleY(.35);}50%{transform:scaleY(1);}}
     .progress-track{background:rgba(148,163,184,.15);height:6px;border-radius:3px;}
-    .progress-fill{background:linear-gradient(90deg,#a855f7,#f472b6,#22d3ee);height:100%;border-radius:3px;transition:width .35s linear;}
+    .progress-fill{background:linear-gradient(90deg,#6366f1,#f472b6,#22d3ee);height:100%;border-radius:3px;transition:width .35s linear;}
     *{box-sizing:border-box;}
     .quiz-opts{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%;}
     .quiz-opt{min-height:44px;width:100%;padding:10px 12px;text-align:right;overflow-wrap:anywhere;}
@@ -47,11 +48,19 @@
     #songs-list{max-width:100%;overflow-wrap:anywhere;}
   </style>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6366f1">
 </head>
 <body class="min-h-screen flex flex-col">
   <!-- Header -->
   <header class="p-4 bg-stage-900 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-neon-purple">שיראמיר'ם</h1>
+    <div class="flex items-center gap-3">
+      <h1 class="text-2xl font-bold text-neon-purple">שיראמיר'ם</h1>
+      <span id="offline-badge" class="hidden text-xs px-2 py-0.5 rounded bg-amber-900/80 text-amber-200 border border-amber-700">מצב אופליין</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="btn-install-pwa" type="button" class="hidden text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 shadow" style="min-height:36px">📲 התקן אפליקציה</button>
+    </div>
     <div class="flex gap-2">
       <button id="btn-play" type="button" aria-label="ניגון" aria-pressed="false" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition">▶️</button>
       <span id="timer" class="font-mono" aria-label="זמן ניגון">00:00</span>
@@ -63,7 +72,10 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false">כרטיסיות SRS</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false">מדד אמיר"ם</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
   </nav>
 
@@ -116,7 +128,19 @@
     <section id="vocab" class="tab-content hidden">
       <div class="flex flex-col gap-2 mb-4">
         <input id="vocab-search" type="search" placeholder="חפש מילים…" aria-label="חיפוש מילה" class="p-2 bg-stage-900 rounded text-neon-pink">
-        <div id="vocab-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי סוג מילה"></div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs text-slate-400 font-bold">רמת קושי:</span>
+          <div id="vocab-level-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי רמת קושי">
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="all" aria-pressed="true" style="min-height:44px">הכול</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="A_foundational" aria-pressed="false" style="min-height:44px">רמה A (בסיסי)</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="B_intermediate" aria-pressed="false" style="min-height:44px">רמה B (בינוני)</button>
+            <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="C_advanced" aria-pressed="false" style="min-height:44px">רמה C (מתקדם)</button>
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs text-slate-400 font-bold">סוג מילה:</span>
+          <div id="vocab-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי סוג מילה"></div>
+        </div>
       </div>
       <table class="w-full text-sm border-collapse">
         <thead class="bg-stage-800">
@@ -129,9 +153,52 @@
 
     <!-- Quiz Tab -->
     <section id="quiz" class="tab-content hidden">
-      <div class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
+      <div class="flex flex-wrap items-center gap-2 mb-3 p-1 bg-stage-900 rounded-lg border border-white/5 w-fit" role="group" aria-label="סוג מבחן אמיר״ם">
+        <button type="button" id="exam-type-cloze" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-indigo-600 text-white" aria-pressed="true">השלמת משפטים (Cloze)</button>
+        <button type="button" id="exam-type-restatement" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false">שחבור וניסוח מחדש (Restatements)</button>
+        <button type="button" id="exam-type-reading" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false">הבנת הנקרא (Reading Comprehension)</button>
+      </div>
+
+      <!-- Reading Comprehension Modes Bar -->
+      <div id="reading-mode-bar" class="quiz-mode-bar hidden" role="group" aria-label="מצב הבנת הנקרא">
+        <button type="button" id="reading-mode-mix" aria-pressed="true">כל הקטעים (סימולציה)</button>
+        <button type="button" id="reading-mode-a" aria-pressed="false">טקסט רמה A (בסיס)</button>
+        <button type="button" id="reading-mode-b" aria-pressed="false">טקסט רמה B (ביניים)</button>
+        <button type="button" id="reading-mode-c" aria-pressed="false">טקסט רמה C (פטור)</button>
+      </div>
+
+      <!-- Reading Passage Box (Displayed in reading mode) -->
+      <div id="reading-passage-container" class="hidden mb-4 space-y-2">
+        <div class="flex flex-wrap items-center justify-between p-3 bg-stage-900 rounded-lg border border-indigo-500/30 gap-2">
+          <div>
+            <h3 id="rc-passage-title" class="text-base font-bold text-indigo-300" dir="ltr"></h3>
+            <p id="rc-passage-subtitle" class="text-xs text-slate-400"></p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="rc-level-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-900/60 text-indigo-200 border border-indigo-500/40"></span>
+            <span id="rc-topic-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stage-800 text-slate-300"></span>
+          </div>
+        </div>
+        <div id="rc-passage-body" class="rc-passage-box space-y-3" dir="ltr"></div>
+        <p class="text-xs text-muted">💡 רמז: לחצו על מילת אמיר״ם מודגשת בטקסט להשמעת הגייה 🔊 ומשמעותה.</p>
+      </div>
+
+      <!-- Restatement Modes Bar -->
+      <div id="restatement-mode-bar" class="quiz-mode-bar hidden" role="group" aria-label="מצב שחבור">
+        <button type="button" id="restatement-mode-mix" aria-pressed="true">סימולציית שחבור (15 שאלות)</button>
+        <button type="button" id="restatement-mode-a" aria-pressed="false">שחבור רמה A</button>
+        <button type="button" id="restatement-mode-b" aria-pressed="false">שחבור רמה B</button>
+        <button type="button" id="restatement-mode-c" aria-pressed="false">שחבור רמה C</button>
+      </div>
+
+      <!-- Cloze Modes Bar -->
+      <div id="cloze-mode-bar" class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
         <button type="button" id="quiz-mode-quick" aria-pressed="true">מבחן מהיר (10 שאלות)</button>
         <button type="button" id="quiz-mode-full" aria-pressed="false">מבחן מלא (50 שאלות)</button>
+        <button type="button" id="quiz-mode-amiram-mix" aria-pressed="false">סימולציית אמיר"ם (25 שאלות)</button>
+        <button type="button" id="quiz-mode-amiram-a" aria-pressed="false">אמיר"ם רמה A</button>
+        <button type="button" id="quiz-mode-amiram-b" aria-pressed="false">אמיר"ם רמה B</button>
+        <button type="button" id="quiz-mode-amiram-c" aria-pressed="false">אמיר"ם רמה C</button>
       </div>
       <div id="quiz-progress" aria-live="polite">שאלה 0 מתוך 0</div>
       <div id="quiz-container" class="space-y-4">
@@ -141,6 +208,146 @@
       <div class="mt-4 text-xl font-bold" aria-live="polite">ציון: <span id="quiz-score">0</span>/<span id="quiz-total">0</span></div>
       <button id="quiz-reset" type="button" class="mt-2 px-3 py-1 bg-neon-purple rounded" style="min-height:44px">מתחילים מחדש</button>
     </section>
+
+    <!-- Flashcards SRS Tab -->
+    <section id="flashcards" class="tab-content hidden">
+      <div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="סינון רמת כרטיסיות">
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="all" aria-pressed="true">הכול</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="A" aria-pressed="false">רמה A</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="B" aria-pressed="false">רמה B</button>
+        <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="C" aria-pressed="false">רמה C</button>
+      </div>
+
+      <div class="flex items-center justify-between mb-3 text-sm opacity-90">
+        <div id="srs-counter" aria-live="polite">כרטיסייה 0 מתוך 0</div>
+        <div id="srs-box-badge" class="px-2 py-0.5 rounded bg-indigo-900 text-indigo-200 border border-indigo-700 font-bold">קופסה 1</div>
+      </div>
+
+      <!-- 3D Card Container -->
+      <div class="srs-card-wrapper mb-4">
+        <div id="srs-card" class="srs-card">
+          <!-- Front Side -->
+          <div class="srs-card-front p-6 flex flex-col justify-between rounded-xl">
+            <div class="flex items-center justify-between">
+              <span id="srs-card-level" class="text-xs px-2 py-1 rounded bg-stage-900 text-neon-pink font-semibold">רמה A</span>
+              <button id="srs-btn-speak" type="button" class="text-xs px-2 py-1 bg-stage-900 rounded hover:bg-stage-800 text-indigo-300 font-bold" title="השמע הגייה" style="min-height:36px">🔊 השמע</button>
+            </div>
+            <div class="my-6 text-center">
+              <h2 id="srs-card-word" dir="ltr" class="text-3xl font-black text-indigo-300 mb-2">word</h2>
+              <p id="srs-card-pos" class="text-xs text-muted">חלק דיבר</p>
+            </div>
+            <p id="srs-card-cloze" dir="ltr" class="text-sm text-center opacity-80 italic">sample sentence with ______</p>
+          </div>
+          <!-- Back Side -->
+          <div class="srs-card-back p-6 flex flex-col justify-between rounded-xl">
+            <div class="text-center">
+              <h3 id="srs-card-trans" class="text-2xl font-bold text-white mb-2">תרגום</h3>
+              <p id="srs-card-def" class="text-sm text-indigo-200 mb-4">הגדרה בעברית</p>
+            </div>
+            <div class="p-3 bg-stage-900/60 rounded border border-white/5 text-center">
+              <p id="srs-card-full-sentence" dir="ltr" class="text-sm text-gray-200">Full English sentence</p>
+            </div>
+            <div class="text-xs text-center opacity-60">לחץ להפיכה חוזרת</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mb-4">
+        <button id="srs-btn-flip" type="button" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-500 rounded font-bold transition shadow" style="min-height:44px">הצג תשובה / הפוך כרטיסייה</button>
+      </div>
+
+      <!-- Rating Buttons (Leitner SRS) -->
+      <div id="srs-actions" class="grid grid-cols-4 gap-2 hidden">
+        <button type="button" id="srs-btn-again" class="py-2 bg-red-900/80 hover:bg-red-800 text-red-200 rounded font-bold text-xs" style="min-height:44px">שוב (Box 1)</button>
+        <button type="button" id="srs-btn-hard" class="py-2 bg-amber-900/80 hover:bg-amber-800 text-amber-200 rounded font-bold text-xs" style="min-height:44px">קשה</button>
+        <button type="button" id="srs-btn-good" class="py-2 bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 rounded font-bold text-xs" style="min-height:44px">טוב (+1)</button>
+        <button type="button" id="srs-btn-easy" class="py-2 bg-sky-900/80 hover:bg-sky-800 text-sky-200 rounded font-bold text-xs" style="min-height:44px">קל (+2)</button>
+      </div>
+    </section>
+
+    <!-- Amiram Analytics Dashboard Tab -->
+    <section id="dashboard" class="tab-content hidden">
+      <!-- Hero Score Card -->
+      <div class="p-6 bg-stage-800 rounded-xl border border-white/10 shadow-xl mb-4 text-center">
+        <p class="text-xs text-muted uppercase tracking-wider mb-1">ציון אמיר"ם משוער (מדד 50–150)</p>
+        <div class="flex items-center justify-center gap-2 my-2">
+          <span id="amiram-score-display" class="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">50</span>
+          <span class="text-xl text-muted font-bold">/ 150</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 mt-2">
+          <span id="amiram-cefr-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-950 text-indigo-200 border border-indigo-700/60">רמה טרום בסיסי</span>
+        </div>
+        <p id="amiram-academic-desc" class="text-xs text-indigo-300 mt-2 font-medium">חיזוק מילים בסיסיות מומלץ לקראת מבחן ראשון</p>
+        <p id="amiram-confidence" class="text-xs text-muted mt-1 opacity-70">רמת מהימנות: נמוכה (מדגם ראשוני)</p>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div class="p-3 bg-stage-800 rounded border border-white/5 text-center">
+          <div class="text-xs text-muted mb-1">דיוק Cloze</div>
+          <div id="metric-cloze" class="text-xl font-bold text-emerald-400">0%</div>
+        </div>
+        <div class="p-3 bg-stage-800 rounded border border-white/5 text-center">
+          <div class="text-xs text-muted mb-1">עוצמת שימור (SRS)</div>
+          <div id="metric-retention" class="text-xl font-bold text-indigo-400">0%</div>
+        </div>
+        <div class="p-3 bg-stage-800 rounded border border-white/5 text-center">
+          <div class="text-xs text-muted mb-1">כיסוי אוצר מילים</div>
+          <div id="metric-coverage" class="text-xl font-bold text-purple-400">0%</div>
+        </div>
+        <div class="p-3 bg-stage-800 rounded border border-white/5 text-center">
+          <div class="text-xs text-muted mb-1">עקביות תרגול</div>
+          <div id="metric-consistency" class="text-xl font-bold text-pink-400">0%</div>
+        </div>
+      </div>
+
+      <!-- Level Mastery Breakdown -->
+      <div class="p-4 bg-stage-800 rounded border border-white/5 mb-4 space-y-3">
+        <h3 class="font-bold text-sm text-indigo-200">שליטה באוצר מילים לפי רמות (300 מילים)</h3>
+        
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>רמה A (בסיסי - 100 מילים)</span>
+            <span id="level-a-stats">0% שליטה</span>
+          </div>
+          <div class="w-full bg-stage-900 rounded-full h-2.5 overflow-hidden">
+            <div id="bar-level-a" class="bg-emerald-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>רמה B (בינוני - 100 מילים)</span>
+            <span id="level-b-stats">0% שליטה</span>
+          </div>
+          <div class="w-full bg-stage-900 rounded-full h-2.5 overflow-hidden">
+            <div id="bar-level-b" class="bg-indigo-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>רמה C (מתקדם - 100 מילים)</span>
+            <span id="level-c-stats">0% שליטה</span>
+          </div>
+          <div class="w-full bg-stage-900 rounded-full h-2.5 overflow-hidden">
+            <div id="bar-level-c" class="bg-pink-500 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weak Words Review Queue -->
+      <div class="p-4 bg-stage-800 rounded border border-white/5">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold text-sm text-amber-300">🎯 מילים מומלצות לחיזוק (טעויות Cloze ו-SRS)</h3>
+          <span id="weak-words-count" class="text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-bold">0 מילים</span>
+        </div>
+        <div id="weak-words-list" class="space-y-2 mt-3">
+          <p class="text-xs text-muted">עדיין אין מילים מסומנות לחיזוק. בצע מבחן או כרטיסיות כדי לעקוב אחר טעויות.</p>
+        </div>
+      </div>
+    </section>
+
     <section id="songs" class="tab-content hidden">
       <p id="content-status" class="text-sm mb-2" aria-live="polite">טוען תוכן…</p>
       <p class="text-sm mb-2">כיסוי מבחן: <span id="exam-coverage">unknown</span> — לא נטען כיסוי שלא אומת. אין חיבור חשבון Spotify/YouTube Music; הקישורים וההטמעה הם ציבוריים בלבד.</p>
@@ -155,6 +362,38 @@
         <div id="spotify-box" class="embed-frame-wrap spotify"></div>
         <div id="youtube-box" class="embed-frame-wrap youtube hidden text-sm"></div>
       </div>
+
+      <!-- 30-Song Karaoke Teleprompter Engine -->
+      <div class="p-4 bg-stage-800 rounded-xl border border-white/10 mt-4">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-bold text-base text-indigo-300">🎤 טלפרומפטר קריוקי ואוצר מילים לכל 30 השירים</h3>
+          <span class="text-xs px-2 py-0.5 rounded bg-indigo-950 text-indigo-200 border border-indigo-700 font-bold">סנכרון חי</span>
+        </div>
+        
+        <label class="block text-xs text-muted mb-1">בחרו שיר מהמאגר לתרגול וטלפרומפטר:</label>
+        <select id="karaoke-30-select" class="w-full p-2 bg-stage-900 border border-white/10 rounded-lg text-sm text-gray-200 mb-3"></select>
+
+        <!-- Current Song Details -->
+        <div class="flex flex-wrap items-center justify-between p-3 bg-stage-900 rounded-lg border border-white/5 mb-3 gap-2">
+          <div>
+            <h4 id="teleprompter-song-title" class="font-bold text-sm text-white" dir="ltr">Let It Be — The Beatles</h4>
+            <div id="teleprompter-vocab-tags" class="flex flex-wrap gap-1 mt-1"></div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-teleprompter-play" type="button" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow" style="min-height:36px">▶ נגן סנכרון</button>
+          </div>
+        </div>
+
+        <!-- Teleprompter Container -->
+        <div id="teleprompter-viewport" class="p-4 bg-stage-950 rounded-lg border border-indigo-900/50 max-h-60 overflow-y-auto space-y-2 mb-3">
+          <!-- Lines rendered dynamically -->
+        </div>
+
+        <!-- Word Inspector Card -->
+        <div id="karaoke-word-inspector" class="p-3 bg-stage-900/90 rounded-lg border border-indigo-500/30 text-sm">
+          <p class="text-xs text-muted">לחצו על מילת אמיר"ם צבעונית בטלפרומפטר להשמעת הגייה, תרגום והוספה ל-SRS.</p>
+        </div>
+      </div>
       <hr class="my-4 border-stage-800">
       <h2 class="font-bold mb-2">שמע מקומי ותזמון</h2>
       <p class="text-sm mb-2">לא מסופק קובץ שמע או תזמון מומצא. בחרו קובץ שמע שלכם וקובץ LRC/JSON שלכם.</p>
@@ -167,6 +406,52 @@
       <p class="text-sm mb-2">יצירת שיר בפועל ב-Suno היא ידנית/ממתינה. הכפתור רק מייצא מילים מקוריות ללימוד אוצר מילים ופרומפט — בלי שימוש בקרדיטים ובלי API לא רשמי.</p>
       <button id="btn-suno" type="button" class="song-link bg-neon-pink rounded">צור ייצוא Suno ממילות היעד</button>
       <textarea id="suno-out" dir="ltr" rows="8" class="w-full mt-2 p-2 bg-stage-900 rounded text-left" readonly></textarea>
+    </section>
+ 
+    <!-- Suno Studio Tab -->
+    <section id="suno" class="tab-content hidden glass-card p-4">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-xl font-bold text-neon-purple">Suno Studio • מחולל שירים למילות אמיר"ם</h2>
+          <p class="text-sm text-slate-300">הפקת שירים מלאים עבור מילות היעד שאין להן שיר קיים במאגר. העתיקו את הפרומפט והמילים ליצירה ב-Suno.</p>
+        </div>
+      </div>
+      <div class="mb-4 flex flex-wrap gap-2 items-center">
+        <label class="text-sm font-bold text-slate-300">בחר שיר להפקה:</label>
+        <select id="suno-song-select" class="p-2 bg-stage-900 border border-slate-700 rounded text-sm text-slate-100 flex-1 max-w-md" style="min-height:44px"></select>
+      </div>
+      <div id="suno-card" class="p-4 bg-stage-900/80 rounded-xl border border-slate-700/80 space-y-4">
+        <div class="flex justify-between items-start flex-wrap gap-2">
+          <div>
+            <h3 id="suno-title" class="text-lg font-bold text-indigo-400"></h3>
+            <p id="suno-meta" class="text-xs text-slate-400"></p>
+          </div>
+          <span id="suno-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-900/60 text-amber-200 border border-amber-500/40">סטטוס: pending_manual</span>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-slate-400 mb-1">מילות היעד בשיר:</h4>
+          <div id="suno-words-tags" class="flex flex-wrap gap-1"></div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="text-xs font-bold text-slate-400">פרומפט סגנון (Style Prompt):</h4>
+            <button type="button" id="btn-copy-suno-style" class="text-xs px-3 py-1 rounded bg-indigo-600 hover:bg-indigo-500 font-bold" style="min-height:44px">העתק סגנון</button>
+          </div>
+          <div id="suno-style-text" class="p-2 bg-slate-950 rounded text-xs text-slate-300 font-mono text-left" dir="ltr"></div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="text-xs font-bold text-slate-400">מילות השיר (Lyrics):</h4>
+            <button type="button" id="btn-copy-suno-lyrics" class="text-xs px-3 py-1 rounded bg-pink-600 hover:bg-pink-500 font-bold" style="min-height:44px">העתק מילים מלאות</button>
+          </div>
+          <pre id="suno-lyrics-text" class="p-3 bg-slate-950 rounded text-xs text-slate-200 font-mono whitespace-pre-wrap text-left max-h-60 overflow-y-auto" dir="ltr"></pre>
+        </div>
+        <div class="pt-2 border-t border-slate-800">
+          <h4 class="text-xs font-bold text-slate-400 mb-2">נגן שמע מקומי:</h4>
+          <div id="suno-audio-status" class="text-xs text-amber-300 mb-2">ממתין להפקת אודיו ב-Suno (העתיקו את המילים והפרומפט)</div>
+          <audio id="suno-audio-player" controls class="w-full hidden"></audio>
+        </div>
+      </div>
     </section>
 
     <section id="karaoke" class="tab-content hidden karaoke-panel" aria-label="Voice Karaoke Challenge">
@@ -195,6 +480,16 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="src/vocab.js"></script>
+  <script src="src/suno_generator.js"></script>
+  <script src="src/audio_player.js"></script>
+  <script src="src/exam_simulator.js"></script>
+  <script src="src/srs_leitner.js"></script>
+  <script src="src/analytics.js"></script>
+  <script src="src/speech.js"></script>
+  <script src="src/restatement_simulator.js"></script>
+  <script src="src/song_karaoke.js"></script>
+  <script src="src/reading_comprehension.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -208,17 +503,31 @@
     }
     document.querySelectorAll('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
 
-    // Vocabulary table: the search box and the category buttons work together
+    // Vocabulary table: the search box, level buttons and category buttons work together
     let category = 'all';
+    let currentLevel = 'all';
     function renderVocab() {
-      const rows = A.filterVocab($('vocab-search').value, category);
-      $('vocab-table').innerHTML = rows.map((v) => '<tr><td class="p-2 border-t border-stage-800" dir="ltr">' + esc(v.word)
+      let rows = A.filterVocab($('vocab-search').value, category);
+      if (currentLevel !== 'all') {
+        const levelCode = currentLevel.replace('_foundational', '').replace('_intermediate', '').replace('_advanced', '').toLowerCase();
+        rows = rows.filter(v => (v.difficulty && v.difficulty.toLowerCase() === levelCode) || (v.level && v.level === currentLevel));
+      }
+      $('vocab-table').innerHTML = rows.map((v) => '<tr><td class="p-2 border-t border-stage-800" dir="ltr"><span class="font-bold">' + esc(v.word)
+        + '</span> <button type="button" class="btn-vocab-speak text-xs px-1.5 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" data-speak="' + esc(v.word) + '" title="השמע הגייה" style="min-height:30px">🔊</button>'
         + '</td><td class="p-2 border-t border-stage-800">' + esc(v.translation)
         + '</td><td class="p-2 border-t border-stage-800">' + esc(A.CATEGORY_HE[v.category] || v.category)
-        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty) + '</td></tr>').join('');
+        + '</td><td class="p-2 border-t border-stage-800">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty || v.level) + '</td></tr>').join('');
+      document.querySelectorAll('.btn-vocab-speak').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(btn.dataset.speak);
+        };
+      });
       $('vocab-empty').classList.toggle('hidden', rows.length > 0);
       document.querySelectorAll('.playlist-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === category)));
+      document.querySelectorAll('.level-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === currentLevel)));
     }
+    document.querySelectorAll('.level-btn').forEach((b) => b.addEventListener('click', () => { currentLevel = b.dataset.level; renderVocab(); }));
     $('vocab-filters').innerHTML = A.CATEGORIES.map((c) => '<button type="button" class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.he) + '</button>').join('');
     document.querySelectorAll('.playlist-btn').forEach((b) => b.addEventListener('click', () => { category = b.dataset.cat; renderVocab(); }));
     $('vocab-search').addEventListener('input', renderVocab);
@@ -228,9 +537,11 @@
     document.querySelectorAll('.vocab-badge').forEach((b) => b.addEventListener('click', () => {
       const entry = A.findWord(b.dataset.word);
       if (!entry) return;
-      $('insp-word').innerHTML = '<strong dir="ltr">' + esc(entry.word) + '</strong> – ' + esc(entry.translation)
+      $('insp-word').innerHTML = '<strong dir="ltr">' + esc(entry.word) + '</strong> <button type="button" id="btn-insp-speak" class="text-xs px-2 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" style="min-height:30px">🔊 השמע</button> – ' + esc(entry.translation)
         + '<br><em>סוג:</em> ' + esc(A.CATEGORY_HE[entry.category] || entry.category)
         + '<br><em>דוגמה:</em> <span dir="ltr">' + esc(entry.sample_sentence) + '</span>';
+      const spk = $('btn-insp-speak');
+      if (spk) spk.onclick = () => { if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(entry.word); };
     }));
 
     // The song: a short tune that loops, a timer, and the line being sung is highlighted.
@@ -296,20 +607,177 @@
     });
 
 
-    // Quiz — content_v2 exam modes (quick 10 / full 50)
+    // Quiz — content_v2 exam modes + Amiram Cloze, Restatement & Reading Simulators
+    let examType = 'cloze'; // 'cloze', 'restatement', or 'reading'
+    let restatementMode = 'mixed_15';
+    let readingMode = 'all';
+    let activeReadingPassage = null;
     let quizMode = 'quick';
     let quizPool = [];
     let quizIndex = 0;
     let score = 0;
+    let AMIRAM_VOCAB = [];
+    let AMIRAM_RESTATEMENTS = [];
+    let AMIRAM_READING_PASSAGES = [];
+
+    if (window.fetch) {
+      fetch('data/imports/amiram_vocab_full.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) AMIRAM_VOCAB = data;
+        })
+        .catch(() => {});
+
+      fetch('data/imports/amiram_restatements.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) AMIRAM_RESTATEMENTS = data;
+        })
+        .catch(() => {});
+
+      fetch('data/imports/amiram_reading_passages.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) AMIRAM_READING_PASSAGES = data;
+        })
+        .catch(() => {});
+    }
+
+    function renderReadingPassage(passage) {
+      if (!passage || !$('reading-passage-container')) return;
+      $('rc-passage-title').textContent = passage.title || '';
+      $('rc-passage-subtitle').textContent = (passage.hebrew_title ? passage.hebrew_title + ' • ' : '') + (passage.topic || '');
+      
+      const levelNames = {
+        'A_foundational': 'רמה A (בסיס)',
+        'B_intermediate': 'רמה B (ביניים)',
+        'C_advanced': 'רמה C (פטור)'
+      };
+      $('rc-level-badge').textContent = levelNames[passage.level] || passage.level;
+      $('rc-topic-badge').textContent = passage.topic || 'Academic Reading';
+
+      const body = $('rc-passage-body');
+      body.innerHTML = '';
+      
+      let lineNum = 1;
+      (passage.paragraphs || []).forEach(pText => {
+        const pDiv = document.createElement('div');
+        pDiv.className = 'rc-paragraph mb-3';
+        
+        let formattedLines = pText;
+        if (window.AmiramReading) {
+          const res = window.AmiramReading.formatParagraphLines(pText, lineNum, 10);
+          formattedLines = res.formattedHtml;
+          lineNum = res.endLineNumber;
+          if (passage.target_vocab) {
+            formattedLines = window.AmiramReading.highlightVocab(formattedLines, passage.target_vocab);
+          }
+        }
+        pDiv.innerHTML = formattedLines;
+        body.appendChild(pDiv);
+      });
+
+      body.querySelectorAll('.rc-target-word').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const word = el.getAttribute('data-word');
+          if (word && window.ShirAmiramSpeech) {
+            window.ShirAmiramSpeech.speak(word);
+          }
+        });
+      });
+    }
+
+    function setExamType(type) {
+      examType = type;
+      $('exam-type-cloze').setAttribute('aria-pressed', String(type === 'cloze'));
+      $('exam-type-restatement').setAttribute('aria-pressed', String(type === 'restatement'));
+      if ($('exam-type-reading')) $('exam-type-reading').setAttribute('aria-pressed', String(type === 'reading'));
+
+      $('exam-type-cloze').className = 'px-3 py-1.5 rounded-md text-xs font-bold transition ' + (type === 'cloze' ? 'bg-indigo-600 text-white' : 'bg-stage-800 text-gray-300 hover:text-white');
+      $('exam-type-restatement').className = 'px-3 py-1.5 rounded-md text-xs font-bold transition ' + (type === 'restatement' ? 'bg-indigo-600 text-white' : 'bg-stage-800 text-gray-300 hover:text-white');
+      if ($('exam-type-reading')) $('exam-type-reading').className = 'px-3 py-1.5 rounded-md text-xs font-bold transition ' + (type === 'reading' ? 'bg-indigo-600 text-white' : 'bg-stage-800 text-gray-300 hover:text-white');
+
+      $('cloze-mode-bar').classList.toggle('hidden', type !== 'cloze');
+      $('restatement-mode-bar').classList.toggle('hidden', type !== 'restatement');
+      if ($('reading-mode-bar')) $('reading-mode-bar').classList.toggle('hidden', type !== 'reading');
+      if ($('reading-passage-container')) $('reading-passage-container').classList.toggle('hidden', type !== 'reading');
+
+      renderQuiz();
+    }
+    if ($('exam-type-cloze')) $('exam-type-cloze').addEventListener('click', () => setExamType('cloze'));
+    if ($('exam-type-restatement')) $('exam-type-restatement').addEventListener('click', () => setExamType('restatement'));
+    if ($('exam-type-reading')) $('exam-type-reading').addEventListener('click', () => setExamType('reading'));
+
+    function setReadingMode(mode) {
+      readingMode = mode;
+      const modes = ['mix', 'a', 'b', 'c'];
+      modes.forEach(m => {
+        const el = $('reading-mode-' + m);
+        if (el) el.setAttribute('aria-pressed', String((m === 'mix' && mode === 'all') || (m === 'a' && mode === 'A_foundational') || (m === 'b' && mode === 'B_intermediate') || (m === 'c' && mode === 'C_advanced')));
+      });
+      renderQuiz();
+    }
+    if ($('reading-mode-mix')) $('reading-mode-mix').addEventListener('click', () => setReadingMode('all'));
+    if ($('reading-mode-a')) $('reading-mode-a').addEventListener('click', () => setReadingMode('A_foundational'));
+    if ($('reading-mode-b')) $('reading-mode-b').addEventListener('click', () => setReadingMode('B_intermediate'));
+    if ($('reading-mode-c')) $('reading-mode-c').addEventListener('click', () => setReadingMode('C_advanced'));
+
+    function setRestatementMode(mode) {
+      restatementMode = mode;
+      const modes = ['mix', 'a', 'b', 'c'];
+      modes.forEach(m => {
+        const el = $('restatement-mode-' + m);
+        if (el) el.setAttribute('aria-pressed', String((m === 'mix' && mode === 'mixed_15') || mode.toLowerCase() === m));
+      });
+      renderQuiz();
+    }
+    if ($('restatement-mode-mix')) $('restatement-mode-mix').addEventListener('click', () => setRestatementMode('mixed_15'));
+    if ($('restatement-mode-a')) $('restatement-mode-a').addEventListener('click', () => setRestatementMode('A'));
+    if ($('restatement-mode-b')) $('restatement-mode-b').addEventListener('click', () => setRestatementMode('B'));
+    if ($('restatement-mode-c')) $('restatement-mode-c').addEventListener('click', () => setRestatementMode('C'));
+
     function setQuizMode(mode) {
-      quizMode = mode === 'full' ? 'full' : 'quick';
-      $('quiz-mode-quick').setAttribute('aria-pressed', String(quizMode === 'quick'));
-      $('quiz-mode-full').setAttribute('aria-pressed', String(quizMode === 'full'));
+      quizMode = mode;
+      const modes = ['quick', 'full', 'amiram-mix', 'amiram-a', 'amiram-b', 'amiram-c'];
+      modes.forEach(m => {
+        const el = $('quiz-mode-' + m);
+        if (el) el.setAttribute('aria-pressed', String(quizMode === m));
+      });
       renderQuiz();
     }
     $('quiz-mode-quick').addEventListener('click', () => setQuizMode('quick'));
     $('quiz-mode-full').addEventListener('click', () => setQuizMode('full'));
+    if ($('quiz-mode-amiram-mix')) $('quiz-mode-amiram-mix').addEventListener('click', () => setQuizMode('amiram-mix'));
+    if ($('quiz-mode-amiram-a')) $('quiz-mode-amiram-a').addEventListener('click', () => setQuizMode('amiram-a'));
+    if ($('quiz-mode-amiram-b')) $('quiz-mode-amiram-b').addEventListener('click', () => setQuizMode('amiram-b'));
+    if ($('quiz-mode-amiram-c')) $('quiz-mode-amiram-c').addEventListener('click', () => setQuizMode('amiram-c'));
+
     function pickQuizPool() {
+      if (examType === 'reading') {
+        if (Array.isArray(AMIRAM_READING_PASSAGES) && AMIRAM_READING_PASSAGES.length > 0) {
+          let pool = AMIRAM_READING_PASSAGES;
+          if (readingMode !== 'all') {
+            pool = AMIRAM_READING_PASSAGES.filter(p => p.level === readingMode);
+          }
+          if (pool.length > 0) {
+            activeReadingPassage = pool[0];
+            renderReadingPassage(activeReadingPassage);
+            return activeReadingPassage.questions || [];
+          }
+        }
+      }
+      if (examType === 'restatement') {
+        if (window.ShirAmiramRestatements && Array.isArray(AMIRAM_RESTATEMENTS) && AMIRAM_RESTATEMENTS.length > 0) {
+          return window.ShirAmiramRestatements.createSession(AMIRAM_RESTATEMENTS, { mode: restatementMode });
+        }
+      }
+      if (window.ShirAmiramExam && Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) {
+        if (quizMode === 'amiram-mix') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'mixed_25');
+        if (quizMode === 'amiram-a') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'A', 20);
+        if (quizMode === 'amiram-b') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'B', 20);
+        if (quizMode === 'amiram-c') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'C', 20);
+      }
       const all = (CONTENT && Array.isArray(CONTENT.questions) && CONTENT.questions.length)
         ? CONTENT.questions.slice().sort((a, b) => a.id - b.id)
         : (A.QUIZ || []).map((q, i) => ({ id: i + 1, question: q.q, options: q.opts, answer: q.a, explanation: '', word: q.a }));
@@ -335,33 +803,88 @@
       updateQuizProgress();
       quizPool.forEach((item, i) => {
         const div = document.createElement('div');
-        div.className = 'quiz-q p-2 bg-stage-800 rounded' + (i === 0 ? '' : ' hidden');
+        div.className = 'quiz-q p-3 bg-stage-800 rounded-xl border border-white/5' + (i === 0 ? '' : ' hidden');
         div.dataset.qIndex = String(i);
+
+        // Header with question prompt & audio
+        const headerBox = document.createElement('div');
+        headerBox.className = 'flex items-start justify-between gap-2 mb-3';
         const p = document.createElement('p');
-        p.className = 'mb-2 font-bold';
+        p.className = 'font-bold text-base text-gray-100 flex-1 leading-relaxed';
         p.dir = 'ltr';
-        p.textContent = item.question || item.q;
-        div.appendChild(p);
+        p.textContent = item.source_sentence || item.question || item.q;
+        headerBox.appendChild(p);
+
+        const spkBtn = document.createElement('button');
+        spkBtn.type = 'button';
+        spkBtn.className = 'text-xs px-2 py-1 rounded bg-stage-900 text-indigo-300 hover:text-white font-bold shrink-0';
+        spkBtn.textContent = '🔊 השמע';
+        spkBtn.onclick = (e) => {
+          e.stopPropagation();
+          if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(item.source_sentence || item.question || item.q);
+        };
+        headerBox.appendChild(spkBtn);
+        div.appendChild(headerBox);
+
+        if (item.line_reference) {
+          const badge = document.createElement('div');
+          badge.className = 'text-xs text-indigo-300 font-semibold mb-2 flex items-center gap-2';
+          const typeNames = {
+            'main_idea': 'רעיון מרכזי',
+            'detail': 'פרט מתוך הטקסט',
+            'inference': 'הסקה לוגית',
+            'vocab_in_context': 'אוצר מילים בהקשר',
+            'reference': 'התייחסות'
+          };
+          const typeLabel = typeNames[item.type] ? ' • ' + typeNames[item.type] : '';
+          badge.innerHTML = '<span class="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-700/50">📍 ' + esc(item.line_reference) + typeLabel + '</span>';
+          div.appendChild(badge);
+        } else if (item.grammar_target) {
+          const badge = document.createElement('div');
+          badge.className = 'text-xs text-indigo-400 font-semibold mb-2';
+          badge.textContent = 'דגש דקדוקי: ' + ((window.ShirAmiramRestatements && ShirAmiramRestatements.GRAMMAR_CATEGORY_NAMES[item.grammar_target]) || item.grammar_target);
+          div.appendChild(badge);
+        }
+
         const fb = document.createElement('div');
         fb.className = 'quiz-fb mt-2 text-sm';
         fb.setAttribute('aria-live', 'polite');
         const optsBox = document.createElement('div');
         optsBox.className = 'quiz-opts';
         div.appendChild(optsBox);
+
         const opts = item.options || item.opts || [];
         const answer = item.answer != null ? item.answer : item.a;
-        opts.forEach((opt) => {
+
+        opts.forEach((opt, optIdx) => {
+          const optText = typeof opt === 'object' ? opt.text : opt;
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'quiz-opt bg-neon-pink rounded';
-          btn.textContent = opt;
+          btn.textContent = optText;
           btn.addEventListener('click', () => {
-            const right = String(opt) === String(answer);
-            fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + answer;
+            let right = false;
+            let explanation = item.explanation_he || item.explanation || item.hebrew_explanation || '';
+            if (item.source_sentence && typeof opt === 'object') {
+              const res = window.ShirAmiramRestatements.evaluateAnswer(item, optIdx);
+              right = res.isCorrect;
+              fb.textContent = right ? '✅ נכון מאוד! הניסוח שומר על משמעות זהה.' : '❌ לא נכון. (' + (res.error_type || 'עיוות משמעות') + ')';
+            } else if (typeof item.correct_index === 'number') {
+              right = (optIdx === item.correct_index);
+              fb.textContent = right ? '✅ תשובה נכונה בהבנת הנקרא!' : '❌ לא נכון. התשובה הנכונה: ' + (item.options[item.correct_index] || '');
+            } else {
+              right = String(optText) === String(answer);
+              fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + answer;
+            }
+
+            btn.classList.add('selected');
             fb.className = 'quiz-fb mt-2 text-sm ' + (right ? 'text-green-400' : 'text-red-400');
-            $('quiz-explanation').textContent = item.explanation || '';
+            $('quiz-explanation').textContent = explanation;
             if (right) score++;
             $('quiz-score').textContent = String(score);
+            if (typeof window.recordQuizAttempt === 'function') {
+              window.recordQuizAttempt(item.id || item.word || i, right);
+            }
             div.querySelectorAll('.quiz-opt').forEach((b) => { b.disabled = true; });
             quizIndex = i;
             updateQuizProgress();
@@ -377,6 +900,11 @@
             }
           });
           optsBox.appendChild(btn);
+        });
+        div.appendChild(fb);
+        $('quiz-container').appendChild(div);
+      });
+    }
         });
         div.appendChild(fb);
         $('quiz-container').appendChild(div);
@@ -421,7 +949,121 @@
         setEmbedTab(yid ? 'youtube' : 'spotify');
       }));
     }
-    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); if (typeof renderQuiz==='function') renderQuiz(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
+
+    // --- 30-Song Karaoke Teleprompter Controller ---
+    let activeKaraokeIndex = null;
+    let teleprompterTimer = null;
+    let teleprompterCurrentTime = 0;
+
+    function init30SongKaraoke(songs) {
+      const sel = $('karaoke-30-select');
+      if (!sel || !songs || !songs.length) return;
+      sel.innerHTML = songs.map(s => '<option value="' + s.id + '">' + esc(s.title) + ' — ' + esc(s.artist) + '</option>').join('');
+      sel.onchange = () => loadTeleprompterSong(Number(sel.value));
+      loadTeleprompterSong(songs[0].id);
+    }
+
+    function loadTeleprompterSong(songId) {
+      if (!CONTENT || !window.ShirAmiramSongKaraoke) return;
+      const song = CONTENT.songs.find(s => s.id === songId) || CONTENT.songs[0];
+      if (!song) return;
+
+      activeKaraokeIndex = window.ShirAmiramSongKaraoke.buildSongKaraokeIndex(song, AMIRAM_VOCAB);
+      if (!activeKaraokeIndex) return;
+
+      $('teleprompter-song-title').textContent = activeKaraokeIndex.title + ' — ' + activeKaraokeIndex.artist;
+      $('teleprompter-vocab-tags').innerHTML = activeKaraokeIndex.targetWords.map(tw => {
+        return '<span class="text-xs px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/60 font-bold">' + esc(tw.word) + ' (' + esc(tw.hebrew_translation) + ')</span>';
+      }).join('');
+
+      renderTeleprompterLines(0);
+    }
+
+    function renderTeleprompterLines(currentTime) {
+      const viewport = $('teleprompter-viewport');
+      if (!viewport || !activeKaraokeIndex) return;
+
+      const activeIdx = window.ShirAmiramSongKaraoke.getActiveLineIndex(activeKaraokeIndex.lines, currentTime);
+
+      viewport.innerHTML = activeKaraokeIndex.lines.map((line, idx) => {
+        const isActive = idx === activeIdx;
+        const lineClass = 'p-2 rounded-lg transition-all ' + (isActive ? 'bg-indigo-950/80 border-r-4 border-indigo-500 text-white font-bold' : 'text-gray-400 opacity-70');
+        
+        const tokenHtml = line.tokens.map(t => {
+          if (t.isTarget && t.wordData) {
+            return '<button type="button" class="teleprompter-token-btn font-extrabold text-pink-400 hover:text-white underline mx-0.5" data-word="' + esc(t.wordData.word) + '" data-he="' + esc(t.wordData.hebrew_translation) + '" data-def="' + esc(t.wordData.hebrew_definition) + '">' + esc(t.text) + '</button>';
+          }
+          return esc(t.text);
+        }).join('');
+
+        return '<div class="' + lineClass + '" data-line-idx="' + idx + '" dir="ltr">' + tokenHtml + '</div>';
+      }).join('');
+
+      const activeEl = viewport.querySelector('[data-line-idx="' + activeIdx + '"]');
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      viewport.querySelectorAll('.teleprompter-token-btn').forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          const word = btn.dataset.word;
+          const he = btn.dataset.he;
+          const def = btn.dataset.def;
+          
+          if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(word);
+          if (window.ShirAmiramSongKaraoke) window.ShirAmiramSongKaraoke.trackEvent('word_inspected', { word });
+
+          const inspector = $('karaoke-word-inspector');
+          if (inspector) {
+            inspector.innerHTML = '<div class="flex items-start justify-between">'
+              + '<div><strong class="text-base text-indigo-300" dir="ltr">' + esc(word) + '</strong> – <span class="font-bold text-white">' + esc(he) + '</span>'
+              + '<p class="text-xs text-gray-300 mt-1">' + esc(def) + '</p></div>'
+              + '<div class="flex gap-2">'
+              + '<button type="button" id="btn-add-word-srs" class="text-xs px-2.5 py-1 rounded bg-indigo-600 text-white font-bold hover:bg-indigo-500" style="min-height:30px">➕ הוסף ל-SRS</button>'
+              + '<button type="button" id="btn-speak-inspected" class="text-xs px-2 py-1 rounded bg-stage-800 text-indigo-300 font-bold hover:text-white" style="min-height:30px">🔊</button>'
+              + '</div></div>';
+
+            const addSrsBtn = $('btn-add-word-srs');
+            if (addSrsBtn && window.ShirAmiramSRS) {
+              addSrsBtn.onclick = () => {
+                const srsState = window.ShirAmiramSRS.loadState();
+                srsState.cards[word] = srsState.cards[word] || window.ShirAmiramSRS.initProgress(word);
+                window.ShirAmiramSRS.saveState(srsState);
+                addSrsBtn.textContent = 'התווסף!';
+                addSrsBtn.disabled = true;
+              };
+            }
+
+            const spkBtn = $('btn-speak-inspected');
+            if (spkBtn && window.ShirAmiramSpeech) {
+              spkBtn.onclick = () => window.ShirAmiramSpeech.speak(word);
+            }
+          }
+        };
+      });
+    }
+
+    if ($('btn-teleprompter-play')) {
+      $('btn-teleprompter-play').onclick = () => {
+        if (teleprompterTimer) {
+          clearInterval(teleprompterTimer);
+          teleprompterTimer = null;
+          $('btn-teleprompter-play').textContent = '▶ נגן סנכרון';
+        } else {
+          $('btn-teleprompter-play').textContent = '⏸ עצור';
+          teleprompterTimer = setInterval(() => {
+            teleprompterCurrentTime += 0.5;
+            if (activeKaraokeIndex && teleprompterCurrentTime >= activeKaraokeIndex.durationSec) {
+              teleprompterCurrentTime = 0;
+            }
+            renderTeleprompterLines(teleprompterCurrentTime);
+          }, 500);
+        }
+      };
+    }
+
+    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); init30SongKaraoke(c.songs); if (typeof renderQuiz==='function') renderQuiz(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
     $('btn-recommend').addEventListener('click', renderSongs);
     $('btn-suno').addEventListener('click', ()=>{
       const targets=$('target-words').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
@@ -435,6 +1077,247 @@
     function renderTimed(){ const idx=A.activeTimedLine(timed, $('local-audio').currentTime||0); $('timed-lines').innerHTML=timed.map((l,i)=>'<button type="button" class="quiz-opt '+(i===idx?'bg-neon-purple':'bg-stage-800')+' rounded" data-t="'+l.time+'">'+esc(l.text)+'</button>').join(''); document.querySelectorAll('#timed-lines [data-t]').forEach(b=>b.addEventListener('click',()=>{ $('local-audio').currentTime=Number(b.dataset.t); renderTimed(); })); }
     $('local-audio').addEventListener('timeupdate', renderTimed);
 
+
+    // --- Suno Studio Controller ---
+    let SUNO_SONGS = [];
+    async function initSunoStudio() {
+      try {
+        const res = await fetch('data/suno_prompts/generated_songs.json');
+        if (res.ok) {
+          SUNO_SONGS = await res.json();
+          renderSunoStudio();
+        }
+      } catch (e) {}
+    }
+    function renderSunoStudio() {
+      const sel = $('suno-song-select');
+      if (!sel || !SUNO_SONGS.length) return;
+      sel.innerHTML = SUNO_SONGS.map(s => '<option value="' + s.id + '">' + esc(s.title) + ' (' + s.target_words.slice(0, 3).join(', ') + '...)</option>').join('');
+      sel.onchange = () => updateSunoCard(Number(sel.value));
+      updateSunoCard(SUNO_SONGS[0].id);
+    }
+    function updateSunoCard(id) {
+      const song = SUNO_SONGS.find(s => s.id === id) || SUNO_SONGS[0];
+      if (!song) return;
+      $('suno-title').textContent = song.title;
+      $('suno-meta').textContent = song.genre + ' • ' + song.bpm + ' BPM';
+      $('suno-words-tags').innerHTML = song.target_words.map(w => '<span class="px-2 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/50 text-xs font-bold">' + esc(w) + '</span>').join('');
+      $('suno-style-text').textContent = song.style_prompt;
+      $('suno-lyrics-text').textContent = song.lyrics;
+
+      $('btn-copy-suno-style').onclick = () => {
+        navigator.clipboard.writeText(song.style_prompt).then(() => {
+          $('btn-copy-suno-style').textContent = 'הועתק!';
+          setTimeout(() => { $('btn-copy-suno-style').textContent = 'העתק סגנון'; }, 1500);
+        });
+      };
+      $('btn-copy-suno-lyrics').onclick = () => {
+        const fullPrompt = song.style_prompt + '\n\n' + song.lyrics;
+        navigator.clipboard.writeText(fullPrompt).then(() => {
+          $('btn-copy-suno-lyrics').textContent = 'הועתק!';
+          setTimeout(() => { $('btn-copy-suno-lyrics').textContent = 'העתק מילים מלאות'; }, 1500);
+        });
+      };
+    }
+    initSunoStudio();
+
+    // --- Flashcards SRS Controller ---
+    (function initFlashcards() {
+      const SRS = window.ShirAmiramSRS;
+      if (!SRS) return;
+
+      let srsState = SRS.loadState();
+      let srsSession = [];
+      let srsIndex = 0;
+      let srsLevel = 'all';
+      let isFlipped = false;
+
+      function speakCurrentWord() {
+        if (!srsSession.length) return;
+        const card = srsSession[srsIndex];
+        if (card && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(card.word);
+          u.lang = 'en-US';
+          u.rate = 0.9;
+          window.speechSynthesis.speak(u);
+        }
+      }
+
+      function flipCard(force) {
+        isFlipped = typeof force === 'boolean' ? force : !isFlipped;
+        const el = $('srs-card');
+        if (el) el.classList.toggle('flipped', isFlipped);
+        const actions = $('srs-actions');
+        if (actions) actions.classList.toggle('hidden', !isFlipped);
+      }
+
+      function renderCurrentCard() {
+        flipCard(false);
+        const total = srsSession.length;
+        if (!total) {
+          $('srs-counter').textContent = 'אין כרטיסיות להצגה';
+          $('srs-card-word').textContent = 'מצוין!';
+          $('srs-card-pos').textContent = '';
+          $('srs-card-cloze').textContent = 'סיימת את כל הכרטיסיות לסבב זה.';
+          $('srs-card-trans').textContent = 'השלמת סשן';
+          $('srs-card-def').textContent = '';
+          $('srs-card-full-sentence').textContent = '';
+          return;
+        }
+
+        const card = srsSession[srsIndex];
+        const prog = srsState.cards[String(card.id || card.word)] || SRS.initProgress(card.id || card.word);
+        
+        $('srs-counter').textContent = 'כרטיסייה ' + (srsIndex + 1) + ' מתוך ' + total;
+        $('srs-box-badge').textContent = 'קופסה ' + (prog.box || 1);
+        $('srs-card-level').textContent = card.level ? ('רמה ' + card.level.replace('A_foundational', 'A').replace('B_intermediate', 'B').replace('C_advanced', 'C')) : 'רמה A';
+        $('srs-card-word').textContent = card.word;
+        $('srs-card-pos').textContent = card.part_of_speech || '';
+        
+        // Cloze sentence
+        const sent = card.sample_sentence || '';
+        const regex = new RegExp('\\b' + card.word + '\\b', 'i');
+        const cloze = sent.replace(regex, '______');
+        $('srs-card-cloze').textContent = cloze;
+
+        // Back side
+        $('srs-card-trans').textContent = card.hebrew_translation || card.translation || '';
+        $('srs-card-def').textContent = card.hebrew_definition || '';
+        $('srs-card-full-sentence').textContent = sent;
+      }
+
+      function startSrsSession() {
+        const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : (CONTENT ? CONTENT.words : A.VOCAB);
+        srsSession = SRS.createSession(pool, srsState.cards, {
+          level: srsLevel === 'all' ? undefined : srsLevel,
+          batchSize: 15
+        });
+        srsIndex = 0;
+        renderCurrentCard();
+      }
+
+      function handleRating(result) {
+        if (!srsSession.length) return;
+        const card = srsSession[srsIndex];
+        const key = String(card.id || card.word);
+        const currentProg = srsState.cards[key] || SRS.initProgress(key);
+        const nextProg = SRS.calculateNextState(currentProg, result);
+        srsState.cards[key] = nextProg;
+        SRS.saveState(srsState);
+
+        srsIndex++;
+        if (srsIndex >= srsSession.length) {
+          startSrsSession();
+        } else {
+          renderCurrentCard();
+        }
+      }
+
+      // Event listeners
+      if ($('srs-card')) $('srs-card').addEventListener('click', () => flipCard());
+      if ($('srs-btn-flip')) $('srs-btn-flip').addEventListener('click', () => flipCard());
+      if ($('srs-btn-speak')) $('srs-btn-speak').addEventListener('click', (e) => { e.stopPropagation(); speakCurrentWord(); });
+      if ($('srs-btn-again')) $('srs-btn-again').addEventListener('click', () => handleRating('again'));
+      if ($('srs-btn-hard')) $('srs-btn-hard').addEventListener('click', () => handleRating('hard'));
+      if ($('srs-btn-good')) $('srs-btn-good').addEventListener('click', () => handleRating('good'));
+      if ($('srs-btn-easy')) $('srs-btn-easy').addEventListener('click', () => handleRating('easy'));
+
+      document.querySelectorAll('.srs-level-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          srsLevel = btn.dataset.level;
+          document.querySelectorAll('.srs-level-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.level === srsLevel)));
+          startSrsSession();
+        });
+      });
+
+      const flashTabBtn = document.querySelector('[data-tab="flashcards"]');
+      if (flashTabBtn) {
+        flashTabBtn.addEventListener('click', () => {
+          if (!srsSession.length) startSrsSession();
+        });
+      }
+    })();
+
+    // --- Amiram Analytics Dashboard Controller ---
+    (function initAnalytics() {
+      const AN = window.ShirAmiramAnalytics;
+      if (!AN) return;
+
+      let state = AN.loadAnalyticsState();
+
+      window.recordQuizAttempt = function(cardId, isRight) {
+        state = AN.recordAttempt(state, cardId, 'cloze', isRight);
+        AN.saveAnalyticsState(state);
+        renderDashboard();
+      };
+
+      function renderDashboard() {
+        const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : (CONTENT ? CONTENT.words : A.VOCAB);
+        
+        if (window.ShirAmiramSRS) {
+          const srsState = window.ShirAmiramSRS.loadState();
+          if (srsState && srsState.cards) {
+            Object.keys(srsState.cards).forEach(k => {
+              if (!state.cards[k]) {
+                state.cards[k] = { box: srsState.cards[k].box, correct: srsState.cards[k].correctCount, incorrect: 0 };
+              } else {
+                state.cards[k].box = Math.max(state.cards[k].box || 1, srsState.cards[k].box || 1);
+              }
+            });
+          }
+        }
+
+        const scoreRes = AN.calculateAmiramScore(state, pool);
+        const cefrRes = AN.estimateCefr(scoreRes.score);
+        const mastery = AN.summarizeMastery(pool, state.cards);
+        const weakWords = AN.buildReviewQueue(state, pool, 6);
+
+        if ($('amiram-score-display')) $('amiram-score-display').textContent = String(scoreRes.score);
+        if ($('amiram-cefr-badge')) $('amiram-cefr-badge').textContent = 'רמה ' + cefrRes.cefr + ' • ' + cefrRes.academicLevel;
+        if ($('amiram-academic-desc')) $('amiram-academic-desc').textContent = cefrRes.description;
+        if ($('amiram-confidence')) $('amiram-confidence').textContent = 'רמת מהימנות: ' + scoreRes.confidence + ' (' + scoreRes.sampleSize + ' דגימות)';
+
+        if ($('metric-cloze')) $('metric-cloze').textContent = scoreRes.metrics.clozeAccuracy + '%';
+        if ($('metric-retention')) $('metric-retention').textContent = scoreRes.metrics.retentionStrength + '%';
+        if ($('metric-coverage')) $('metric-coverage').textContent = scoreRes.metrics.vocabularyCoverage + '%';
+        if ($('metric-consistency')) $('metric-consistency').textContent = scoreRes.metrics.consistency + '%';
+
+        const pctA = mastery.A.total ? Math.round((mastery.A.mastered / mastery.A.total) * 100) : 0;
+        const pctB = mastery.B.total ? Math.round((mastery.B.mastered / mastery.B.total) * 100) : 0;
+        const pctC = mastery.C.total ? Math.round((mastery.C.mastered / mastery.C.total) * 100) : 0;
+
+        if ($('level-a-stats')) $('level-a-stats').textContent = pctA + '% שליטה (' + mastery.A.mastered + '/' + mastery.A.total + ')';
+        if ($('bar-level-a')) $('bar-level-a').style.width = pctA + '%';
+
+        if ($('level-b-stats')) $('level-b-stats').textContent = pctB + '% שליטה (' + mastery.B.mastered + '/' + mastery.B.total + ')';
+        if ($('bar-level-b')) $('bar-level-b').style.width = pctB + '%';
+
+        if ($('level-c-stats')) $('level-c-stats').textContent = pctC + '% שליטה (' + mastery.C.mastered + '/' + mastery.C.total + ')';
+        if ($('bar-level-c')) $('bar-level-c').style.width = pctC + '%';
+
+        if ($('weak-words-count')) $('weak-words-count').textContent = weakWords.length + ' מילים';
+        const listEl = $('weak-words-list');
+        if (listEl) {
+          if (!weakWords.length) {
+            listEl.innerHTML = '<p class="text-xs text-muted">כל הכבוד! אין מילים חלשות הדורשות תרגול כעת.</p>';
+          } else {
+            listEl.innerHTML = weakWords.map(w => {
+              return '<div class="p-2 bg-stage-900 rounded flex items-center justify-between border border-white/5">'
+                + '<div><strong dir="ltr" class="text-indigo-300 mr-2">' + esc(w.word) + '</strong><span class="text-xs opacity-75">' + esc(w.hebrew_translation || w.translation || '') + '</span></div>'
+                + '<span class="text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-400 font-bold">' + esc(w.level ? w.level.replace('_foundational', '').replace('_intermediate', '').replace('_advanced', '') : 'A') + '</span>'
+                + '</div>';
+            }).join('');
+          }
+        }
+      }
+
+      const dashTabBtn = document.querySelector('[data-tab="dashboard"]');
+      if (dashTabBtn) {
+        dashTabBtn.addEventListener('click', renderDashboard);
+      }
+      renderDashboard();
+    })();
 
     // --- Voice Karaoke Challenge ---
     (function initKaraoke() {
@@ -631,6 +1514,44 @@
       $('karaoke-mic-btn').addEventListener('click', () => {
         if (!session) $('karaoke-start-btn').click();
         startMic();
+      });
+    })();
+
+    // --- PWA Service Worker & Offline Manager ---
+    (function initPWA() {
+      function updateNetwork() {
+        const off = !navigator.onLine;
+        if ($('offline-badge')) $('offline-badge').classList.toggle('hidden', !off);
+      }
+      window.addEventListener('online', updateNetwork);
+      window.addEventListener('offline', updateNetwork);
+      updateNetwork();
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        });
+      }
+
+      let deferredPrompt = null;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if ($('btn-install-pwa')) $('btn-install-pwa').classList.remove('hidden');
+      });
+
+      if ($('btn-install-pwa')) {
+        $('btn-install-pwa').addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt = null;
+            $('btn-install-pwa').classList.add('hidden');
+          }
+        });
+      }
+
+      window.addEventListener('appinstalled', () => {
+        if ($('btn-install-pwa')) $('btn-install-pwa').classList.add('hidden');
       });
     })();
 
