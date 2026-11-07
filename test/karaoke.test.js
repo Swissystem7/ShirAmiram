@@ -193,3 +193,43 @@ test('isInWindow inclusive from word time to +windowMs', () => {
   assert.equal(K.isInWindow(2501, 1000, 1500), false);
   assert.equal(K.isInWindow(999, 1000, 1500), false);
 });
+
+test('statusClass maps status strings to css classes', () => {
+  assert.equal(K.statusClass('listening'), 'karaoke-status-listening');
+  assert.equal(K.statusClass('processing'), 'karaoke-status-processing');
+  assert.equal(K.statusClass('fallback'), 'karaoke-status-idle');
+  assert.equal(K.statusClass('done'), 'karaoke-status-idle');
+  assert.equal(K.statusClass('idle'), 'karaoke-status-idle');
+  assert.equal(K.statusClass('unknown'), 'karaoke-status-idle');
+  assert.equal(K.statusClass(null), 'karaoke-status-idle');
+});
+
+test('tokens tokenizes text, collapses whitespace, strips punctuation, and handles empty inputs', () => {
+  assert.deepEqual(K.tokens('hello world'), ['hello', 'world']);
+  assert.deepEqual(K.tokens('  Multiple   SPACES!  '), ['multiple', 'spaces']);
+  assert.deepEqual(K.tokens(''), []);
+  assert.deepEqual(K.tokens(null), []);
+  assert.deepEqual(K.tokens(undefined), []);
+});
+
+test('detectSpeechSupport returns ok and ctor when passed a mock constructor', () => {
+  function MockSpeech() {}
+  const res = K.detectSpeechSupport(MockSpeech);
+  assert.deepEqual(res, { ok: true, ctor: MockSpeech });
+});
+
+test('createSession edge cases: initial accuracy, rhythm tap in voice mode, tryVoice after ended', () => {
+  const session = K.createSession({
+    words: [{ word: 'peace', he: 'שלום', timeMs: 1000, windowMs: 1500 }]
+  });
+
+  assert.equal(session.accuracy(), 0);
+  assert.deepEqual(session.tryRhythmTap('peace'), { ok: false, reason: 'not-rhythm' });
+
+  const hit = session.tryVoice('peace', 1200);
+  assert.equal(hit.ok, true);
+  assert.equal(session.state.ended, true);
+
+  assert.deepEqual(session.tryVoice('peace', 1200), { ok: false, reason: 'ended' });
+});
+
