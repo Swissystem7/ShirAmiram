@@ -153,7 +153,21 @@
 
     <!-- Quiz Tab -->
     <section id="quiz" class="tab-content hidden">
-      <div class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
+      <div class="flex flex-wrap items-center gap-2 mb-3 p-1 bg-stage-900 rounded-lg border border-white/5 w-fit" role="group" aria-label="סוג מבחן אמיר״ם">
+        <button type="button" id="exam-type-cloze" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-indigo-600 text-white" aria-pressed="true">השלמת משפטים (Cloze)</button>
+        <button type="button" id="exam-type-restatement" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false">שחבור וניסוח מחדש (Restatements)</button>
+      </div>
+
+      <!-- Restatement Modes Bar -->
+      <div id="restatement-mode-bar" class="quiz-mode-bar hidden" role="group" aria-label="מצב שחבור">
+        <button type="button" id="restatement-mode-mix" aria-pressed="true">סימולציית שחבור (15 שאלות)</button>
+        <button type="button" id="restatement-mode-a" aria-pressed="false">שחבור רמה A</button>
+        <button type="button" id="restatement-mode-b" aria-pressed="false">שחבור רמה B</button>
+        <button type="button" id="restatement-mode-c" aria-pressed="false">שחבור רמה C</button>
+      </div>
+
+      <!-- Cloze Modes Bar -->
+      <div id="cloze-mode-bar" class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
         <button type="button" id="quiz-mode-quick" aria-pressed="true">מבחן מהיר (10 שאלות)</button>
         <button type="button" id="quiz-mode-full" aria-pressed="false">מבחן מלא (50 שאלות)</button>
         <button type="button" id="quiz-mode-amiram-mix" aria-pressed="false">סימולציית אמיר"ם (25 שאלות)</button>
@@ -416,6 +430,7 @@
   <script src="src/srs_leitner.js"></script>
   <script src="src/analytics.js"></script>
   <script src="src/speech.js"></script>
+  <script src="src/restatement_simulator.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -533,12 +548,15 @@
     });
 
 
-    // Quiz — content_v2 exam modes (quick 10 / full 50) + Amiram Exam Simulator
+    // Quiz — content_v2 exam modes + Amiram Cloze & Restatement Simulators
+    let examType = 'cloze'; // 'cloze' or 'restatement'
+    let restatementMode = 'mixed_15';
     let quizMode = 'quick';
     let quizPool = [];
     let quizIndex = 0;
     let score = 0;
     let AMIRAM_VOCAB = [];
+    let AMIRAM_RESTATEMENTS = [];
 
     if (window.fetch) {
       fetch('data/imports/amiram_vocab_full.json')
@@ -547,7 +565,41 @@
           if (Array.isArray(data)) AMIRAM_VOCAB = data;
         })
         .catch(() => {});
+
+      fetch('data/imports/amiram_restatements.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) AMIRAM_RESTATEMENTS = data;
+        })
+        .catch(() => {});
     }
+
+    function setExamType(type) {
+      examType = type;
+      $('exam-type-cloze').setAttribute('aria-pressed', String(type === 'cloze'));
+      $('exam-type-restatement').setAttribute('aria-pressed', String(type === 'restatement'));
+      $('exam-type-cloze').className = 'px-3 py-1.5 rounded-md text-xs font-bold transition ' + (type === 'cloze' ? 'bg-indigo-600 text-white' : 'bg-stage-800 text-gray-300 hover:text-white');
+      $('exam-type-restatement').className = 'px-3 py-1.5 rounded-md text-xs font-bold transition ' + (type === 'restatement' ? 'bg-indigo-600 text-white' : 'bg-stage-800 text-gray-300 hover:text-white');
+      $('cloze-mode-bar').classList.toggle('hidden', type !== 'cloze');
+      $('restatement-mode-bar').classList.toggle('hidden', type !== 'restatement');
+      renderQuiz();
+    }
+    if ($('exam-type-cloze')) $('exam-type-cloze').addEventListener('click', () => setExamType('cloze'));
+    if ($('exam-type-restatement')) $('exam-type-restatement').addEventListener('click', () => setExamType('restatement'));
+
+    function setRestatementMode(mode) {
+      restatementMode = mode;
+      const modes = ['mix', 'a', 'b', 'c'];
+      modes.forEach(m => {
+        const el = $('restatement-mode-' + m);
+        if (el) el.setAttribute('aria-pressed', String((m === 'mix' && mode === 'mixed_15') || mode.toLowerCase() === m));
+      });
+      renderQuiz();
+    }
+    if ($('restatement-mode-mix')) $('restatement-mode-mix').addEventListener('click', () => setRestatementMode('mixed_15'));
+    if ($('restatement-mode-a')) $('restatement-mode-a').addEventListener('click', () => setRestatementMode('A'));
+    if ($('restatement-mode-b')) $('restatement-mode-b').addEventListener('click', () => setRestatementMode('B'));
+    if ($('restatement-mode-c')) $('restatement-mode-c').addEventListener('click', () => setRestatementMode('C'));
 
     function setQuizMode(mode) {
       quizMode = mode;
@@ -566,6 +618,11 @@
     if ($('quiz-mode-amiram-c')) $('quiz-mode-amiram-c').addEventListener('click', () => setQuizMode('amiram-c'));
 
     function pickQuizPool() {
+      if (examType === 'restatement') {
+        if (window.ShirAmiramRestatements && Array.isArray(AMIRAM_RESTATEMENTS) && AMIRAM_RESTATEMENTS.length > 0) {
+          return window.ShirAmiramRestatements.createSession(AMIRAM_RESTATEMENTS, { mode: restatementMode });
+        }
+      }
       if (window.ShirAmiramExam && Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) {
         if (quizMode === 'amiram-mix') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'mixed_25');
         if (quizMode === 'amiram-a') return window.ShirAmiramExam.createExam(AMIRAM_VOCAB, 'A', 20);
@@ -597,32 +654,67 @@
       updateQuizProgress();
       quizPool.forEach((item, i) => {
         const div = document.createElement('div');
-        div.className = 'quiz-q p-2 bg-stage-800 rounded' + (i === 0 ? '' : ' hidden');
+        div.className = 'quiz-q p-3 bg-stage-800 rounded-xl border border-white/5' + (i === 0 ? '' : ' hidden');
         div.dataset.qIndex = String(i);
+
+        // Header with question prompt & audio
+        const headerBox = document.createElement('div');
+        headerBox.className = 'flex items-start justify-between gap-2 mb-3';
         const p = document.createElement('p');
-        p.className = 'mb-2 font-bold';
+        p.className = 'font-bold text-base text-gray-100 flex-1 leading-relaxed';
         p.dir = 'ltr';
-        p.textContent = item.question || item.q;
-        div.appendChild(p);
+        p.textContent = item.source_sentence || item.question || item.q;
+        headerBox.appendChild(p);
+
+        const spkBtn = document.createElement('button');
+        spkBtn.type = 'button';
+        spkBtn.className = 'text-xs px-2 py-1 rounded bg-stage-900 text-indigo-300 hover:text-white font-bold shrink-0';
+        spkBtn.textContent = '🔊 השמע';
+        spkBtn.onclick = (e) => {
+          e.stopPropagation();
+          if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(item.source_sentence || item.question || item.q);
+        };
+        headerBox.appendChild(spkBtn);
+        div.appendChild(headerBox);
+
+        if (item.grammar_target) {
+          const badge = document.createElement('div');
+          badge.className = 'text-xs text-indigo-400 font-semibold mb-2';
+          badge.textContent = 'דגש דקדוקי: ' + ((window.ShirAmiramRestatements && ShirAmiramRestatements.GRAMMAR_CATEGORY_NAMES[item.grammar_target]) || item.grammar_target);
+          div.appendChild(badge);
+        }
+
         const fb = document.createElement('div');
         fb.className = 'quiz-fb mt-2 text-sm';
         fb.setAttribute('aria-live', 'polite');
         const optsBox = document.createElement('div');
         optsBox.className = 'quiz-opts';
         div.appendChild(optsBox);
+
         const opts = item.options || item.opts || [];
         const answer = item.answer != null ? item.answer : item.a;
-        opts.forEach((opt) => {
+
+        opts.forEach((opt, optIdx) => {
+          const optText = typeof opt === 'object' ? opt.text : opt;
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'quiz-opt bg-neon-pink rounded';
-          btn.textContent = opt;
+          btn.textContent = optText;
           btn.addEventListener('click', () => {
-            const right = String(opt) === String(answer);
+            let right = false;
+            let explanation = item.explanation_he || item.explanation || '';
+            if (item.source_sentence && typeof opt === 'object') {
+              const res = window.ShirAmiramRestatements.evaluateAnswer(item, optIdx);
+              right = res.isCorrect;
+              fb.textContent = right ? '✅ נכון מאוד! הניסוח שומר על משמעות זהה.' : '❌ לא נכון. (' + (res.error_type || 'עיוות משמעות') + ')';
+            } else {
+              right = String(optText) === String(answer);
+              fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + answer;
+            }
+
             btn.classList.add('selected');
-            fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + answer;
             fb.className = 'quiz-fb mt-2 text-sm ' + (right ? 'text-green-400' : 'text-red-400');
-            $('quiz-explanation').textContent = item.explanation || '';
+            $('quiz-explanation').textContent = explanation;
             if (right) score++;
             $('quiz-score').textContent = String(score);
             if (typeof window.recordQuizAttempt === 'function') {
@@ -643,6 +735,11 @@
             }
           });
           optsBox.appendChild(btn);
+        });
+        div.appendChild(fb);
+        $('quiz-container').appendChild(div);
+      });
+    }
         });
         div.appendChild(fb);
         $('quiz-container').appendChild(div);
