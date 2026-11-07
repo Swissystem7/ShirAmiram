@@ -156,6 +156,31 @@
       <div class="flex flex-wrap items-center gap-2 mb-3 p-1 bg-stage-900 rounded-lg border border-white/5 w-fit" role="group" aria-label="סוג מבחן אמיר״ם">
         <button type="button" id="exam-type-cloze" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-indigo-600 text-white" aria-pressed="true">השלמת משפטים (Cloze)</button>
         <button type="button" id="exam-type-restatement" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false">שחבור וניסוח מחדש (Restatements)</button>
+        <button type="button" id="exam-type-reading" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false">הבנת הנקרא (Reading Comprehension)</button>
+      </div>
+
+      <!-- Reading Comprehension Modes Bar -->
+      <div id="reading-mode-bar" class="quiz-mode-bar hidden" role="group" aria-label="מצב הבנת הנקרא">
+        <button type="button" id="reading-mode-mix" aria-pressed="true">כל הקטעים (סימולציה)</button>
+        <button type="button" id="reading-mode-a" aria-pressed="false">טקסט רמה A (בסיס)</button>
+        <button type="button" id="reading-mode-b" aria-pressed="false">טקסט רמה B (ביניים)</button>
+        <button type="button" id="reading-mode-c" aria-pressed="false">טקסט רמה C (פטור)</button>
+      </div>
+
+      <!-- Reading Passage Box (Displayed in reading mode) -->
+      <div id="reading-passage-container" class="hidden mb-4 space-y-2">
+        <div class="flex flex-wrap items-center justify-between p-3 bg-stage-900 rounded-lg border border-indigo-500/30 gap-2">
+          <div>
+            <h3 id="rc-passage-title" class="text-base font-bold text-indigo-300" dir="ltr"></h3>
+            <p id="rc-passage-subtitle" class="text-xs text-slate-400"></p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="rc-level-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-900/60 text-indigo-200 border border-indigo-500/40"></span>
+            <span id="rc-topic-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stage-800 text-slate-300"></span>
+          </div>
+        </div>
+        <div id="rc-passage-body" class="rc-passage-box space-y-3" dir="ltr"></div>
+        <p class="text-xs text-muted">💡 רמז: לחצו על מילת אמיר״ם מודגשת בטקסט להשמעת הגייה 🔊 ומשמעותה.</p>
       </div>
 
       <!-- Restatement Modes Bar -->
@@ -464,6 +489,7 @@
   <script src="src/speech.js"></script>
   <script src="src/restatement_simulator.js"></script>
   <script src="src/song_karaoke.js"></script>
+  <script src="src/reading_comprehension.js"></script>
   <script src="src/karaoke.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -581,15 +607,18 @@
     });
 
 
-    // Quiz — content_v2 exam modes + Amiram Cloze & Restatement Simulators
-    let examType = 'cloze'; // 'cloze' or 'restatement'
+    // Quiz — content_v2 exam modes + Amiram Cloze, Restatement & Reading Simulators
+    let examType = 'cloze'; // 'cloze', 'restatement', or 'reading'
     let restatementMode = 'mixed_15';
+    let readingMode = 'all';
+    let activeReadingPassage = null;
     let quizMode = 'quick';
     let quizPool = [];
     let quizIndex = 0;
     let score = 0;
     let AMIRAM_VOCAB = [];
     let AMIRAM_RESTATEMENTS = [];
+    let AMIRAM_READING_PASSAGES = [];
 
     if (window.fetch) {
       fetch('data/imports/amiram_vocab_full.json')
@@ -605,20 +634,94 @@
           if (Array.isArray(data)) AMIRAM_RESTATEMENTS = data;
         })
         .catch(() => {});
+
+      fetch('data/imports/amiram_reading_passages.json')
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) AMIRAM_READING_PASSAGES = data;
+        })
+        .catch(() => {});
+    }
+
+    function renderReadingPassage(passage) {
+      if (!passage || !$('reading-passage-container')) return;
+      $('rc-passage-title').textContent = passage.title || '';
+      $('rc-passage-subtitle').textContent = (passage.hebrew_title ? passage.hebrew_title + ' • ' : '') + (passage.topic || '');
+      
+      const levelNames = {
+        'A_foundational': 'רמה A (בסיס)',
+        'B_intermediate': 'רמה B (ביניים)',
+        'C_advanced': 'רמה C (פטור)'
+      };
+      $('rc-level-badge').textContent = levelNames[passage.level] || passage.level;
+      $('rc-topic-badge').textContent = passage.topic || 'Academic Reading';
+
+      const body = $('rc-passage-body');
+      body.innerHTML = '';
+      
+      let lineNum = 1;
+      (passage.paragraphs || []).forEach(pText => {
+        const pDiv = document.createElement('div');
+        pDiv.className = 'rc-paragraph mb-3';
+        
+        let formattedLines = pText;
+        if (window.AmiramReading) {
+          const res = window.AmiramReading.formatParagraphLines(pText, lineNum, 10);
+          formattedLines = res.formattedHtml;
+          lineNum = res.endLineNumber;
+          if (passage.target_vocab) {
+            formattedLines = window.AmiramReading.highlightVocab(formattedLines, passage.target_vocab);
+          }
+        }
+        pDiv.innerHTML = formattedLines;
+        body.appendChild(pDiv);
+      });
+
+      body.querySelectorAll('.rc-target-word').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const word = el.getAttribute('data-word');
+          if (word && window.ShirAmiramSpeech) {
+            window.ShirAmiramSpeech.speak(word);
+          }
+        });
+      });
     }
 
     function setExamType(type) {
       examType = type;
       $('exam-type-cloze').setAttribute('aria-pressed', String(type === 'cloze'));
       $('exam-type-restatement').setAttribute('aria-pressed', String(type === 'restatement'));
+      if ($('exam-type-reading')) $('exam-type-reading').setAttribute('aria-pressed', String(type === 'reading'));
+
       $('exam-type-cloze').className = 'px-3 py-1.5 rounded-md text-xs font-bold transition ' + (type === 'cloze' ? 'bg-indigo-600 text-white' : 'bg-stage-800 text-gray-300 hover:text-white');
       $('exam-type-restatement').className = 'px-3 py-1.5 rounded-md text-xs font-bold transition ' + (type === 'restatement' ? 'bg-indigo-600 text-white' : 'bg-stage-800 text-gray-300 hover:text-white');
+      if ($('exam-type-reading')) $('exam-type-reading').className = 'px-3 py-1.5 rounded-md text-xs font-bold transition ' + (type === 'reading' ? 'bg-indigo-600 text-white' : 'bg-stage-800 text-gray-300 hover:text-white');
+
       $('cloze-mode-bar').classList.toggle('hidden', type !== 'cloze');
       $('restatement-mode-bar').classList.toggle('hidden', type !== 'restatement');
+      if ($('reading-mode-bar')) $('reading-mode-bar').classList.toggle('hidden', type !== 'reading');
+      if ($('reading-passage-container')) $('reading-passage-container').classList.toggle('hidden', type !== 'reading');
+
       renderQuiz();
     }
     if ($('exam-type-cloze')) $('exam-type-cloze').addEventListener('click', () => setExamType('cloze'));
     if ($('exam-type-restatement')) $('exam-type-restatement').addEventListener('click', () => setExamType('restatement'));
+    if ($('exam-type-reading')) $('exam-type-reading').addEventListener('click', () => setExamType('reading'));
+
+    function setReadingMode(mode) {
+      readingMode = mode;
+      const modes = ['mix', 'a', 'b', 'c'];
+      modes.forEach(m => {
+        const el = $('reading-mode-' + m);
+        if (el) el.setAttribute('aria-pressed', String((m === 'mix' && mode === 'all') || (m === 'a' && mode === 'A_foundational') || (m === 'b' && mode === 'B_intermediate') || (m === 'c' && mode === 'C_advanced')));
+      });
+      renderQuiz();
+    }
+    if ($('reading-mode-mix')) $('reading-mode-mix').addEventListener('click', () => setReadingMode('all'));
+    if ($('reading-mode-a')) $('reading-mode-a').addEventListener('click', () => setReadingMode('A_foundational'));
+    if ($('reading-mode-b')) $('reading-mode-b').addEventListener('click', () => setReadingMode('B_intermediate'));
+    if ($('reading-mode-c')) $('reading-mode-c').addEventListener('click', () => setReadingMode('C_advanced'));
 
     function setRestatementMode(mode) {
       restatementMode = mode;
@@ -651,6 +754,19 @@
     if ($('quiz-mode-amiram-c')) $('quiz-mode-amiram-c').addEventListener('click', () => setQuizMode('amiram-c'));
 
     function pickQuizPool() {
+      if (examType === 'reading') {
+        if (Array.isArray(AMIRAM_READING_PASSAGES) && AMIRAM_READING_PASSAGES.length > 0) {
+          let pool = AMIRAM_READING_PASSAGES;
+          if (readingMode !== 'all') {
+            pool = AMIRAM_READING_PASSAGES.filter(p => p.level === readingMode);
+          }
+          if (pool.length > 0) {
+            activeReadingPassage = pool[0];
+            renderReadingPassage(activeReadingPassage);
+            return activeReadingPassage.questions || [];
+          }
+        }
+      }
       if (examType === 'restatement') {
         if (window.ShirAmiramRestatements && Array.isArray(AMIRAM_RESTATEMENTS) && AMIRAM_RESTATEMENTS.length > 0) {
           return window.ShirAmiramRestatements.createSession(AMIRAM_RESTATEMENTS, { mode: restatementMode });
@@ -710,7 +826,20 @@
         headerBox.appendChild(spkBtn);
         div.appendChild(headerBox);
 
-        if (item.grammar_target) {
+        if (item.line_reference) {
+          const badge = document.createElement('div');
+          badge.className = 'text-xs text-indigo-300 font-semibold mb-2 flex items-center gap-2';
+          const typeNames = {
+            'main_idea': 'רעיון מרכזי',
+            'detail': 'פרט מתוך הטקסט',
+            'inference': 'הסקה לוגית',
+            'vocab_in_context': 'אוצר מילים בהקשר',
+            'reference': 'התייחסות'
+          };
+          const typeLabel = typeNames[item.type] ? ' • ' + typeNames[item.type] : '';
+          badge.innerHTML = '<span class="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-700/50">📍 ' + esc(item.line_reference) + typeLabel + '</span>';
+          div.appendChild(badge);
+        } else if (item.grammar_target) {
           const badge = document.createElement('div');
           badge.className = 'text-xs text-indigo-400 font-semibold mb-2';
           badge.textContent = 'דגש דקדוקי: ' + ((window.ShirAmiramRestatements && ShirAmiramRestatements.GRAMMAR_CATEGORY_NAMES[item.grammar_target]) || item.grammar_target);
@@ -735,11 +864,14 @@
           btn.textContent = optText;
           btn.addEventListener('click', () => {
             let right = false;
-            let explanation = item.explanation_he || item.explanation || '';
+            let explanation = item.explanation_he || item.explanation || item.hebrew_explanation || '';
             if (item.source_sentence && typeof opt === 'object') {
               const res = window.ShirAmiramRestatements.evaluateAnswer(item, optIdx);
               right = res.isCorrect;
               fb.textContent = right ? '✅ נכון מאוד! הניסוח שומר על משמעות זהה.' : '❌ לא נכון. (' + (res.error_type || 'עיוות משמעות') + ')';
+            } else if (typeof item.correct_index === 'number') {
+              right = (optIdx === item.correct_index);
+              fb.textContent = right ? '✅ תשובה נכונה בהבנת הנקרא!' : '❌ לא נכון. התשובה הנכונה: ' + (item.options[item.correct_index] || '');
             } else {
               right = String(optText) === String(answer);
               fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + answer;

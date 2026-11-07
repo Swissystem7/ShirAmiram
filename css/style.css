@@ -594,3 +594,59 @@ article,
   max-width: 100%;
   overflow-x: hidden;
 }
+
+/* Reading Comprehension (הבנת הנקרא) Styles */
+.rc-passage-box {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 12px;
+  padding: 16px;
+  max-height: 340px;
+  overflow-y: auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.rc-line {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #e2e8f0;
+}
+
+.rc-line-num {
+  min-width: 28px;
+  text-align: right;
+  user-select: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+}
+
+.rc-line-num.marker {
+  color: #818cf8;
+  font-weight: bold;
+}
+
+.rc-line-num.dim {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.rc-target-word {
+  background: rgba(99, 102, 241, 0.25);
+  border-bottom: 2px solid #818cf8;
+  padding: 1px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #c7d2fe;
+  transition: all 0.2s ease;
+}
+
+.rc-target-word:hover, .rc-target-word:focus {
+  background: rgba(99, 102, 241, 0.5);
+  color: #ffffff;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+}
+
