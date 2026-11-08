@@ -34,14 +34,38 @@
 //   used for enrichment — NOT an official classification.
 //
 // PERFECT SCORE (150, zero reviewed errors):
-// - No errors are fabricated to satisfy buildStudyPlan. Instead a LevelC
-//   enrichment plan is built directly: a song with >=3 highlight words
-//   whose vocabulary level is C, its first 3 such words as targets, and
-//   question ids only from an actually supplied question catalogue.
-//   If no such valid song/vocabulary data exists, song/targets are empty.
+// - No errors are fabricated to satisfy buildStudyPlan. Instead a cascading
+//   enrichment plan is built directly from ACTUAL supplied songs/vocab/
+//   questions, requesting C_advanced first (tierRequested always
+//   'C_advanced' on this path, carried in `enrichmentInfo`):
+//   1. a song with >=3 C words -> 3 C targets, tierResolved 'C_advanced',
+//      fallbackApplied false;
+//   2. else a song with 1-2 C words plus enough B words from the SAME song
+//      to fill 3 -> C then B targets, tierResolved 'B_intermediate',
+//      fallbackApplied true (never labelled C mastery);
+//   3. else the strongest B song (>=3 B words) -> 'B_intermediate', true;
+//   4. other partial levels (documented decision): B/C songs that can only
+//      fill 3 by adding A words, then A-only songs (>=3 A), resolve to
+//      'A_foundational', fallbackApplied true. A words never upgrade a tier.
+//   5. else, if no song qualifies above (no usable C/B/A enrichment level
+//      for a full song), a song whose words carry no level metadata uses
+//      greatest distinct-word variety -> tierResolved 'unknown', true.
+//      Unknown words never fill a classified tier.
+//   If no song can supply 3 distinct words in any tier, the plan is
+//   gracefully partial: song/targets/questions stay empty and
+//   enrichmentInfo is { tierRequested:'C_advanced',
+//   tierResolved:'unknown', fallbackApplied:false }.
+//   Within a tier ranking is deterministic (primary count desc, title
+//   asc, song id asc); target order is song order within each level.
+// - Question ids: up to 5 ids from the actually supplied catalogue whose
+//   song_id is the selected song or whose word is a selected target word,
+//   ordered selected-song first, then higher difficulty (C>B>A>unknown),
+//   then word asc, id asc. No matching questions -> [] (never unrelated).
 //
 // Output: { simulationScore, exemptionLevel, weakCategories,
 //   recommendedSong, targetWords, targetQuestionIds, timestamp }
+//   Perfect-score results additionally carry enrichmentInfo (see above);
+//   all other paths keep the exact output shape above.
 // targetWords items mirror buildStudyPlan karaokeTargetWords:
 //   { word, songId, partOfSpeech, difficulty, directlyMissed, need }
 // Deterministic: ranking reuses rankSongs tie-breaks; enrichment ranks by
@@ -184,44 +208,78 @@
 
   function enrichmentPlan(data, score, level) {
     var result = emptyResult(score, level, ['C']);
+    result.enrichmentInfo = { tierRequested: 'C_advanced', tierResolved: 'unknown', fallbackApplied: false };
     if (!Recommender) return result;
+    function diffOf(w) {
+      var v = data.vocabByWord[w];
+      return Recommender.normalizeDifficulty(v && v.level);
+    }
+    function diffRank(d) { return d === 'C' ? 3 : (d === 'B' ? 2 : (d === 'A' ? 1 : 0)); }
     var candidates = [];
     data.songs.forEach(function (song, i) {
       if (!isObj(song)) return;
-      var cWords = songWordsOf(song).filter(function (w) {
-        var v = data.vocabByWord[w];
-        return v && Recommender.normalizeDifficulty(v.level) === 'C';
-      });
-      if (cWords.length < 3) return;
+      var words = songWordsOf(song);
+      var by = { C: [], B: [], A: [], unknown: [] };
+      words.forEach(function (w) { by[diffOf(w)].push(w); });
       var songId = song.id !== undefined ? song.id : (song.song_id !== undefined ? song.song_id : i);
-      candidates.push({ song: song, songId: songId, cWords: cWords,
-        title: song.title ? String(song.title) : '' });
+      var cand = { song: song, songId: songId, title: song.title ? String(song.title) : '',
+        words: words, by: by, category: -1, targetWords: [], tierResolved: 'unknown', fallbackApplied: true, primary: 0 };
+      if (by.C.length >= 3) {
+        cand.category = 0; cand.targetWords = by.C.slice(0, 3);
+        cand.tierResolved = 'C_advanced'; cand.fallbackApplied = false; cand.primary = by.C.length;
+      } else if (by.C.length >= 1 && by.C.length + by.B.length >= 3) {
+        cand.category = 1; cand.targetWords = by.C.concat(by.B).slice(0, 3);
+        cand.tierResolved = 'B_intermediate'; cand.primary = by.C.length * 10 + by.B.length;
+      } else if (by.B.length >= 3) {
+        cand.category = 2; cand.targetWords = by.B.slice(0, 3);
+        cand.tierResolved = 'B_intermediate'; cand.primary = by.B.length;
+      } else if ((by.C.length + by.B.length) >= 1 && by.C.length + by.B.length + by.A.length >= 3) {
+        cand.category = 3; cand.targetWords = by.C.concat(by.B, by.A).slice(0, 3);
+        cand.tierResolved = 'A_foundational'; cand.primary = by.C.length + by.B.length;
+      } else if (by.A.length >= 3) {
+        cand.category = 4; cand.targetWords = by.A.slice(0, 3);
+        cand.tierResolved = 'A_foundational'; cand.primary = by.A.length;
+      } else if (by.C.length + by.B.length + by.A.length === 0 && words.length >= 3) {
+        cand.category = 5; cand.targetWords = words.slice(0, 3);
+        cand.tierResolved = 'unknown'; cand.primary = words.length;
+      } else {
+        return;
+      }
+      candidates.push(cand);
     });
     candidates.sort(function (a, b) {
-      return (b.cWords.length - a.cWords.length) || cmpStr(a.title, b.title) || cmpId(a.songId, b.songId);
+      return (a.category - b.category) || (b.primary - a.primary) ||
+        cmpStr(a.title, b.title) || cmpId(a.songId, b.songId);
     });
     if (!candidates.length) return result;
     var top = candidates[0];
-    var targetWordList = top.cWords.slice(0, 3);
+    result.enrichmentInfo = { tierRequested: 'C_advanced',
+      tierResolved: top.tierResolved, fallbackApplied: top.fallbackApplied };
     result.recommendedSong = { songId: top.songId, id: top.songId,
       title: top.title, artist: top.song.artist ? String(top.song.artist) : '',
-      score: top.cWords.length, weakWords: [] };
-    result.targetWords = targetWordList.map(function (w) {
+      score: top.primary, weakWords: [] };
+    result.targetWords = top.targetWords.map(function (w) {
       var v = data.vocabByWord[w];
       return { word: w, songId: top.songId,
         partOfSpeech: Recommender.normalizePartOfSpeech(v && v.part_of_speech),
-        difficulty: 'C', directlyMissed: false, need: 0 };
+        difficulty: diffOf(w), directlyMissed: false, need: 0 };
     });
-    // Question ids only from an actually supplied catalogue.
-    var inSong = {}; top.cWords.forEach(function (w) { inSong[w] = true; });
-    var isC = function (w) { var v = data.vocabByWord[w]; return v && Recommender.normalizeDifficulty(v.level) === 'C'; };
+    // Question ids only from an actually supplied catalogue, matching the
+    // selected song or a selected target word; never unrelated ids.
+    var targetSet = {}; top.targetWords.forEach(function (w) { targetSet[w] = true; });
     var scored = [];
     data.questions.forEach(function (q) {
       var w = normWord(q.word || q.word_id);
-      if (!w || !isC(w)) return;
-      scored.push({ id: q.id, word: w, inSong: inSong[w] ? 0 : 1 });
+      var inSong = q.song_id !== undefined && String(q.song_id) === String(top.songId);
+      if (!inSong && !(w && targetSet[w])) return;
+      var qd = q.level !== undefined ? q.level : (q.difficulty !== undefined ? q.difficulty
+        : (data.vocabByWord[w] && data.vocabByWord[w].level));
+      scored.push({ id: q.id, word: w, inSong: inSong ? 0 : 1,
+        rank: diffRank(Recommender.normalizeDifficulty(qd)) });
     });
-    scored.sort(function (a, b) { return (a.inSong - b.inSong) || cmpStr(a.word, b.word) || cmpId(a.id, b.id); });
+    scored.sort(function (a, b) {
+      return (a.inSong - b.inSong) || (b.rank - a.rank) || cmpStr(a.word, b.word) || cmpId(a.id, b.id);
+    });
     result.targetQuestionIds = scored.slice(0, 5).map(function (s) { return s.id; });
     return result;
   }

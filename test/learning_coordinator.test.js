@@ -87,14 +87,17 @@ test('3. perfect 150 via actual submitSimulation yields LevelC enrichment, no fa
   assert.deepEqual(r.targetWords.map((t) => t.word), ['complex', 'rapidly', 'intricate']);
   assert.ok(r.targetQuestionIds.length >= 3 && r.targetQuestionIds.length <= 5);
   assert.ok(r.targetQuestionIds.every((id) => QUESTIONS.some((q) => q.id === id)));
+  assert.deepEqual(r.enrichmentInfo, { tierRequested: 'C_advanced', tierResolved: 'C_advanced', fallbackApplied: false });
   assertTimestamp(r);
 });
 
-test('4. real content/vocab files: song words lack LevelC vocab links, so no fabricated enrichment', () => {
-  // Grounded check: content_v2 song highlight words (113 distinct) overlap
-  // the 300-word Amiram vocab in only one word, and no song reaches 3
-  // C-level linked words. The coordinator must report insufficiency
-  // honestly instead of inventing levels for song words.
+test('4. real content/vocab files (read-only): no usable level links, so honest variety fallback', () => {
+  // Grounded check: content_v2 song highlight words overlap the 300-word
+  // Amiram vocab in almost no linked levels, and no song reaches any
+  // classified enrichment tier. Limitation (reported, not hidden): the
+  // actual catalogue therefore resolves by greatest word variety with
+  // tierResolved 'unknown' — it does NOT imply C mastery. All 30 songs
+  // have 5 distinct words, so title asc then id asc picks song 12.
   const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data/imports/content_v2.json'), 'utf8'));
   const vocabRaw = fs.readFileSync(path.join(__dirname, '..', 'src/amiram_vocab_data.js'), 'utf8');
   const vocab = JSON.parse(vocabRaw.slice(vocabRaw.indexOf('['), vocabRaw.lastIndexOf(']') + 1));
@@ -102,18 +105,31 @@ test('4. real content/vocab files: song words lack LevelC vocab links, so no fab
   const r = C.coordinateSessionFromSimulation(simResult, raw, vocab);
   assert.equal(r.simulationScore, 150);
   assert.deepEqual(r.weakCategories, ['C']);
-  assert.equal(r.recommendedSong, null);
-  assert.deepEqual(r.targetWords, []); assert.deepEqual(r.targetQuestionIds, []);
+  assert.equal(r.recommendedSong.songId, 12);
+  assert.equal(r.recommendedSong.title, "Ain't No Mountain High Enough");
+  assert.deepEqual(r.targetWords.map((t) => t.word), ['mountain', 'enough', 'valley']);
+  assert.ok(r.targetWords.every((t) => t.difficulty === 'unknown'));
+  assert.deepEqual(r.enrichmentInfo, { tierRequested: 'C_advanced', tierResolved: 'unknown', fallbackApplied: true });
+  // Song 12's own supplied questions, word-asc tie-break (all unknown).
+  assert.deepEqual(r.targetQuestionIds, [45, 42, 41, 44, 43]);
+  assert.ok(r.targetQuestionIds.every((id) => raw.questions.some((q) => q.id === id)));
+  assertTimestamp(r);
 });
 
-test('5. perfect 150 with insufficient LevelC catalogue is empty enrichment, not an error', () => {
+test('5. perfect 150 with only A-level catalogue resolves honestly to A_foundational fallback', () => {
+  // Documented decision for other partial levels: an A-only song can fill
+  // 3, so it is used but labelled A_foundational with fallbackApplied —
+  // never as C. (No questions supplied here, so no question ids.)
   const simResult = { score: 150, level: 'Exemption', correctCount: 25, totalCount: 25, reviewList: [] };
   const aOnly = [song(1, 'Alpha', ['peace', 'comfort', 'achieve'])];
   const r = C.coordinateSessionFromSimulation(simResult, aOnly, VOCAB);
   assert.equal(r.simulationScore, 150);
   assert.deepEqual(r.weakCategories, ['C']);
-  assert.equal(r.recommendedSong, null);
-  assert.deepEqual(r.targetWords, []); assert.deepEqual(r.targetQuestionIds, []);
+  assert.equal(r.recommendedSong.songId, 1);
+  assert.deepEqual(r.targetWords.map((t) => t.word), ['peace', 'comfort', 'achieve']);
+  assert.ok(r.targetWords.every((t) => t.difficulty === 'A'));
+  assert.deepEqual(r.targetQuestionIds, []);
+  assert.deepEqual(r.enrichmentInfo, { tierRequested: 'C_advanced', tierResolved: 'A_foundational', fallbackApplied: true });
   assertTimestamp(r);
 });
 
@@ -171,4 +187,94 @@ test('11. inputs are never mutated (frozen fixtures)', () => {
   const snap = JSON.stringify(songs);
   assert.doesNotThrow(() => C.coordinateSessionFromSimulation(Object.freeze({ ...simResult, reviewList: Object.freeze(simResult.reviewList.map((e) => Object.freeze({ ...e }))) }), catalogue, vocab));
   assert.equal(JSON.stringify(songs), snap);
+});
+
+const PERFECT = { score: 150, level: 'Exemption', correctCount: 25, totalCount: 25, reviewList: [] };
+
+test('12. rare-C realistic fixture: 1 C + same-song B words fill 3, B_intermediate fallback', () => {
+  const vocab = VOCAB.concat([
+    { word: 'profound', part_of_speech: 'adjective', level: 'C_advanced' },
+    { word: 'resilient', part_of_speech: 'adjective', level: 'B_intermediate' },
+    { word: 'coherent', part_of_speech: 'adjective', level: 'B_intermediate' }
+  ]);
+  const songs = [
+    song(21, 'PureB', ['resilient', 'coherent', 'adapt']),
+    song(20, 'RareC', ['profound', 'resilient', 'coherent', 'adapt'])
+  ];
+  const questions = [question(200, 20, 'profound'), question(201, 20, 'resilient'), question(202, 20, 'coherent')];
+  const r = C.coordinateSessionFromSimulation(PERFECT, { songs, questions }, vocab);
+  assert.equal(r.recommendedSong.songId, 20); // rare-C mixed beats pure-B
+  assert.equal(r.targetWords.length, 3);
+  assert.deepEqual(r.targetWords.map((t) => t.word), ['profound', 'resilient', 'coherent']);
+  assert.deepEqual(r.targetWords.map((t) => t.difficulty), ['C', 'B', 'B']);
+  assert.deepEqual(r.enrichmentInfo, { tierRequested: 'C_advanced', tierResolved: 'B_intermediate', fallbackApplied: true });
+  assert.ok(r.targetQuestionIds.every((id) => questions.some((q) => q.id === id)));
+});
+
+test('13. rich-C fixture: full 3 C, C_advanced with no fallback', () => {
+  const r = C.coordinateSessionFromSimulation(PERFECT, CATALOGUE, VOCAB);
+  assert.equal(r.recommendedSong.songId, 4);
+  assert.deepEqual(r.targetWords.map((t) => t.word), ['complex', 'rapidly', 'intricate']);
+  assert.deepEqual(r.enrichmentInfo, { tierRequested: 'C_advanced', tierResolved: 'C_advanced', fallbackApplied: false });
+});
+
+test('14. question ids: subset of supplied, selected song first then higher difficulty, unrelated excluded', () => {
+  const songs = [song(30, 'Rich', ['complex', 'rapidly', 'intricate', 'peace'])];
+  const questions = [
+    question(301, 99, 'complex'), // target word, other song, C
+    question(302, 30, 'peace'), // selected song, A
+    question(303, 99, 'achieve'), // unrelated to selected song and targets
+    question(304, 30, 'rapidly') // selected song, C
+  ];
+  const r = C.coordinateSessionFromSimulation(PERFECT, { songs, questions }, VOCAB);
+  assert.deepEqual(r.targetQuestionIds, [304, 302, 301]);
+  assert.ok(r.targetQuestionIds.every((id) => questions.some((q) => q.id === id)));
+  assert.ok(!r.targetQuestionIds.includes(303));
+  assert.ok(r.targetQuestionIds.length <= 5);
+});
+
+test('15. no level metadata: greatest word variety wins, tier honestly unknown', () => {
+  const vocab = ['melody', 'harbor', 'willow', 'breeze', 'compass']
+    .map((word) => ({ word, part_of_speech: 'noun' })); // no level field
+  const songs = [
+    song(41, 'Small', ['melody', 'harbor', 'willow']),
+    song(42, 'Varied', ['melody', 'harbor', 'willow', 'breeze', 'compass'])
+  ];
+  const r = C.coordinateSessionFromSimulation(PERFECT, { songs, questions: [] }, vocab);
+  assert.equal(r.recommendedSong.songId, 42);
+  assert.deepEqual(r.targetWords.map((t) => t.word), ['melody', 'harbor', 'willow']);
+  assert.ok(r.targetWords.every((t) => t.difficulty === 'unknown'));
+  assert.deepEqual(r.enrichmentInfo, { tierRequested: 'C_advanced', tierResolved: 'unknown', fallbackApplied: true });
+});
+
+test('16. no C anywhere: strongest B song resolves B_intermediate with fallback', () => {
+  const vocab = VOCAB.concat([
+    { word: 'resilient', part_of_speech: 'adjective', level: 'B_intermediate' },
+    { word: 'coherent', part_of_speech: 'adjective', level: 'B_intermediate' }
+  ]);
+  const songs = [
+    song(51, 'TwoB', ['resilient', 'coherent', 'peace']),
+    song(50, 'ThreeB', ['resilient', 'coherent', 'adapt'])
+  ];
+  const r = C.coordinateSessionFromSimulation(PERFECT, { songs, questions: [] }, vocab);
+  assert.equal(r.recommendedSong.songId, 50);
+  assert.deepEqual(r.targetWords.map((t) => t.difficulty), ['B', 'B', 'B']);
+  assert.deepEqual(r.enrichmentInfo, { tierRequested: 'C_advanced', tierResolved: 'B_intermediate', fallbackApplied: true });
+});
+
+test('17. no matching questions: empty ids, never unrelated ids', () => {
+  const catalogue = { songs: SONGS, questions: [question(900, 99, 'peace'), question(901, 99, 'achieve')] };
+  const r = C.coordinateSessionFromSimulation(PERFECT, catalogue, VOCAB);
+  assert.equal(r.recommendedSong.songId, 4);
+  assert.equal(r.targetWords.length, 3);
+  assert.deepEqual(r.targetQuestionIds, []);
+});
+
+test('18. insufficient input: song with fewer than 3 words is graceful empty enrichment', () => {
+  const songs = [song(60, 'Tiny', ['peace', 'comfort'])];
+  const r = C.coordinateSessionFromSimulation(PERFECT, { songs, questions: QUESTIONS }, VOCAB);
+  assert.equal(r.recommendedSong, null);
+  assert.deepEqual(r.targetWords, []); assert.deepEqual(r.targetQuestionIds, []);
+  assert.deepEqual(r.enrichmentInfo, { tierRequested: 'C_advanced', tierResolved: 'unknown', fallbackApplied: false });
+  assertTimestamp(r);
 });
