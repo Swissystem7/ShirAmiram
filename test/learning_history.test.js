@@ -257,3 +257,85 @@ test('16. evaluate: invalid scores give null delta and insufficient_data, words 
   assert.equal(d.evidenceStatus, 'insufficient');
   assert.deepEqual(d.newErrors, []);
 });
+
+test('17. SAFE STRINGS: constructor/__proto__ error words are not silently lost (reported repro)', () => {
+  const input = {
+    session: { simulationScore: 100 },
+    assessment: {
+      errors: [{ word: 'constructor', category: 'noun' }, { word: '__proto__', category: 'noun' }],
+      correctWords: []
+    }
+  };
+  const n = H.normalizeHistoryEntry(input);
+  assert.equal(n.evidenceStatus, 'available');
+  assert.deepEqual(n.errorWords, ['constructor', '__proto__']);
+  assert.deepEqual(n.errors, [
+    { word: 'constructor', category: 'noun' }, { word: '__proto__', category: 'noun' }
+  ]);
+  assert.deepEqual(H.aggregatePersistentWeaknesses([input, input]), [
+    { word: '__proto__', occurrences: 2, categories: ['noun'] },
+    { word: 'constructor', occurrences: 2, categories: ['noun'] }
+  ]);
+});
+
+test('18. SAFE STRINGS: toString/constructor/__proto__ words and categories survive, deduped once', () => {
+  const n = H.normalizeHistoryEntry(ev(100, [
+    { word: ' ToString ', category: '__proto__' },
+    { word: 'toString', category: 'constructor' },
+    { word: 'toString', category: '__proto__' },
+    { word: 'hasOwnProperty', category: 'toString' },
+    { word: 'valueOf', category: 'valueOf' }
+  ], ['Constructor', ' constructor ', '__PROTO__', 'toString']));
+  // Duplicated (word, category) pair collapses; distinct category kept.
+  assert.deepEqual(n.errors, [
+    { word: 'tostring', category: '__proto__' },
+    { word: 'tostring', category: 'constructor' },
+    { word: 'hasownproperty', category: 'toString' },
+    { word: 'valueof', category: 'valueOf' }
+  ]);
+  assert.deepEqual(n.errorWords, ['tostring', 'hasownproperty', 'valueof']);
+  // Error-authoritative: toString removed from correct; safe correct words kept literally.
+  assert.deepEqual(n.correctWords, ['constructor', '__proto__']);
+});
+
+test('19. SAFE STRINGS: resolution/error-authoritative semantics for reserved words', () => {
+  const resolved = H.evaluateSessionDelta(
+    ev(90, ['constructor', '__proto__']),
+    ev(90, [], ['constructor', '__proto__']));
+  assert.deepEqual(resolved.resolvedWords, ['constructor', '__proto__']);
+  assert.deepEqual(resolved.unresolvedWords, []);
+  const stillErr = H.evaluateSessionDelta(
+    ev(90, ['constructor']),
+    ev(90, ['constructor', 'toString'], ['constructor']));
+  assert.deepEqual(stillErr.resolvedWords, []); // error wins over correct
+  assert.deepEqual(stillErr.unresolvedWords, ['constructor']);
+  assert.deepEqual(stillErr.newErrors, ['tostring']);
+});
+
+test('20. SAFE STRINGS: persistent frequency with reserved categories, no prototype mutation', () => {
+  const protoKeysBefore = Object.keys(Object.prototype);
+  const h = [
+    ev(80, [
+      { word: '__proto__', category: 'constructor' },
+      { word: '__proto__', category: '__proto__' },
+      { word: '__proto__', category: 'constructor' },
+      { word: 'constructor', category: 'toString' }
+    ]),
+    ev(90, [
+      { word: '__proto__', category: 'toString' },
+      { word: 'constructor', category: '__proto__' }
+    ])
+  ];
+  assert.deepEqual(H.aggregatePersistentWeaknesses(h, 1), [
+    { word: '__proto__', occurrences: 2, categories: ['__proto__', 'constructor', 'toString'] },
+    { word: 'constructor', occurrences: 2, categories: ['__proto__', 'toString'] }
+  ]);
+  // Per-session dedupe: __proto__ in session 1 counts once despite 3 rows.
+  assert.equal(H.aggregatePersistentWeaknesses([h[0]], 1)
+    .find((r) => r.word === '__proto__').occurrences, 1);
+  assert.deepEqual(Object.keys(Object.prototype), protoKeysBefore);
+  assert.equal(Object.prototype.polluted, undefined);
+  assert.equal({}.polluted, undefined);
+  assert.equal(Object.getPrototypeOf({}), Object.prototype);
+  assert.equal({}.constructor, Object);
+});

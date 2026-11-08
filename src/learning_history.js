@@ -38,6 +38,11 @@
   function normWord(v) { return typeof v === 'string' ? v.trim().toLowerCase() : ''; }
   function cmpStr(a, b) { return a < b ? -1 : (a > b ? 1 : 0); }
   function has(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }
+  // Null-prototype dictionary: user words/categories such as
+  // 'constructor', '__proto__' or 'toString' become ordinary own keys
+  // instead of colliding with inherited Object.prototype members, and
+  // assigning '__proto__' cannot mutate any prototype.
+  function dict() { return Object.create(null); }
 
   function meaningfulTimestamp(ts) {
     if (typeof ts === 'string') {
@@ -62,8 +67,8 @@
     if (has(raw, 'complete') && raw.complete !== undefined && typeof raw.complete !== 'boolean') {
       return { invalid: true };
     }
-    var errors = []; var errorWords = []; var seenErr = {};
-    var seenErrCat = {};
+    var errors = []; var errorWords = []; var seenErr = dict();
+    var seenErrCat = dict();
     if (has(raw, 'errors') && raw.errors !== undefined) {
       if (!Array.isArray(raw.errors)) return { invalid: true };
       for (var i = 0; i < raw.errors.length; i++) {
@@ -89,7 +94,7 @@
     var correctWords = [];
     if (has(raw, 'correctWords') && raw.correctWords !== undefined) {
       if (!Array.isArray(raw.correctWords)) return { invalid: true };
-      var seenCorr = {};
+      var seenCorr = dict();
       for (var j = 0; j < raw.correctWords.length; j++) {
         if (typeof raw.correctWords[j] !== 'string') return { invalid: true };
         var cw = normWord(raw.correctWords[j]);
@@ -158,9 +163,9 @@
 
     var resolvedWords = []; var unresolvedWords = []; var newErrors = [];
     if (evidenceStatus === 'available') {
-      var prevErr = {}; prev.errorWords.forEach(function (w) { prevErr[w] = true; });
-      var currErr = {}; curr.errorWords.forEach(function (w) { currErr[w] = true; });
-      var currCorr = {}; curr.correctWords.forEach(function (w) { currCorr[w] = true; });
+      var prevErr = dict(); prev.errorWords.forEach(function (w) { prevErr[w] = true; });
+      var currErr = dict(); curr.errorWords.forEach(function (w) { currErr[w] = true; });
+      var currCorr = dict(); curr.correctWords.forEach(function (w) { currCorr[w] = true; });
       resolvedWords = prev.errorWords.filter(function (w) { return currCorr[w] && !currErr[w]; });
       unresolvedWords = prev.errorWords.filter(function (w) { return !!currErr[w]; });
       newErrors = curr.errorWords.filter(function (w) { return !prevErr[w]; });
@@ -188,20 +193,20 @@
   function aggregatePersistentWeaknesses(sessionHistoryList, minOccurrences) {
     var min = safeMinOccurrences(minOccurrences);
     var list = Array.isArray(sessionHistoryList) ? sessionHistoryList.slice(-10) : [];
-    var counts = {}; var cats = {};
+    var counts = dict(); var cats = dict();
     list.forEach(function (entry) {
       var n = normalizeHistoryEntry(entry);
       if (n.evidenceStatus !== 'available') return;
-      var perWordCat = {};
+      var perWordCat = dict();
       n.errors.forEach(function (e) {
         if (e.category) {
-          (perWordCat[e.word] = perWordCat[e.word] || {})[e.category] = true;
+          (perWordCat[e.word] = perWordCat[e.word] || dict())[e.category] = true;
         }
       });
       // Once per word per session (errorWords is already deduped).
       n.errorWords.forEach(function (w) {
         counts[w] = (counts[w] || 0) + 1;
-        var bucket = cats[w] || (cats[w] = {});
+        var bucket = cats[w] || (cats[w] = dict());
         Object.keys(perWordCat[w] || {}).forEach(function (c) { bucket[c] = true; });
       });
     });
