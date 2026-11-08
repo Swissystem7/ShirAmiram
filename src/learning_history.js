@@ -1,34 +1,30 @@
 // ShirAmiram — Learning History and Progress Tracker (pure logic, no UI)
 //
-// ACTUAL INPUT SHAPE (from coordinateSessionFromSimulation in
-// src/learning_coordinator.js, inspected — not invented):
-//   { simulationScore, exemptionLevel, weakCategories, recommendedSong,
-//     targetWords, targetQuestionIds, timestamp }
-//   targetWords items: { word, songId, partOfSpeech, difficulty,
-//     directlyMissed, need }
-//
-// HONEST DEFINITIONS (no fabricated data):
-// - "Error words" of a session = targetWords whose directlyMissed is not
-//   explicitly false. Real coordinator output sets directlyMissed:true only
-//   for words actually missed, and false for enrichment/weak filler targets
-//   (e.g. perfect-score plans), so explicit false is never counted as an
-//   error. A missing flag on a partial/mock entry is treated as
-//   error-associated, since targetWords is the only word list available.
-// - "Categories" = the session's weakCategories strings exactly as reported.
-//   Note: a perfect-score session reports weakCategories ['C'] as an
-//   enrichment tier, not a weakness; this module counts what is reported
-//   and does not reinterpret it.
-// - A word absent from the current error set is "resolved" only in that
-//   limited sense: the coordinator lists at most 3 target words, so absence
-//   may reflect target rotation, not proven mastery. Nothing here invents
-//   mastery, word ids, or session fields.
-//
-// TRAJECTORY CONFLICTS: if the score fell while some words resolved, the
-// signals conflict. trajectory reports "regressing" (the score is the only
-// continuous measure and resolved may be rotation), while resolvedWords and
-// scoreDelta are still returned verbatim so callers see the mixed picture.
-// If either score is missing, scoreDelta is null and trajectory is based on
-// resolved words alone ("improving" if any, else "stable").
+// CONTROLLING CONTRACT (explicitly clarified; replaces the obsolete one):
+// - Coordinator output (coordinateSessionFromSimulation) carries GOALS /
+//   enrichment only: targetWords and weakCategories are NOT an errors
+//   schema. Nothing here infers errors from targetWords/weakCategories
+//   (including directlyMissed flags) and nothing infers mastery from the
+//   absence of a word. A perfect-150 session reporting weakCategories
+//   ['C'] is enrichment, never a weakness.
+// - Error/correct evidence exists ONLY in an explicit assessment envelope:
+//     { session: <coordinator output>,
+//       assessment: { errors: [{ word: string, category?: string }],
+//                     correctWords: string[], complete?: boolean } }
+//   A bare coordinator entry (or a wrapped session) without an assessment
+//   has evidenceStatus 'none' and empty errorWords/correctWords.
+// - A structurally valid assessment yields evidenceStatus 'available'.
+//   A malformed assessment (not an object, errors/correctWords of the
+//   wrong type, an error without a string word, a non-string category,
+//   a non-boolean complete, or neither errors nor correctWords present)
+//   yields evidenceStatus 'invalid' with all evidence cleared. In
+//   evaluateSessionDelta any side that is not 'available' makes the
+//   combined status 'insufficient' unless both sides are 'none'
+//   (see there), and clears all word arrays.
+// - complete:false still permits positive explicit error/correct
+//   evidence; it never licenses inference from absence.
+// - If the same word is in errors and correctWords, the error is
+//   authoritative: it is dropped from correctWords (no resolution).
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     module.exports = factory();
@@ -39,94 +35,213 @@
   'use strict';
 
   function isObj(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
-  function normWord(v) { return v === undefined || v === null ? '' : String(v).trim().toLowerCase(); }
+  function normWord(v) { return typeof v === 'string' ? v.trim().toLowerCase() : ''; }
   function cmpStr(a, b) { return a < b ? -1 : (a > b ? 1 : 0); }
-  function scoreOf(s) {
-    return isObj(s) && typeof s.simulationScore === 'number' && Number.isFinite(s.simulationScore)
-      ? s.simulationScore : null;
+  function has(o, k) { return Object.prototype.hasOwnProperty.call(o, k); }
+
+  function meaningfulTimestamp(ts) {
+    if (typeof ts === 'string') {
+      var t = ts.trim();
+      return t !== '' && Number.isFinite(Date.parse(t));
+    }
+    return typeof ts === 'number' && Number.isFinite(ts);
   }
-  // Ordered, de-duplicated target words of a session (all targets).
-  function targetWordsOf(s) {
-    if (!isObj(s) || !Array.isArray(s.targetWords)) return [];
-    var seen = {}; var out = [];
-    s.targetWords.forEach(function (t) {
-      var w = normWord(isObj(t) ? t.word : t);
-      if (w && !seen[w]) { seen[w] = true; out.push(w); }
-    });
-    return out;
+  function scoreOf(session) {
+    return isObj(session) && typeof session.simulationScore === 'number' &&
+      Number.isFinite(session.simulationScore) ? session.simulationScore : null;
   }
-  // Ordered, de-duplicated error words (see header definition).
-  function errorWordsOf(s) {
-    if (!isObj(s) || !Array.isArray(s.targetWords)) return [];
-    var seen = {}; var out = [];
-    s.targetWords.forEach(function (t) {
-      var w = normWord(isObj(t) ? t.word : t);
-      if (!w || seen[w]) return;
-      if (isObj(t) && t.directlyMissed === false) return;
-      seen[w] = true; out.push(w);
-    });
-    return out;
+
+  // Validate + normalise an explicit assessment. Returns null when there
+  // is no assessment key at all, { invalid: true } when malformed, else
+  // { errors, errorWords, correctWords, complete } with fresh deduped
+  // arrays (input never mutated). Words are trimmed + lowercased;
+  // categories are trimmed, case preserved.
+  function parseAssessment(raw) {
+    if (!isObj(raw)) return { invalid: true };
+    if (!has(raw, 'errors') && !has(raw, 'correctWords')) return { invalid: true };
+    if (has(raw, 'complete') && raw.complete !== undefined && typeof raw.complete !== 'boolean') {
+      return { invalid: true };
+    }
+    var errors = []; var errorWords = []; var seenErr = {};
+    var seenErrCat = {};
+    if (has(raw, 'errors') && raw.errors !== undefined) {
+      if (!Array.isArray(raw.errors)) return { invalid: true };
+      for (var i = 0; i < raw.errors.length; i++) {
+        var e = raw.errors[i];
+        if (!isObj(e)) return { invalid: true };
+        var w = normWord(e.word);
+        if (!w) return { invalid: true };
+        var cat = null;
+        if (e.category !== undefined) {
+          if (typeof e.category !== 'string' || !e.category.trim()) return { invalid: true };
+          cat = e.category.trim();
+        }
+        var key = w + '\u0000' + (cat || '');
+        if (!seenErrCat[key]) {
+          seenErrCat[key] = true;
+          var item = { word: w };
+          if (cat) item.category = cat;
+          errors.push(item);
+        }
+        if (!seenErr[w]) { seenErr[w] = true; errorWords.push(w); }
+      }
+    }
+    var correctWords = [];
+    if (has(raw, 'correctWords') && raw.correctWords !== undefined) {
+      if (!Array.isArray(raw.correctWords)) return { invalid: true };
+      var seenCorr = {};
+      for (var j = 0; j < raw.correctWords.length; j++) {
+        if (typeof raw.correctWords[j] !== 'string') return { invalid: true };
+        var cw = normWord(raw.correctWords[j]);
+        if (cw && !seenCorr[cw]) { seenCorr[cw] = true; correctWords.push(cw); }
+      }
+    }
+    // Error is authoritative over the same word in correctWords.
+    correctWords = correctWords.filter(function (w) { return !seenErr[w]; });
+    return {
+      errors: errors, errorWords: errorWords, correctWords: correctWords,
+      complete: typeof raw.complete === 'boolean' ? raw.complete : null
+    };
   }
-  function categoriesOf(s) {
-    if (!isObj(s) || !Array.isArray(s.weakCategories)) return [];
-    var seen = {}; var out = [];
-    s.weakCategories.forEach(function (c) {
-      var k = c === undefined || c === null ? '' : String(c).trim();
-      if (k && !seen[k]) { seen[k] = true; out.push(k); }
-    });
+
+  function normalizeHistoryEntry(entry) {
+    var invalidShell = {
+      session: null, simulationScore: null, timestamp: null,
+      evidenceStatus: 'invalid', errorWords: [], correctWords: [],
+      errors: [], complete: null, assessment: null
+    };
+    if (!isObj(entry)) return invalidShell;
+    var isEnvelope = has(entry, 'session') || has(entry, 'assessment');
+    var session = isEnvelope ? (isObj(entry.session) ? entry.session : null) : entry;
+    var out = {
+      session: session ? Object.assign({}, session) : null,
+      simulationScore: scoreOf(session),
+      timestamp: session && meaningfulTimestamp(session.timestamp)
+        ? (typeof session.timestamp === 'string' ? session.timestamp.trim() : session.timestamp)
+        : null,
+      evidenceStatus: 'none', errorWords: [], correctWords: [],
+      errors: [], complete: null, assessment: null
+    };
+    if (!has(entry, 'assessment') || entry.assessment === undefined) return out;
+    var parsed = parseAssessment(entry.assessment);
+    if (parsed.invalid) {
+      out.evidenceStatus = 'invalid';
+      return out;
+    }
+    out.evidenceStatus = 'available';
+    out.errorWords = parsed.errorWords;
+    out.correctWords = parsed.correctWords;
+    out.errors = parsed.errors;
+    out.complete = parsed.complete;
+    out.assessment = {
+      errors: parsed.errors.map(function (e) { return Object.assign({}, e); }),
+      correctWords: parsed.correctWords.slice(),
+      complete: parsed.complete
+    };
     return out;
   }
 
   function evaluateSessionDelta(previousSession, currentSession) {
-    var prevScore = scoreOf(previousSession);
-    var currScore = scoreOf(currentSession);
-    var scoreDelta = prevScore !== null && currScore !== null ? currScore - prevScore : null;
-    var currErrors = {}; errorWordsOf(currentSession).forEach(function (w) { currErrors[w] = true; });
-    var resolvedWords = targetWordsOf(previousSession).filter(function (w) { return !currErrors[w]; });
-    var unresolvedWords = errorWordsOf(previousSession).filter(function (w) { return !!currErrors[w]; });
+    var prev = normalizeHistoryEntry(previousSession);
+    var curr = normalizeHistoryEntry(currentSession);
+    var scoreDelta = prev.simulationScore !== null && curr.simulationScore !== null
+      ? curr.simulationScore - prev.simulationScore : null;
+
+    var evidenceStatus;
+    if (prev.evidenceStatus === 'available' && curr.evidenceStatus === 'available') {
+      evidenceStatus = 'available';
+    } else if (prev.evidenceStatus === 'none' && curr.evidenceStatus === 'none') {
+      evidenceStatus = 'none';
+    } else {
+      evidenceStatus = 'insufficient';
+    }
+
+    var resolvedWords = []; var unresolvedWords = []; var newErrors = [];
+    if (evidenceStatus === 'available') {
+      var prevErr = {}; prev.errorWords.forEach(function (w) { prevErr[w] = true; });
+      var currErr = {}; curr.errorWords.forEach(function (w) { currErr[w] = true; });
+      var currCorr = {}; curr.correctWords.forEach(function (w) { currCorr[w] = true; });
+      resolvedWords = prev.errorWords.filter(function (w) { return currCorr[w] && !currErr[w]; });
+      unresolvedWords = prev.errorWords.filter(function (w) { return !!currErr[w]; });
+      newErrors = curr.errorWords.filter(function (w) { return !prevErr[w]; });
+    }
+
     var trajectory;
-    if (scoreDelta !== null && scoreDelta < 0) trajectory = 'regressing';
-    else if ((scoreDelta !== null && scoreDelta > 0) || resolvedWords.length > 0) trajectory = 'improving';
+    if (scoreDelta === null) trajectory = 'insufficient_data';
+    else if (scoreDelta < 0) trajectory = 'regressing';
+    else if (scoreDelta > 0) trajectory = 'improving';
+    else if (resolvedWords.length > 0 && newErrors.length === 0) trajectory = 'improving';
+    else if (newErrors.length > 0 || unresolvedWords.length > 0) trajectory = 'regressing';
     else trajectory = 'stable';
-    return { scoreDelta: scoreDelta, resolvedWords: resolvedWords,
-      unresolvedWords: unresolvedWords, trajectory: trajectory };
+
+    return { scoreDelta: scoreDelta, trajectory: trajectory,
+      resolvedWords: resolvedWords, unresolvedWords: unresolvedWords,
+      newErrors: newErrors, evidenceStatus: evidenceStatus };
+  }
+
+  // Safe threshold: a finite number >= 1 is floored; anything else
+  // (missing, NaN, infinite, < 1, non-number) falls back to 2.
+  function safeMinOccurrences(v) {
+    return typeof v === 'number' && Number.isFinite(v) && v >= 1 ? Math.floor(v) : 2;
   }
 
   function aggregatePersistentWeaknesses(sessionHistoryList, minOccurrences) {
-    var min = typeof minOccurrences === 'number' && Number.isFinite(minOccurrences) && minOccurrences >= 1
-      ? Math.floor(minOccurrences) : 2;
+    var min = safeMinOccurrences(minOccurrences);
     var list = Array.isArray(sessionHistoryList) ? sessionHistoryList.slice(-10) : [];
-    var wordCount = {}; var catCount = {};
-    list.forEach(function (s) {
-      if (!isObj(s)) return;
-      errorWordsOf(s).forEach(function (w) { wordCount[w] = (wordCount[w] || 0) + 1; });
-      categoriesOf(s).forEach(function (c) { catCount[c] = (catCount[c] || 0) + 1; });
+    var counts = {}; var cats = {};
+    list.forEach(function (entry) {
+      var n = normalizeHistoryEntry(entry);
+      if (n.evidenceStatus !== 'available') return;
+      var perWordCat = {};
+      n.errors.forEach(function (e) {
+        if (e.category) {
+          (perWordCat[e.word] = perWordCat[e.word] || {})[e.category] = true;
+        }
+      });
+      // Once per word per session (errorWords is already deduped).
+      n.errorWords.forEach(function (w) {
+        counts[w] = (counts[w] || 0) + 1;
+        var bucket = cats[w] || (cats[w] = {});
+        Object.keys(perWordCat[w] || {}).forEach(function (c) { bucket[c] = true; });
+      });
     });
-    function toSorted(counts, keyName) {
-      return Object.keys(counts)
-        .filter(function (k) { return counts[k] >= min; })
-        .map(function (k) { var e = { count: counts[k] }; e[keyName] = k; return e; })
-        .sort(function (a, b) { return (b.count - a.count) || cmpStr(a[keyName], b[keyName]); })
-        .map(function (e) {
-          // Present word/category first for readability; count stays exact.
-          var out = {}; out[keyName] = e[keyName]; out.count = e.count; return out;
-        });
-    }
-    return { words: toSorted(wordCount, 'word'), categories: toSorted(catCount, 'category') };
+    return Object.keys(counts)
+      .filter(function (w) { return counts[w] >= min; })
+      .map(function (w) {
+        return { word: w, occurrences: counts[w],
+          categories: Object.keys(cats[w] || {}).sort(cmpStr) };
+      })
+      .sort(function (a, b) { return (b.occurrences - a.occurrences) || cmpStr(a.word, b.word); });
+  }
+
+  function isValidEntry(n) {
+    return n.simulationScore !== null || n.timestamp !== null;
+  }
+  // Safe cap: undefined / non-finite / non-number -> 10; fractional is
+  // floored; the result is clamped to [0, 10] (0 yields an empty list).
+  function safeCap(v) {
+    if (v === undefined) return 10;
+    if (typeof v !== 'number' || !Number.isFinite(v)) return 10;
+    var f = Math.floor(v);
+    return f < 0 ? 0 : (f > 10 ? 10 : f);
   }
 
   function appendSessionHistory(existingHistory, newSession, maxItems) {
-    var cap = typeof maxItems === 'number' && Number.isFinite(maxItems) && maxItems >= 1
-      ? Math.floor(maxItems) : 10;
-    var base = Array.isArray(existingHistory) ? existingHistory.slice() : [];
-    if (!isObj(newSession) || typeof newSession.timestamp !== 'string' || !newSession.timestamp.trim()) {
-      return base.slice(-cap);
+    var cap = safeCap(maxItems);
+    var out = [];
+    if (Array.isArray(existingHistory)) {
+      existingHistory.forEach(function (entry) {
+        if (isObj(entry) && isValidEntry(normalizeHistoryEntry(entry))) out.push(entry);
+      });
     }
-    base.push(newSession);
-    return base.slice(-cap);
+    if (isObj(newSession) && isValidEntry(normalizeHistoryEntry(newSession))) {
+      out.push(newSession);
+    }
+    return cap === 0 ? [] : out.slice(-cap);
   }
 
-  return { evaluateSessionDelta: evaluateSessionDelta,
+  return { normalizeHistoryEntry: normalizeHistoryEntry,
+    evaluateSessionDelta: evaluateSessionDelta,
     aggregatePersistentWeaknesses: aggregatePersistentWeaknesses,
     appendSessionHistory: appendSessionHistory };
 }));

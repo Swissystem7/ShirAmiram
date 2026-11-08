@@ -1,140 +1,259 @@
-// Learning History — synthetic coordinator-shaped fixtures only.
-// Shape mirrors coordinateSessionFromSimulation output:
-// { simulationScore, exemptionLevel, weakCategories, recommendedSong,
-//   targetWords: [{ word, songId, partOfSpeech, difficulty, directlyMissed, need }],
-//   targetQuestionIds, timestamp }
+// Learning History — controlling contract tests.
+// REAL coordinator outputs (imported below) carry goals/enrichment only and
+// must yield score-only results with NO inferred errors. All explicit-error
+// fixtures are SYNTHETIC labelled assessments, never coordinator fields.
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const H = require('../src/learning_history.js');
+const Sim = require('../src/simulation.js');
+const C = require('../src/learning_coordinator.js');
 
-function session(score, missed, extraTargets, cats, ts) {
-  const targets = (missed || []).map((word) => ({
-    word, songId: 1, partOfSpeech: 'noun', difficulty: 'A', directlyMissed: true, need: 1
-  })).concat((extraTargets || []).map((word) => ({
-    word, songId: 1, partOfSpeech: 'noun', difficulty: 'C', directlyMissed: false, need: 0
-  })));
+// --- Minimal synthetic catalogue so coordinator outputs are REAL ---
+const VOCAB = [
+  { word: 'peace', part_of_speech: 'noun', level: 'A_foundational' },
+  { word: 'comfort', part_of_speech: 'noun', level: 'A_foundational' },
+  { word: 'achieve', part_of_speech: 'verb', level: 'A_foundational' },
+  { word: 'adapt', part_of_speech: 'verb', level: 'B_intermediate' },
+  { word: 'complex', part_of_speech: 'adjective', level: 'C_advanced' },
+  { word: 'rapidly', part_of_speech: 'adverb', level: 'C_advanced' },
+  { word: 'intricate', part_of_speech: 'adjective', level: 'C_advanced' }
+];
+function song(id, title, words) {
+  return { id, title, artist: 'Synthetic', highlight_words: words.map((word) => ({ word, he: 'x', explanation: 'noun: x' })) };
+}
+function question(id, song_id, word) {
+  return { id, song_id, word_id: word, word, question: 'Fill _____ here.', options: [word, 'a', 'b', 'c'], answer: word, explanation: 'test' };
+}
+const SONGS = [
+  song(2, 'Beta', ['achieve', 'adapt', 'peace']),
+  song(1, 'Alpha', ['peace', 'comfort', 'rapidly']),
+  song(3, 'Gamma', ['complex', 'rapidly', 'comfort']),
+  song(4, 'Delta', ['complex', 'rapidly', 'intricate'])
+];
+const QUESTIONS = [
+  question(10, 1, 'peace'), question(11, 1, 'comfort'), question(12, 2, 'achieve'),
+  question(13, 2, 'adapt'), question(14, 3, 'complex'), question(15, 3, 'rapidly'),
+  question(16, 4, 'intricate')
+];
+const CATALOGUE = { songs: SONGS, questions: QUESTIONS };
+function seededRandom(seed) {
+  let state = seed >>> 0;
+  return function () { state = (state * 1664525 + 1013904223) >>> 0; return state / 4294967296; };
+}
+function realCoordinatorOutput(wrongWords) {
+  const session = Sim.createSimulation(QUESTIONS, { questionCount: QUESTIONS.length, random: seededRandom(7) });
+  session.questions.forEach((q) => Sim.answerQuestion(session, q.id, wrongWords.includes(q.word) ? 'definitely-wrong' : q.answer));
+  return C.coordinateSessionFromSimulation(Sim.submitSimulation(session), CATALOGUE, VOCAB);
+}
+// SYNTHETIC explicit-evidence envelope (labelled synthetic, not coordinator).
+function ev(score, errors, correctWords, extra) {
   return {
-    simulationScore: score, exemptionLevel: 'Basic', weakCategories: cats || [],
-    recommendedSong: null, targetWords: targets, targetQuestionIds: [],
-    timestamp: ts || '2026-01-01T00:00:00.000Z'
+    session: { simulationScore: score, timestamp: '2026-01-01T00:00:00.000Z' },
+    assessment: Object.assign(
+      { errors: (errors || []).map((e) => (typeof e === 'string' ? { word: e } : e)), correctWords: correctWords || [] },
+      extra || {})
   };
 }
+const TS = (d) => `2026-01-${String(d).padStart(2, '0')}T00:00:00.000Z`;
 
-test('1. evaluateSessionDelta: scoreDelta, resolvedWords and unresolvedWords', () => {
-  const prev = session(90, ['peace', 'achieve', 'adapt']);
-  const curr = session(110, ['achieve']);
-  const d = H.evaluateSessionDelta(prev, curr);
-  assert.equal(d.scoreDelta, 20);
-  assert.deepEqual(d.resolvedWords, ['peace', 'adapt']);
-  assert.deepEqual(d.unresolvedWords, ['achieve']);
-  assert.equal(d.trajectory, 'improving');
-});
-
-test('2. trajectory improving by resolved words even when score is unchanged', () => {
-  const d = H.evaluateSessionDelta(session(100, ['peace']), session(100, []));
-  assert.equal(d.scoreDelta, 0);
-  assert.deepEqual(d.resolvedWords, ['peace']);
+test('1. REAL coordinator output without assessment: score-only, no errors inferred', () => {
+  const real = realCoordinatorOutput(['peace', 'achieve']);
+  assert.ok(real.targetWords.length > 0); // goals exist, yet are NOT errors
+  const n = H.normalizeHistoryEntry(real);
+  assert.equal(n.evidenceStatus, 'none');
+  assert.deepEqual(n.errorWords, []);
+  assert.deepEqual(n.correctWords, []);
+  assert.equal(n.simulationScore, real.simulationScore);
+  const d = H.evaluateSessionDelta(real, realCoordinatorOutput(['peace']));
+  assert.equal(d.evidenceStatus, 'none');
+  assert.deepEqual(d.resolvedWords, []);
   assert.deepEqual(d.unresolvedWords, []);
-  assert.equal(d.trajectory, 'improving');
+  assert.deepEqual(d.newErrors, []);
+  assert.deepEqual(H.aggregatePersistentWeaknesses([real, real], 1), []);
 });
 
-test('3. trajectory regressing when score falls, stable when nothing changes', () => {
-  const down = H.evaluateSessionDelta(session(120, ['peace']), session(100, ['peace']));
-  assert.equal(down.scoreDelta, -20);
-  assert.equal(down.trajectory, 'regressing');
-  assert.deepEqual(down.unresolvedWords, ['peace']);
-  const flat = H.evaluateSessionDelta(session(100, ['peace']), session(100, ['peace']));
-  assert.equal(flat.scoreDelta, 0);
-  assert.deepEqual(flat.resolvedWords, []);
+test('2. REAL perfect-150 coordinator output: weakCategories [C] ignored as enrichment', () => {
+  const perfect = realCoordinatorOutput([]);
+  assert.equal(perfect.simulationScore, 150);
+  assert.deepEqual(perfect.weakCategories, ['C']);
+  assert.ok(perfect.targetWords.every((t) => t.directlyMissed === false));
+  const n = H.normalizeHistoryEntry(perfect);
+  assert.equal(n.evidenceStatus, 'none');
+  assert.deepEqual(n.errorWords, []);
+  assert.deepEqual(H.aggregatePersistentWeaknesses([perfect, perfect, perfect], 1), []);
+});
+
+test('3. normalizeHistoryEntry: valid synthetic assessment normalised/deduped immutably', () => {
+  const input = Object.freeze({
+    session: Object.freeze({ simulationScore: 90, timestamp: TS(1) }),
+    assessment: Object.freeze({
+      errors: Object.freeze([Object.freeze({ word: ' Peace ', category: ' noun ' }), Object.freeze({ word: 'peace' })]),
+      correctWords: Object.freeze(['Adapt', ' adapt ', ''])
+    })
+  });
+  const n = H.normalizeHistoryEntry(input);
+  assert.equal(n.evidenceStatus, 'available');
+  assert.deepEqual(n.errorWords, ['peace']);
+  assert.deepEqual(n.correctWords, ['adapt']);
+  assert.equal(n.errors[0].category, 'noun');
+  // Direct coordinator shape with synthetic targetWords still infers nothing.
+  const direct = H.normalizeHistoryEntry({ simulationScore: 80, targetWords: [{ word: 'peace', directlyMissed: true }], weakCategories: ['noun'] });
+  assert.equal(direct.evidenceStatus, 'none');
+  assert.deepEqual(direct.errorWords, []);
+});
+
+test('4. SYNTHETIC 110->90 with a resolved word still regresses (score fall wins)', () => {
+  const d = H.evaluateSessionDelta(ev(110, ['peace', 'adapt']), ev(90, ['adapt'], ['peace']));
+  assert.deepEqual(Object.keys(d).sort(), ['evidenceStatus', 'newErrors', 'resolvedWords', 'scoreDelta', 'trajectory', 'unresolvedWords']);
+  assert.equal(d.scoreDelta, -20);
+  assert.deepEqual(d.resolvedWords, ['peace']);
+  assert.deepEqual(d.unresolvedWords, ['adapt']);
+  assert.equal(d.trajectory, 'regressing');
+  assert.equal(d.evidenceStatus, 'available');
+});
+
+test('5. SYNTHETIC 90->110 improves; exact delta fields', () => {
+  const d = H.evaluateSessionDelta(ev(90, ['peace']), ev(110, [], ['peace']));
+  assert.equal(d.scoreDelta, 20);
+  assert.equal(d.trajectory, 'improving');
+  assert.deepEqual(d.resolvedWords, ['peace']);
+  assert.deepEqual(d.newErrors, []);
+});
+
+test('6. SYNTHETIC equal 100 with resolved and no new errors improves', () => {
+  const d = H.evaluateSessionDelta(ev(100, ['peace', 'adapt']), ev(100, ['adapt'], ['peace']));
+  assert.equal(d.scoreDelta, 0);
+  // resolved>0 and no newErrors takes improving even with an unresolved word.
+  assert.equal(d.trajectory, 'improving');
+  assert.deepEqual(d.unresolvedWords, ['adapt']);
+});
+
+test('7. SYNTHETIC equal score with unresolved or new errors regresses; neither is stable', () => {
+  const un = H.evaluateSessionDelta(ev(100, ['peace']), ev(100, ['peace']));
+  assert.equal(un.trajectory, 'regressing');
+  assert.deepEqual(un.unresolvedWords, ['peace']);
+  const nw = H.evaluateSessionDelta(ev(100, []), ev(100, ['peace']));
+  assert.equal(nw.trajectory, 'regressing');
+  assert.deepEqual(nw.newErrors, ['peace']);
+  const flat = H.evaluateSessionDelta(ev(100, []), ev(100, []));
   assert.equal(flat.trajectory, 'stable');
 });
 
-test('4. conflict: score fall wins trajectory, resolved words still reported verbatim', () => {
-  // Documented honest behaviour: the fall is the continuous signal;
-  // "resolved" may only be target rotation (max 3 targets per session).
-  const d = H.evaluateSessionDelta(session(120, ['peace', 'adapt']), session(100, ['adapt']));
-  assert.equal(d.scoreDelta, -20);
-  assert.deepEqual(d.resolvedWords, ['peace']);
-  assert.equal(d.trajectory, 'regressing');
+test('8. SYNTHETIC contradiction: same word in errors and correctWords — error wins', () => {
+  const curr = ev(100, ['peace'], ['peace', 'adapt']);
+  const n = H.normalizeHistoryEntry(curr);
+  assert.deepEqual(n.errorWords, ['peace']);
+  assert.deepEqual(n.correctWords, ['adapt']); // peace removed: no resolution
+  const d = H.evaluateSessionDelta(ev(100, ['peace']), curr);
+  assert.deepEqual(d.resolvedWords, []);
+  assert.deepEqual(d.unresolvedWords, ['peace']);
 });
 
-test('5. enrichment targets (directlyMissed:false) are not errors', () => {
-  const prev = session(80, ['peace']);
-  const perfect = session(150, [], ['complex', 'rapidly'], ['C']);
-  const d = H.evaluateSessionDelta(prev, perfect);
+test('9. SYNTHETIC complete:false still permits positive explicit evidence, no absence inference', () => {
+  const prev = ev(90, ['peace', 'adapt'], [], { complete: false });
+  const curr = ev(90, ['adapt'], ['peace'], { complete: false });
+  assert.equal(H.normalizeHistoryEntry(prev).evidenceStatus, 'available');
+  const d = H.evaluateSessionDelta(prev, curr);
   assert.deepEqual(d.resolvedWords, ['peace']);
+  assert.deepEqual(d.unresolvedWords, ['adapt']);
+});
+
+test('10. evidence statuses: both none, one invalid/missing, malformed assessment cleared', () => {
+  const bare = (s) => ({ simulationScore: s, timestamp: TS(1) });
+  assert.equal(H.evaluateSessionDelta(bare(90), bare(100)).evidenceStatus, 'none');
+  const malformed = { session: { simulationScore: 100, timestamp: TS(2) }, assessment: { errors: 'peace' } };
+  assert.equal(H.normalizeHistoryEntry(malformed).evidenceStatus, 'invalid');
+  assert.deepEqual(H.normalizeHistoryEntry(malformed).errorWords, []);
+  const d = H.evaluateSessionDelta(ev(90, ['peace']), malformed);
+  assert.equal(d.evidenceStatus, 'insufficient');
+  assert.deepEqual(d.resolvedWords, []);
   assert.deepEqual(d.unresolvedWords, []);
-  // A prev filler target (directlyMissed:false) never becomes "unresolved".
-  const prevFiller = session(80, ['peace'], ['complex']);
-  const curr = session(90, ['complex']);
-  assert.deepEqual(H.evaluateSessionDelta(prevFiller, curr).unresolvedWords, []);
+  assert.deepEqual(d.newErrors, []);
+  assert.equal(H.normalizeHistoryEntry({ session: bare(1), assessment: null }).evidenceStatus, 'invalid');
+  assert.equal(H.normalizeHistoryEntry({ session: bare(1), assessment: { errors: [{ word: 42 }] } }).evidenceStatus, 'invalid');
+  assert.equal(H.normalizeHistoryEntry(null).evidenceStatus, 'invalid');
+  // No valid score difference -> insufficient_data trajectory.
+  const noScore = H.evaluateSessionDelta(null, null);
+  assert.equal(noScore.scoreDelta, null);
+  assert.equal(noScore.trajectory, 'insufficient_data');
+  assert.equal(noScore.evidenceStatus, 'insufficient');
 });
 
-test('6. aggregatePersistentWeaknesses across 3 sessions, sorted by frequency', () => {
-  const history = [
-    session(80, ['peace', 'adapt'], [], ['noun', 'A']),
-    session(90, ['peace', 'complex'], [], ['noun', 'B']),
-    session(100, ['peace', 'adapt'], [], ['verb'])
+test('11. aggregate: duplicates count once per session; word in 2 of 3 synthetic sessions', () => {
+  const h = [
+    ev(80, [{ word: 'peace', category: 'noun' }, { word: 'peace', category: 'noun' }, { word: 'peace', category: 'verb' }, 'adapt']),
+    ev(90, [{ word: 'peace', category: 'noun' }]),
+    ev(100, ['adapt'])
   ];
-  const a = H.aggregatePersistentWeaknesses(history);
-  assert.deepEqual(a.words, [{ word: 'peace', count: 3 }, { word: 'adapt', count: 2 }]);
-  assert.deepEqual(a.categories, [{ category: 'noun', count: 2 }]);
-  const strict = H.aggregatePersistentWeaknesses(history, 3);
-  assert.deepEqual(strict.words, [{ word: 'peace', count: 3 }]);
-  assert.deepEqual(strict.categories, []);
-  const all = H.aggregatePersistentWeaknesses(history, 1);
-  assert.equal(all.words.length, 3);
-  assert.deepEqual(all.words[0], { word: 'peace', count: 3 });
+  assert.deepEqual(H.aggregatePersistentWeaknesses(h), [
+    { word: 'adapt', occurrences: 2, categories: [] },
+    { word: 'peace', occurrences: 2, categories: ['noun', 'verb'] }
+  ]);
+  assert.deepEqual(H.aggregatePersistentWeaknesses(h, 3), []);
+  // Safe invalid thresholds fall back to 2; explicit 1 includes singles.
+  assert.equal(H.aggregatePersistentWeaknesses(h, NaN).length, 2);
+  assert.equal(H.aggregatePersistentWeaknesses(h, 1).length, 2);
+  assert.deepEqual(H.aggregatePersistentWeaknesses(null), []);
+  assert.deepEqual(H.aggregatePersistentWeaknesses([null, 42, {}], 1), []);
 });
 
-test('7. aggregation dedupes repeats within one session and counts sessions, not mentions', () => {
-  const dup = session(80, ['peace', 'peace']);
-  dup.targetWords.push({ word: 'peace', songId: 1, partOfSpeech: 'noun', difficulty: 'A', directlyMissed: true, need: 1 });
-  const a = H.aggregatePersistentWeaknesses([dup, session(90, ['peace'])], 2);
-  assert.deepEqual(a.words, [{ word: 'peace', count: 2 }]);
+test('12. aggregate: only latest 10 sessions, never weakCategories/targets', () => {
+  const h = [ev(50, ['old'])];
+  for (let i = 0; i < 10; i++) h.push(ev(60 + i, ['recent']));
+  const a = H.aggregatePersistentWeaknesses(h, 1);
+  assert.deepEqual(a, [{ word: 'recent', occurrences: 10, categories: [] }]);
+  const goalOnly = { simulationScore: 150, weakCategories: ['C'], targetWords: [{ word: 'peace', directlyMissed: true }], timestamp: TS(1) };
+  assert.deepEqual(H.aggregatePersistentWeaknesses([goalOnly, goalOnly], 1), []);
 });
 
-test('8. appendSessionHistory caps at maxItems dropping the oldest (FIFO)', () => {
+test('13. append: FIFO 11 -> 10, immutable, preserves the evidence envelope', () => {
   let h = [];
-  for (let i = 1; i <= 12; i++) {
-    h = H.appendSessionHistory(h, session(50 + i, [], [], [], `2026-01-${String(i).padStart(2, '0')}T00:00:00.000Z`));
+  const entries = [];
+  for (let i = 1; i <= 11; i++) {
+    const e = ev(50 + i, ['peace']);
+    e.session.timestamp = TS(i);
+    entries.push(e);
+    h = H.appendSessionHistory(h, e);
   }
   assert.equal(h.length, 10);
-  assert.equal(h[0].simulationScore, 53);
-  assert.equal(h[9].simulationScore, 62);
-  const small = H.appendSessionHistory(h, session(99, [], [], [], '2026-02-01T00:00:00.000Z'), 3);
-  assert.deepEqual(small.map((s) => s.simulationScore), [61, 62, 99]);
-});
-
-test('9. appendSessionHistory never mutates the original history', () => {
-  const original = Object.freeze([session(80, ['peace'])]);
-  const next = H.appendSessionHistory(original, session(90, []));
-  assert.equal(original.length, 1);
+  assert.equal(h[0], entries[1]); // oldest dropped, references preserved
+  assert.equal(h[9], entries[10]);
+  assert.equal(h[9].assessment.errors[0].word, 'peace');
+  const frozen = Object.freeze([entries[0]]);
+  const next = H.appendSessionHistory(frozen, entries[1]);
+  assert.equal(frozen.length, 1);
+  assert.notEqual(next, frozen);
   assert.equal(next.length, 2);
-  assert.notEqual(next, original);
-  assert.equal(next[0], original[0]);
 });
 
-test('10. partial and null inputs fail safe in all three functions', () => {
-  assert.deepEqual(H.evaluateSessionDelta(null, null),
-    { scoreDelta: null, resolvedWords: [], unresolvedWords: [], trajectory: 'stable' });
-  assert.deepEqual(H.evaluateSessionDelta(undefined, session(100, ['peace'])),
-    { scoreDelta: null, resolvedWords: [], unresolvedWords: [], trajectory: 'stable' });
-  assert.deepEqual(H.aggregatePersistentWeaknesses(null), { words: [], categories: [] });
-  assert.deepEqual(H.aggregatePersistentWeaknesses([]), { words: [], categories: [] });
-  assert.deepEqual(H.aggregatePersistentWeaknesses([null, 42, {}, session(90, ['peace'])]),
-    { words: [], categories: [] });
-  assert.deepEqual(H.appendSessionHistory(null, session(90, [])).length, 1);
-  assert.deepEqual(H.appendSessionHistory(undefined, null), []);
-  assert.deepEqual(H.appendSessionHistory([], {}), []);
+test('14. append: null/malformed filtered, cap 0, hard bound 10, safe defaults', () => {
+  const good = ev(90, []);
+  assert.deepEqual(H.appendSessionHistory(null, good).length, 1);
+  assert.deepEqual(H.appendSessionHistory([], null), []);
+  assert.deepEqual(H.appendSessionHistory([null, 42, {}, good], ev(95, [])).map((e) => e.session.simulationScore), [90, 95]);
+  assert.deepEqual(H.appendSessionHistory([good], ev(95, []), 0), []);
+  let h = [];
+  for (let i = 0; i < 12; i++) h = H.appendSessionHistory(h, ev(50 + i, []), 99);
+  assert.equal(h.length, 10); // hard bound
+  assert.equal(H.appendSessionHistory([], good, 'junk').length, 1);
+  assert.equal(H.appendSessionHistory([], good, 1.9).length, 1);
 });
 
-test('11. session without a timestamp is not appended; existing copy is returned', () => {
-  const existing = [session(80, ['peace'])];
-  const noTs = session(90, []); delete noTs.timestamp;
-  const out = H.appendSessionHistory(existing, noTs);
-  assert.deepEqual(out, existing);
-  assert.notEqual(out, existing);
-  assert.deepEqual(H.appendSessionHistory(existing, { timestamp: '   ' }), existing);
-  assert.equal(existing.length, 1);
+test('15. append: missing timestamp allowed with valid score, invalid without either', () => {
+  const scoreOnly = { session: { simulationScore: 88 }, assessment: { errors: [], correctWords: [] } };
+  assert.equal(H.appendSessionHistory([], scoreOnly).length, 1);
+  const noScoreNoTs = { session: {}, assessment: { errors: [], correctWords: [] } };
+  assert.deepEqual(H.appendSessionHistory([], noScoreNoTs), []);
+  const tsOnly = { simulationScore: null, timestamp: TS(3) };
+  assert.equal(H.appendSessionHistory([], tsOnly).length, 1);
+  assert.deepEqual(H.appendSessionHistory([], { simulationScore: NaN, timestamp: '   ' }), []);
+  assert.deepEqual(H.appendSessionHistory([], { simulationScore: Infinity }), []);
+});
+
+test('16. evaluate: invalid scores give null delta and insufficient_data, words cleared', () => {
+  const d = H.evaluateSessionDelta({ simulationScore: '90' }, ev(100, ['peace']));
+  assert.equal(d.scoreDelta, null);
+  assert.equal(d.trajectory, 'insufficient_data');
+  assert.equal(d.evidenceStatus, 'insufficient');
+  assert.deepEqual(d.newErrors, []);
 });
