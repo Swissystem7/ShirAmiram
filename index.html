@@ -564,9 +564,20 @@
         const defText = v.hebrew_definition ? '<div class="text-xs text-slate-400 mt-0.5">' + esc(v.hebrew_definition) + '</div>' : '';
         const catText = esc(posNames[v.part_of_speech || v.category] || A.CATEGORY_HE[v.category] || v.category || '');
         const lvlHtml = levelBadges[v.level] || ('<span class="text-xs text-slate-300">' + esc(A.DIFFICULTY_HE[v.difficulty] || v.difficulty || v.level || '') + '</span>');
+        let guideHtml = '';
+        try {
+          const formatted = (window.ShirAmiramVocab && typeof window.ShirAmiramVocab.formatWordItem === 'function')
+            ? window.ShirAmiramVocab.formatWordItem(v) : null;
+          const guide = formatted && (formatted.syllablesDisplay || formatted.phoneticGuide)
+            ? String(formatted.syllablesDisplay || formatted.phoneticGuide) : '';
+          if (guide && guide !== String(v.word || '')) {
+            guideHtml = '<div class="vocab-pronunciation text-xs text-slate-400 mt-0.5" dir="ltr">' + esc(guide) + '</div>';
+          }
+        } catch (err) { guideHtml = ''; }
 
         return '<tr>'
           + '<td class="p-2 border-t border-stage-800" dir="ltr"><span class="font-bold text-indigo-300">' + wordText + '</span>'
+          + guideHtml
           + ' <button type="button" class="btn-vocab-speak text-xs px-1.5 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" data-speak="' + wordText + '" title="השמע הגייה" style="min-height:30px">🔊</button>'
           + '</td>'
           + '<td class="p-2 border-t border-stage-800"><span class="font-semibold text-slate-100">' + trText + '</span>' + defText + '</td>'
