@@ -593,3 +593,24 @@ test('finishSession reporting maxMultiplier across different streak levels and e
   assert.equal(resStringOverride.maxMultiplier, 3.0);
 });
 
+
+test('phonetic tolerance accepts single-letter error on long words via evaluatePhoneticMatch', () => {
+  assert.equal(K.wordMatches('inevitabl', 'inevitable'), true);
+  assert.ok(K.evaluatePhoneticMatch('inevitable', 'inevitabl') >= 0.8);
+});
+
+test('setPlaybackRate scales timing windows at 0.75x and 1.25x', () => {
+  const session = K.createSession({
+    words: [{ word: 'peace', timeMs: 1000, windowMs: 1500 }],
+  });
+  K.setPlaybackRate(session, 0.75);
+  assert.ok(Math.abs(session.state.words[0].windowMs - K.scaleTimestamp(1500, 0.75)) < 0.01);
+  K.setPlaybackRate(session, 1.25);
+  assert.ok(Math.abs(session.state.words[0].windowMs - K.scaleTimestamp(1500, 1.25)) < 0.01);
+});
+
+test('setPlaybackRate exports are functions', () => {
+  assert.equal(typeof K.setPlaybackRate, 'function');
+  assert.equal(typeof K.scaleTimestamp, 'function');
+  assert.equal(typeof K.evaluatePhoneticMatch, 'function');
+});
