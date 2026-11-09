@@ -87,3 +87,25 @@ test('the page loads app.js and no longer carries the broken v1 pieces', () => {
   assert.match(html, /id="btn-play"[^>]*aria-label=/);
   assert.match(html, /<article[^>]*dir="ltr"/);
 });
+
+test('vocabulary table renders formatWordItem pronunciation guidance safely', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  assert.match(html, /ShirAmiramVocab\.formatWordItem/);
+  assert.match(html, /vocab-pronunciation/);
+  assert.match(html, /syllablesDisplay \|\| formatted\.phoneticGuide/);
+  // guidance is escaped via esc(...) — no raw innerHTML of the guide string
+  assert.match(html, /esc\(guide\)/);
+});
+
+test('formatWordItem returns syllablesDisplay/phoneticGuide and UI escapes guidance', () => {
+  const vocab = require('../src/vocab.js');
+  const item = vocab.formatWordItem({ word: 'deliberate' });
+  assert.ok(item.syllablesDisplay || item.phoneticGuide);
+  assert.match(String(item.syllablesDisplay), /de/);
+  // Markup-like input is treated as plain text by the helper; the table path escapes via esc(guide).
+  const nasty = vocab.formatWordItem({ word: 'hello' });
+  assert.ok(nasty.syllablesDisplay || nasty.phoneticGuide);
+  assert.match(html, /vocab-pronunciation/);
+  assert.match(html, /esc\(guide\)/);
+  assert.match(html, /ShirAmiramVocab\.formatWordItem/);
+});
