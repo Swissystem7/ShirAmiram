@@ -4,25 +4,29 @@
 
 /* Step 1: Design Variables in :root */
 :root {
-  --bg-primary: #0f172a;
-  --bg-card: #1e293b;
-  --bg-card-glass: rgba(30, 41, 59, 0.75);
-  --bg-card-hover: rgba(51, 65, 85, 0.85);
+  --bg-primary: #07090e;
+  --bg-surface: #0f172a;
+  --bg-card: #131b2e;
+  --bg-card-glass: rgba(19, 27, 46, 0.78);
+  --bg-card-hover: rgba(30, 41, 69, 0.88);
   --accent-primary: #6366f1;
+  --accent-secondary: #8b5cf6;
   --accent-hover: #4f46e5;
-  --accent-glow: rgba(99, 102, 241, 0.35);
+  --accent-glow: rgba(99, 102, 241, 0.45);
   --color-success: #10b981;
   --color-error: #ef4444;
+  --color-amber: #f59e0b;
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-card: rgba(99, 102, 241, 0.2);
-  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
-  --radius-card: 12px;
+  --border-card: rgba(99, 102, 241, 0.25);
+  --border-focus: rgba(99, 102, 241, 0.6);
+  --shadow-soft: 0 8px 30px -4px rgba(0, 0, 0, 0.6);
+  --shadow-glass: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+  --radius-card: 16px;
   --radius-pill: 9999px;
-  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Base Dark Theme & Typography */
@@ -30,22 +34,27 @@ html, body {
   max-width: 100%;
   overflow-x: hidden;
   background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 0% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
   color: var(--text-primary);
 }
 
 body {
   width: 100%;
   position: relative;
-  font-family: 'Heebo', system-ui, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Heebo', sans-serif;
   min-height: 100vh;
 }
 
 header {
-  background: rgba(30, 41, 59, 0.75) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-subtle);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  background: rgba(11, 15, 25, 0.85) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* Step 2: Modern Pill Navigation */
@@ -656,21 +665,68 @@ article,
    ========================================================================== */
 
 mark.target-word {
-  background: linear-gradient(120deg, rgba(245, 158, 11, 0.35) 0%, rgba(234, 88, 12, 0.4) 100%);
+  background: linear-gradient(120deg, rgba(245, 158, 11, 0.35) 0%, rgba(234, 88, 12, 0.45) 100%);
   color: #fef08a;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 6px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 8px;
   border-bottom: 2px solid #f59e0b;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+  display: inline-block;
 }
 
 .popular-song-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: linear-gradient(135deg, rgba(19, 27, 46, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.popular-song-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.6), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .popular-song-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3);
+  transform: translateY(-3px);
+  border-color: rgba(99, 102, 241, 0.5) !important;
+  box-shadow: 0 16px 36px -4px rgba(99, 102, 241, 0.25), 0 10px 20px -2px rgba(0, 0, 0, 0.6) !important;
+}
+
+.popular-song-card:hover::before {
+  opacity: 1;
+}
+
+.btn-play-youtube {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+  transition: var(--transition-smooth) !important;
+}
+
+.btn-play-youtube:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5) !important;
+}
+
+.btn-play-spotify {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+  transition: var(--transition-smooth) !important;
+}
+
+.btn-play-spotify:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5) !important;
 }
 
 .sticky-media-dock {
@@ -679,13 +735,13 @@ mark.target-word {
   left: 0;
   right: 0;
   z-index: 50;
-  background: rgba(11, 15, 25, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(99, 102, 241, 0.3);
-  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+  background: rgba(9, 13, 22, 0.96) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(99, 102, 241, 0.35);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
   transform: translateY(120%);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sticky-media-dock.active {
@@ -697,9 +753,15 @@ body.dock-active main {
 }
 
 .finale-track-card {
-  background: rgba(15, 23, 42, 0.7);
-  border: 1px solid rgba(99, 102, 241, 0.25);
-  border-radius: 16px;
-  padding: 1.25rem;
-  backdrop-filter: blur(12px);
+  background: linear-gradient(135deg, rgba(19, 27, 46, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  border-radius: 20px !important;
+  padding: 1.5rem !important;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.25s ease;
+}
+
+.finale-track-card:hover {
+  border-color: rgba(99, 102, 241, 0.5) !important;
 }
