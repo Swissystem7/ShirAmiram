@@ -1,6 +1,6 @@
 // ShirAmiram — Lexical Matcher & Stemming Engine (pure logic)
-// Bridges gap between real song/question vocabulary and the 300 Amiram words.
-// Pure, deterministic, zero-dependency. Safe against prototype pollution and mutations.
+// Bridges song lyrical vocabulary to the 300 academic Amiram vocabulary words.
+// Zero external dependencies, non-mutating, deterministic, UMD module.
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     module.exports = factory();
@@ -10,401 +10,614 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  function isObj(v) {
-    return !!v && typeof v === 'object' && !Array.isArray(v);
+  function isObj(v) { return !!v && typeof v === 'object' && !Array.isArray(v); }
+  function isString(s) { return typeof s === 'string'; }
+
+  /**
+   * Normalizes an English word: lowercase, trimmed, punctuation stripped.
+   * @param {string} rawWord
+   * @returns {string}
+   */
+  function normalize(rawWord) {
+    if (!rawWord || typeof rawWord !== 'string') return '';
+    return rawWord
+      .toLowerCase()
+      .trim()
+      .replace(/^[^a-z0-9]+|[^a-z0-9]+$/gi, '');
   }
 
-  function norm(str) {
-    if (str === null || str === undefined) return '';
-    return String(str).trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
-  }
+  /**
+   * English stemming algorithm tailored for Amiram exam & song lyrics vocabulary.
+   * Handles plurals (-ies, -es, -s), verb inflections (-ing, -ied, -ed),
+   * adverbs (-ly), and nominalizations (-tion, -ment, -ness).
+   * @param {string} word
+   * @returns {string}
+   */
+  function stem(word) {
+    const w = normalize(word);
+    if (w.length <= 3) return w;
 
-  // Fast Levenshtein distance calculation
-  function levenshtein(a, b) {
-    if (a === b) return 0;
-    if (!a.length) return b.length;
-    if (!b.length) return a.length;
-
-    var v0 = new Array(b.length + 1);
-    var v1 = new Array(b.length + 1);
-
-    for (var i = 0; i <= b.length; i++) v0[i] = i;
-
-    for (var i = 0; i < a.length; i++) {
-      v1[0] = i + 1;
-      for (var j = 0; j < b.length; j++) {
-        var cost = (a.charAt(i) === b.charAt(j)) ? 0 : 1;
-        v1[j + 1] = Math.min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
-      }
-      for (var j = 0; j <= b.length; j++) v0[j] = v1[j];
+    // Plurals & y-to-i rules
+    if (w.endsWith('ies') && w.length >= 5) {
+      return w.slice(0, -3) + 'y';
+    }
+    if (w.endsWith('ied') && w.length >= 5) {
+      return w.slice(0, -3) + 'y';
     }
 
-    return v1[b.length];
-  }
+    // Gerund & continuous (-ing)
+    if (w.endsWith('ing') && w.length >= 5) {
+      const base = w.slice(0, -3);
+      // Double consonant reduction (e.g. running -> run, swimming -> swim)
+      if (base.length >= 3 && base[base.length - 1] === base[base.length - 2] && !['l', 's', 'z'].includes(base[base.length - 1])) {
+        return base.slice(0, -1);
+      }
+      // e drop recovery (e.g. changing -> change, taking -> take)
+      if (['chang', 'car', 'hop', 'mak', 'tak', 'driv', 'achiev', 'debat', 'creat'].includes(base)) {
+        return base + 'e';
+      }
+      return base;
+    }
 
-  // Common irregular verb / adjective / noun mappings
-  var IRREGULARS = Object.freeze({
-    'better': 'good',
-    'best': 'good',
-    'worse': 'bad',
-    'worst': 'bad',
-    'went': 'go',
-    'gone': 'go',
-    'ran': 'run',
-    'running': 'run',
-    'saw': 'see',
-    'seen': 'see',
-    'took': 'take',
-    'taken': 'take',
-    'wrote': 'write',
-    'written': 'write',
-    'writing': 'write',
-    'children': 'child',
-    'men': 'man',
-    'women': 'woman',
-    'people': 'person'
-  });
+    // Past tense / participles (-ed)
+    if (w.endsWith('ed') && w.length >= 4) {
+      const base = w.slice(0, -2);
+      if (base.length >= 3 && base[base.length - 1] === base[base.length - 2] && !['l', 's', 'z'].includes(base[base.length - 1])) {
+        return base.slice(0, -1);
+      }
+      if (w.endsWith('eed')) {
+        return w; // exceed, succeed
+      }
+      if (base.endsWith('i')) {
+        return base.slice(0, -1) + 'y';
+      }
+      if (['chang', 'car', 'hop', 'mak', 'tak', 'achiev', 'debat', 'creat'].includes(base)) {
+        return base + 'e';
+      }
+      return base;
+    }
+
+    // Adverbs (-ly)
+    if (w.endsWith('ly') && w.length >= 4) {
+      const base = w.slice(0, -2);
+      if (base.endsWith('i')) return base.slice(0, -1) + 'y';
+      return base;
+    }
+
+    // Plurals / 3rd person (-es, -s)
+    if (w.endsWith('es') && w.length >= 4) {
+      if (['ch', 'sh', 'ss', 'x', 'z'].some(suffix => w.slice(0, -2).endsWith(suffix))) {
+        return w.slice(0, -2);
+      }
+      return w.slice(0, -1);
+    }
+    if (w.endsWith('s') && !w.endsWith('ss') && w.length >= 4) {
+      return w.slice(0, -1);
+    }
+
+    // Nominalization & derivational forms
+    if (w.endsWith('tion') && w.length >= 6) {
+      return w.slice(0, -4) + 't'; // reflection -> reflect, convention -> convent
+    }
+    if (w.endsWith('ance') && w.length >= 6) {
+      return w.slice(0, -4); // acceptance -> accept
+    }
+    if (w.endsWith('ment') && w.length >= 6) {
+      return w.slice(0, -4);
+    }
+    if (w.endsWith('ness') && w.length >= 6) {
+      return w.slice(0, -4);
+    }
+
+    return w;
+  }
 
   // Systematic English stemmer generating plausible base candidates
   function getStemCandidates(rawWord) {
-    var word = norm(rawWord);
+    const word = normalize(rawWord);
     if (!word || word.length < 2) return [word].filter(Boolean);
 
-    var candidates = [word];
+    const candidates = [word];
     function add(c) {
-      if (c && c.length >= 2 && candidates.indexOf(c) === -1) {
+      if (c && c.length >= 2 && !candidates.includes(c)) {
         candidates.push(c);
       }
     }
 
-    // 0. Check irregulars
-    if (Object.prototype.hasOwnProperty.call(IRREGULARS, word)) {
-      add(IRREGULARS[word]);
-    }
+    const s = stem(word);
+    add(s);
 
-    // 1. Adverb -ly, -ally
-    if (word.endsWith('ally') && word.length > 5) {
-      add(word.slice(0, -4)); // e.g. chronically -> chronic
-      add(word.slice(0, -2)); // e.g. conditionally -> conditional
-    } else if (word.endsWith('ly') && word.length > 4) {
-      add(word.slice(0, -2)); // rapidly -> rapid, subtle -> subtly
-      if (word.endsWith('ily')) {
-        add(word.slice(0, -3) + 'y'); // happily -> happy
-      }
-    }
-
-    // 2. Plural / 3rd-person singular -ies, -es, -s
-    if (word.endsWith('ies') && word.length > 4) {
-      add(word.slice(0, -3) + 'y'); // theories -> theory, categories -> category
-    } else if (word.endsWith('es') && word.length > 3) {
-      add(word.slice(0, -2)); // watches -> watch
-      add(word.slice(0, -1)); // clauses -> clause
-    } else if (word.endsWith('s') && !word.endsWith('ss') && word.length > 3) {
-      add(word.slice(0, -1)); // steps -> step, dreams -> dream
-    }
-
-    // 3. Past tense / past participle -ied, -ed
-    if (word.endsWith('ied') && word.length > 4) {
-      add(word.slice(0, -3) + 'y'); // clarified -> clarify, denied -> deny
-    } else if (word.endsWith('ed') && word.length > 3) {
-      add(word.slice(0, -2)); // walked -> walk
-      add(word.slice(0, -1)); // achieved -> achieve, created -> create
-      // Double consonant rollback: stopped -> stop, robbed -> rob
-      if (word.length > 5 && word.charAt(word.length - 3) === word.charAt(word.length - 4)) {
-        add(word.slice(0, -3));
-      }
-    }
-
-    // 4. Gerund / continuous -ing
     if (word.endsWith('ing') && word.length > 4) {
-      add(word.slice(0, -3)); // demanding -> demand, singing -> sing, achieving -> achiev
-      add(word.slice(0, -3) + 'e'); // achieving -> achieve, debating -> debate
-      // Double consonant: running -> run, swimming -> swim
-      if (word.length > 5 && word.charAt(word.length - 4) === word.charAt(word.length - 5)) {
-        add(word.slice(0, -4));
-      }
-    }
-
-    // 5. Comparatives / Superlatives -er, -est
-    if (word.endsWith('est') && word.length > 4) {
       add(word.slice(0, -3));
-      add(word.slice(0, -2));
-    } else if (word.endsWith('er') && word.length > 3) {
+      add(word.slice(0, -3) + 'e');
+    }
+    if (word.endsWith('ed') && word.length > 3) {
       add(word.slice(0, -2));
       add(word.slice(0, -1));
     }
-
-    // 6. Noun / Adjective suffixes: -tion, -sion, -ment, -ness, -able, -ible
-    if (word.endsWith('tion') && word.length > 5) {
-      add(word.slice(0, -4) + 'te'); // calculation -> calculate
-      add(word.slice(0, -4) + 't'); // prevention -> prevent
-    } else if (word.endsWith('ment') && word.length > 5) {
-      add(word.slice(0, -4)); // agreement -> agree
-    } else if (word.endsWith('ness') && word.length > 5) {
-      add(word.slice(0, -4)); // darkness -> dark
-    } else if (word.endsWith('able') && word.length > 5) {
-      add(word.slice(0, -4));
-      add(word.slice(0, -4) + 'e'); // debatable -> debate
+    if (word.endsWith('ies') && word.length > 4) {
+      add(word.slice(0, -3) + 'y');
     }
-
-    // 7. Common prefixes: un-, in-, im-, dis-, re-
-    var prefixes = ['un', 'in', 'im', 'dis', 're'];
-    for (var p = 0; p < prefixes.length; p++) {
-      var pref = prefixes[p];
-      if (word.startsWith(pref) && word.length > pref.length + 3) {
-        add(word.slice(pref.length));
-      }
+    if (word.endsWith('es') && word.length > 3) {
+      add(word.slice(0, -2));
+      add(word.slice(0, -1));
+    }
+    if (word.endsWith('s') && !word.endsWith('ss') && word.length > 3) {
+      add(word.slice(0, -1));
+    }
+    if (word.endsWith('ly') && word.length > 4) {
+      add(word.slice(0, -2));
+      if (word.endsWith('ily')) add(word.slice(0, -3) + 'y');
     }
 
     return candidates;
   }
 
-  // Canonical stem (single best guess)
-  function stem(word) {
-    var cands = getStemCandidates(word);
-    return cands.length > 1 ? cands[1] : cands[0] || '';
+  /**
+   * Levenshtein Distance calculation for fuzzy matching.
+   * @param {string} a
+   * @param {string} b
+   * @returns {number}
+   */
+  function levenshtein(a, b) {
+    if (a === b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+
+    const row = [];
+    for (let j = 0; j <= b.length; j++) row[j] = j;
+
+    for (let i = 1; i <= a.length; i++) {
+      let prev = i;
+      for (let j = 1; j <= b.length; j++) {
+        let val;
+        if (a[i - 1] === b[j - 1]) {
+          val = row[j - 1];
+        } else {
+          val = Math.min(row[j - 1] + 1, prev + 1, row[j] + 1);
+        }
+        row[j - 1] = prev;
+        prev = val;
+      }
+      row[b.length] = prev;
+    }
+    return row[b.length];
   }
 
-  // Build high-performance lookup indexes over Amiram vocabulary
-  function buildVocabIndex(vocabList) {
-    var list = Array.isArray(vocabList) ? vocabList : [];
-    var exactMap = Object.create(null);
-    var stemMap = Object.create(null);
-    var allItems = [];
+  /**
+   * Normalized similarity score (0 to 1).
+   * @param {string} a
+   * @param {string} b
+   * @returns {number}
+   */
+  function similarity(a, b) {
+    const s1 = normalize(a);
+    const s2 = normalize(b);
+    if (s1 === s2) return 1.0;
+    const maxLen = Math.max(s1.length, s2.length);
+    if (maxLen === 0) return 1.0;
+    const dist = levenshtein(s1, s2);
+    return Math.max(0, 1 - dist / maxLen);
+  }
 
-    for (var i = 0; i < list.length; i++) {
-      var item = list[i];
-      if (!item || typeof item !== 'object') continue;
-      var w = norm(item.word);
-      if (!w) continue;
+  /**
+   * Curated semantic and morphological family mapping
+   * connecting common lyrical song words to academic Amiram targets.
+   */
+  const SEMANTIC_FAMILIES = Object.freeze({
+    peace: ['calm', 'consent', 'consistent', 'community', 'conform'],
+    comfort: ['benefit', 'assist', 'capacity', 'sustain', 'relief'],
+    acceptance: ['consent', 'adapt', 'conclude', 'acknowledge'],
+    wisdom: ['concept', 'capacity', 'insight', 'conclude'],
+    calm: ['consistent', 'constant', 'consent'],
+    memory: ['retain', 'concept', 'recall', 'conclude'],
+    regret: ['conflict', 'consequence', 'collapse', 'reluctant'],
+    time: ['annual', 'constant', 'period', 'duration', 'interval'],
+    change: ['adapt', 'alter', 'shift', 'transform', 'vary'],
+    reflection: ['conclude', 'consider', 'concept', 'evaluate'],
+    support: ['assist', 'sustain', 'maintain', 'advocate', 'benefit'],
+    encourage: ['motivate', 'promote', 'stimulate', 'inspire', 'assist'],
+    journey: ['process', 'approach', 'conduct', 'passage', 'transition'],
+    hope: ['aspire', 'anticipate', 'assume', 'prospect'],
+    dream: ['concept', 'aspire', 'vision', 'potential'],
+    future: ['consequence', 'prospect', 'potential', 'subsequent'],
+    unity: ['community', 'constitute', 'integrate', 'cohesion'],
+    possibility: ['available', 'potential', 'alternative', 'capacity'],
+    question: ['challenge', 'conduct', 'investigate', 'inquire'],
+    answer: ['conclude', 'respond', 'clarify', 'resolve'],
+    freedom: ['authority', 'autonomy', 'capacity', 'release'],
+    justice: ['authority', 'conduct', 'appropriate', 'legitimate'],
+    beauty: ['apparent', 'concept', 'distinction', 'elegance'],
+    nature: ['environment', 'circumstance', 'constitute', 'attribute'],
+    joy: ['benefit', 'delight', 'contentment', 'satisfaction'],
+    sky: ['environment', 'scope', 'dimension'],
+    praise: ['acknowledge', 'appreciate', 'advocate'],
+    faith: ['assume', 'conviction', 'consent', 'trust'],
+    song: ['communicate', 'expression', 'theme'],
+    emotion: ['attitude', 'affect', 'intense', 'sentiment'],
+    silence: ['constant', 'calm', 'restraint'],
+    escape: ['abandon', 'evade', 'alternative'],
+    friendship: ['community', 'cooperate', 'bond', 'alliance'],
+    loyalty: ['consistent', 'constant', 'devotion', 'fidelity'],
+    trust: ['rely', 'consent', 'assume', 'confidence'],
+    lean: ['rely', 'depend', 'approach'],
+    help: ['assist', 'benefit', 'support'],
+    shoulder: ['capacity', 'bear', 'undertake'],
+    burden: ['challenge', 'consequence', 'collapse', 'strain'],
+    strong: ['considerable', 'constant', 'robust', 'capacity'],
+    mountain: ['challenge', 'obstacle', 'elevation'],
+    enough: ['adequate', 'sufficient', 'capacity'],
+    valley: ['environment', 'dimension', 'depression'],
+    reach: ['achieve', 'attain', 'approach', 'extend'],
+    distance: ['dimension', 'interval', 'extent'],
+    birds: ['species', 'organism', 'creature'],
+    doorstep: ['approach', 'threshold', 'boundary'],
+    worry: ['conflict', 'challenge', 'distress', 'concern'],
+    morning: ['initial', 'commence', 'phase'],
+    little: ['minimal', 'minor', 'fraction']
+  });
 
-      var cleanItem = Object.freeze({
-        id: item.id != null ? item.id : (i + 1),
-        word: item.word,
-        normWord: w,
-        part_of_speech: item.part_of_speech || item.category || 'unknown',
-        level: item.level || (item.difficulty ? (item.difficulty.toLowerCase() === 'medium' ? 'B_intermediate' : (item.difficulty.toLowerCase() === 'hard' ? 'C_advanced' : 'A_foundational')) : 'A_foundational'),
-        hebrew_translation: item.hebrew_translation || item.translation || '',
-        hebrew_definition: item.hebrew_definition || item.explanation || ''
-      });
+  /**
+   * Builds an indexed map of vocabulary words for rapid matching.
+   * @param {Array} vocabList - Array of vocab objects or strings
+   * @returns {Object}
+   */
+  function buildLexicalIndex(vocabList) {
+    const exactMap = Object.create(null);
+    const stemMap = Object.create(null);
+    const entries = [];
 
-      exactMap[w] = cleanItem;
-      allItems.push(cleanItem);
+    if (Array.isArray(vocabList)) {
+      for (let i = 0; i < vocabList.length; i++) {
+        const item = vocabList[i];
+        if (!item || (typeof item !== 'object' && typeof item !== 'string')) continue;
+        const rawW = isObj(item) ? (item.word || item.id || '') : String(item || '');
+        const normW = normalize(rawW);
+        if (!normW) continue;
 
-      var cands = getStemCandidates(w);
-      for (var c = 0; c < cands.length; c++) {
-        var cand = cands[c];
-        if (!stemMap[cand]) stemMap[cand] = [];
-        if (stemMap[cand].indexOf(cleanItem) === -1) {
-          stemMap[cand].push(cleanItem);
+        const entry = Object.freeze(isObj(item) ? Object.assign({}, item, {
+          id: item.id != null ? item.id : (i + 1),
+          word: item.word || normW,
+          normWord: normW,
+          part_of_speech: item.part_of_speech || item.category || 'unknown',
+          level: item.level || (item.difficulty ? (item.difficulty.toLowerCase() === 'medium' ? 'B_intermediate' : (item.difficulty.toLowerCase() === 'hard' ? 'C_advanced' : 'A_foundational')) : 'A_foundational'),
+          hebrew_translation: item.hebrew_translation || item.translation || '',
+          hebrew_definition: item.hebrew_definition || item.explanation || ''
+        }) : {
+          id: i + 1,
+          word: normW,
+          normWord: normW,
+          part_of_speech: 'unknown',
+          level: 'A_foundational',
+          hebrew_translation: '',
+          hebrew_definition: ''
+        });
+
+        entries.push(entry);
+
+        if (!exactMap[normW]) exactMap[normW] = entry;
+
+        const cands = getStemCandidates(normW);
+        for (let c = 0; c < cands.length; c++) {
+          const cand = cands[c];
+          if (!stemMap[cand]) stemMap[cand] = [];
+          if (!stemMap[cand].includes(entry)) stemMap[cand].push(entry);
         }
       }
     }
 
     return Object.freeze({
-      exactMap: exactMap,
-      stemMap: stemMap,
-      allItems: Object.freeze(allItems),
-      size: allItems.length
+      exactMap,
+      stemMap,
+      entries: Object.freeze(entries),
+      allItems: Object.freeze(entries),
+      size: entries.length
     });
   }
 
-  // Match a single query word against the indexed vocabulary
-  function matchWord(query, index, options) {
-    var opts = options || {};
-    var threshold = typeof opts.threshold === 'number' ? opts.threshold : 0.7;
-    var maxDistance = typeof opts.maxDistance === 'number' ? opts.maxDistance : 2;
+  /**
+   * Matches a single word against a vocabulary index or list.
+   * @param {string} inputWord
+   * @param {Array|Object} vocabSource - vocab list or indexed vocab
+   * @param {Object} [options]
+   * @returns {Object}
+   */
+  function matchWord(inputWord, vocabSource, options) {
+    const opts = options || {};
+    const norm = normalize(inputWord);
 
-    var q = norm(query);
-    if (!q || !index || !index.exactMap) {
+    if (!norm) {
       return {
         matched: false,
-        query: q,
+        inputWord: '',
+        query: '',
+        matchedWord: null,
         targetWord: null,
+        vocabEntry: null,
         item: null,
-        matchType: null,
+        matchType: 'none',
         distance: -1,
         confidence: 0
       };
     }
 
+    const index = (vocabSource && vocabSource.exactMap && vocabSource.stemMap)
+      ? vocabSource
+      : buildLexicalIndex(vocabSource);
+
     // 1. Exact match
-    if (index.exactMap[q]) {
+    if (index.exactMap[norm]) {
+      const entry = index.exactMap[norm];
       return {
         matched: true,
-        query: q,
-        targetWord: index.exactMap[q].word,
-        item: index.exactMap[q],
+        inputWord: norm,
+        query: norm,
+        matchedWord: entry.word,
+        targetWord: entry.word,
+        vocabEntry: entry,
+        item: entry,
         matchType: 'exact',
         distance: 0,
         confidence: 1.0
       };
     }
 
-    // 2. Stem match via candidate variations
-    var cands = getStemCandidates(q);
-    for (var i = 0; i < cands.length; i++) {
-      var cand = cands[i];
+    // 2. Stem match
+    const cands = getStemCandidates(norm);
+    for (let i = 0; i < cands.length; i++) {
+      const cand = cands[i];
       if (index.exactMap[cand]) {
+        const entry = index.exactMap[cand];
         return {
           matched: true,
-          query: q,
-          targetWord: index.exactMap[cand].word,
-          item: index.exactMap[cand],
+          inputWord: norm,
+          query: norm,
+          matchedWord: entry.word,
+          targetWord: entry.word,
+          vocabEntry: entry,
+          item: entry,
           matchType: 'stem',
           distance: 0,
           confidence: 0.95
         };
       }
       if (index.stemMap[cand] && index.stemMap[cand].length > 0) {
-        var first = index.stemMap[cand][0];
+        const entry = index.stemMap[cand][0];
         return {
           matched: true,
-          query: q,
-          targetWord: first.word,
-          item: first,
-          matchType: 'affix',
+          inputWord: norm,
+          query: norm,
+          matchedWord: entry.word,
+          targetWord: entry.word,
+          vocabEntry: entry,
+          item: entry,
+          matchType: 'stem',
           distance: 0,
-          confidence: 0.88
+          confidence: 0.90
         };
       }
     }
 
-    // 3. Substring / Prefix match for compound words
-    if (q.length >= 5) {
-      for (var i = 0; i < index.allItems.length; i++) {
-        var item = index.allItems[i];
-        var iw = item.normWord;
-        if (iw.length >= 4 && (q.startsWith(iw) || iw.startsWith(q))) {
+    // 3. Root / Prefix match (min length 4)
+    const inputStem = stem(norm);
+    if (inputStem.length >= 4) {
+      for (let i = 0; i < index.entries.length; i++) {
+        const candidate = index.entries[i];
+        const candStem = stem(candidate.word);
+        if (candStem.length >= 4 && (candStem.startsWith(inputStem) || inputStem.startsWith(candStem))) {
           return {
             matched: true,
-            query: q,
-            targetWord: item.word,
-            item: item,
-            matchType: 'affix',
-            distance: Math.abs(q.length - iw.length),
-            confidence: 0.82
+            inputWord: norm,
+            query: norm,
+            matchedWord: candidate.word,
+            targetWord: candidate.word,
+            vocabEntry: candidate,
+            item: candidate,
+            matchType: 'root',
+            distance: Math.abs(candStem.length - inputStem.length),
+            confidence: 0.85
           };
         }
       }
     }
 
-    // 4. Fuzzy Levenshtein match
-    var bestItem = null;
-    var bestDist = Infinity;
-
-    for (var i = 0; i < index.allItems.length; i++) {
-      var item = index.allItems[i];
-      var iw = item.normWord;
-      // Skip length difference greater than maxDistance
-      if (Math.abs(q.length - iw.length) > maxDistance) continue;
-
-      var dist = levenshtein(q, iw);
-      if (dist < bestDist && dist <= maxDistance) {
-        bestDist = dist;
-        bestItem = item;
+    // 4. Semantic / Morphological Family match
+    const familyTargets = SEMANTIC_FAMILIES[norm] || SEMANTIC_FAMILIES[inputStem];
+    if (familyTargets && Array.isArray(familyTargets)) {
+      for (let j = 0; j < familyTargets.length; j++) {
+        const target = familyTargets[j];
+        if (index.exactMap[target]) {
+          const entry = index.exactMap[target];
+          return {
+            matched: true,
+            inputWord: norm,
+            query: norm,
+            matchedWord: entry.word,
+            targetWord: entry.word,
+            vocabEntry: entry,
+            item: entry,
+            matchType: 'family',
+            distance: 0,
+            confidence: 0.80
+          };
+        }
+        const targetStem = stem(target);
+        if (index.stemMap[targetStem] && index.stemMap[targetStem].length > 0) {
+          const entry = index.stemMap[targetStem][0];
+          return {
+            matched: true,
+            inputWord: norm,
+            query: norm,
+            matchedWord: entry.word,
+            targetWord: entry.word,
+            vocabEntry: entry,
+            item: entry,
+            matchType: 'family',
+            distance: 0,
+            confidence: 0.75
+          };
+        }
       }
     }
 
-    if (bestItem && bestDist <= maxDistance) {
-      var conf = 1.0 - (bestDist / Math.max(q.length, bestItem.normWord.length));
-      if (conf >= threshold) {
+    // 5. Fuzzy match (Levenshtein distance <= 2, similarity >= 0.70)
+    if (opts.fuzzy !== false && norm.length >= 4) {
+      let bestMatch = null;
+      let highestSim = 0;
+      let lowestDist = Infinity;
+
+      for (let k = 0; k < index.entries.length; k++) {
+        const candidate = index.entries[k];
+        const dist = levenshtein(norm, candidate.normWord || candidate.word);
+        if (dist <= 2) {
+          const sim = similarity(norm, candidate.normWord || candidate.word);
+          if (sim >= 0.70 && sim > highestSim) {
+            highestSim = sim;
+            lowestDist = dist;
+            bestMatch = candidate;
+          }
+        }
+      }
+
+      if (bestMatch) {
         return {
           matched: true,
-          query: q,
-          targetWord: bestItem.word,
-          item: bestItem,
+          inputWord: norm,
+          query: norm,
+          matchedWord: bestMatch.word,
+          targetWord: bestMatch.word,
+          vocabEntry: bestMatch,
+          item: bestMatch,
           matchType: 'fuzzy',
-          distance: bestDist,
-          confidence: Math.round(conf * 100) / 100
+          distance: lowestDist,
+          confidence: Math.round(highestSim * 100) / 100
         };
       }
     }
 
     return {
       matched: false,
-      query: q,
+      inputWord: norm,
+      query: norm,
+      matchedWord: null,
       targetWord: null,
+      vocabEntry: null,
       item: null,
-      matchType: null,
+      matchType: 'none',
       distance: -1,
       confidence: 0
     };
   }
 
-  // Bridge an array of questions to vocabulary items
-  function bridgeQuestions(questions, index) {
-    var qs = Array.isArray(questions) ? questions : [];
-    var matches = [];
-    var unmatched = [];
-    var countsByType = { exact: 0, stem: 0, affix: 0, fuzzy: 0 };
+  /**
+   * Bridges a list of questions to academic vocabulary.
+   * Pure, deterministic, non-mutating.
+   * @param {Array} questions - questions pool (e.g. from content_v2.json)
+   * @param {Array} vocabList - academic vocabulary (e.g. 300 words)
+   * @param {Object} [options]
+   * @returns {Object}
+   */
+  function bridgeQuestionsToVocab(questions, vocabList, options) {
+    if (!Array.isArray(questions)) {
+      return {
+        total: 0,
+        totalQuestions: 0,
+        matchedCount: 0,
+        unmatchedCount: 0,
+        coverageRate: 0,
+        matchRate: 0,
+        byMatchType: { exact: 0, stem: 0, affix: 0, root: 0, family: 0, fuzzy: 0 },
+        matches: [],
+        bridgedQuestions: [],
+        unmatched: []
+      };
+    }
 
-    for (var i = 0; i < qs.length; i++) {
-      var q = qs[i];
-      if (!q || typeof q !== 'object') continue;
+    const index = (vocabSourceIsIndex(vocabList)) ? vocabList : buildLexicalIndex(vocabList);
+    const bridged = [];
+    const unmatched = [];
+    const countsByType = { exact: 0, stem: 0, affix: 0, root: 0, family: 0, fuzzy: 0 };
 
-      var qWord = q.word || q.answer || '';
-      var res = matchWord(qWord, index);
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      if (!isObj(q)) continue;
 
-      if (res.matched) {
-        countsByType[res.matchType] = (countsByType[res.matchType] || 0) + 1;
-        matches.push({
-          questionId: q.id,
-          originalWord: qWord,
-          matchedWord: res.targetWord,
-          level: res.item.level,
-          part_of_speech: res.item.part_of_speech,
-          hebrew_translation: res.item.hebrew_translation,
-          matchType: res.matchType,
-          confidence: res.confidence
-        });
+      const qWord = isString(q.word) ? q.word : (isString(q.word_id) ? q.word_id : (isString(q.answer) ? q.answer : ''));
+      const matchResult = matchWord(qWord, index, options);
+
+      const bridgedQuestion = Object.freeze(Object.assign({}, q, {
+        questionId: q.id,
+        originalWord: qWord,
+        bridgedVocab: matchResult.vocabEntry,
+        item: matchResult.item,
+        matchedWord: matchResult.matchedWord,
+        targetWord: matchResult.targetWord,
+        matchType: matchResult.matchType,
+        matchConfidence: matchResult.confidence,
+        confidence: matchResult.confidence,
+        level: matchResult.vocabEntry ? matchResult.vocabEntry.level : null,
+        part_of_speech: matchResult.vocabEntry ? matchResult.vocabEntry.part_of_speech : null,
+        hebrew_translation: matchResult.vocabEntry ? matchResult.vocabEntry.hebrew_translation : '',
+        academicLevel: matchResult.vocabEntry ? matchResult.vocabEntry.level : null,
+        academicPartOfSpeech: matchResult.vocabEntry ? (matchResult.vocabEntry.part_of_speech || matchResult.vocabEntry.pos) : null
+      }));
+
+      if (matchResult.matched) {
+        countsByType[matchResult.matchType] = (countsByType[matchResult.matchType] || 0) + 1;
+        bridged.push(bridgedQuestion);
       } else {
-        unmatched.push({
-          questionId: q.id,
-          originalWord: qWord
-        });
+        unmatched.push(bridgedQuestion);
       }
     }
 
-    var total = matches.length + unmatched.length;
-    var rate = total > 0 ? Math.round((matches.length / total) * 100) / 100 : 0;
+    const total = bridged.length + unmatched.length;
+    const coverageRate = total > 0 ? Math.round((bridged.length / total) * 1000) / 1000 : 0;
+    const matchRate = total > 0 ? Math.round((bridged.length / total) * 100) / 100 : 0;
 
     return {
+      total,
       totalQuestions: total,
-      matchedCount: matches.length,
+      matchedCount: bridged.length,
       unmatchedCount: unmatched.length,
-      matchRate: rate,
+      coverageRate,
+      matchRate,
       byMatchType: countsByType,
-      matches: matches,
-      unmatched: unmatched
+      bridgedQuestions: Object.freeze(bridged),
+      matches: Object.freeze(bridged),
+      unmatched: Object.freeze(unmatched)
     };
   }
 
+  function vocabSourceIsIndex(s) {
+    return !!s && typeof s === 'object' && Array.isArray(s.entries) && !!s.exactMap;
+  }
+
   // Bridge an array of songs to vocabulary items
-  function bridgeSongs(songs, index) {
-    var sList = Array.isArray(songs) ? songs : [];
-    var songReports = [];
-    var totalHighlightWords = 0;
-    var totalMatched = 0;
+  function bridgeSongs(songs, vocabSource) {
+    const sList = Array.isArray(songs) ? songs : [];
+    const index = vocabSourceIsIndex(vocabSource) ? vocabSource : buildLexicalIndex(vocabSource);
+    const songReports = [];
+    let totalHighlightWords = 0;
+    let totalMatched = 0;
 
-    for (var i = 0; i < sList.length; i++) {
-      var s = sList[i];
-      if (!s || typeof s !== 'object') continue;
+    for (let i = 0; i < sList.length; i++) {
+      const s = sList[i];
+      if (!isObj(s)) continue;
 
-      var hw = Array.isArray(s.highlight_words) ? s.highlight_words : [];
-      var matchedInSong = [];
+      const hw = Array.isArray(s.highlight_words) ? s.highlight_words : [];
+      const matchedInSong = [];
 
-      for (var j = 0; j < hw.length; j++) {
-        var entry = hw[j];
-        var w = typeof entry === 'object' ? (entry.word || '') : String(entry || '');
-        var res = matchWord(w, index);
+      for (let j = 0; j < hw.length; j++) {
+        const entry = hw[j];
+        const w = typeof entry === 'object' ? (entry.word || '') : String(entry || '');
+        const res = matchWord(w, index);
         totalHighlightWords++;
         if (res.matched) {
           totalMatched++;
           matchedInSong.push({
             originalWord: w,
             targetWord: res.targetWord,
-            level: res.item.level,
+            level: res.item ? res.item.level : null,
             matchType: res.matchType
           });
         }
@@ -422,24 +635,25 @@
 
     return {
       totalSongs: sList.length,
-      totalHighlightWords: totalHighlightWords,
-      totalMatched: totalMatched,
+      totalHighlightWords,
+      totalMatched,
       overallCoverageRate: totalHighlightWords ? Math.round((totalMatched / totalHighlightWords) * 100) / 100 : 0,
-      songReports: songReports
+      songReports
     };
   }
 
   // Enrich single attempt or question metadata
-  function resolveWordEnrichment(input, index) {
-    if (!input || !index) return null;
-    var word = '';
+  function resolveWordEnrichment(input, vocabSource) {
+    if (!input || !vocabSource) return null;
+    let word = '';
     if (typeof input === 'string') {
       word = input;
     } else if (isObj(input)) {
       word = input.word || input.answer || input.userAnswer || '';
     }
 
-    var res = matchWord(word, index);
+    const index = vocabSourceIsIndex(vocabSource) ? vocabSource : buildLexicalIndex(vocabSource);
+    const res = matchWord(word, index);
     if (!res.matched) return null;
 
     return {
@@ -455,13 +669,18 @@
   }
 
   return Object.freeze({
-    stem: stem,
-    getStemCandidates: getStemCandidates,
-    levenshtein: levenshtein,
-    buildVocabIndex: buildVocabIndex,
-    matchWord: matchWord,
-    bridgeQuestions: bridgeQuestions,
-    bridgeSongs: bridgeSongs,
-    resolveWordEnrichment: resolveWordEnrichment
+    normalize,
+    stem,
+    getStemCandidates,
+    levenshtein,
+    similarity,
+    buildLexicalIndex,
+    buildVocabIndex: buildLexicalIndex,
+    matchWord,
+    bridgeQuestionsToVocab,
+    bridgeQuestions: bridgeQuestionsToVocab,
+    bridgeSongs,
+    resolveWordEnrichment,
+    SEMANTIC_FAMILIES
   });
 }));
