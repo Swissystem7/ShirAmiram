@@ -114,8 +114,8 @@
 				`\\b${p.baseVerb}\\s+(?:it|them|him|her|us|me|you)\\s+${p.particle}\\b`,
 				"gi",
 			);
-			let m;
-			while ((m = splitRe.exec(raw)) !== null) {
+			let m = splitRe.exec(raw);
+			while (m !== null) {
 				out.push({
 					phrasalVerb: contiguous,
 					baseVerb: p.baseVerb,
@@ -124,6 +124,7 @@
 					startIndex: m.index,
 					endIndex: m.index + m[0].length,
 				});
+				m = splitRe.exec(raw);
 			}
 		}
 		return out.sort(
