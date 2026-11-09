@@ -53,7 +53,7 @@
         return base.slice(0, -1);
       }
       // e drop recovery (e.g. changing -> change, taking -> take)
-      if (['chang', 'car', 'hop', 'mak', 'tak', 'driv'].includes(base)) {
+      if (['chang', 'car', 'hop', 'mak', 'tak', 'driv', 'achiev', 'debat', 'creat'].includes(base)) {
         return base + 'e';
       }
       return base;
@@ -70,6 +70,9 @@
       }
       if (base.endsWith('i')) {
         return base.slice(0, -1) + 'y';
+      }
+      if (['chang', 'car', 'hop', 'mak', 'tak', 'achiev', 'debat', 'creat'].includes(base)) {
+        return base + 'e';
       }
       return base;
     }
@@ -107,6 +110,47 @@
     }
 
     return w;
+  }
+
+  // Systematic English stemmer generating plausible base candidates
+  function getStemCandidates(rawWord) {
+    const word = normalize(rawWord);
+    if (!word || word.length < 2) return [word].filter(Boolean);
+
+    const candidates = [word];
+    function add(c) {
+      if (c && c.length >= 2 && !candidates.includes(c)) {
+        candidates.push(c);
+      }
+    }
+
+    const s = stem(word);
+    add(s);
+
+    if (word.endsWith('ing') && word.length > 4) {
+      add(word.slice(0, -3));
+      add(word.slice(0, -3) + 'e');
+    }
+    if (word.endsWith('ed') && word.length > 3) {
+      add(word.slice(0, -2));
+      add(word.slice(0, -1));
+    }
+    if (word.endsWith('ies') && word.length > 4) {
+      add(word.slice(0, -3) + 'y');
+    }
+    if (word.endsWith('es') && word.length > 3) {
+      add(word.slice(0, -2));
+      add(word.slice(0, -1));
+    }
+    if (word.endsWith('s') && !word.endsWith('ss') && word.length > 3) {
+      add(word.slice(0, -1));
+    }
+    if (word.endsWith('ly') && word.length > 4) {
+      add(word.slice(0, -2));
+      if (word.endsWith('ily')) add(word.slice(0, -3) + 'y');
+    }
+
+    return candidates;
   }
 
   /**
@@ -160,7 +204,7 @@
    * Curated semantic and morphological family mapping
    * connecting common lyrical song words to academic Amiram targets.
    */
-  const SEMANTIC_FAMILIES = {
+  const SEMANTIC_FAMILIES = Object.freeze({
     peace: ['calm', 'consent', 'consistent', 'community', 'conform'],
     comfort: ['benefit', 'assist', 'capacity', 'sustain', 'relief'],
     acceptance: ['consent', 'adapt', 'conclude', 'acknowledge'],
@@ -211,7 +255,7 @@
     worry: ['conflict', 'challenge', 'distress', 'concern'],
     morning: ['initial', 'commence', 'phase'],
     little: ['minimal', 'minor', 'fraction']
-  };
+  });
 
   /**
    * Builds an indexed map of vocabulary words for rapid matching.
@@ -226,21 +270,49 @@
     if (Array.isArray(vocabList)) {
       for (let i = 0; i < vocabList.length; i++) {
         const item = vocabList[i];
+        if (!item || (typeof item !== 'object' && typeof item !== 'string')) continue;
         const rawW = isObj(item) ? (item.word || item.id || '') : String(item || '');
         const normW = normalize(rawW);
         if (!normW) continue;
 
-        const entry = isObj(item) ? Object.assign({}, item, { word: normW }) : { word: normW, id: normW };
+        const entry = Object.freeze(isObj(item) ? Object.assign({}, item, {
+          id: item.id != null ? item.id : (i + 1),
+          word: item.word || normW,
+          normWord: normW,
+          part_of_speech: item.part_of_speech || item.category || 'unknown',
+          level: item.level || (item.difficulty ? (item.difficulty.toLowerCase() === 'medium' ? 'B_intermediate' : (item.difficulty.toLowerCase() === 'hard' ? 'C_advanced' : 'A_foundational')) : 'A_foundational'),
+          hebrew_translation: item.hebrew_translation || item.translation || '',
+          hebrew_definition: item.hebrew_definition || item.explanation || ''
+        }) : {
+          id: i + 1,
+          word: normW,
+          normWord: normW,
+          part_of_speech: 'unknown',
+          level: 'A_foundational',
+          hebrew_translation: '',
+          hebrew_definition: ''
+        });
+
         entries.push(entry);
 
         if (!exactMap[normW]) exactMap[normW] = entry;
-        const s = stem(normW);
-        if (!stemMap[s]) stemMap[s] = [];
-        stemMap[s].push(entry);
+
+        const cands = getStemCandidates(normW);
+        for (let c = 0; c < cands.length; c++) {
+          const cand = cands[c];
+          if (!stemMap[cand]) stemMap[cand] = [];
+          if (!stemMap[cand].includes(entry)) stemMap[cand].push(entry);
+        }
       }
     }
 
-    return { exactMap, stemMap, entries };
+    return Object.freeze({
+      exactMap,
+      stemMap,
+      entries: Object.freeze(entries),
+      allItems: Object.freeze(entries),
+      size: entries.length
+    });
   }
 
   /**
@@ -258,9 +330,13 @@
       return {
         matched: false,
         inputWord: '',
+        query: '',
         matchedWord: null,
+        targetWord: null,
         vocabEntry: null,
+        item: null,
         matchType: 'none',
+        distance: -1,
         confidence: 0
       };
     }
@@ -271,31 +347,59 @@
 
     // 1. Exact match
     if (index.exactMap[norm]) {
+      const entry = index.exactMap[norm];
       return {
         matched: true,
         inputWord: norm,
-        matchedWord: index.exactMap[norm].word,
-        vocabEntry: index.exactMap[norm],
+        query: norm,
+        matchedWord: entry.word,
+        targetWord: entry.word,
+        vocabEntry: entry,
+        item: entry,
         matchType: 'exact',
+        distance: 0,
         confidence: 1.0
       };
     }
 
     // 2. Stem match
-    const inputStem = stem(norm);
-    if (index.stemMap[inputStem] && index.stemMap[inputStem].length > 0) {
-      const match = index.stemMap[inputStem][0];
-      return {
-        matched: true,
-        inputWord: norm,
-        matchedWord: match.word,
-        vocabEntry: match,
-        matchType: 'stem',
-        confidence: 0.95
-      };
+    const cands = getStemCandidates(norm);
+    for (let i = 0; i < cands.length; i++) {
+      const cand = cands[i];
+      if (index.exactMap[cand]) {
+        const entry = index.exactMap[cand];
+        return {
+          matched: true,
+          inputWord: norm,
+          query: norm,
+          matchedWord: entry.word,
+          targetWord: entry.word,
+          vocabEntry: entry,
+          item: entry,
+          matchType: 'stem',
+          distance: 0,
+          confidence: 0.95
+        };
+      }
+      if (index.stemMap[cand] && index.stemMap[cand].length > 0) {
+        const entry = index.stemMap[cand][0];
+        return {
+          matched: true,
+          inputWord: norm,
+          query: norm,
+          matchedWord: entry.word,
+          targetWord: entry.word,
+          vocabEntry: entry,
+          item: entry,
+          matchType: 'stem',
+          distance: 0,
+          confidence: 0.90
+        };
+      }
     }
 
     // 3. Root / Prefix match (min length 4)
+    const inputStem = stem(norm);
     if (inputStem.length >= 4) {
       for (let i = 0; i < index.entries.length; i++) {
         const candidate = index.entries[i];
@@ -304,9 +408,13 @@
           return {
             matched: true,
             inputWord: norm,
+            query: norm,
             matchedWord: candidate.word,
+            targetWord: candidate.word,
             vocabEntry: candidate,
+            item: candidate,
             matchType: 'root',
+            distance: Math.abs(candStem.length - inputStem.length),
             confidence: 0.85
           };
         }
@@ -319,24 +427,33 @@
       for (let j = 0; j < familyTargets.length; j++) {
         const target = familyTargets[j];
         if (index.exactMap[target]) {
+          const entry = index.exactMap[target];
           return {
             matched: true,
             inputWord: norm,
-            matchedWord: target,
-            vocabEntry: index.exactMap[target],
+            query: norm,
+            matchedWord: entry.word,
+            targetWord: entry.word,
+            vocabEntry: entry,
+            item: entry,
             matchType: 'family',
+            distance: 0,
             confidence: 0.80
           };
         }
         const targetStem = stem(target);
         if (index.stemMap[targetStem] && index.stemMap[targetStem].length > 0) {
-          const match = index.stemMap[targetStem][0];
+          const entry = index.stemMap[targetStem][0];
           return {
             matched: true,
             inputWord: norm,
-            matchedWord: match.word,
-            vocabEntry: match,
+            query: norm,
+            matchedWord: entry.word,
+            targetWord: entry.word,
+            vocabEntry: entry,
+            item: entry,
             matchType: 'family',
+            distance: 0,
             confidence: 0.75
           };
         }
@@ -347,13 +464,18 @@
     if (opts.fuzzy !== false && norm.length >= 4) {
       let bestMatch = null;
       let highestSim = 0;
+      let lowestDist = Infinity;
 
       for (let k = 0; k < index.entries.length; k++) {
         const candidate = index.entries[k];
-        const sim = similarity(norm, candidate.word);
-        if (sim >= 0.70 && sim > highestSim) {
-          highestSim = sim;
-          bestMatch = candidate;
+        const dist = levenshtein(norm, candidate.normWord || candidate.word);
+        if (dist <= 2) {
+          const sim = similarity(norm, candidate.normWord || candidate.word);
+          if (sim >= 0.70 && sim > highestSim) {
+            highestSim = sim;
+            lowestDist = dist;
+            bestMatch = candidate;
+          }
         }
       }
 
@@ -361,9 +483,13 @@
         return {
           matched: true,
           inputWord: norm,
+          query: norm,
           matchedWord: bestMatch.word,
+          targetWord: bestMatch.word,
           vocabEntry: bestMatch,
+          item: bestMatch,
           matchType: 'fuzzy',
+          distance: lowestDist,
           confidence: Math.round(highestSim * 100) / 100
         };
       }
@@ -372,9 +498,13 @@
     return {
       matched: false,
       inputWord: norm,
+      query: norm,
       matchedWord: null,
+      targetWord: null,
       vocabEntry: null,
+      item: null,
       matchType: 'none',
+      distance: -1,
       confidence: 0
     };
   }
@@ -391,16 +521,22 @@
     if (!Array.isArray(questions)) {
       return {
         total: 0,
+        totalQuestions: 0,
         matchedCount: 0,
+        unmatchedCount: 0,
         coverageRate: 0,
+        matchRate: 0,
+        byMatchType: { exact: 0, stem: 0, affix: 0, root: 0, family: 0, fuzzy: 0 },
+        matches: [],
         bridgedQuestions: [],
         unmatched: []
       };
     }
 
-    const index = buildLexicalIndex(vocabList);
+    const index = (vocabSourceIsIndex(vocabList)) ? vocabList : buildLexicalIndex(vocabList);
     const bridged = [];
     const unmatched = [];
+    const countsByType = { exact: 0, stem: 0, affix: 0, root: 0, family: 0, fuzzy: 0 };
 
     for (let i = 0; i < questions.length; i++) {
       const q = questions[i];
@@ -409,17 +545,25 @@
       const qWord = isString(q.word) ? q.word : (isString(q.word_id) ? q.word_id : (isString(q.answer) ? q.answer : ''));
       const matchResult = matchWord(qWord, index, options);
 
-      // Non-mutating copy of question with bridged metadata
-      const bridgedQuestion = Object.assign({}, q, {
+      const bridgedQuestion = Object.freeze(Object.assign({}, q, {
+        questionId: q.id,
+        originalWord: qWord,
         bridgedVocab: matchResult.vocabEntry,
+        item: matchResult.item,
         matchedWord: matchResult.matchedWord,
+        targetWord: matchResult.targetWord,
         matchType: matchResult.matchType,
         matchConfidence: matchResult.confidence,
+        confidence: matchResult.confidence,
+        level: matchResult.vocabEntry ? matchResult.vocabEntry.level : null,
+        part_of_speech: matchResult.vocabEntry ? matchResult.vocabEntry.part_of_speech : null,
+        hebrew_translation: matchResult.vocabEntry ? matchResult.vocabEntry.hebrew_translation : '',
         academicLevel: matchResult.vocabEntry ? matchResult.vocabEntry.level : null,
         academicPartOfSpeech: matchResult.vocabEntry ? (matchResult.vocabEntry.part_of_speech || matchResult.vocabEntry.pos) : null
-      });
+      }));
 
       if (matchResult.matched) {
+        countsByType[matchResult.matchType] = (countsByType[matchResult.matchType] || 0) + 1;
         bridged.push(bridgedQuestion);
       } else {
         unmatched.push(bridgedQuestion);
@@ -428,23 +572,115 @@
 
     const total = bridged.length + unmatched.length;
     const coverageRate = total > 0 ? Math.round((bridged.length / total) * 1000) / 1000 : 0;
+    const matchRate = total > 0 ? Math.round((bridged.length / total) * 100) / 100 : 0;
 
     return {
       total,
+      totalQuestions: total,
       matchedCount: bridged.length,
+      unmatchedCount: unmatched.length,
       coverageRate,
-      bridgedQuestions: bridged,
-      unmatched
+      matchRate,
+      byMatchType: countsByType,
+      bridgedQuestions: Object.freeze(bridged),
+      matches: Object.freeze(bridged),
+      unmatched: Object.freeze(unmatched)
     };
   }
 
-  return {
+  function vocabSourceIsIndex(s) {
+    return !!s && typeof s === 'object' && Array.isArray(s.entries) && !!s.exactMap;
+  }
+
+  // Bridge an array of songs to vocabulary items
+  function bridgeSongs(songs, vocabSource) {
+    const sList = Array.isArray(songs) ? songs : [];
+    const index = vocabSourceIsIndex(vocabSource) ? vocabSource : buildLexicalIndex(vocabSource);
+    const songReports = [];
+    let totalHighlightWords = 0;
+    let totalMatched = 0;
+
+    for (let i = 0; i < sList.length; i++) {
+      const s = sList[i];
+      if (!isObj(s)) continue;
+
+      const hw = Array.isArray(s.highlight_words) ? s.highlight_words : [];
+      const matchedInSong = [];
+
+      for (let j = 0; j < hw.length; j++) {
+        const entry = hw[j];
+        const w = typeof entry === 'object' ? (entry.word || '') : String(entry || '');
+        const res = matchWord(w, index);
+        totalHighlightWords++;
+        if (res.matched) {
+          totalMatched++;
+          matchedInSong.push({
+            originalWord: w,
+            targetWord: res.targetWord,
+            level: res.item ? res.item.level : null,
+            matchType: res.matchType
+          });
+        }
+      }
+
+      songReports.push({
+        songId: s.id,
+        title: s.title || '',
+        highlightCount: hw.length,
+        matchedCount: matchedInSong.length,
+        coverageRate: hw.length ? Math.round((matchedInSong.length / hw.length) * 100) / 100 : 0,
+        matches: matchedInSong
+      });
+    }
+
+    return {
+      totalSongs: sList.length,
+      totalHighlightWords,
+      totalMatched,
+      overallCoverageRate: totalHighlightWords ? Math.round((totalMatched / totalHighlightWords) * 100) / 100 : 0,
+      songReports
+    };
+  }
+
+  // Enrich single attempt or question metadata
+  function resolveWordEnrichment(input, vocabSource) {
+    if (!input || !vocabSource) return null;
+    let word = '';
+    if (typeof input === 'string') {
+      word = input;
+    } else if (isObj(input)) {
+      word = input.word || input.answer || input.userAnswer || '';
+    }
+
+    const index = vocabSourceIsIndex(vocabSource) ? vocabSource : buildLexicalIndex(vocabSource);
+    const res = matchWord(word, index);
+    if (!res.matched) return null;
+
+    return {
+      query: res.query,
+      word: res.targetWord,
+      level: res.item.level,
+      part_of_speech: res.item.part_of_speech,
+      hebrew_translation: res.item.hebrew_translation,
+      hebrew_definition: res.item.hebrew_definition,
+      matchType: res.matchType,
+      confidence: res.confidence
+    };
+  }
+
+  return Object.freeze({
     normalize,
     stem,
+    getStemCandidates,
+    levenshtein,
     similarity,
     buildLexicalIndex,
+    buildVocabIndex: buildLexicalIndex,
     matchWord,
     bridgeQuestionsToVocab,
+    bridgeQuestions: bridgeQuestionsToVocab,
+    bridgeSongs,
+    resolveWordEnrichment,
     SEMANTIC_FAMILIES
-  };
+  });
 }));
