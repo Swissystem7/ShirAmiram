@@ -53,7 +53,7 @@
 		const wb = norm(b);
 		if (!wa || !wb || wa === wb) return "UNRELATED";
 		const cluster = findCluster(wa);
-		if (cluster && cluster.includes(wb)) return "SYNONYM";
+		if (cluster?.includes(wb)) return "SYNONYM";
 		const ants = findAntonyms(wa);
 		if (ants.includes(wb)) return "ANTONYM";
 		return "UNRELATED";
