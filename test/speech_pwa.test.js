@@ -52,9 +52,13 @@ test('3. manifest.json complies with PWA installability requirements', () => {
 test('4. sw.js defines static asset precache including all 300 words data and scripts', () => {
   assert.match(sw, /CACHE_NAME\s*=/);
   assert.match(sw, /amiram_vocab_full\.json/);
+  assert.match(sw, /popular_song_mentions\.json/);
   assert.match(sw, /speech\.js/);
   assert.match(sw, /analytics\.js/);
   assert.match(sw, /srs_leitner\.js/);
+  assert.match(sw, /media_player\.js/);
+  assert.match(sw, /popular_lyrics_agent\.js/);
+  assert.match(sw, /karaoke_finale\.js/);
   assert.match(sw, /caches\.match/);
 });
 

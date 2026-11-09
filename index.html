@@ -501,7 +501,7 @@
           </div>
         </div>
         <div class="relative">
-          <input id="popular-search" type="search" placeholder="חפש מילה, אמן או שיר מפורסם..." aria-label="חיפוש בשירים מוכרים" class="w-full p-3 rounded-xl bg-slate-950/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all text-sm">
+          <input id="popular-search" type="search" dir="rtl" lang="he" placeholder="חפש מילה, אמן או שיר מפורסם..." aria-label="חיפוש בשירים מוכרים" class="w-full p-3 rounded-xl bg-slate-950/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all text-sm">
         </div>
       </div>
 
@@ -1834,7 +1834,15 @@
 
         if ($('btn-filter-weak-popular')) {
           $('btn-filter-weak-popular').addEventListener('click', () => {
-            const weak = ['crucial', 'undermine', 'deliberate', 'nevertheless', 'hypothesis', 'subtle', 'inevitable', 'abandon'];
+            const defaultWeak = ['crucial', 'undermine', 'deliberate', 'nevertheless', 'hypothesis', 'subtle', 'inevitable', 'abandon'];
+            let dynamicWeak = [];
+            if (window.ShirAmiramAnalytics) {
+              const anState = window.ShirAmiramAnalytics.loadAnalyticsState();
+              const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : A.VOCAB;
+              const queue = window.ShirAmiramAnalytics.buildReviewQueue(anState, pool, 12) || [];
+              dynamicWeak = queue.map(w => w.word.toLowerCase());
+            }
+            const weak = Array.from(new Set([...dynamicWeak, ...defaultWeak]));
             const res = lyricsAgent.getWeakWordMentions(weak);
             const filtered = Object.values(res.mentions).filter(Boolean);
             renderPopularSongs(filtered);
