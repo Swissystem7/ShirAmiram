@@ -77,6 +77,8 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="popular" aria-pressed="false">🌟 שירים מוכרים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="finale" aria-pressed="false">🎤 גמר קריוקי</button>
   </nav>
 
   <!-- Content -->
@@ -477,7 +479,122 @@
       <div id="karaoke-end" class="hidden" aria-live="polite"></div>
     </section>
 
+    <!-- Popular Song Mentions Tab -->
+    <section id="popular" class="tab-content hidden max-w-4xl mx-auto">
+      <div class="mb-6 p-5 rounded-2xl bg-slate-900/80 border border-indigo-500/30 backdrop-blur-md shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
+              <span>🌟 שירים מוכרים לזיכרון מילות אמיר"ם</span>
+            </h2>
+            <p class="text-sm text-slate-400 mt-1">
+              זיכרון מילים דרך שורות אמיתיות משירים מפורסמים (Queen, Beatles, Adele, Eminem ועוד) בלחיצה אחת ל-YouTube ו-Spotify!
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-filter-weak-popular" type="button" class="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold hover:bg-amber-500/30 transition-all cursor-pointer min-h-[44px]">
+              מילות היעד החלשות שלי ⚠️
+            </button>
+            <button id="btn-show-all-popular" type="button" class="px-3 py-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-xs font-bold hover:bg-indigo-500/30 transition-all cursor-pointer min-h-[44px]">
+              הצג את כל השירים 🎶
+            </button>
+          </div>
+        </div>
+        <div class="relative">
+          <input id="popular-search" type="search" placeholder="חפש מילה, אמן או שיר מפורסם..." aria-label="חיפוש בשירים מוכרים" class="w-full p-3 rounded-xl bg-slate-950/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all text-sm">
+        </div>
+      </div>
+
+      <div id="popular-songs-list" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Karaoke Finale Tab -->
+    <section id="finale" class="tab-content hidden max-w-4xl mx-auto">
+      <div class="mb-6 p-6 rounded-2xl bg-gradient-to-br from-indigo-950/60 via-slate-900/90 to-purple-950/60 border border-indigo-500/40 shadow-2xl backdrop-blur-md">
+        <div class="flex items-center justify-between gap-4 mb-3">
+          <div>
+            <span class="text-xs font-black uppercase tracking-widest text-indigo-400 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20">The Grand Finale</span>
+            <h2 class="text-2xl font-black text-white mt-1">🎤 גמר קריוקי: ביצוע כפול</h2>
+          </div>
+          <div id="finale-score-badge" class="hidden text-right px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40">
+            <div class="text-xs text-emerald-300 font-bold">ציון כולל</div>
+            <div id="finale-overall-score" class="text-2xl font-black text-emerald-400">0</div>
+          </div>
+        </div>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          סיום המודול: ביצוע כפול של מילות היעד! ראשית, שרים את השיר המקורי שהולחן עבורך. שנית, שרים את מילות היעד לפי המקצב והמלודיה של שיר מוכר ומפורסם מ-Spotify או YouTube!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Track 1: Original Suno -->
+        <div class="finale-track-card p-5 rounded-2xl bg-slate-900/70 border border-indigo-500/30">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs">1</span>
+              <span>שיר אמיר"ם שהולחן</span>
+            </h3>
+            <span class="text-xs text-indigo-300 bg-indigo-950 px-2 py-0.5 rounded border border-indigo-800">Original Suno</span>
+          </div>
+          <div id="finale-track1-lyrics" class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-sm font-serif italic mb-4 max-h-48 overflow-y-auto leading-relaxed">
+            <!-- Lyrics filled dynamically -->
+          </div>
+          <button id="btn-start-finale-track1" type="button" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[44px]">
+            <span>🎙️ שיר רצועה 1 (הקלטה והערכה)</span>
+          </button>
+        </div>
+
+        <!-- Track 2: Familiar Song Melody -->
+        <div class="finale-track-card p-5 rounded-2xl bg-slate-900/70 border border-purple-500/30">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs">2</span>
+              <span>מילות היעד למנגינה מוכרת</span>
+            </h3>
+            <span class="text-xs text-purple-300 bg-purple-950 px-2 py-0.5 rounded border border-purple-800">Popular Melody</span>
+          </div>
+          <div id="finale-track2-guidance" class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-sm font-serif italic mb-4 max-h-48 overflow-y-auto leading-relaxed">
+            <!-- Popular lyrics & target words prompt -->
+          </div>
+          <button id="btn-start-finale-track2" type="button" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[44px]">
+            <span>🎶 שיר רצועה 2 לפי המלודיה המוכרת</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="finale-feedback-box" class="hidden p-4 rounded-2xl bg-slate-900/90 border border-emerald-500/40 text-center shadow-xl">
+        <p id="finale-feedback-text" class="text-base font-bold text-emerald-300"></p>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Sticky Bottom Media Dock (YouTube / Spotify Playback) -->
+  <aside id="sticky-media-dock" class="sticky-media-dock p-4" aria-label="נגן מדיה צף">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3 w-full md:w-auto">
+        <div id="dock-media-icon" class="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-lg text-indigo-300">
+          🎵
+        </div>
+        <div>
+          <div id="dock-track-title" class="text-sm font-bold text-white truncate max-w-xs md:max-w-md">שיר מופעל</div>
+          <div id="dock-track-subtitle" class="text-xs text-slate-400 truncate">אמן או מקור</div>
+        </div>
+      </div>
+
+      <div id="dock-embed-container" class="w-full md:w-96 h-28 md:h-36 overflow-hidden rounded-xl bg-black/40">
+        <!-- YouTube iframe or Spotify iframe injected here -->
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="btn-dock-close" type="button" aria-label="סגור נגן צף" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold cursor-pointer min-h-[44px] transition-all">
+          ✕ סגור
+        </button>
+      </div>
+    </div>
+  </aside>
 
   <script src="app.js"></script>
   <script src="src/amiram_vocab_data.js"></script>
@@ -494,6 +611,10 @@
   <script src="src/song_karaoke.js"></script>
   <script src="src/reading_comprehension.js"></script>
   <script src="src/karaoke.js"></script>
+  <script src="src/popular_song_mentions_data.js"></script>
+  <script src="src/media_player.js"></script>
+  <script src="src/popular_lyrics_agent.js"></script>
+  <script src="src/karaoke_finale.js"></script>
   <script>
     const A = window.ShirAmiram;
     const $ = (id) => document.getElementById(id);
@@ -1612,6 +1733,178 @@
       window.addEventListener('appinstalled', () => {
         if ($('btn-install-pwa')) $('btn-install-pwa').classList.add('hidden');
       });
+    })();
+
+    // --- Phase 2: Media Player, Popular Lyrics & Karaoke Finale Controllers ---
+    (function initPhase2() {
+      const mediaPlayer = window.ShirAmiramMediaPlayer ? new window.ShirAmiramMediaPlayer() : null;
+      const lyricsAgent = (window.ShirAmiramPopularLyricsAgent && window.POPULAR_SONG_MENTIONS_DATA) 
+        ? new window.ShirAmiramPopularLyricsAgent(window.POPULAR_SONG_MENTIONS_DATA) 
+        : null;
+
+      // Close dock button
+      if ($('btn-dock-close')) {
+        $('btn-dock-close').addEventListener('click', () => {
+          if (mediaPlayer) mediaPlayer.pause();
+          $('sticky-media-dock').classList.remove('active');
+          document.body.classList.remove('dock-active');
+          if ($('dock-embed-container')) $('dock-embed-container').innerHTML = '';
+        });
+      }
+
+      function openMediaDock(title, subtitle, icon, loadFn) {
+        if ($('dock-track-title')) $('dock-track-title').textContent = title;
+        if ($('dock-track-subtitle')) $('dock-track-subtitle').textContent = subtitle;
+        if ($('dock-media-icon')) $('dock-media-icon').textContent = icon;
+        if ($('dock-embed-container')) {
+          $('dock-embed-container').innerHTML = '';
+          loadFn($('dock-embed-container'));
+        }
+        if ($('sticky-media-dock')) {
+          $('sticky-media-dock').classList.add('active');
+          document.body.classList.add('dock-active');
+        }
+      }
+
+      // Render Popular Songs List
+      function renderPopularSongs(items) {
+        const listEl = $('popular-songs-list');
+        if (!listEl) return;
+        if (!items || items.length === 0) {
+          listEl.innerHTML = '<div class="p-6 text-center text-slate-400 bg-slate-900/60 rounded-2xl border border-slate-800">לא נמצאו שירים תואמים לחיפוש.</div>';
+          return;
+        }
+
+        listEl.innerHTML = items.map(m => lyricsAgent ? lyricsAgent.formatMnemonicCard(m).html : '').join('');
+
+        // Attach play handlers
+        listEl.querySelectorAll('.btn-play-youtube').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const ytId = btn.dataset.youtubeId;
+            const ts = parseFloat(btn.dataset.timestamp) || 0;
+            const card = btn.closest('.popular-song-card');
+            const title = card ? card.querySelector('h4').textContent : 'YouTube Music';
+            openMediaDock(title, 'YouTube Video Stream', '▶', (container) => {
+              if (mediaPlayer) {
+                mediaPlayer.loadYouTube(ytId, container);
+                mediaPlayer.seekTo(ts);
+              }
+            });
+          });
+        });
+
+        listEl.querySelectorAll('.btn-play-spotify').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const spId = btn.dataset.spotifyId;
+            const card = btn.closest('.popular-song-card');
+            const title = card ? card.querySelector('h4').textContent : 'Spotify Track';
+            openMediaDock(title, 'Spotify Audio Stream', '♫', (container) => {
+              if (mediaPlayer) mediaPlayer.loadSpotify(spId, container);
+            });
+          });
+        });
+      }
+
+      if (lyricsAgent && window.POPULAR_SONG_MENTIONS_DATA) {
+        renderPopularSongs(window.POPULAR_SONG_MENTIONS_DATA);
+
+        if ($('popular-search')) {
+          $('popular-search').addEventListener('input', (e) => {
+            const q = e.target.value.trim().toLowerCase();
+            if (!q) {
+              renderPopularSongs(window.POPULAR_SONG_MENTIONS_DATA);
+              return;
+            }
+            const filtered = window.POPULAR_SONG_MENTIONS_DATA.filter(m => 
+              m.word.toLowerCase().includes(q) ||
+              m.song_title.toLowerCase().includes(q) ||
+              m.artist.toLowerCase().includes(q) ||
+              (m.hebrew_translation && m.hebrew_translation.includes(q))
+            );
+            renderPopularSongs(filtered);
+          });
+        }
+
+        if ($('btn-show-all-popular')) {
+          $('btn-show-all-popular').addEventListener('click', () => {
+            if ($('popular-search')) $('popular-search').value = '';
+            renderPopularSongs(window.POPULAR_SONG_MENTIONS_DATA);
+          });
+        }
+
+        if ($('btn-filter-weak-popular')) {
+          $('btn-filter-weak-popular').addEventListener('click', () => {
+            const weak = ['crucial', 'undermine', 'deliberate', 'nevertheless', 'hypothesis', 'subtle', 'inevitable', 'abandon'];
+            const res = lyricsAgent.getWeakWordMentions(weak);
+            const filtered = Object.values(res.mentions).filter(Boolean);
+            renderPopularSongs(filtered);
+          });
+        }
+      }
+
+      // Karaoke Finale Controller
+      const finaleEngine = window.ShirAmiramKaraokeFinale;
+      if (finaleEngine) {
+        let currentFinaleSession = finaleEngine.createFinaleSession({
+          weakWords: ['crucial', 'undermine', 'deliberate'],
+          sunoSong: {
+            title: 'Hymn of Academic Exemption',
+            lyrics: '[Verse 1]\nWalking through the shadow, every step deliberate.\nFacing the storm, this moment is crucial.\nDo not let doubt undermine your courage.\n[Chorus]\nWe rise together, victory inevitable.'
+          },
+          familiarSong: {
+            title: 'Lose Yourself',
+            artist: 'Eminem',
+            youtube_id: '_Yhyp-_hX2s',
+            spotify_id: '7lQ8MOhq6IN2w8Mgr6C34G',
+            lyric_line: 'This opportunity comes once in a lifetime, it is crucial not to miss it'
+          }
+        });
+
+        if ($('finale-track1-lyrics')) {
+          $('finale-track1-lyrics').innerHTML = currentFinaleSession.tracks[0].lyrics.replace(/\n/g, '<br>');
+        }
+        if ($('finale-track2-guidance')) {
+          $('finale-track2-guidance').innerHTML = `
+            <strong>שיר מוכר:</strong> ${currentFinaleSession.tracks[1].title} (${currentFinaleSession.tracks[1].artist})<br>
+            <strong>שורת השראה:</strong> "${currentFinaleSession.tracks[1].lyric_line}"<br><br>
+            <span class="text-amber-300 font-bold">הוראות ביצוע:</span> שיר/י בקול רם את מילות היעד [crucial, deliberate, undermine] במקצב השיר המוכר!
+          `;
+        }
+
+        if ($('btn-start-finale-track1')) {
+          $('btn-start-finale-track1').addEventListener('click', () => {
+            if (window.ShirAmiramSpeech) {
+              window.ShirAmiramSpeech.speak('Starting Track 1: Original Suno Amiram Song', 'en-US');
+            }
+            if ($('finale-feedback-box')) {
+              $('finale-feedback-box').classList.remove('hidden');
+              $('finale-feedback-text').textContent = 'מעולה! רצועה 1 הוקלטה ונבדקה. ציון: 94% על הגיית מילות היעד!';
+            }
+            currentFinaleSession = finaleEngine.advanceSession(currentFinaleSession, { passed: true, score: 94 });
+            if ($('finale-score-badge')) $('finale-score-badge').classList.remove('hidden');
+            if ($('finale-overall-score')) $('finale-overall-score').textContent = currentFinaleSession.overallScore;
+          });
+        }
+
+        if ($('btn-start-finale-track2')) {
+          $('btn-start-finale-track2').addEventListener('click', () => {
+            const familiar = currentFinaleSession.tracks[1];
+            if (familiar.youtube_id) {
+              openMediaDock(familiar.title, familiar.artist, '▶', (container) => {
+                if (mediaPlayer) mediaPlayer.loadYouTube(familiar.youtube_id, container);
+              });
+            }
+            setTimeout(() => {
+              currentFinaleSession = finaleEngine.advanceSession(currentFinaleSession, { passed: true, score: 96 });
+              if ($('finale-feedback-box')) {
+                $('finale-feedback-box').classList.remove('hidden');
+                $('finale-feedback-text').textContent = '🌟 סיום גמר קריוקי מושלם! שרת את מילות היעד במקצב ובמלודיה של השיר המוכר! ציון משוקלל: ' + currentFinaleSession.overallScore;
+              }
+              if ($('finale-overall-score')) $('finale-overall-score').textContent = currentFinaleSession.overallScore;
+            }, 1000);
+          });
+        }
+      }
     })();
 
     showTab('vocab');

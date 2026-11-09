@@ -650,3 +650,56 @@ article,
   box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
 }
 
+
+/* ==========================================================================
+   Phase 2: Popular Song Mentions, Sticky Media Dock & Karaoke Finale
+   ========================================================================== */
+
+mark.target-word {
+  background: linear-gradient(120deg, rgba(245, 158, 11, 0.35) 0%, rgba(234, 88, 12, 0.4) 100%);
+  color: #fef08a;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border-bottom: 2px solid #f59e0b;
+}
+
+.popular-song-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.popular-song-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.3);
+}
+
+.sticky-media-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(11, 15, 25, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.5);
+  transform: translateY(120%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sticky-media-dock.active {
+  transform: translateY(0);
+}
+
+body.dock-active main {
+  padding-bottom: 14rem !important;
+}
+
+.finale-track-card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 16px;
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
+}
