@@ -8,6 +8,17 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
+  function loadPronunciationHint() {
+    try {
+      if (typeof require === 'function') return require('./pronunciation_hint.js');
+    } catch (err) { /* browser bundle */ }
+    if (typeof self !== 'undefined' && self.ShirAmiramPronunciationHint) return self.ShirAmiramPronunciationHint;
+    if (typeof globalThis !== 'undefined' && globalThis.ShirAmiramPronunciationHint) return globalThis.ShirAmiramPronunciationHint;
+    return { generatePhoneticHint: function (word) { return { syllables: [], hyphenated: '', phoneticGuide: String(word || '') }; } };
+  }
+  var pronunciationHint = loadPronunciationHint();
+  var generatePhoneticHint = pronunciationHint.generatePhoneticHint;
+
   const LEVELS = [
     { id: 'all', he: 'הכל', en: 'All' },
     { id: 'A_foundational', he: 'רמה A (בסיסי)', en: 'Level A' },
@@ -104,10 +115,37 @@
     };
   }
 
+
+  /**
+   * Enrich a vocab item with syllable breakdown + phonetic guide for card/detail UI.
+   * Backward compatible: bad/unsplittable input keeps the original word.
+   */
+  function formatWordItem(item) {
+    if (!item || typeof item !== 'object') {
+      return { word: '', syllablesDisplay: '', phoneticGuide: '', syllables: [] };
+    }
+    var word = String(item.word || '');
+    var hint;
+    try {
+      hint = generatePhoneticHint(word) || {};
+    } catch (err) {
+      hint = { syllables: [], phoneticGuide: word };
+    }
+    var syllables = Array.isArray(hint.syllables) ? hint.syllables.filter(Boolean) : [];
+    var syllablesDisplay = syllables.length ? syllables.join(' • ') : word;
+    var phoneticGuide = hint.phoneticGuide != null && String(hint.phoneticGuide) ? String(hint.phoneticGuide) : word;
+    return Object.assign({}, item, {
+      syllables: syllables,
+      syllablesDisplay: syllablesDisplay,
+      phoneticGuide: phoneticGuide
+    });
+  }
+
   return {
     LEVELS,
     LEVEL_MAP,
     filterByLevel,
-    validateVocabDataset
+    validateVocabDataset,
+    formatWordItem
   };
 }));
