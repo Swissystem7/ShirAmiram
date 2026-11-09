@@ -485,23 +485,70 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
           <div>
             <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
-              <span>🌟 שירים מוכרים לזיכרון מילות אמיר"ם</span>
+              <span>🌟 שירים מוכרים, פלייליסטים חכמים והסברי Genius</span>
             </h2>
             <p class="text-sm text-slate-400 mt-1">
-              זיכרון מילים דרך שורות אמיתיות משירים מפורסמים (Queen, Beatles, Adele, Eminem ועוד) בלחיצה אחת ל-YouTube ו-Spotify!
+              זיכרון מילים דרך שורות אמיתיות משירים מפורסמים (Queen, Beatles, Adele, Eminem ועוד), בניית פלייליסט לפי סגנון מועדף שממקסם מילות אמיר"ם, והסברי Genius למשמעות המילה בשיר!
             </p>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex flex-wrap items-center gap-2">
             <button id="btn-filter-weak-popular" type="button" class="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold hover:bg-amber-500/30 transition-all cursor-pointer min-h-[44px]">
               מילות היעד החלשות שלי ⚠️
             </button>
             <button id="btn-show-all-popular" type="button" class="px-3 py-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-xs font-bold hover:bg-indigo-500/30 transition-all cursor-pointer min-h-[44px]">
-              הצג את כל השירים 🎶
+              הצג את כל השירים (70) 🎶
             </button>
           </div>
         </div>
+
+        <!-- Smart Genre Playlist Builder -->
+        <div class="mb-4 p-4 rounded-xl bg-slate-950/70 border border-purple-500/30 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-extrabold text-purple-300 flex items-center gap-1.5">
+                <span>🎧 מחולל פלייליסט חכם לפי סגנון מוזיקה (מקסימום מילות אמיר"ם)</span>
+              </h3>
+              <p class="text-xs text-slate-400">בחרו סגנון מועדף והמערכת תרכיב פלייליסט שמכסה את המספר המקסימלי של מילות אמיר"ם ומילים חלשות עם הסברי Genius:</p>
+            </div>
+            <button id="btn-build-smart-playlist" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-extrabold shadow-lg transition-all cursor-pointer min-h-[44px]">
+              ⚡ הרכב פלייליסט אופטימלי
+            </button>
+          </div>
+
+          <div id="genre-filter-pills" class="flex flex-wrap gap-2" role="group" aria-label="בחירת סגנון מוזיקה">
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold min-h-[44px]" data-genre="all" aria-pressed="true">כל הסגנונות 🎶</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Rock" aria-pressed="false">רוק קלאסי ומודרני 🎸</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Pop" aria-pressed="false">פופ ולהיטים ✨</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Hip-Hop & Rap" aria-pressed="false">היפ-הופ וראפ 🎤</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Alternative & Indie" aria-pressed="false">אלטרנטיבי ואינדי 🌙</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Classic & Soul" aria-pressed="false">קלאסיקות וסול 🎷</button>
+          </div>
+
+          <!-- Active Smart Playlist Summary Box -->
+          <div id="smart-playlist-summary" class="hidden p-3.5 rounded-xl bg-indigo-950/60 border border-indigo-500/40 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span id="smart-playlist-title" class="text-sm font-extrabold text-white">פלייליסט מותאם אישית</span>
+                <p id="smart-playlist-stats" class="text-xs text-emerald-300 font-bold mt-0.5"></p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button id="btn-play-smart-yt" type="button" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold flex items-center gap-1 cursor-pointer min-h-[44px]">
+                  ▶ נגן פלייליסט ב-YouTube
+                </button>
+                <button id="btn-play-smart-sp" type="button" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1 cursor-pointer min-h-[44px]">
+                  ♫ נגן פלייליסט ב-Spotify
+                </button>
+                <a id="link-external-yt-playlist" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center gap-1 min-h-[44px]">
+                  🔗 פתח רשימת השמעה ב-YouTube ↗
+                </a>
+              </div>
+            </div>
+            <div id="smart-playlist-words" class="flex flex-wrap gap-1 pt-1"></div>
+          </div>
+        </div>
+
         <div class="relative">
-          <input id="popular-search" type="search" dir="rtl" lang="he" placeholder="חפש מילה, אמן או שיר מפורסם..." aria-label="חיפוש בשירים מוכרים" class="w-full p-3 rounded-xl bg-slate-950/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all text-sm">
+          <input id="popular-search" type="search" dir="rtl" lang="he" placeholder="חפש מילה, אמן, סגנון או הסבר Genius..." aria-label="חיפוש בשירים מוכרים" class="w-full p-3 rounded-xl bg-slate-950/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all text-sm">
         </div>
       </div>
 
@@ -588,7 +635,16 @@
         <!-- YouTube iframe or Spotify iframe injected here -->
       </div>
 
-      <div class="flex items-center gap-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="btn-dock-prev" type="button" aria-label="שיר קודם בפלייליסט" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold cursor-pointer min-h-[44px] transition-all">
+          ⏮ הקודם
+        </button>
+        <button id="btn-dock-next" type="button" aria-label="שיר הבא בפלייליסט" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold cursor-pointer min-h-[44px] transition-all">
+          הבא ⏭
+        </button>
+        <a id="dock-external-link" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-lg bg-indigo-950 hover:bg-indigo-900 text-indigo-200 border border-indigo-700/50 text-xs font-bold flex items-center min-h-[44px] transition-all">
+          🔗 פתח ישירות ↗
+        </a>
         <button id="btn-dock-close" type="button" aria-label="סגור נגן צף" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold cursor-pointer min-h-[44px] transition-all">
           ✕ סגור
         </button>
@@ -1742,6 +1798,18 @@
         ? new window.ShirAmiramPopularLyricsAgent(window.POPULAR_SONG_MENTIONS_DATA) 
         : null;
 
+      function getActiveWeakWords() {
+        const defaultWeak = ['crucial', 'undermine', 'deliberate', 'nevertheless', 'hypothesis', 'subtle', 'inevitable', 'abandon'];
+        let dynamicWeak = [];
+        if (window.ShirAmiramAnalytics) {
+          const anState = window.ShirAmiramAnalytics.loadAnalyticsState();
+          const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : A.VOCAB;
+          const queue = window.ShirAmiramAnalytics.buildReviewQueue(anState, pool, 12) || [];
+          dynamicWeak = queue.map(w => w.word.toLowerCase());
+        }
+        return Array.from(new Set([...dynamicWeak, ...defaultWeak]));
+      }
+
       // Close dock button
       if ($('btn-dock-close')) {
         $('btn-dock-close').addEventListener('click', () => {
@@ -1752,10 +1820,44 @@
         });
       }
 
-      function openMediaDock(title, subtitle, icon, loadFn) {
+      function updateDockHeaderFromTrack(track, platform, index, total) {
+        if (!track) return;
+        const prefix = total > 1 ? `[${index + 1}/${total}] ` : '';
+        if ($('dock-track-title')) $('dock-track-title').textContent = `${prefix}${track.song_title} — ${track.artist}`;
+        if ($('dock-track-subtitle')) $('dock-track-subtitle').textContent = `מילת יעד: ${track.word} (${track.hebrew_translation || ''}) • ${track.genre || 'Music'}`;
+        if ($('dock-media-icon')) $('dock-media-icon').textContent = platform === 'spotify' ? '♫' : '▶';
+        if ($('dock-external-link')) {
+          $('dock-external-link').href = platform === 'spotify'
+            ? `https://open.spotify.com/track/${track.spotify_id}`
+            : `https://www.youtube.com/watch?v=${track.youtube_id}&t=${track.timestamp_sec || 0}s`;
+        }
+      }
+
+      if ($('btn-dock-prev')) {
+        $('btn-dock-prev').addEventListener('click', () => {
+          if (!mediaPlayer || !$('dock-embed-container')) return;
+          const res = mediaPlayer.prevTrack($('dock-embed-container'));
+          if (res && res.ok && res.track) {
+            updateDockHeaderFromTrack(res.track, mediaPlayer.playlistPlatform, res.playlistIndex, res.totalTracks);
+          }
+        });
+      }
+
+      if ($('btn-dock-next')) {
+        $('btn-dock-next').addEventListener('click', () => {
+          if (!mediaPlayer || !$('dock-embed-container')) return;
+          const res = mediaPlayer.nextTrack($('dock-embed-container'));
+          if (res && res.ok && res.track) {
+            updateDockHeaderFromTrack(res.track, mediaPlayer.playlistPlatform, res.playlistIndex, res.totalTracks);
+          }
+        });
+      }
+
+      function openMediaDock(title, subtitle, icon, loadFn, externalUrl) {
         if ($('dock-track-title')) $('dock-track-title').textContent = title;
         if ($('dock-track-subtitle')) $('dock-track-subtitle').textContent = subtitle;
         if ($('dock-media-icon')) $('dock-media-icon').textContent = icon;
+        if ($('dock-external-link') && externalUrl) $('dock-external-link').href = externalUrl;
         if ($('dock-embed-container')) {
           $('dock-embed-container').innerHTML = '';
           loadFn($('dock-embed-container'));
@@ -1778,48 +1880,147 @@
         listEl.innerHTML = items.map(m => lyricsAgent ? lyricsAgent.formatMnemonicCard(m).html : '').join('');
 
         // Attach play handlers
-        listEl.querySelectorAll('.btn-play-youtube').forEach(btn => {
+        listEl.querySelectorAll('.btn-play-youtube').forEach((btn, idx) => {
           btn.addEventListener('click', () => {
             const ytId = btn.dataset.youtubeId;
             const ts = parseFloat(btn.dataset.timestamp) || 0;
             const card = btn.closest('.popular-song-card');
             const title = card ? card.querySelector('h4').textContent : 'YouTube Music';
-            openMediaDock(title, 'YouTube Video Stream', '▶', (container) => {
+            const extUrl = `https://www.youtube.com/watch?v=${ytId}&t=${ts}s`;
+            openMediaDock(title, `YouTube Video Stream (${ts}s)`, '▶', (container) => {
               if (mediaPlayer) {
-                mediaPlayer.loadYouTube(ytId, container);
+                mediaPlayer.playlist = items.slice();
+                mediaPlayer.playlistIndex = idx;
+                mediaPlayer.playlistPlatform = 'youtube';
+                mediaPlayer.loadYouTube(ytId, container, { start: ts, autoplay: 1 });
                 mediaPlayer.seekTo(ts);
               }
-            });
+            }, extUrl);
           });
         });
 
-        listEl.querySelectorAll('.btn-play-spotify').forEach(btn => {
+        listEl.querySelectorAll('.btn-play-spotify').forEach((btn, idx) => {
           btn.addEventListener('click', () => {
             const spId = btn.dataset.spotifyId;
             const card = btn.closest('.popular-song-card');
             const title = card ? card.querySelector('h4').textContent : 'Spotify Track';
+            const extUrl = `https://open.spotify.com/track/${spId}`;
             openMediaDock(title, 'Spotify Audio Stream', '♫', (container) => {
-              if (mediaPlayer) mediaPlayer.loadSpotify(spId, container);
-            });
+              if (mediaPlayer) {
+                mediaPlayer.playlist = items.slice();
+                mediaPlayer.playlistIndex = idx;
+                mediaPlayer.playlistPlatform = 'spotify';
+                mediaPlayer.loadSpotify(spId, container);
+              }
+            }, extUrl);
           });
         });
       }
 
       if (lyricsAgent && window.POPULAR_SONG_MENTIONS_DATA) {
+        let selectedGenre = 'all';
+        let currentSmartPlaylist = null;
+
         renderPopularSongs(window.POPULAR_SONG_MENTIONS_DATA);
+
+        // Genre filter pills
+        document.querySelectorAll('.genre-pill-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            selectedGenre = btn.dataset.genre || 'all';
+            document.querySelectorAll('.genre-pill-btn').forEach(b => {
+              const active = b.dataset.genre === selectedGenre;
+              b.setAttribute('aria-pressed', String(active));
+              b.className = active
+                ? 'genre-pill-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold min-h-[44px]'
+                : 'genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]';
+            });
+            const pool = selectedGenre === 'all'
+              ? window.POPULAR_SONG_MENTIONS_DATA
+              : window.POPULAR_SONG_MENTIONS_DATA.filter(m => m.genre === selectedGenre);
+            renderPopularSongs(pool);
+          });
+        });
+
+        // Build Smart Playlist (Max words + Genius explanations)
+        if ($('btn-build-smart-playlist')) {
+          $('btn-build-smart-playlist').addEventListener('click', () => {
+            const weak = getActiveWeakWords();
+            currentSmartPlaylist = lyricsAgent.buildGenrePlaylist({
+              genre: selectedGenre,
+              targetWords: weak,
+              maxTracks: 8
+            });
+            if ($('smart-playlist-summary')) {
+              $('smart-playlist-summary').classList.remove('hidden');
+            }
+            if ($('smart-playlist-title')) {
+              $('smart-playlist-title').textContent = `🎧 פלייליסט חכם: ${currentSmartPlaylist.genreLabelHe}`;
+            }
+            if ($('smart-playlist-stats')) {
+              $('smart-playlist-stats').textContent = `${currentSmartPlaylist.totalTracks} שירים נבחרו • מכסים ${currentSmartPlaylist.totalUniqueWords} מילות אמיר"ם ייחודיות (${currentSmartPlaylist.weakWordsCovered.length} מילים חלשות) + הסברי Genius מלאים!`;
+            }
+            if ($('link-external-yt-playlist') && currentSmartPlaylist.youtubePlaylistUrl) {
+              $('link-external-yt-playlist').href = currentSmartPlaylist.youtubePlaylistUrl;
+            }
+            if ($('smart-playlist-words')) {
+              $('smart-playlist-words').innerHTML = currentSmartPlaylist.coveredWordsList.map(w =>
+                `<span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-950/90 text-emerald-300 border border-emerald-700/50 font-bold" dir="ltr">${esc(w)}</span>`
+              ).join('');
+            }
+            renderPopularSongs(currentSmartPlaylist.tracks);
+          });
+        }
+
+        if ($('btn-play-smart-yt')) {
+          $('btn-play-smart-yt').addEventListener('click', () => {
+            if (!currentSmartPlaylist || !currentSmartPlaylist.tracks.length || !mediaPlayer) return;
+            const first = currentSmartPlaylist.tracks[0];
+            openMediaDock(
+              `[1/${currentSmartPlaylist.totalTracks}] ${first.song_title} — ${first.artist}`,
+              `מילת יעד: ${first.word} • ${currentSmartPlaylist.genreLabelHe}`,
+              '▶',
+              (container) => {
+                mediaPlayer.loadPlaylist(currentSmartPlaylist.tracks, 'youtube', container);
+              },
+              currentSmartPlaylist.youtubePlaylistUrl || `https://www.youtube.com/watch?v=${first.youtube_id}`
+            );
+          });
+        }
+
+        if ($('btn-play-smart-sp')) {
+          $('btn-play-smart-sp').addEventListener('click', () => {
+            if (!currentSmartPlaylist || !currentSmartPlaylist.tracks.length || !mediaPlayer) return;
+            const first = currentSmartPlaylist.tracks[0];
+            openMediaDock(
+              `[1/${currentSmartPlaylist.totalTracks}] ${first.song_title} — ${first.artist}`,
+              `מילת יעד: ${first.word} • ${currentSmartPlaylist.genreLabelHe}`,
+              '♫',
+              (container) => {
+                mediaPlayer.loadPlaylist(currentSmartPlaylist.tracks, 'spotify', container);
+              },
+              `https://open.spotify.com/track/${first.spotify_id}`
+            );
+          });
+        }
 
         if ($('popular-search')) {
           $('popular-search').addEventListener('input', (e) => {
             const q = e.target.value.trim().toLowerCase();
             if (!q) {
-              renderPopularSongs(window.POPULAR_SONG_MENTIONS_DATA);
+              const pool = selectedGenre === 'all'
+                ? window.POPULAR_SONG_MENTIONS_DATA
+                : window.POPULAR_SONG_MENTIONS_DATA.filter(m => m.genre === selectedGenre);
+              renderPopularSongs(pool);
               return;
             }
             const filtered = window.POPULAR_SONG_MENTIONS_DATA.filter(m => 
               m.word.toLowerCase().includes(q) ||
               m.song_title.toLowerCase().includes(q) ||
               m.artist.toLowerCase().includes(q) ||
-              (m.hebrew_translation && m.hebrew_translation.includes(q))
+              (m.genre && m.genre.toLowerCase().includes(q)) ||
+              (m.hebrew_translation && m.hebrew_translation.includes(q)) ||
+              (m.genius_annotation && m.genius_annotation.toLowerCase().includes(q)) ||
+              (Array.isArray(m.secondary_words) && m.secondary_words.some(sw => sw.toLowerCase().includes(q)))
             );
             renderPopularSongs(filtered);
           });
@@ -1827,22 +2028,20 @@
 
         if ($('btn-show-all-popular')) {
           $('btn-show-all-popular').addEventListener('click', () => {
+            selectedGenre = 'all';
             if ($('popular-search')) $('popular-search').value = '';
+            if ($('smart-playlist-summary')) $('smart-playlist-summary').classList.add('hidden');
+            document.querySelectorAll('.genre-pill-btn').forEach(b => {
+              const active = b.dataset.genre === 'all';
+              b.setAttribute('aria-pressed', String(active));
+            });
             renderPopularSongs(window.POPULAR_SONG_MENTIONS_DATA);
           });
         }
 
         if ($('btn-filter-weak-popular')) {
           $('btn-filter-weak-popular').addEventListener('click', () => {
-            const defaultWeak = ['crucial', 'undermine', 'deliberate', 'nevertheless', 'hypothesis', 'subtle', 'inevitable', 'abandon'];
-            let dynamicWeak = [];
-            if (window.ShirAmiramAnalytics) {
-              const anState = window.ShirAmiramAnalytics.loadAnalyticsState();
-              const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : A.VOCAB;
-              const queue = window.ShirAmiramAnalytics.buildReviewQueue(anState, pool, 12) || [];
-              dynamicWeak = queue.map(w => w.word.toLowerCase());
-            }
-            const weak = Array.from(new Set([...dynamicWeak, ...defaultWeak]));
+            const weak = getActiveWeakWords();
             const res = lyricsAgent.getWeakWordMentions(weak);
             const filtered = Object.values(res.mentions).filter(Boolean);
             renderPopularSongs(filtered);

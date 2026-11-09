@@ -1,4 +1,4 @@
-// ShirAmiram — Unified Media Player (YouTube IFrame API, Spotify Embed & Fallback Audio)
+// ShirAmiram — Unified Media Player (YouTube IFrame API, Spotify Embed, Playlist Queue & Fallback Audio)
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     module.exports = factory();
@@ -30,7 +30,20 @@
     if (opts.autoplay) params.set('autoplay', '1');
     if (opts.start != null) params.set('start', String(Math.floor(opts.start)));
     if (opts.controls != null) params.set('controls', opts.controls ? '1' : '0');
+    if (Array.isArray(opts.playlist) && opts.playlist.length > 0) {
+      const validIds = opts.playlist.filter(isValidYouTubeId).map(x => x.trim());
+      if (validIds.length > 0) {
+        params.set('playlist', validIds.join(','));
+      }
+    }
     return `https://www.youtube.com/embed/${cleanId}?${params.toString()}`;
+  }
+
+  function getYouTubeWatchPlaylistUrl(videoIds) {
+    if (!Array.isArray(videoIds)) return null;
+    const valid = videoIds.filter(isValidYouTubeId).map(x => x.trim());
+    if (valid.length === 0) return null;
+    return `https://www.youtube.com/watch_videos?video_ids=${valid.join(',')}`;
   }
 
   function getSpotifyEmbedUrl(id) {
@@ -51,10 +64,14 @@
       this.currentTime = 0;
       this.duration = 0;
       this.volume = 1.0;
+      this.playlist = [];
+      this.playlistIndex = 0;
+      this.playlistPlatform = 'youtube';
       this.listeners = {
         stateChange: [],
         timeUpdate: [],
-        error: []
+        error: [],
+        playlistChange: []
       };
       this.timer = null;
     }
@@ -80,24 +97,42 @@
         isPlaying: this.isPlaying,
         currentTime: this.currentTime,
         duration: this.duration,
-        volume: this.volume
+        volume: this.volume,
+        playlistIndex: this.playlistIndex,
+        playlistLength: this.playlist.length
       };
     }
 
-    loadYouTube(videoId, containerElement) {
+    getPlaylistState() {
+      const ytIds = this.playlist.map(t => t && t.youtube_id).filter(isValidYouTubeId);
+      return {
+        totalTracks: this.playlist.length,
+        currentIndex: this.playlistIndex,
+        currentTrack: this.playlist[this.playlistIndex] || null,
+        platform: this.playlistPlatform,
+        youtubePlaylistUrl: getYouTubeWatchPlaylistUrl(ytIds)
+      };
+    }
+
+    loadYouTube(videoId, containerElement, options) {
       if (!isValidYouTubeId(videoId)) {
         this.emit('error', { message: 'Invalid YouTube ID' });
         return { ok: false, error: 'Invalid YouTube ID' };
       }
       this.pause();
+      const opts = options || {};
       this.mode = 'youtube';
       this.currentId = videoId.trim();
-      this.currentTime = 0;
+      this.currentTime = opts.start ? Math.max(0, Number(opts.start) || 0) : 0;
       this.duration = 180; // default estimated duration
 
       if (containerElement && typeof document !== 'undefined') {
         const iframe = document.createElement('iframe');
-        iframe.src = getYouTubeEmbedUrl(this.currentId, { autoplay: 0 });
+        iframe.src = getYouTubeEmbedUrl(this.currentId, {
+          autoplay: opts.autoplay ? 1 : 0,
+          start: this.currentTime > 0 ? this.currentTime : undefined,
+          playlist: opts.playlist
+        });
         iframe.width = '100%';
         iframe.height = '100%';
         iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
@@ -138,6 +173,62 @@
       return { ok: true, mode: 'spotify', id: this.currentId };
     }
 
+    loadPlaylist(tracks, platform, containerElement) {
+      if (!Array.isArray(tracks) || tracks.length === 0) {
+        return { ok: false, error: 'Empty playlist' };
+      }
+      const validTracks = tracks.filter(t => t && (isValidYouTubeId(t.youtube_id) || isValidSpotifyId(t.spotify_id)));
+      if (validTracks.length === 0) {
+        return { ok: false, error: 'No valid playable tracks in playlist' };
+      }
+      this.playlist = validTracks.map(t => Object.assign({}, t));
+      this.playlistIndex = 0;
+      this.playlistPlatform = platform === 'spotify' ? 'spotify' : 'youtube';
+      return this._playCurrentPlaylistTrack(containerElement);
+    }
+
+    _playCurrentPlaylistTrack(containerElement) {
+      const track = this.playlist[this.playlistIndex];
+      if (!track) return { ok: false, error: 'No track at index' };
+
+      let res;
+      if (this.playlistPlatform === 'spotify' && isValidSpotifyId(track.spotify_id)) {
+        res = this.loadSpotify(track.spotify_id, containerElement);
+      } else if (isValidYouTubeId(track.youtube_id)) {
+        const restIds = this.playlist
+          .slice(this.playlistIndex + 1)
+          .map(t => t.youtube_id)
+          .filter(isValidYouTubeId);
+        res = this.loadYouTube(track.youtube_id, containerElement, {
+          start: track.timestamp_sec || 0,
+          playlist: restIds
+        });
+      } else if (isValidSpotifyId(track.spotify_id)) {
+        res = this.loadSpotify(track.spotify_id, containerElement);
+      } else {
+        return { ok: false, error: 'Track lacks valid ID' };
+      }
+
+      this.emit('playlistChange', this.getPlaylistState());
+      return Object.assign({}, res, {
+        playlistIndex: this.playlistIndex,
+        totalTracks: this.playlist.length,
+        track
+      });
+    }
+
+    nextTrack(containerElement) {
+      if (!this.playlist.length) return { ok: false, error: 'No active playlist' };
+      this.playlistIndex = (this.playlistIndex + 1) % this.playlist.length;
+      return this._playCurrentPlaylistTrack(containerElement);
+    }
+
+    prevTrack(containerElement) {
+      if (!this.playlist.length) return { ok: false, error: 'No active playlist' };
+      this.playlistIndex = (this.playlistIndex - 1 + this.playlist.length) % this.playlist.length;
+      return this._playCurrentPlaylistTrack(containerElement);
+    }
+
     loadFallback(config) {
       this.pause();
       const cfg = config || {};
@@ -154,13 +245,12 @@
       this.isPlaying = true;
       this.emit('stateChange', this.getState());
 
-      // Internal tick simulation
       if (typeof setInterval !== 'undefined') {
         this.timer = setInterval(() => {
           if (!this.isPlaying) return;
           this.currentTime += 0.25;
           if (this.duration > 0 && this.currentTime >= this.duration) {
-            this.currentTime = 0; // loop
+            this.currentTime = 0;
           }
           this.emit('timeUpdate', { currentTime: this.currentTime, duration: this.duration });
         }, 250);
@@ -192,6 +282,7 @@
   MediaPlayer.isValidYouTubeId = isValidYouTubeId;
   MediaPlayer.isValidSpotifyId = isValidSpotifyId;
   MediaPlayer.getYouTubeEmbedUrl = getYouTubeEmbedUrl;
+  MediaPlayer.getYouTubeWatchPlaylistUrl = getYouTubeWatchPlaylistUrl;
   MediaPlayer.getSpotifyEmbedUrl = getSpotifyEmbedUrl;
   MediaPlayer.getSpotifyTrackUrl = getSpotifyTrackUrl;
 

@@ -84,3 +84,43 @@ test('5. Non-mutating behavior on frozen inputs and graceful malformed handling'
     uncoveredList: []
   });
 });
+
+test('6. Genius explanation and annotation metadata exist on all 70 catalog entries', () => {
+  assert.ok(mentionsData.length >= 70, `Expected >= 70 songs, got ${mentionsData.length}`);
+  const agent = new Agent(mentionsData);
+
+  mentionsData.forEach((m, idx) => {
+    assert.ok(m.genre && typeof m.genre === 'string', `Missing genre at ${idx}`);
+    assert.ok(m.genius_url && m.genius_url.startsWith('https://genius.com/'), `Invalid genius_url at ${idx}`);
+    assert.ok(m.genius_annotation && m.genius_annotation.length > 20, `Missing genius_annotation at ${idx}`);
+  });
+
+  const mention = agent.findMentionsForWord('crucial')[0];
+  const genius = agent.getGeniusExplanation(mention);
+  assert.equal(genius.word, 'crucial');
+  assert.ok(genius.geniusUrl.startsWith('https://genius.com/'));
+  assert.ok(genius.annotationHe.includes('Lose Yourself'));
+  assert.ok(genius.html.includes('הסבר Genius'));
+});
+
+test('7. buildGenrePlaylist maximizes unique Amiram target words per musical genre', () => {
+  const agent = new Agent(mentionsData);
+  const genres = agent.getAvailableGenres();
+  assert.ok(genres.length >= 5);
+
+  const rockPl = agent.buildGenrePlaylist({
+    genre: 'Rock',
+    targetWords: ['achieve', 'conflict', 'authority', 'evidence'],
+    maxTracks: 6
+  });
+  assert.equal(rockPl.genre, 'Rock');
+  assert.equal(rockPl.tracks.length, 6);
+  assert.ok(rockPl.totalUniqueWords >= 10, `Expected >= 10 unique words covered in 6 tracks, got ${rockPl.totalUniqueWords}`);
+  assert.ok(rockPl.weakWordsCovered.includes('achieve'));
+  assert.ok(rockPl.youtubePlaylistUrl.startsWith('https://www.youtube.com/watch_videos?video_ids='));
+  assert.equal(rockPl.spotifyTrackUrls.length, 6);
+  rockPl.tracks.forEach(t => {
+    assert.equal(t.genre, 'Rock');
+    assert.ok(t.geniusExplanation.length > 10);
+  });
+});

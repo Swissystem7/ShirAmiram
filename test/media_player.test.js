@@ -67,3 +67,31 @@ test('5. Graceful handling of invalid media loads', () => {
   assert.equal(resSp.ok, false);
   assert.ok(resSp.error != null);
 });
+
+test('6. Playlist queue management (loadPlaylist, nextTrack, prevTrack) and YouTube watch_videos URL', () => {
+  const player = new MediaPlayer();
+  const sampleTracks = [
+    { word: 'crucial', song_title: 'Lose Yourself', artist: 'Eminem', youtube_id: '_Yhyp-_hX2s', spotify_id: '7lQ8MOhq6IN2w8Mgr6C34G', timestamp_sec: 33 },
+    { word: 'achieve', song_title: 'We Are The Champions', artist: 'Queen', youtube_id: '04854XqcfCY', spotify_id: '7ccI98COWII0ALOPVmHGnn', timestamp_sec: 48 }
+  ];
+
+  const loadRes = player.loadPlaylist(sampleTracks, 'youtube');
+  assert.equal(loadRes.ok, true);
+  assert.equal(loadRes.playlistIndex, 0);
+  assert.equal(loadRes.totalTracks, 2);
+  assert.equal(player.getState().currentId, '_Yhyp-_hX2s');
+
+  const plState = player.getPlaylistState();
+  assert.equal(plState.totalTracks, 2);
+  assert.equal(plState.youtubePlaylistUrl, 'https://www.youtube.com/watch_videos?video_ids=_Yhyp-_hX2s,04854XqcfCY');
+
+  const nextRes = player.nextTrack();
+  assert.equal(nextRes.ok, true);
+  assert.equal(nextRes.playlistIndex, 1);
+  assert.equal(player.getState().currentId, '04854XqcfCY');
+
+  const prevRes = player.prevTrack();
+  assert.equal(prevRes.ok, true);
+  assert.equal(prevRes.playlistIndex, 0);
+  assert.equal(player.getState().currentId, '_Yhyp-_hX2s');
+});
