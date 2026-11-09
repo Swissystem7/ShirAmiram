@@ -8,6 +8,28 @@
   'use strict';
 
   var DEFAULT_WINDOW_MS = 1500;
+
+  function loadKaraokeScoring() {
+    try { if (typeof require === 'function') return require('./karaoke_scoring.js'); } catch (err) {}
+    if (typeof globalThis !== 'undefined' && globalThis.ShirAmiramKaraokeScoring) return globalThis.ShirAmiramKaraokeScoring;
+    if (typeof self !== 'undefined' && self.ShirAmiramKaraokeScoring) return self.ShirAmiramKaraokeScoring;
+    return null;
+  }
+  function loadSpeedPitch() {
+    try { if (typeof require === 'function') return require('./audio_speed_pitch_calculator.js'); } catch (err) {}
+    if (typeof globalThis !== 'undefined' && globalThis.ShirAmiramAudioSpeedPitchCalculator) return globalThis.ShirAmiramAudioSpeedPitchCalculator;
+    if (typeof self !== 'undefined' && self.ShirAmiramAudioSpeedPitchCalculator) return self.ShirAmiramAudioSpeedPitchCalculator;
+    return null;
+  }
+  var karaokeScoring = loadKaraokeScoring();
+  var speedPitch = loadSpeedPitch();
+  var evaluatePhoneticMatch = karaokeScoring && karaokeScoring.evaluatePhoneticMatch
+    ? karaokeScoring.evaluatePhoneticMatch
+    : function () { return 0; };
+  var scaleTimestamp = speedPitch && speedPitch.scaleTimestamp
+    ? speedPitch.scaleTimestamp
+    : function (ms, rate) { var r = Number(rate); if (!isFinite(r) || r <= 0) return Number(ms) || 0; return (Number(ms) || 0) / r; };
+
   var BASE_POINTS = 100;
   var STREAK_2 = 1.2;
   var STREAK_3 = 1.5;
@@ -201,6 +223,10 @@
     for (var i = 0; i < keys.length; i++) {
       if (levenshtein(h, keys[i]) <= maxDistance(keys[i])) return true;
     }
+    // Phonetic tolerance from karaoke_scoring: score >= 0.8 counts as a hit.
+    try {
+      if (evaluatePhoneticMatch(target, heardWord) >= 0.8) return true;
+    } catch (err) { /* keep strict match result */ }
     return false;
   }
 
@@ -636,12 +662,37 @@
     };
   }
 
+
+  function setPlaybackRate(session, rate) {
+    if (!session || typeof session !== 'object') return null;
+    var r = Number(rate);
+    if (!isFinite(r) || r <= 0) r = 1;
+    session.playbackRate = r;
+    var bucket = session;
+    if (session.state && Array.isArray(session.state.words)) bucket = session.state;
+    if (Array.isArray(session.words)) bucket = session;
+    var words = Array.isArray(bucket.words) ? bucket.words : [];
+    bucket.playbackRate = r;
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      if (!w) continue;
+      if (w.originalWindowMs == null) w.originalWindowMs = w.windowMs;
+      if (w.originalTimeMs == null) w.originalTimeMs = w.timeMs;
+      w.windowMs = scaleTimestamp(w.originalWindowMs, r);
+      w.timeMs = scaleTimestamp(w.originalTimeMs, r);
+    }
+    return session;
+  }
+
   return {
     sanitize: sanitize,
     tokens: tokens,
     levenshtein: levenshtein,
     maxDistance: maxDistance,
     wordMatches: wordMatches,
+    setPlaybackRate: setPlaybackRate,
+    evaluatePhoneticMatch: evaluatePhoneticMatch,
+    scaleTimestamp: scaleTimestamp,
     utteranceMatches: utteranceMatches,
     isInWindow: isInWindow,
     streakMultiplier: streakMultiplier,
