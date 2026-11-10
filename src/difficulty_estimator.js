@@ -206,9 +206,49 @@
 		};
 	}
 
+	/**
+	 * Estimates an overall Amiram score (50 to 150) and CEFR exemption mapping based on accuracy / mastery.
+	 * - 50-84: Pre-academic / Basic (CEFR A2)
+	 * - 85-99: Basic exemption level 1 (CEFR B1)
+	 * - 100-119: Intermediate exemption level 2 (CEFR B2)
+	 * - 120-150: Full academic exemption (CEFR C1 - פטור אקדמי מלא)
+	 *
+	 * @param {number} accuracyRatio - Ratio between 0.0 and 1.0 (or accuracy percentage 0..100)
+	 * @returns {{ score: number, cefr: string, exemptionStatus: string }}
+	 */
+	function estimateAmiramScoreScale50To150(accuracyRatio) {
+		let ratio = typeof accuracyRatio === "number" && !isNaN(accuracyRatio) ? accuracyRatio : 0;
+		if (ratio > 1 && ratio <= 100) {
+			ratio = ratio / 100;
+		}
+		const clamped = Math.max(0, Math.min(1, ratio));
+		const score = Math.round(50 + clamped * 100);
+
+		let cefr = "A2";
+		let exemptionStatus = "No Exemption (Pre-Academic)";
+
+		if (score >= 120) {
+			cefr = "C1";
+			exemptionStatus = "Full Academic Exemption (פטור אקדמי מלא)";
+		} else if (score >= 100) {
+			cefr = "B2";
+			exemptionStatus = "Advanced 2 Exemption";
+		} else if (score >= 85) {
+			cefr = "B1";
+			exemptionStatus = "Advanced 1 Exemption";
+		}
+
+		return {
+			score,
+			cefr,
+			exemptionStatus,
+		};
+	}
+
 	return {
 		calculateComplexityScore,
 		estimateAmiramLevel,
+		estimateAmiramScoreScale50To150,
 		WEIGHTS,
 	};
 });
