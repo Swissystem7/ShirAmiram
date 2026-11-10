@@ -11,9 +11,10 @@
 			o.estimatedScore != null ? String(o.estimatedScore) : "85-99";
 		const masteredCount = Number(o.masteredCount);
 		const totalVocab = Number(o.totalVocab);
-		const mastered = Number.isFinite(masteredCount) ? masteredCount : 0;
+		const masteredRaw = Number.isFinite(masteredCount) ? masteredCount : 0;
 		const total =
 			Number.isFinite(totalVocab) && totalVocab > 0 ? totalVocab : 300;
+		const mastered = Math.min(Math.max(masteredRaw, 0), total);
 		const weak = Array.isArray(o.weakCategories)
 			? o.weakCategories.map(String)
 			: [];
