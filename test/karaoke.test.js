@@ -614,3 +614,32 @@ test('setPlaybackRate exports are functions', () => {
   assert.equal(typeof K.scaleTimestamp, 'function');
   assert.equal(typeof K.evaluatePhoneticMatch, 'function');
 });
+
+test('teleprompter Amiram-word highlight invariant: syncs data-vocab-id and active state', () => {
+  const line = 'We seek peace and comfort in the storm';
+  const targets = [
+    { id: 'v101', word: 'peace', he: 'שלום' },
+    { id: 'v102', word: 'comfort', he: 'נחמה' }
+  ];
+
+  // Invariant 1: highlighted Amiram words contain exact data-vocab-id matching the vocab source
+  const markup = K.highlightTeleprompterText(line, targets, 0);
+  assert.ok(markup.includes('data-vocab-id="v101"'));
+  assert.ok(markup.includes('data-vocab-id="v102"'));
+  assert.ok(markup.includes('data-word="peace"'));
+  assert.ok(markup.includes('data-word="comfort"'));
+
+  // Invariant 2: only the active vocab index has is-active class
+  assert.ok(markup.includes('<mark class="karaoke-amiram-word is-active" data-vocab-id="v101"'));
+  assert.ok(markup.includes('<mark class="karaoke-amiram-word" data-vocab-id="v102"'));
+
+  // Invariant 3: advance active word index
+  const nextMarkup = K.highlightTeleprompterText(line, targets, 1);
+  assert.ok(!nextMarkup.includes('data-vocab-id="v101">peace</mark class="karaoke-amiram-word is-active"'));
+  assert.ok(nextMarkup.includes('<mark class="karaoke-amiram-word" data-vocab-id="v101"'));
+  assert.ok(nextMarkup.includes('<mark class="karaoke-amiram-word is-active" data-vocab-id="v102"'));
+
+  // Invariant 4: non-matching lines remain unchanged without spurious marks
+  const plain = K.highlightTeleprompterText('No keywords here', targets, 0);
+  assert.equal(plain, 'No keywords here');
+});

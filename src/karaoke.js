@@ -446,6 +446,38 @@
     };
   }
 
+  function highlightTeleprompterText(lineText, vocabWords, activeWordIndex) {
+    if (typeof lineText !== 'string' || !lineText) return '';
+    var targets = Array.isArray(vocabWords) ? vocabWords : [];
+    if (!targets.length) return lineText;
+
+    // Build map and list of target words with vocabId
+    var sortedTargets = targets.map(function (tw, idx) {
+      var wordStr = typeof tw === 'string' ? tw : (tw && tw.word ? tw.word : '');
+      var vocabId = (tw && (tw.vocabId != null ? tw.vocabId : (tw.id != null ? tw.id : idx)));
+      return {
+        word: wordStr,
+        clean: sanitize(wordStr),
+        vocabId: vocabId,
+        index: idx
+      };
+    }).filter(function (t) { return Boolean(t.clean); });
+
+    // Match word tokens in line text
+    return lineText.replace(/[\p{L}\p{N}']+/gu, function (token) {
+      var cleanToken = sanitize(token);
+      for (var i = 0; i < sortedTargets.length; i++) {
+        var t = sortedTargets[i];
+        if (cleanToken === t.clean || wordMatches(cleanToken, t.clean)) {
+          var isActive = activeWordIndex != null && (t.index === activeWordIndex || t.vocabId === activeWordIndex);
+          var activeClass = isActive ? ' is-active' : '';
+          return '<mark class="karaoke-amiram-word' + activeClass + '" data-vocab-id="' + t.vocabId + '" data-word="' + t.clean + '">' + token + '</mark>';
+        }
+      }
+      return token;
+    });
+  }
+
   // Melody-only instrumental via Web Audio (no vocals). Uses pentatonic tune.
   function createInstrumentalPlayer(audioCtx, tune, noteSec) {
     var TUNE = tune || [220, 261.63, 293.66, 329.63, 392, 329.63, 293.66, 261.63, 220, 261.63, 329.63, 392, 440, 392, 329.63];
@@ -703,6 +735,7 @@
     createInstrumentalPlayer: createInstrumentalPlayer,
     statusClass: statusClass,
     finishSession: finishSession,
+    highlightTeleprompterText: highlightTeleprompterText,
     INFLECTIONS: INFLECTIONS,
     DEFAULT_WINDOW_MS: DEFAULT_WINDOW_MS,
     BASE_POINTS: BASE_POINTS,
