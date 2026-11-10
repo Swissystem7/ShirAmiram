@@ -180,7 +180,7 @@
           </div>
         </div>
         <div id="rc-passage-body" class="rc-passage-box space-y-3" dir="ltr"></div>
-        <p class="text-xs text-muted">💡 רמז: לחצו על מילת אמיר״ם מודגשת בטקסט להשמעת הגייה 🔊 ומשמעותה.</p>
+        <div id="rc-word-inspector" class="p-2 bg-stage-900/90 rounded border border-indigo-500/20 text-xs text-muted" aria-live="polite">💡 רמז: לחצו על מילת אמיר״ם מודגשת בטקסט להשמעת הגייה 🔊 ומשמעותה.</div>
       </div>
 
       <!-- Restatement Modes Bar -->
@@ -752,12 +752,17 @@
           formattedLines = res.formattedHtml;
           lineNum = res.endLineNumber;
           if (passage.target_vocab) {
-            formattedLines = window.AmiramReading.highlightVocab(formattedLines, passage.target_vocab);
+            formattedLines = window.AmiramReading.highlightVocab(formattedLines, passage.target_vocab, AMIRAM_VOCAB);
           }
         }
         pDiv.innerHTML = formattedLines;
         body.appendChild(pDiv);
       });
+
+      const rcInsp = $('rc-word-inspector');
+      if (rcInsp) {
+        rcInsp.innerHTML = '💡 רמז: לחצו על מילת אמיר״ם מודגשת בטקסט להשמעת הגייה 🔊 ומשמעותה.';
+      }
 
       body.querySelectorAll('.rc-target-word').forEach(el => {
         el.addEventListener('click', (e) => {
@@ -765,6 +770,19 @@
           const word = el.getAttribute('data-word');
           if (word && window.ShirAmiramSpeech) {
             window.ShirAmiramSpeech.speak(word);
+          }
+          const entry = (window.AmiramReading && typeof window.AmiramReading.lookupTargetWord === 'function')
+            ? window.AmiramReading.lookupTargetWord(word, AMIRAM_VOCAB)
+            : null;
+          if (rcInsp && word) {
+            const tr = (entry && entry.translation) || el.getAttribute('data-translation') || '';
+            const def = (entry && entry.definition) ? ' <span class="text-slate-400">(' + esc(entry.definition) + ')</span>' : '';
+            rcInsp.innerHTML = '<strong dir="ltr" class="text-indigo-300">' + esc(entry ? entry.word : word) + '</strong>'
+              + ' <button type="button" id="btn-rc-speak" class="text-xs px-2 py-0.5 rounded bg-stage-800 text-indigo-300 hover:text-white" style="min-height:44px">🔊 השמע</button>'
+              + (tr ? ' — <span class="font-bold text-slate-100">' + esc(tr) + '</span>' : '')
+              + def;
+            const spk = $('btn-rc-speak');
+            if (spk) spk.onclick = () => { if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(word); };
           }
         });
       });
@@ -919,7 +937,10 @@
             'reference': 'התייחסות'
           };
           const typeLabel = typeNames[item.type] ? ' • ' + typeNames[item.type] : '';
-          badge.innerHTML = '<span class="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-700/50">📍 ' + esc(item.line_reference) + typeLabel + '</span>';
+          const refLabel = (window.AmiramReading && typeof window.AmiramReading.formatLineReference === 'function')
+            ? (window.AmiramReading.formatLineReference(item.line_reference) || item.line_reference)
+            : item.line_reference;
+          badge.innerHTML = '<span class="px-2 py-0.5 rounded bg-indigo-950/80 border border-indigo-700/50">📍 ' + esc(refLabel) + typeLabel + '</span>';
           div.appendChild(badge);
         } else if (item.grammar_target) {
           const badge = document.createElement('div');
@@ -952,7 +973,11 @@
               right = res.isCorrect;
               fb.textContent = right ? '✅ נכון מאוד! הניסוח שומר על משמעות זהה.' : '❌ לא נכון. (' + (res.error_type || 'עיוות משמעות') + ')';
             } else if (typeof item.correct_index === 'number') {
-              right = (optIdx === item.correct_index);
+              const evalRes = (window.AmiramReading && typeof window.AmiramReading.evaluateAnswer === 'function')
+                ? window.AmiramReading.evaluateAnswer(item, optIdx)
+                : { isCorrect: optIdx === item.correct_index, explanation: explanation };
+              right = evalRes.isCorrect;
+              explanation = evalRes.explanation || explanation;
               fb.textContent = right ? '✅ תשובה נכונה בהבנת הנקרא!' : '❌ לא נכון. התשובה הנכונה: ' + (item.options[item.correct_index] || '');
             } else {
               right = String(optText) === String(answer);
