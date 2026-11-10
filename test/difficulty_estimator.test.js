@@ -3,6 +3,7 @@ const { test } = require("node:test");
 const {
 	calculateComplexityScore,
 	estimateAmiramLevel,
+	estimateAmiramScoreScale50To150,
 	WEIGHTS,
 } = require("../src/difficulty_estimator.js");
 
@@ -326,4 +327,42 @@ test("14. morphological prefixes elevate the complexity score", () => {
 
 	const unprefixedResult = estimateAmiramLevel("ancient");
 	assert.equal(unprefixedResult.factors.morphology, 0.0);
+});
+
+test("15. estimateAmiramScoreScale50To150 maps accuracy to 50-150 scale and CEFR levels", () => {
+	// Boundary & clamping check
+	assert.deepEqual(estimateAmiramScoreScale50To150(0), {
+		score: 50,
+		cefr: "A2",
+		exemptionStatus: "No Exemption (Pre-Academic)",
+	});
+
+	assert.deepEqual(estimateAmiramScoreScale50To150(1.0), {
+		score: 150,
+		cefr: "C1",
+		exemptionStatus: "Full Academic Exemption (פטור אקדמי מלא)",
+	});
+
+	// Range checks
+	const midResult = estimateAmiramScoreScale50To150(0.70); // 50 + 70 = 120 -> C1
+	assert.equal(midResult.score, 120);
+	assert.equal(midResult.cefr, "C1");
+
+	const b1Result = estimateAmiramScoreScale50To150(0.40); // 50 + 40 = 90 -> B1
+	assert.equal(b1Result.score, 90);
+	assert.equal(b1Result.cefr, "B1");
+
+	const b2Result = estimateAmiramScoreScale50To150(0.55); // 50 + 55 = 105 -> B2
+	assert.equal(b2Result.score, 105);
+	assert.equal(b2Result.cefr, "B2");
+
+	// Percentage input handling (e.g. 85%)
+	const percentResult = estimateAmiramScoreScale50To150(85); // 50 + 85 = 135 -> C1
+	assert.equal(percentResult.score, 135);
+	assert.equal(percentResult.cefr, "C1");
+
+	// Invalid input fallbacks
+	assert.equal(estimateAmiramScoreScale50To150(null).score, 50);
+	assert.equal(estimateAmiramScoreScale50To150(undefined).score, 50);
+	assert.equal(estimateAmiramScoreScale50To150("invalid").score, 50);
 });
