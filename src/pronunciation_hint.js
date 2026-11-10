@@ -143,31 +143,23 @@
 		return syllables;
 	}
 
-	function syllabifyWord(word) {
-		if (typeof word !== "string") {
-			return { syllables: [], hyphenated: "" };
-		}
-		const cleaned = word
-			.trim()
-			.toLowerCase()
-			.replace(/[^a-z]/g, "");
+	function syllabifySingleWord(cleaned) {
 		if (cleaned.length === 0) {
-			return { syllables: [], hyphenated: "" };
+			return [];
 		}
 		if (cleaned.length <= 3) {
-			return { syllables: [cleaned], hyphenated: cleaned };
+			return [cleaned];
 		}
 
 		if (cleaned === "fragile") {
-			return { syllables: ["frag", "ile"], hyphenated: "frag-ile" };
+			return ["frag", "ile"];
 		}
 
 		for (const suffix of SPECIAL_SUFFIXES) {
 			if (cleaned.endsWith(suffix) && cleaned.length > suffix.length) {
 				const prefix = cleaned.slice(0, cleaned.length - suffix.length);
 				const prefixSyllables = splitWordCore(prefix);
-				const syllables = [...prefixSyllables, suffix];
-				return { syllables, hyphenated: syllables.join("-") };
+				return [...prefixSyllables, suffix];
 			}
 		}
 
@@ -178,16 +170,14 @@
 				/[aeiouy]/.test(prefix)
 			) {
 				const prefixSyllables = splitWordCore(prefix);
-				const syllables = [...prefixSyllables, "ile"];
-				return { syllables, hyphenated: syllables.join("-") };
+				return [...prefixSyllables, "ile"];
 			}
 		}
 
 		if (cleaned.endsWith("ckle") && cleaned.length >= 5) {
 			const prefix = cleaned.slice(0, cleaned.length - 2);
 			const prefixSyllables = splitWordCore(prefix);
-			const syllables = [...prefixSyllables, "le"];
-			return { syllables, hyphenated: syllables.join("-") };
+			return [...prefixSyllables, "le"];
 		}
 
 		if (cleaned.endsWith("le") && cleaned.length >= 4) {
@@ -196,13 +186,30 @@
 				const prefix = cleaned.slice(0, cleaned.length - 3);
 				if (/[aeiouy]/.test(prefix)) {
 					const prefixSyllables = splitWordCore(prefix);
-					const syllables = [...prefixSyllables, cleaned.slice(-3)];
-					return { syllables, hyphenated: syllables.join("-") };
+					return [...prefixSyllables, cleaned.slice(-3)];
 				}
 			}
 		}
 
-		const syllables = splitWordCore(cleaned);
+		return splitWordCore(cleaned);
+	}
+
+	function syllabifyWord(word) {
+		if (typeof word !== "string") {
+			return { syllables: [], hyphenated: "" };
+		}
+		const parts = word
+			.trim()
+			.toLowerCase()
+			.split(/[-–—]+/)
+			.map((part) => part.replace(/[^a-z]/g, ""))
+			.filter((part) => part.length > 0);
+
+		if (parts.length === 0) {
+			return { syllables: [], hyphenated: "" };
+		}
+
+		const syllables = parts.flatMap((part) => syllabifySingleWord(part));
 		return { syllables, hyphenated: syllables.join("-") };
 	}
 

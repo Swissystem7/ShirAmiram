@@ -209,3 +209,89 @@ test("normalizes uppercase and strips surrounding punctuation", () => {
 	assert.equal(hintRes.hyphenated, "phrase");
 	assert.equal(hintRes.phoneticGuide, "fras");
 });
+
+test("edge cases: compound words with hyphens", () => {
+	const wellKnown = generatePhoneticHint("well-known");
+	assert.deepEqual(wellKnown.syllables, ["well", "known"]);
+	assert.equal(wellKnown.hyphenated, "well-known");
+	assert.equal(wellKnown.phoneticGuide, `well-n${"own"}`);
+
+	const stateOfTheArt = syllabifyWord("state-of-the-art");
+	assert.deepEqual(stateOfTheArt.syllables, ["state", "of", "the", "art"]);
+	assert.equal(stateOfTheArt.hyphenated, "state-of-the-art");
+
+	const selfIndependent = syllabifyWord("self-independent");
+	assert.deepEqual(selfIndependent.syllables, [
+		"self",
+		"in",
+		"de",
+		"pen",
+		"dent",
+	]);
+	assert.equal(selfIndependent.hyphenated, "self-in-de-pen-dent");
+
+	const enEmDash = syllabifyWord("  --well–known—nation--  ");
+	assert.deepEqual(enEmDash.syllables, ["well", "known", "na", "tion"]);
+	assert.equal(enEmDash.hyphenated, "well-known-na-tion");
+});
+
+test("edge cases: single-letter words (vowels, consonants, uppercase, padded)", () => {
+	const letters = ["a", "I", "o", "b", "x", "y", "z"];
+	for (const letter of letters) {
+		const expected = letter.toLowerCase();
+		const syllRes = syllabifyWord(`  '${letter}'! `);
+		assert.deepEqual(syllRes, {
+			syllables: [expected],
+			hyphenated: expected,
+		});
+
+		const hintRes = generatePhoneticHint(letter);
+		assert.deepEqual(hintRes, {
+			syllables: [expected],
+			hyphenated: expected,
+			phoneticGuide: expected,
+		});
+	}
+
+	const hyphenatedSingleLetters = syllabifyWord("a-b-c");
+	assert.deepEqual(hyphenatedSingleLetters, {
+		syllables: ["a", "b", "c"],
+		hyphenated: "a-b-c",
+	});
+});
+
+test("edge cases: special characters, unicode, digits, and hyphen-only strings", () => {
+	const nonAlphaInputs = [
+		"---",
+		" - - -- ",
+		"–—",
+		"שלום",
+		"123-456",
+		"!@#$%^&*()",
+		"🚀✨🎯",
+	];
+	for (const input of nonAlphaInputs) {
+		assert.deepEqual(syllabifyWord(input), {
+			syllables: [],
+			hyphenated: "",
+		});
+		assert.deepEqual(generatePhoneticHint(input), {
+			syllables: [],
+			hyphenated: "",
+			phoneticGuide: "",
+		});
+	}
+
+	const mixedSpecial = generatePhoneticHint("123@NaTiOn#456");
+	assert.deepEqual(mixedSpecial, {
+		syllables: ["na", "tion"],
+		hyphenated: "na-tion",
+		phoneticGuide: "na-shun",
+	});
+
+	const mixedFragile = syllabifyWord("$$fragile!!");
+	assert.deepEqual(mixedFragile, {
+		syllables: ["frag", "ile"],
+		hyphenated: "frag-ile",
+	});
+});
