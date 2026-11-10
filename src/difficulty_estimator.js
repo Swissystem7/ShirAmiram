@@ -245,10 +245,60 @@
 		};
 	}
 
+	/**
+	 * Computes overall difficulty statistics for a list of words or lyrics text from a song.
+	 * Useful for teleprompter and song playlist difficulty estimation.
+	 *
+	 * @param {string|string[]} lyricsInput - Raw text or array of word tokens
+	 * @returns {{ avgScore: number, levelCounts: { A_foundational: number, B_intermediate: number, C_advanced: number }, totalWords: number }}
+	 */
+	function estimateSongVocabDifficulty(lyricsInput) {
+		let words = [];
+		if (typeof lyricsInput === "string") {
+			words = lyricsInput.split(/\s+/).filter(Boolean);
+		} else if (Array.isArray(lyricsInput)) {
+			words = lyricsInput;
+		}
+
+		const levelCounts = {
+			A_foundational: 0,
+			B_intermediate: 0,
+			C_advanced: 0,
+		};
+
+		if (!words.length) {
+			return {
+				avgScore: 0,
+				levelCounts,
+				totalWords: 0,
+			};
+		}
+
+		let totalScore = 0;
+		let validCount = 0;
+
+		for (const w of words) {
+			const res = estimateAmiramLevel(w);
+			if (res.word) {
+				validCount++;
+				totalScore += res.score;
+				levelCounts[res.level] = (levelCounts[res.level] || 0) + 1;
+			}
+		}
+
+		const avgScore = validCount > 0 ? Number((totalScore / validCount).toFixed(2)) : 0;
+		return {
+			avgScore,
+			levelCounts,
+			totalWords: validCount,
+		};
+	}
+
 	return {
 		calculateComplexityScore,
 		estimateAmiramLevel,
 		estimateAmiramScoreScale50To150,
+		estimateSongVocabDifficulty,
 		WEIGHTS,
 	};
 });
