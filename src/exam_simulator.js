@@ -8,6 +8,37 @@
 }(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
+  const WORD_CHAR = /\w/;
+
+  function isWordChar(ch) {
+    return ch !== undefined && WORD_CHAR.test(ch);
+  }
+
+  /**
+   * Find the first case-insensitive whole-word occurrence of `word` in `text`
+   * (same semantics as /\bword\b/i, with `word` matched literally).
+   * Uses no dynamically built RegExp.
+   * @param {string} text
+   * @param {string} word
+   * @returns {number} start index, or -1
+   */
+  function findWholeWord(text, word) {
+    const haystack = text.toLowerCase();
+    const needle = word.toLowerCase();
+    let from = 0;
+    while (from <= haystack.length) {
+      const i = haystack.indexOf(needle, from);
+      if (i === -1) return -1;
+      const end = i + needle.length;
+      if (isWordChar(text[i - 1]) !== isWordChar(text[i]) &&
+          isWordChar(text[end - 1]) !== isWordChar(text[end])) {
+        return i;
+      }
+      from = i + 1;
+    }
+    return -1;
+  }
+
   /**
    * Generate distractors (wrong options) for a target word from the same level or dataset.
    * @param {Object} targetWord
@@ -60,8 +91,10 @@
     const sentence = wordItem.sample_sentence || '';
     
     // Case-insensitive replacement of whole word
-    const regex = new RegExp(`\\b${word}\\b`, 'i');
-    let clozeSentence = sentence.replace(regex, '______');
+    const at = findWholeWord(sentence, word);
+    let clozeSentence = at === -1
+      ? sentence
+      : sentence.slice(0, at) + '______' + sentence.slice(at + word.length);
     if (!clozeSentence.includes('______')) {
       // Fallback if inflected in sentence
       const firstSpace = sentence.indexOf(' ');
