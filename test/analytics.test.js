@@ -96,3 +96,12 @@ test('5. buildReviewQueue prioritizes words with most errors', () => {
   assert.equal(queue[0].id, 1, 'Card with 3 mistakes must be first');
   assert.equal(queue[1].id, 2, 'Card with 1 mistake must be second');
 });
+  test('6. getWeakWordsQueueLength returns 0 for empty queue', () => {
+    const emptyState = { version: 1, cards: {}, attempts: [] };
+    const len = Analytics.getWeakWordsQueueLength(emptyState, vocab);
+    assert.equal(len, 0);
+  });
+  test('7. getWeakWordsEmptyMessage returns Hebrew empty state string', () => {
+    const msg = Analytics.getWeakWordsEmptyMessage();
+    assert.equal(msg, 'אין מילים חלשות לבחינה');
+  });
