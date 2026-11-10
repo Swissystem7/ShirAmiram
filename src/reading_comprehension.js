@@ -235,6 +235,7 @@
 		}
 		return result;
 	}
+	// End of parseLineReference – added for test coverage clarity
 
 	/**
 	 * Format a line reference as a short Hebrew label for the answer feedback UI.
