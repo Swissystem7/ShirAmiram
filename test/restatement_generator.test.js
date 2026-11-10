@@ -2,6 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const {
 	generateRestatementQuestion,
+	buildRestatedSentence,
 } = require("../src/restatement_generator.js");
 
 test("generateRestatementQuestion: shape and correct synonym", () => {
@@ -97,4 +98,81 @@ test("generateRestatementQuestion: unrelated distractor present", () => {
 		(c) => c !== "plentiful" && c !== "scarce" && c !== "not plentiful",
 	);
 	assert.equal(extras.length, 1);
+});
+
+test("generateRestatementQuestion: prevents identical synonym/restated sentence when customSynonym matches targetWord", () => {
+	const original = "The garden was abundant with flowers.";
+	const q = generateRestatementQuestion({
+		originalSentence: original,
+		targetWord: "abundant",
+		customSynonym: "abundant",
+		seed: 12,
+	});
+	const correctChoice = q.choices[q.correctIndex];
+	assert.notEqual(correctChoice.toLowerCase(), "abundant");
+	assert.equal(correctChoice, "plentiful");
+	assert.notEqual(q.restatedSentence, q.originalSentence);
+	assert.equal(q.restatedSentence, "The garden was plentiful with flowers.");
+
+	// Case-insensitive and whitespace-padded identical customSynonym
+	const qCase = generateRestatementQuestion({
+		originalSentence: "The ruins looked Ancient.",
+		targetWord: "ancient",
+		customSynonym: "  ANCIENT  ",
+		seed: 13,
+	});
+	assert.notEqual(qCase.choices[qCase.correctIndex].toLowerCase(), "ancient");
+	assert.equal(qCase.choices[qCase.correctIndex], "archaic");
+	assert.notEqual(qCase.restatedSentence, qCase.originalSentence);
+	assert.equal(qCase.restatedSentence, "The ruins looked Archaic.");
+});
+
+test("generateRestatementQuestion: prevents identical synonym and restatedSentence for unknown targetWord", () => {
+	const original = "The phenomenon was ubiquitous across the continent.";
+	const q = generateRestatementQuestion({
+		originalSentence: original,
+		targetWord: "ubiquitous",
+		seed: 14,
+	});
+	const correctChoice = q.choices[q.correctIndex];
+	assert.notEqual(correctChoice.toLowerCase(), "ubiquitous");
+	assert.notEqual(q.restatedSentence, q.originalSentence);
+	assert.ok(q.restatedSentence.includes(correctChoice));
+
+	// Unknown targetWord with identical customSynonym
+	const qCustomSame = generateRestatementQuestion({
+		originalSentence: original,
+		targetWord: "ubiquitous",
+		customSynonym: "ubiquitous",
+		seed: 15,
+	});
+	assert.notEqual(
+		qCustomSame.choices[qCustomSame.correctIndex].toLowerCase(),
+		"ubiquitous",
+	);
+	assert.notEqual(qCustomSame.restatedSentence, qCustomSame.originalSentence);
+});
+
+test("buildRestatedSentence: never returns a sentence identical to originalSentence", () => {
+	const original = "Glass can be fragile.";
+	const restatedDiff = buildRestatedSentence(original, "fragile", "delicate");
+	assert.equal(restatedDiff, "Glass can be delicate.");
+	assert.notEqual(restatedDiff, original);
+
+	// Direct call with synonym identical to targetWord
+	const restatedSame = buildRestatedSentence(original, "fragile", "fragile");
+	assert.notEqual(restatedSame, original);
+	assert.notEqual(restatedSame.toLowerCase(), original.toLowerCase());
+
+	// Case-insensitive identical synonym
+	const restatedCase = buildRestatedSentence(original, "fragile", "FRAGILE");
+	assert.notEqual(restatedCase.toLowerCase(), original.toLowerCase());
+
+	// Target word missing from sentence still produces non-identical restatement
+	const restatedMissing = buildRestatedSentence(
+		original,
+		"nonexistent",
+		"nonexistent",
+	);
+	assert.notEqual(restatedMissing, original);
 });
