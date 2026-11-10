@@ -58,3 +58,11 @@ test("negative masteredCount treated as zero", () => {
 	});
 	assert.match(md, /0\/300 \(0%\)/);
 });
+
+test("non-numeric inputs default properly", () => {
+	const md = formatStudentMarkdownReport({
+		masteredCount: "invalid",
+		totalVocab: "invalid",
+	});
+	assert.match(md, /0\/300 \(0%\)/);
+});
