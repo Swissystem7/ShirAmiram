@@ -81,3 +81,33 @@ test('7. every generated question across 300 words is well-formed', () => {
     assert.ok(q.options.includes(q.answer), `Options missing answer for ${q.word}`);
   });
 });
+
+test('8. pickDistractors does not treat missing POS tags as a same-POS match', () => {
+  const pool = [
+    { id: 1, word: 'target' },
+    { id: 2, word: 'apple' },
+    { id: 3, word: 'banana', part_of_speech: '' },
+    { id: 4, word: 'cherry', part_of_speech: null },
+    { id: 5, word: 'run', part_of_speech: 'verb' },
+    { id: 6, word: 'jump', part_of_speech: 'Verb' },
+    { id: 7, word: 'swim', part_of_speech: ' verb ' },
+    { id: 8, word: 'quick', part_of_speech: 'adjective' },
+    { id: 9 },
+    null
+  ];
+
+  // Untagged target: POS filter is skipped, so tagged words are eligible too.
+  const untagged = Exam.pickDistractors({ id: 1, word: 'target' }, pool, 3);
+  assert.equal(untagged.length, 3);
+  assert.ok(untagged.some(w => ['run', 'jump', 'swim', 'quick'].includes(w)));
+  assert.ok(!untagged.includes('target'));
+
+  // Tagged target: POS matched case/whitespace-insensitively; untagged words excluded.
+  const tagged = Exam.pickDistractors({ id: 5, word: 'walk', part_of_speech: 'VERB' }, pool, 3);
+  assert.deepEqual(tagged.slice().sort(), ['jump', 'run', 'swim']);
+
+  // buildQuestion still yields 4 unique options with untagged data.
+  const q = Exam.buildQuestion({ id: 1, word: 'target', sample_sentence: 'Hit the target now.' }, pool);
+  assert.equal(new Set(q.options).size, 4);
+  assert.ok(q.options.includes('target'));
+});

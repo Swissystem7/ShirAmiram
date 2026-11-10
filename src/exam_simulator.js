@@ -15,22 +15,31 @@
    * @param {number} count (default 3)
    * @returns {Array<string>} 3 distinct wrong options
    */
-  function pickDistractors(targetWord, allWords, count = 3) {
-    const target = targetWord.word.toLowerCase();
-    // Prefer words from the same part of speech and level
-    const candidates = (allWords || []).filter(w => {
-      const candidateWord = w.word.toLowerCase();
-      return candidateWord !== target && w.part_of_speech === targetWord.part_of_speech;
-    });
+  function normalizePos(pos) {
+    if (typeof pos !== 'string') return '';
+    return pos.trim().toLowerCase();
+  }
 
-    const fallback = (allWords || []).filter(w => w.word.toLowerCase() !== target);
+  function pickDistractors(targetWord, allWords, count = 3) {
+    if (!targetWord || typeof targetWord.word !== 'string') return [];
+    const target = targetWord.word.toLowerCase();
+    const targetPos = normalizePos(targetWord.part_of_speech);
+    const valid = (Array.isArray(allWords) ? allWords : []).filter(
+      w => w && typeof w.word === 'string' && w.word.trim() !== '' && w.word.toLowerCase() !== target
+    );
+
+    // Prefer words from the same part of speech. A missing POS tag on either
+    // side is never treated as a match (undefined === undefined is not "same POS").
+    const candidates = targetPos ? valid.filter(w => normalizePos(w.part_of_speech) === targetPos) : [];
+
+    const fallback = valid;
     const pool = candidates.length >= count ? candidates : fallback;
 
     // Deterministic selection based on word character codes
     const seed = target.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
     const shuffled = pool.slice().sort((a, b) => {
-      const valA = (a.word.charCodeAt(0) * seed + a.id) % 100;
-      const valB = (b.word.charCodeAt(0) * seed + b.id) % 100;
+      const valA = (a.word.charCodeAt(0) * seed + (Number(a.id) || 0)) % 100;
+      const valB = (b.word.charCodeAt(0) * seed + (Number(b.id) || 0)) % 100;
       return valA - valB;
     });
 
