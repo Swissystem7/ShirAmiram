@@ -58,6 +58,63 @@
 		"garden",
 	]);
 
+	function escapeRegExp(value) {
+		return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+
+	function matchCase(replacement, reference) {
+		const rep = String(replacement);
+		const ref = String(reference);
+		if (!rep || !ref) return rep;
+		if (ref === ref.toUpperCase() && ref !== ref.toLowerCase()) {
+			return rep.toUpperCase();
+		}
+		if (
+			ref[0] === ref[0].toUpperCase() &&
+			ref[0] !== ref[0].toLowerCase() &&
+			ref.slice(1) === ref.slice(1).toLowerCase()
+		) {
+			return rep[0].toUpperCase() + rep.slice(1);
+		}
+		return rep;
+	}
+
+	function buildRestatedSentence(originalSentence, targetWord, synonym) {
+		const orig = String(originalSentence || "");
+		const target = String(targetWord || "").trim();
+		const syn = String(synonym || "").trim();
+
+		if (!orig) {
+			return syn ? `In other words, ${syn}.` : "";
+		}
+
+		let candidate = orig;
+		if (target) {
+			const wordBoundaryRe = new RegExp(`\\b${escapeRegExp(target)}\\b`, "gi");
+			if (wordBoundaryRe.test(orig)) {
+				candidate = orig.replace(wordBoundaryRe, (match) =>
+					matchCase(syn, match),
+				);
+			} else {
+				const looseRe = new RegExp(escapeRegExp(target), "gi");
+				if (looseRe.test(orig)) {
+					candidate = orig.replace(looseRe, (match) => matchCase(syn, match));
+				}
+			}
+		}
+
+		if (norm(candidate) === norm(orig)) {
+			const trimmedOrig = orig.trim();
+			const fallbackSyn =
+				syn && norm(syn) !== norm(target) ? syn : `similar to ${target || syn}`;
+			candidate = trimmedOrig
+				? `${trimmedOrig} (in other words: ${fallbackSyn})`
+				: `In other words: ${fallbackSyn}`;
+		}
+
+		return candidate;
+	}
+
 	function pickUnrelated(exclude, rand) {
 		const pool = UNRELATED_POOL.filter((w) => !exclude.has(w));
 		if (pool.length === 0) return "object";
@@ -73,19 +130,34 @@
 			seedFrom(opts.seed ?? `${originalSentence}|${targetWord}`),
 		);
 
-		const synonyms = clusterEngine.findSynonyms(targetWord);
-		const antonyms = clusterEngine.findAntonyms(targetWord);
+		const synonyms = clusterEngine
+			.findSynonyms(targetWord)
+			.filter((s) => norm(s) && norm(s) !== target);
+		const antonyms = clusterEngine
+			.findAntonyms(targetWord)
+			.filter((a) => norm(a) && norm(a) !== target);
 
-		let correct =
-			opts.customSynonym != null && String(opts.customSynonym).trim()
-				? String(opts.customSynonym).trim()
-				: synonyms[0] || targetWord;
-		correct = String(correct);
+		const customSyn =
+			opts.customSynonym != null ? String(opts.customSynonym).trim() : "";
+		let correct = "";
+		if (customSyn && norm(customSyn) !== target) {
+			correct = customSyn;
+		} else if (synonyms.length > 0) {
+			correct = String(synonyms[0]);
+		} else if (target) {
+			correct = `equivalent to ${targetWord.trim()}`;
+		} else {
+			correct = customSyn || "synonym";
+		}
 
+		const customAnt =
+			opts.customAntonym != null ? String(opts.customAntonym).trim() : "";
 		const antonym =
-			opts.customAntonym != null && String(opts.customAntonym).trim()
-				? String(opts.customAntonym).trim()
-				: antonyms[0] || "opposite";
+			customAnt &&
+			norm(customAnt) !== target &&
+			norm(customAnt) !== norm(correct)
+				? customAnt
+				: antonyms.find((a) => norm(a) !== norm(correct)) || "opposite";
 
 		const exclude = new Set(
 			[target, norm(correct), norm(antonym)].filter(Boolean),
@@ -96,14 +168,20 @@
 		const choices = [correct, antonym, negationTrap, unrelated];
 		shuffleInPlace(choices, rand);
 		const correctIndex = choices.indexOf(correct);
+		const restatedSentence = buildRestatedSentence(
+			originalSentence,
+			targetWord,
+			correct,
+		);
 
 		return {
 			originalSentence,
+			restatedSentence,
 			targetWord,
 			choices,
 			correctIndex,
 		};
 	}
 
-	return { generateRestatementQuestion };
+	return { generateRestatementQuestion, buildRestatedSentence };
 });
