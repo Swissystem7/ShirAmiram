@@ -66,3 +66,12 @@ test("non-numeric inputs default properly", () => {
 	});
 	assert.match(md, /0\/300 \(0%\)/);
 });
+
+test("includes restatements score when provided", () => {
+	const md = formatStudentMarkdownReport({
+		studentName: "רוני",
+		restatementsScore: "80%",
+	});
+	assert.match(md, /תרגול שחבור \(Restatements\)/);
+	assert.match(md, /80%/);
+});

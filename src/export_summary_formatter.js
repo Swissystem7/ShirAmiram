@@ -26,6 +26,21 @@
 		const weakList = weak.length
 			? weak.map((w) => `- ${w}`).join("\n")
 			: "- אין תחומים חלשים שדווחו";
+
+		const restatementsScore =
+			o.restatementsScore != null ? String(o.restatementsScore) : null;
+		const restatementsLine = restatementsScore
+			? `| תרגול שחבור (Restatements) | ${restatementsScore} |`
+			: null;
+
+		const tableRows = [
+			`| רמת CEFR | ${cefrLevel} |`,
+			`| ציון אמיר״ם צפוי | ${estimatedScore} |`,
+			restatementsLine,
+			`| פטור | ${exempt ? "כן" : "לא / לבדיקה"} |`,
+			`| אוצר מילים | ${mastered}/${total} (${pct}%) |`,
+		].filter(Boolean);
+
 		return [
 			`# דוח התקדמות — ${studentName}`,
 			``,
@@ -35,10 +50,7 @@
 			``,
 			`| מדד | ערך |`,
 			`| --- | --- |`,
-			`| רמת CEFR | ${cefrLevel} |`,
-			`| ציון אמיר״ם צפוי | ${estimatedScore} |`,
-			`| פטור | ${exempt ? "כן" : "לא / לבדיקה"} |`,
-			`| אוצר מילים | ${mastered}/${total} (${pct}%) |`,
+			...tableRows,
 			``,
 			`## תחומים לחיזוק`,
 			``,
