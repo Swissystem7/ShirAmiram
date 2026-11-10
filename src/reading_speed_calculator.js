@@ -5,7 +5,12 @@
 	function calculateWPM(wordCount, durationSeconds) {
 		const words = Number(wordCount);
 		const secs = Number(durationSeconds);
-		if (!Number.isFinite(words) || !Number.isFinite(secs) || secs < 1 || words < 0) {
+		if (
+			!Number.isFinite(words) ||
+			!Number.isFinite(secs) ||
+			secs < 1 ||
+			words < 0
+		) {
 			return 0;
 		}
 		return Math.round(words / (secs / 60));
@@ -13,7 +18,7 @@
 
 	function classifyPacingTier(wpm) {
 		const n = Number(wpm);
-		const safe = Number.isFinite(n) ? n : 0;
+		const safe = Number.isFinite(n) && n >= 0 ? n : 0;
 		let tier = "RUSHED";
 		if (safe < 100) tier = "TOO_SLOW";
 		else if (safe <= 180) tier = "OPTIMAL_PACING";
