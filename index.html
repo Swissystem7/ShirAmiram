@@ -1182,11 +1182,18 @@
     // --- Suno Studio Controller ---
     let SUNO_SONGS = [];
     async function initSunoStudio() {
+      if (window.ShirAmiramSuno && typeof window.ShirAmiramSuno.generateFullSuite === 'function' && Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) {
+        SUNO_SONGS = window.ShirAmiramSuno.generateFullSuite(AMIRAM_VOCAB);
+        renderSunoStudio();
+      }
       try {
         const res = await fetch('data/suno_prompts/generated_songs.json');
         if (res.ok) {
-          SUNO_SONGS = await res.json();
-          renderSunoStudio();
+          const fetched = await res.json();
+          if (!SUNO_SONGS.length && Array.isArray(fetched) && fetched.length > 0) {
+            SUNO_SONGS = fetched;
+            renderSunoStudio();
+          }
         }
       } catch (e) {}
     }
@@ -1205,6 +1212,15 @@
       $('suno-words-tags').innerHTML = song.target_words.map(w => '<span class="px-2 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/50 text-xs font-bold">' + esc(w) + '</span>').join('');
       $('suno-style-text').textContent = song.style_prompt;
       $('suno-lyrics-text').textContent = song.lyrics;
+      if (window.ShirAmiramAudio && typeof window.ShirAmiramAudio.checkAudioAvailability === 'function') {
+        const audioInfo = window.ShirAmiramAudio.checkAudioAvailability(song.audio_path);
+        if ($('suno-status-badge')) $('suno-status-badge').textContent = 'סטטוס: ' + (song.status || audioInfo.status);
+        if ($('suno-audio-status')) $('suno-audio-status').textContent = audioInfo.message;
+        if ($('suno-audio-player')) {
+          $('suno-audio-player').classList.toggle('hidden', !audioInfo.available);
+          if (audioInfo.available && song.audio_path) $('suno-audio-player').src = song.audio_path;
+        }
+      }
 
       $('btn-copy-suno-style').onclick = () => {
         navigator.clipboard.writeText(song.style_prompt).then(() => {
