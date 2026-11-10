@@ -20,7 +20,12 @@
 		{ base: "listen", prep: "to", wrong: ["at", "for"], he: "להקשיב ל-" },
 		{ base: "wait", prep: "for", wrong: ["to", "on"], he: "לחכות ל-" },
 		{ base: "belong", prep: "to", wrong: ["with", "in"], he: "שייך ל-" },
-		{ base: "apologize", prep: "for", wrong: ["about", "to"], he: "להתנצל על-" },
+		{
+			base: "apologize",
+			prep: "for",
+			wrong: ["about", "to"],
+			he: "להתנצל על-",
+		},
 		{ base: "rely", prep: "on", wrong: ["in", "to"], he: "להסתמך על-" },
 		{ base: "succeed", prep: "in", wrong: ["at", "to"], he: "להצליח ב-" },
 		{ base: "believe", prep: "in", wrong: ["to", "on"], he: "להאמין ב-" },
@@ -32,16 +37,31 @@
 
 	function findCollocations(text) {
 		if (typeof text !== "string" || !text.trim()) return [];
-		const lower = text.toLowerCase().replace(/[^\w\s]/g, " ");
+		const lower = text
+			.toLowerCase()
+			.replace(/[^\w\s]/g, " ")
+			.replace(/\s+/g, " ")
+			.trim();
 		const out = [];
+		const seen = new Set();
 		for (const c of COLLOCATIONS) {
-			const re = new RegExp(`\\b${c.base}\\s+(\\w+)\\b`, "i");
-			const m = lower.match(re);
-			if (!m) continue;
+			if (seen.has(c.base)) continue;
+			const re = new RegExp(`\\b${c.base}\\s+(?=(\\w+)\\b)`, "gi");
+			const matches = Array.from(lower.matchAll(re));
+			if (matches.length === 0) continue;
+			const preferred =
+				matches.find((m) => m[1] === c.prep || c.wrong.includes(m[1])) ||
+				matches.find((m) => m[1] !== c.base) ||
+				matches[0];
+			const prep = preferred[1].toLowerCase();
+			const fullPhrase = `${c.base} ${prep}`;
+			if (seen.has(fullPhrase)) continue;
+			seen.add(c.base);
+			seen.add(fullPhrase);
 			out.push({
 				baseWord: c.base,
-				preposition: m[1],
-				fullPhrase: `${c.base} ${m[1]}`,
+				preposition: prep,
+				fullPhrase,
 				hebrewMeaning: c.he,
 			});
 		}
@@ -49,11 +69,42 @@
 	}
 
 	function validatePreposition(baseWord, usedPreposition) {
-		const base = String(baseWord || "").toLowerCase();
-		const used = String(usedPreposition || "").toLowerCase();
+		const rawBase = String(baseWord || "")
+			.toLowerCase()
+			.replace(/\s+/g, " ")
+			.trim();
+		let used = String(usedPreposition || "")
+			.toLowerCase()
+			.replace(/\s+/g, " ")
+			.trim();
+
+		let base = rawBase;
+		if (rawBase.includes(" ")) {
+			const parts = rawBase.split(" ");
+			if (usedPreposition === undefined && parts.length === 2) {
+				base = parts[0];
+				used = parts[1];
+			} else {
+				const found = COLLOCATIONS.find((x) => parts.includes(x.base));
+				if (found) {
+					base = found.base;
+					if (usedPreposition === undefined) {
+						const idx = parts.indexOf(found.base);
+						if (idx !== -1 && idx + 1 < parts.length) {
+							used = parts[idx + 1];
+						}
+					}
+				}
+			}
+		}
+
 		const c = COLLOCATIONS.find((x) => x.base === base);
 		if (!c) {
-			return { isValid: false, expectedPreposition: null, commonMistake: false };
+			return {
+				isValid: false,
+				expectedPreposition: null,
+				commonMistake: false,
+			};
 		}
 		const isValid = used === c.prep;
 		return {
