@@ -295,3 +295,150 @@ test("14. index.html wires Reading Comprehension word translation inspector, for
 	);
 	assert.match(html, /AmiramReading\.evaluateAnswer\(item,\s*optIdx\)/);
 });
+
+test("15. parseLineReference resilience for malformed inputs, reversed ranges, and unusual characters", () => {
+	// Malformed and non-string inputs
+	for (const badInput of [null, undefined, 42, {}, [], true, "", "   \t\n  "]) {
+		const res = AmiramReading.parseLineReference(badInput);
+		assert.equal(res.scope, "none");
+		assert.equal(res.paragraphs, null);
+		assert.equal(res.lines, null);
+		assert.equal(res.concluding, false);
+		assert.equal(res.raw, "");
+	}
+
+	// Unrecognized / malformed text without valid numbers
+	for (const unknownInput of [
+		"Paragraph , lines",
+		"lines abc-def",
+		"Paragraph -3, line -1",
+		"???!@#$%^&*()",
+		"פסקה א שורה ב",
+	]) {
+		const res = AmiramReading.parseLineReference(unknownInput);
+		assert.equal(res.scope, "unknown");
+		assert.equal(res.paragraphs, null);
+		assert.equal(res.lines, null);
+		assert.equal(res.concluding, false);
+		assert.equal(res.raw, unknownInput.trim());
+	}
+
+	// Reversed line and paragraph ranges (hyphen and en-dash)
+	const reversedBoth = AmiramReading.parseLineReference(
+		"Paragraphs 5-2, lines 12-4",
+	);
+	assert.equal(reversedBoth.scope, "located");
+	assert.deepEqual(reversedBoth.paragraphs, [2, 5]);
+	assert.deepEqual(reversedBoth.lines, [4, 12]);
+
+	const reversedEnDash = AmiramReading.parseLineReference(
+		"Paragraph 4–1, lines 9–3",
+	);
+	assert.equal(reversedEnDash.scope, "located");
+	assert.deepEqual(reversedEnDash.paragraphs, [1, 4]);
+	assert.deepEqual(reversedEnDash.lines, [3, 9]);
+	assert.equal(
+		AmiramReading.formatLineReference("Paragraph 4–1, lines 9–3"),
+		"פסקאות 1-4, שורות 3-9",
+	);
+
+	// Unusual characters, extra whitespace, mixed casing, and partial trailing dashes
+	const noisy = AmiramReading.parseLineReference(
+		"  \t [pArAgRaPh   3,   LiNeS   8 - 2] (concluding sentence!) \n ",
+	);
+	assert.equal(noisy.scope, "located");
+	assert.deepEqual(noisy.paragraphs, [3, 3]);
+	assert.deepEqual(noisy.lines, [2, 8]);
+	assert.equal(noisy.concluding, true);
+
+	const trailingDash = AmiramReading.parseLineReference(
+		"Paragraph 2-, lines 7-",
+	);
+	assert.equal(trailingDash.scope, "located");
+	assert.deepEqual(trailingDash.paragraphs, [2, 2]);
+	assert.deepEqual(trailingDash.lines, [7, 7]);
+
+	const entireMixedCase = AmiramReading.parseLineReference("  ENTIRE TEXT  ");
+	assert.equal(entireMixedCase.scope, "entire");
+	assert.equal(entireMixedCase.paragraphs, null);
+	assert.equal(entireMixedCase.lines, null);
+});
+
+test("parseLineReference – empty and non-string inputs", () => {
+	assert.deepStrictEqual(AmiramReading.parseLineReference(""), {
+		scope: "none",
+		paragraphs: null,
+		lines: null,
+		concluding: false,
+		raw: "",
+	});
+	assert.deepStrictEqual(AmiramReading.parseLineReference(null), {
+		scope: "none",
+		paragraphs: null,
+		lines: null,
+		concluding: false,
+		raw: "",
+	});
+});
+
+test("parseLineReference – entire text", () => {
+	assert.deepStrictEqual(AmiramReading.parseLineReference("Entire text"), {
+		scope: "entire",
+		paragraphs: null,
+		lines: null,
+		concluding: false,
+		raw: "Entire text",
+	});
+});
+
+test("parseLineReference – reversed paragraph range", () => {
+	assert.deepStrictEqual(AmiramReading.parseLineReference("Paragraph 5-2"), {
+		scope: "located",
+		paragraphs: [2, 5],
+		lines: null,
+		concluding: false,
+		raw: "Paragraph 5-2",
+	});
+});
+
+test("parseLineReference – reversed line range", () => {
+	assert.deepStrictEqual(AmiramReading.parseLineReference("Lines 10-8"), {
+		scope: "located",
+		paragraphs: null,
+		lines: [8, 10],
+		concluding: false,
+		raw: "Lines 10-8",
+	});
+});
+
+test("parseLineReference – combined paragraph and line with concluding", () => {
+	assert.deepStrictEqual(
+		AmiramReading.parseLineReference(
+			"Paragraph 3, lines 4-6, concluding sentence",
+		),
+		{
+			scope: "located",
+			paragraphs: [3, 3],
+			lines: [4, 6],
+			concluding: true,
+			raw: "Paragraph 3, lines 4-6, concluding sentence",
+		},
+	);
+});
+
+test("parseLineReference – malformed numeric tokens", () => {
+	const result = AmiramReading.parseLineReference("Paragraph abc, lines xyz");
+	assert.strictEqual(result.scope, "unknown");
+	assert.strictEqual(result.raw, "Paragraph abc, lines xyz");
+	assert.deepStrictEqual(result.paragraphs, null);
+	assert.deepStrictEqual(result.lines, null);
+	assert.strictEqual(result.concluding, false);
+});
+
+test("parseLineReference – unexpected punctuation", () => {
+	const result = AmiramReading.parseLineReference("Paragraph 2; lines 3-5?");
+	// Should still capture the numbers despite punctuation
+	assert.strictEqual(result.scope, "located");
+	assert.deepStrictEqual(result.paragraphs, [2, 2]);
+	assert.deepStrictEqual(result.lines, [3, 5]);
+});
