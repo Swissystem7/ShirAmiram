@@ -101,3 +101,30 @@ test('8. loadState handles corrupted or empty storage gracefully', () => {
   assert.equal(state.version, 1);
   assert.deepEqual(state.cards, {});
 });
+
+test('9. recordReview updates card progress and daily statistics correctly', () => {
+  const now = new Date('2026-11-07T12:00:00Z');
+  let state = { version: 1, cards: {}, dailyStats: {} };
+
+  state = SRS.recordReview(state, '101', 'good', now);
+  assert.equal(state.cards['101'].box, 2);
+  assert.equal(state.cards['101'].reviewCount, 1);
+  assert.equal(state.cards['101'].correctCount, 1);
+
+  const stats = state.dailyStats['2026-11-07'];
+  assert.equal(stats.reviewedCount, 1);
+  assert.equal(stats.correctCount, 1);
+  assert.equal(stats.goodCount, 1);
+  assert.equal(stats.againCount, 0);
+
+  state = SRS.recordReview(state, '101', 'again', now);
+  assert.equal(state.cards['101'].box, 1);
+  assert.equal(state.cards['101'].reviewCount, 2);
+  assert.equal(state.cards['101'].correctCount, 1);
+
+  const updatedStats = state.dailyStats['2026-11-07'];
+  assert.equal(updatedStats.reviewedCount, 2);
+  assert.equal(updatedStats.correctCount, 1);
+  assert.equal(updatedStats.againCount, 1);
+  assert.equal(updatedStats.goodCount, 1);
+});
