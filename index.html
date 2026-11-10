@@ -59,10 +59,10 @@
       <span id="offline-badge" class="hidden text-xs px-2 py-0.5 rounded bg-amber-900/80 text-amber-200 border border-amber-700">מצב אופליין</span>
     </div>
     <div class="flex items-center gap-2">
-      <button id="btn-install-pwa" type="button" class="hidden text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 shadow" style="min-height:36px">📲 התקן אפליקציה</button>
+      <button id="btn-install-pwa" type="button" class="hidden text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 shadow" style="min-height:44px">📲 התקן אפליקציה</button>
     </div>
     <div class="flex gap-2">
-      <button id="btn-play" type="button" aria-label="ניגון" aria-pressed="false" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition">▶️</button>
+      <button id="btn-play" type="button" aria-label="ניגון" aria-pressed="false" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition" style="min-height:44px;min-width:44px">▶️</button>
       <span id="timer" class="font-mono" aria-label="זמן ניגון">00:00</span>
     </div>
   </header>
@@ -230,7 +230,7 @@
           <div class="srs-card-front p-6 flex flex-col justify-between rounded-xl">
             <div class="flex items-center justify-between">
               <span id="srs-card-level" class="text-xs px-2 py-1 rounded bg-stage-900 text-neon-pink font-semibold">רמה A</span>
-              <button id="srs-btn-speak" type="button" class="text-xs px-2 py-1 bg-stage-900 rounded hover:bg-stage-800 text-indigo-300 font-bold" title="השמע הגייה" style="min-height:36px">🔊 השמע</button>
+              <button id="srs-btn-speak" type="button" class="text-xs px-2 py-1 bg-stage-900 rounded hover:bg-stage-800 text-indigo-300 font-bold" title="השמע הגייה" style="min-height:44px">🔊 השמע</button>
             </div>
             <div class="my-6 text-center">
               <h2 id="srs-card-word" dir="ltr" class="text-3xl font-black text-indigo-300 mb-2">word</h2>
@@ -380,7 +380,7 @@
             <div id="teleprompter-vocab-tags" class="flex flex-wrap gap-1 mt-1"></div>
           </div>
           <div class="flex items-center gap-2">
-            <button id="btn-teleprompter-play" type="button" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow" style="min-height:36px">▶ נגן סנכרון</button>
+            <button id="btn-teleprompter-play" type="button" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow" style="min-height:44px">▶ נגן סנכרון</button>
           </div>
         </div>
 
@@ -578,7 +578,7 @@
         return '<tr>'
           + '<td class="p-2 border-t border-stage-800" dir="ltr"><span class="font-bold text-indigo-300">' + wordText + '</span>'
           + guideHtml
-          + ' <button type="button" class="btn-vocab-speak text-xs px-1.5 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" data-speak="' + wordText + '" title="השמע הגייה" style="min-height:30px">🔊</button>'
+          + ' <button type="button" class="btn-vocab-speak text-xs px-1.5 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" data-speak="' + wordText + '" title="השמע הגייה" style="min-height:44px;min-width:44px">🔊</button>'
           + '</td>'
           + '<td class="p-2 border-t border-stage-800"><span class="font-semibold text-slate-100">' + trText + '</span>' + defText + '</td>'
           + '<td class="p-2 border-t border-stage-800 text-xs text-slate-300">' + catText + '</td>'
@@ -607,7 +607,7 @@
     document.querySelectorAll('.vocab-badge').forEach((b) => b.addEventListener('click', () => {
       const entry = A.findWord(b.dataset.word);
       if (!entry) return;
-      $('insp-word').innerHTML = '<strong dir="ltr">' + esc(entry.word) + '</strong> <button type="button" id="btn-insp-speak" class="text-xs px-2 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" style="min-height:30px">🔊 השמע</button> – ' + esc(entry.translation)
+      $('insp-word').innerHTML = '<strong dir="ltr">' + esc(entry.word) + '</strong> <button type="button" id="btn-insp-speak" class="text-xs px-2 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" style="min-height:44px">🔊 השמע</button> – ' + esc(entry.translation)
         + '<br><em>סוג:</em> ' + esc(A.CATEGORY_HE[entry.category] || entry.category)
         + '<br><em>דוגמה:</em> <span dir="ltr">' + esc(entry.sample_sentence) + '</span>';
       const spk = $('btn-insp-speak');
@@ -1090,8 +1090,8 @@
               + '<div><strong class="text-base text-indigo-300" dir="ltr">' + esc(word) + '</strong> – <span class="font-bold text-white">' + esc(he) + '</span>'
               + '<p class="text-xs text-gray-300 mt-1">' + esc(def) + '</p></div>'
               + '<div class="flex gap-2">'
-              + '<button type="button" id="btn-add-word-srs" class="text-xs px-2.5 py-1 rounded bg-indigo-600 text-white font-bold hover:bg-indigo-500" style="min-height:30px">➕ הוסף ל-SRS</button>'
-              + '<button type="button" id="btn-speak-inspected" class="text-xs px-2 py-1 rounded bg-stage-800 text-indigo-300 font-bold hover:text-white" style="min-height:30px">🔊</button>'
+              + '<button type="button" id="btn-add-word-srs" class="text-xs px-2.5 py-1 rounded bg-indigo-600 text-white font-bold hover:bg-indigo-500" style="min-height:44px">➕ הוסף ל-SRS</button>'
+              + '<button type="button" id="btn-speak-inspected" class="text-xs px-2 py-1 rounded bg-stage-800 text-indigo-300 font-bold hover:text-white" style="min-height:44px;min-width:44px">🔊</button>'
               + '</div></div>';
 
             const addSrsBtn = $('btn-add-word-srs');
