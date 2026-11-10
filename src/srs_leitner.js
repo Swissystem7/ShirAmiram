@@ -172,6 +172,53 @@
     }
   }
 
+  /**
+   * Process a card review response, update card state in state object and record daily stats.
+   * @param {Object} state Current SRS state object
+   * @param {string|number} wordId
+   * @param {'again'|'hard'|'good'|'easy'} result
+   * @param {Date} [now]
+   * @returns {Object} Updated state object
+   */
+  function recordReview(state, wordId, result, now = new Date()) {
+    const nowDate = now instanceof Date ? now : new Date(now);
+    const key = String(wordId);
+    const currentState = state && state.cards ? state.cards[key] : null;
+    const nextCardState = calculateNextState(currentState || initProgress(key, nowDate), result, nowDate);
+
+    const dateKey = nowDate.toISOString().slice(0, 10);
+    const prevStats = (state && state.dailyStats && state.dailyStats[dateKey]) || {
+      reviewedCount: 0,
+      correctCount: 0,
+      againCount: 0,
+      hardCount: 0,
+      goodCount: 0,
+      easyCount: 0
+    };
+
+    const isCorrect = result === 'good' || result === 'easy';
+    const updatedStats = {
+      reviewedCount: prevStats.reviewedCount + 1,
+      correctCount: prevStats.correctCount + (isCorrect ? 1 : 0),
+      againCount: prevStats.againCount + (result === 'again' ? 1 : 0),
+      hardCount: prevStats.hardCount + (result === 'hard' ? 1 : 0),
+      goodCount: prevStats.goodCount + (result === 'good' ? 1 : 0),
+      easyCount: prevStats.easyCount + (result === 'easy' ? 1 : 0)
+    };
+
+    return {
+      version: (state && state.version) || 1,
+      cards: {
+        ...(state && state.cards ? state.cards : {}),
+        [key]: nextCardState
+      },
+      dailyStats: {
+        ...(state && state.dailyStats ? state.dailyStats : {}),
+        [dateKey]: updatedStats
+      }
+    };
+  }
+
   return {
     STORAGE_KEY,
     BOX_INTERVALS_DAYS,
@@ -179,6 +226,7 @@
     calculateNextState,
     createSession,
     loadState,
-    saveState
+    saveState,
+    recordReview
   };
 }));
