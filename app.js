@@ -172,10 +172,23 @@
       lyrics: lyrics, words: ws.map(function (w) { return w.word; }) };
   }
 
+  // Weak-words queue Empty State: show the card only when the queue is empty, otherwise show the word list.
+  function applyWeakWordsEmptyState(els, queueLength, message) {
+    var n = Number(queueLength) || 0;
+    var isEmpty = n <= 0;
+    var e = els || {};
+    if (e.empty && e.empty.classList) e.empty.classList.toggle('hidden', !isEmpty);
+    if (e.empty) e.empty.setAttribute('aria-hidden', String(!isEmpty));
+    if (e.list && e.list.classList) e.list.classList.toggle('hidden', isEmpty);
+    if (isEmpty && e.message) e.message.textContent = message || '';
+    return { isEmpty: isEmpty, queueLength: n };
+  }
+
   return {
     VOCAB: VOCAB, CATEGORIES: CATEGORIES, CATEGORY_HE: CATEGORY_HE, DIFFICULTY_HE: DIFFICULTY_HE, QUIZ: QUIZ,
     LINES: LINES, LINE_SEC: LINE_SEC, LOOP_SEC: LOOP_SEC, TUNE: TUNE, NOTE_SEC: NOTE_SEC,
     filterVocab: filterVocab, findWord: findWord, formatTime: formatTime, positionAt: positionAt, isCorrect: isCorrect,
-    validateContent: validateContent, loadContent: loadContent, spotifyEmbedUrl: spotifyEmbedUrl, spotifyTrackUrl: spotifyTrackUrl, youtubeEmbedUrl: youtubeEmbedUrl, youtubeMusicLink: youtubeMusicLink, recommendSongs: recommendSongs, parseLRC: parseLRC, parseTimingData: parseTimingData, activeTimedLine: activeTimedLine, validateAudioFile: validateAudioFile, buildSunoExport: buildSunoExport, QUIZ_LAYOUT: QUIZ_LAYOUT
+    validateContent: validateContent, loadContent: loadContent, spotifyEmbedUrl: spotifyEmbedUrl, spotifyTrackUrl: spotifyTrackUrl, youtubeEmbedUrl: youtubeEmbedUrl, youtubeMusicLink: youtubeMusicLink, recommendSongs: recommendSongs, parseLRC: parseLRC, parseTimingData: parseTimingData, activeTimedLine: activeTimedLine, validateAudioFile: validateAudioFile, buildSunoExport: buildSunoExport, QUIZ_LAYOUT: QUIZ_LAYOUT,
+    applyWeakWordsEmptyState: applyWeakWordsEmptyState
   };
 });

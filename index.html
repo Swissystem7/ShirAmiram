@@ -342,6 +342,12 @@
           <h3 class="font-bold text-sm text-amber-300">🎯 מילים מומלצות לחיזוק (טעויות Cloze ו-SRS)</h3>
           <span id="weak-words-count" class="text-xs px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800 font-bold">0 מילים</span>
         </div>
+        <div id="weak-words-empty" class="hidden mt-3 p-5 rounded-lg border border-emerald-700/40 bg-gradient-to-br from-emerald-950/60 to-stage-900 text-center" role="status" aria-live="polite" aria-hidden="true">
+          <div class="text-3xl mb-2" aria-hidden="true">🎉</div>
+          <p id="weak-words-empty-message" class="font-bold text-emerald-300 mb-1">אין מילים חלשות לבחינה</p>
+          <p class="text-xs text-muted mb-4">כל הכבוד! המשיכו לתרגל במבחן או בשירים כדי לשמור על הרצף.</p>
+          <button id="weak-words-empty-cta" type="button" data-goto-tab="quiz" class="inline-flex items-center justify-center px-5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold w-full sm:w-auto" style="min-height: 44px; min-width: 44px;">חזרה לחידון המלא</button>
+        </div>
         <div id="weak-words-list" class="space-y-2 mt-3">
           <p class="text-xs text-muted">עדיין אין מילים מסומנות לחיזוק. בצע מבחן או כרטיסיות כדי לעקוב אחר טעויות.</p>
         </div>
@@ -1368,9 +1374,12 @@
 
         if ($('weak-words-count')) $('weak-words-count').textContent = weakWords.length + ' מילים';
         const listEl = $('weak-words-list');
+        const weakCount = typeof AN.getWeakWordsQueueLength === 'function' ? AN.getWeakWordsQueueLength(state, pool, 6) : weakWords.length;
+        const emptyMsg = typeof AN.getWeakWordsEmptyMessage === 'function' ? AN.getWeakWordsEmptyMessage() : 'אין מילים חלשות לבחינה';
+        A.applyWeakWordsEmptyState({ empty: $('weak-words-empty'), list: listEl, message: $('weak-words-empty-message') }, weakCount, emptyMsg);
         if (listEl) {
           if (!weakWords.length) {
-            listEl.innerHTML = '<p class="text-xs text-muted">כל הכבוד! אין מילים חלשות הדורשות תרגול כעת.</p>';
+            listEl.innerHTML = '';
           } else {
             listEl.innerHTML = weakWords.map(w => {
               return '<div class="p-2 bg-stage-900 rounded flex items-center justify-between border border-white/5">'
@@ -1380,6 +1389,11 @@
             }).join('');
           }
         }
+      }
+
+      const emptyCta = $('weak-words-empty-cta');
+      if (emptyCta) {
+        emptyCta.addEventListener('click', () => showTab(emptyCta.dataset.gotoTab || 'quiz'));
       }
 
       const dashTabBtn = document.querySelector('[data-tab="dashboard"]');
