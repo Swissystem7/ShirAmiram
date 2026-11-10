@@ -4,6 +4,7 @@ const {
 	calculateComplexityScore,
 	estimateAmiramLevel,
 	estimateAmiramScoreScale50To150,
+	estimateSongVocabDifficulty,
 	WEIGHTS,
 } = require("../src/difficulty_estimator.js");
 
@@ -365,4 +366,30 @@ test("15. estimateAmiramScoreScale50To150 maps accuracy to 50-150 scale and CEFR
 	assert.equal(estimateAmiramScoreScale50To150(null).score, 50);
 	assert.equal(estimateAmiramScoreScale50To150(undefined).score, 50);
 	assert.equal(estimateAmiramScoreScale50To150("invalid").score, 50);
+});
+
+test("16. estimateSongVocabDifficulty accurately calculates overall song vocabulary metrics", () => {
+	const lyricsText = "sing dice ancient fragile unprecedented contradictory";
+	const summary = estimateSongVocabDifficulty(lyricsText);
+
+	assert.equal(summary.totalWords, 6);
+	assert.equal(summary.levelCounts.A_foundational, 2);
+	assert.equal(summary.levelCounts.B_intermediate, 2);
+	assert.equal(summary.levelCounts.C_advanced, 2);
+	assert.ok(summary.avgScore > 0 && summary.avgScore < 1);
+
+	// Edge case handling: empty or invalid inputs
+	const emptySummary = estimateSongVocabDifficulty("");
+	assert.deepEqual(emptySummary, {
+		avgScore: 0,
+		levelCounts: { A_foundational: 0, B_intermediate: 0, C_advanced: 0 },
+		totalWords: 0,
+	});
+
+	const invalidSummary = estimateSongVocabDifficulty(null);
+	assert.deepEqual(invalidSummary, {
+		avgScore: 0,
+		levelCounts: { A_foundational: 0, B_intermediate: 0, C_advanced: 0 },
+		totalWords: 0,
+	});
 });
