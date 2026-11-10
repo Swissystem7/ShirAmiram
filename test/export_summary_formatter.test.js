@@ -41,3 +41,20 @@ test("iso date present", () => {
 	const md = formatStudentMarkdownReport({});
 	assert.match(md, /תאריך הפקה: \d{4}-\d{2}-\d{2}/);
 });
+
+test("mastered exceeds total is capped at total and percent 100%", () => {
+	const md = formatStudentMarkdownReport({
+		masteredCount: 350,
+		totalVocab: 300,
+	});
+	// Should display capped values
+	assert.match(md, /300\/300 \(100%\)/);
+});
+
+test("negative masteredCount treated as zero", () => {
+	const md = formatStudentMarkdownReport({
+		masteredCount: -5,
+		totalVocab: 300,
+	});
+	assert.match(md, /0\/300 \(0%\)/);
+});
