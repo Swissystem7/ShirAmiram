@@ -116,3 +116,44 @@ test('7. createSession and recordSessionAnswer track progress and calculate CEFR
   assert.equal(summary.percentage, 100);
   assert.ok(summary.cefr.includes('C1'), '100% should yield C1 exemption');
 });
+
+test('8. formatLineReference formats paragraph and line ranges as Hebrew labels', () => {
+  assert.equal(AmiramReading.formatLineReference('Paragraph 2, lines 3-5'), 'פסקה 2, שורות 3-5');
+  assert.equal(AmiramReading.formatLineReference('Paragraph 1, line 3'), 'פסקה 1, שורה 3');
+  assert.equal(AmiramReading.formatLineReference('Paragraphs 1-3'), 'פסקאות 1-3');
+  assert.equal(AmiramReading.formatLineReference('lines 5-4'), 'שורות 4-5');
+  assert.equal(AmiramReading.formatLineReference('Paragraph 3, concluding sentence'), 'פסקה 3, משפט הסיום');
+  assert.equal(AmiramReading.formatLineReference('Entire text'), 'כל הקטע');
+});
+
+test('9. formatLineReference handles empty and unrecognized references', () => {
+  assert.equal(AmiramReading.formatLineReference(''), '');
+  assert.equal(AmiramReading.formatLineReference(undefined), '');
+  assert.equal(AmiramReading.formatLineReference('  See title  '), 'See title');
+
+  const parsed = AmiramReading.parseLineReference('Paragraph 2, lines 3-5');
+  assert.deepEqual(parsed.paragraphs, [2, 2]);
+  assert.deepEqual(parsed.lines, [3, 5]);
+  assert.equal(parsed.scope, 'located');
+});
+
+test('10. evaluateAnswer exposes a formatted lineReferenceLabel for the UI', () => {
+  const q = { id: 'q', correct_index: 1, line_reference: 'Paragraph 2, lines 3-5' };
+  const res = AmiramReading.evaluateAnswer(q, 1);
+  assert.equal(res.lineReference, 'Paragraph 2, lines 3-5');
+  assert.equal(res.lineReferenceLabel, 'פסקה 2, שורות 3-5');
+
+  const noRef = AmiramReading.evaluateAnswer({ id: 'q2', correct_index: 0 }, 0);
+  assert.equal(noRef.lineReferenceLabel, '');
+});
+
+test('11. every bundled question line_reference formats to a non-empty label', () => {
+  const data = JSON.parse(fs.readFileSync(PASSAGES_PATH, 'utf-8'));
+  data.forEach(p => {
+    p.questions.forEach(q => {
+      const label = AmiramReading.formatLineReference(q.line_reference);
+      assert.ok(label.length > 0, `Label for ${q.id} should not be empty`);
+      assert.ok(!/paragraph|line/i.test(label), `Label for ${q.id} should be translated: ${label}`);
+    });
+  });
+});

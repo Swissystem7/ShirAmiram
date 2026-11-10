@@ -106,6 +106,77 @@
   }
 
   /**
+   * Parse a free-text line reference such as "Paragraph 2, lines 3-5".
+   * @param {string} ref
+   * @returns {{ scope: string, paragraphs: number[]|null, lines: number[]|null, concluding: boolean, raw: string }}
+   */
+  function parseLineReference(ref) {
+    const raw = typeof ref === 'string' ? ref.trim() : '';
+    const result = { scope: 'none', paragraphs: null, lines: null, concluding: false, raw };
+    if (!raw) return result;
+
+    if (/^entire text$/i.test(raw)) {
+      result.scope = 'entire';
+      return result;
+    }
+
+    const toRange = (start, end) => {
+      const a = Number.parseInt(start, 10);
+      const b = end === undefined ? a : Number.parseInt(end, 10);
+      return a <= b ? [a, b] : [b, a];
+    };
+
+    const paraMatch = raw.match(/paragraphs?\s+(\d+)(?:\s*[-–]\s*(\d+))?/i);
+    if (paraMatch) {
+      result.paragraphs = toRange(paraMatch[1], paraMatch[2]);
+    }
+
+    const lineMatch = raw.match(/lines?\s+(\d+)(?:\s*[-–]\s*(\d+))?/i);
+    if (lineMatch) {
+      result.lines = toRange(lineMatch[1], lineMatch[2]);
+    }
+
+    result.concluding = /concluding sentence/i.test(raw);
+
+    if (result.paragraphs || result.lines || result.concluding) {
+      result.scope = 'located';
+    } else {
+      result.scope = 'unknown';
+    }
+    return result;
+  }
+
+  /**
+   * Format a line reference as a short Hebrew label for the answer feedback UI.
+   * Examples: "Paragraph 2, lines 3-5" -> "פסקה 2, שורות 3-5"; "Entire text" -> "כל הקטע".
+   * Unrecognized references are returned trimmed as-is.
+   * @param {string} ref
+   * @returns {string}
+   */
+  function formatLineReference(ref) {
+    const parsed = parseLineReference(ref);
+    if (parsed.scope === 'none') return '';
+    if (parsed.scope === 'entire') return 'כל הקטע';
+    if (parsed.scope === 'unknown') return parsed.raw;
+
+    const formatRange = (range, single, plural) => {
+      return range[0] === range[1] ? `${single} ${range[0]}` : `${plural} ${range[0]}-${range[1]}`;
+    };
+
+    const parts = [];
+    if (parsed.paragraphs) {
+      parts.push(formatRange(parsed.paragraphs, 'פסקה', 'פסקאות'));
+    }
+    if (parsed.lines) {
+      parts.push(formatRange(parsed.lines, 'שורה', 'שורות'));
+    }
+    if (parsed.concluding) {
+      parts.push('משפט הסיום');
+    }
+    return parts.join(', ');
+  }
+
+  /**
    * Evaluate a question answer
    * @param {Object} question 
    * @param {number} selectedIndex 0-3
@@ -123,6 +194,7 @@
       correctIndex: question.correct_index,
       explanation: question.hebrew_explanation || '',
       lineReference: question.line_reference || '',
+      lineReferenceLabel: formatLineReference(question.line_reference),
       questionType: question.type || 'general'
     };
   }
@@ -229,6 +301,8 @@
     filterByLevel,
     formatParagraphLines,
     highlightVocab,
+    parseLineReference,
+    formatLineReference,
     evaluateAnswer,
     createSession,
     recordSessionAnswer,
