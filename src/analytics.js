@@ -225,6 +225,15 @@
     return candidateWords.slice(0, limit).map(c => c.word);
   }
 
+  // Weak Words Review Queue helpers
+  const WEAK_WORDS_EMPTY_MESSAGE = 'אין מילים חלשות לבחינה';
+  function getWeakWordsQueueLength(state = {}, vocab = [], limit = 10) {
+    return buildReviewQueue(state, vocab, limit).length;
+  }
+  function getWeakWordsEmptyMessage() {
+    return WEAK_WORDS_EMPTY_MESSAGE;
+  }
+
   function loadAnalyticsState(storage = (typeof localStorage !== 'undefined' ? localStorage : null)) {
     if (!storage) return { version: 1, cards: {}, attempts: [] };
     try {
@@ -263,6 +272,8 @@
     summarizeMastery,
     recordAttempt,
     buildReviewQueue,
+    getWeakWordsQueueLength,
+    getWeakWordsEmptyMessage,
     loadAnalyticsState,
     saveAnalyticsState
   };
