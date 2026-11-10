@@ -281,3 +281,22 @@ test("12. targetWords accepts mixed string and catalog entry objects with word p
 	);
 	assert.equal(result.blanks[1].choices[result.blanks[1].correctIndex], "hope");
 });
+
+test("13. blank objects preserve original matchedText case from passage", () => {
+	const passage = "Finding Wisdom brings Peace.";
+	const result = generateClozePassage(
+		passage,
+		["wisdom", "peace"],
+		testWordPool,
+		{ seed: 123 },
+	);
+
+	assert.equal(
+		result.maskedPassage,
+		"Finding [1] ________ brings [2] ________.",
+	);
+	assert.equal(result.blanks[0].matchedText, "Wisdom");
+	assert.equal(result.blanks[1].matchedText, "Peace");
+	assert.equal(result.blanks[0].targetWord, "wisdom");
+	assert.equal(result.blanks[1].targetWord, "peace");
+});

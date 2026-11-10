@@ -86,6 +86,7 @@
 						start: match.index,
 						end: match.index + match[0].length,
 						lowerWord: candidate.lowerWord,
+						matchedText: match[0],
 						item: candidate.item,
 					});
 				}
@@ -153,6 +154,7 @@
 				blanks.push({
 					index: blankIndex,
 					targetWord: match.lowerWord,
+					matchedText: match.matchedText,
 					choices,
 					correctIndex,
 				});
