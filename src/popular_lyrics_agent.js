@@ -22,10 +22,47 @@
     return w.toLowerCase().trim().replace(/^[^a-z0-9]+|[^a-z0-9]+$/gi, '');
   }
 
+  const WORD_CHAR = /\w/;
+
+  function isWordChar(ch) {
+    return ch !== undefined && WORD_CHAR.test(ch);
+  }
+
+  /**
+   * Find the next case-insensitive whole-word occurrence of `needle` in `text`
+   * starting at `from` (same semantics as /\bneedle\b/gi, with `needle`
+   * matched literally). Uses no dynamically built RegExp.
+   * @returns {number} start index, or -1
+   */
+  function findWholeWord(text, haystack, needle, from) {
+    while (from <= haystack.length) {
+      const i = haystack.indexOf(needle, from);
+      if (i === -1) return -1;
+      const end = i + needle.length;
+      if (isWordChar(text[i - 1]) !== isWordChar(text[i]) &&
+          isWordChar(text[end - 1]) !== isWordChar(text[end])) {
+        return i;
+      }
+      from = i + 1;
+    }
+    return -1;
+  }
+
   function highlightWordInLyric(lyric, word) {
     if (!lyric || !word) return lyric || '';
-    const regex = new RegExp(`\\b(${word})\\b`, 'gi');
-    return lyric.replace(regex, '<mark class="target-word">$1</mark>');
+    const text = String(lyric);
+    const needle = String(word).toLowerCase();
+    const haystack = text.toLowerCase();
+    let out = '';
+    let pos = 0;
+    let at = findWholeWord(text, haystack, needle, pos);
+    while (at !== -1) {
+      const end = at + needle.length;
+      out += text.slice(pos, at) + '<mark class="target-word">' + text.slice(at, end) + '</mark>';
+      pos = end;
+      at = findWholeWord(text, haystack, needle, pos);
+    }
+    return out + text.slice(pos);
   }
 
   function extractCoveredWords(item) {
