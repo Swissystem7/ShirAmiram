@@ -144,9 +144,11 @@
   function spotifyTrackUrl(id) { return SPOTIFY_ID_RE.test(String(id || '')) ? 'https://open.spotify.com/track/' + id : null; }
   function youtubeEmbedUrl(id) { return YOUTUBE_ID_RE.test(String(id || '')) ? 'https://www.youtube.com/embed/' + id : null; }
   function youtubeMusicLink(song) {
-    if (song && YOUTUBE_ID_RE.test(String(song.youtube_id || ''))) return { kind: 'direct', url: 'https://music.youtube.com/watch?v=' + song.youtube_id };
+    if (song && YOUTUBE_ID_RE.test(String(song.youtube_id || ''))) return {
+      kind: 'direct', url: 'https://music.youtube.com/watch?v=' + song.youtube_id };
     var q = encodeURIComponent(((song && song.title) || '') + ' ' + ((song && song.artist) || ''));
-    return { kind: 'search', url: 'https://music.youtube.com/search?q=' + q }; // explicitly a search link, not a verified track
+    return {
+      kind: 'search', url: 'https://music.youtube.com/search?q=' + q }; // explicitly a search link, not a verified track
   }
 
   function recommendSongs(songs, targetWords, limit) {
@@ -200,6 +202,45 @@
   }
 
   // Weak-words queue Empty State: show the card only when the queue is empty, otherwise show the word list.
+
+  function resolveDailyChallengeScheduler() {
+    if (typeof root !== 'undefined' && root && root.ShirAmiramDailyChallengeScheduler) {
+      return root.ShirAmiramDailyChallengeScheduler;
+    }
+    if (typeof require === 'function') {
+      try {
+        return require('./src/daily_challenge_scheduler.js');
+      } catch (err) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Generate formatted data for the Daily Challenge banner.
+   * @param {string} dateString - The date identifier (e.g., "2023-10-05").
+   * @param {Array} songs - Array of song objects (same shape as used by the scheduler).
+   * @param {Array} vocab - Array of vocabulary objects (same shape as used by the scheduler).
+   * @param {object} [scheduler] - Optional scheduler object; defaults to resolved module.
+   * @returns {object} An object containing songTitle, artist, word, hebrewTranslation, formattedDate.
+   */
+  function getDailyChallengeBannerData(dateString, songs, vocab, scheduler) {
+    const sch = scheduler || resolveDailyChallengeScheduler();
+    if (!sch || typeof sch.generateDailyChallenge !== 'function') {
+      throw new Error('Invalid scheduler provided to getDailyChallengeBannerData');
+    }
+    const result = sch.generateDailyChallenge(dateString, songs, vocab);
+    const song = result.songOfTheDay || {};
+    const word = result.wordOfTheDay || {};
+    return {
+      songTitle: song.title || null,
+      artist: song.artist || null,
+      word: word.word || null,
+      hebrewTranslation: word.translation || null,
+      formattedDate: result.dateString || dateString
+    };
+  }
   function applyWeakWordsEmptyState(els, queueLength, message) {
     var n = Number(queueLength) || 0;
     var isEmpty = n <= 0;
@@ -208,7 +249,10 @@
     if (e.empty) e.empty.setAttribute('aria-hidden', String(!isEmpty));
     if (e.list && e.list.classList) e.list.classList.toggle('hidden', isEmpty);
     if (isEmpty && e.message) e.message.textContent = message || '';
-    return { isEmpty: isEmpty, queueLength: n };
+    return {
+    isEmpty: isEmpty,
+    queueLength: n
+  }
   }
 
   // Dominant vocab level (A_foundational / B_intermediate / C_advanced) of a song's highlight words.
@@ -231,6 +275,7 @@
   }
 
   return {
+    getDailyChallengeBannerData: getDailyChallengeBannerData,
     buildQuickStudyPlan: buildQuickStudyPlan,
     songDominantLevel: songDominantLevel, filterSongsByLevel: filterSongsByLevel, SONG_LEVELS: SONG_LEVELS,
     VOCAB: VOCAB, CATEGORIES: CATEGORIES, CATEGORY_HE: CATEGORY_HE, DIFFICULTY_HE: DIFFICULTY_HE, QUIZ: QUIZ,
