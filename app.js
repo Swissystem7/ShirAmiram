@@ -228,6 +228,7 @@
    * @returns {object} An object containing songTitle, artist, word, hebrewTranslation, formattedDate.
    */
   function getDailyChallengeBannerData(dateString, songs, vocab, scheduler) {
+    // existing implementation unchanged
     const sch = scheduler || resolveDailyChallengeScheduler();
     if (!sch || typeof sch.generateDailyChallenge !== 'function') {
       throw new Error('Invalid scheduler provided to getDailyChallengeBannerData');
@@ -276,6 +277,76 @@
     return (songs || []).filter(function (s) { return songDominantLevel(s, estimator) === level; });
   }
 
+  function resolveConfidenceScoreEstimator() {
+    if (typeof root !== 'undefined' && root && root.ShirAmiramConfidenceScoreEstimator) {
+      return root.ShirAmiramConfidenceScoreEstimator;
+    }
+    if (typeof require === 'function') {
+      try {
+        return require('./src/confidence_score_estimator.js');
+      } catch (err) {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Format quiz answer confidence badge and feedback text.
+   * @param {number|null} responseTimeMs - Response time in milliseconds.
+   * @param {boolean} isCorrect - Whether answer was correct.
+   * @param {object} [estimator] - Optional confidence score estimator object.
+   * @returns {object} { badgeLabel, badgeColor, feedbackText, isFastAndCorrect }
+   */
+  function formatAnswerConfidenceBadge(responseTimeMs, isCorrect, estimator) {
+    const est = estimator !== undefined ? estimator : resolveConfidenceScoreEstimator();
+    let confidenceData = null;
+    if (est && typeof est.evaluateResponseConfidence === 'function') {
+      confidenceData = est.evaluateResponseConfidence(responseTimeMs, isCorrect);
+    }
+
+    const correct = Boolean(isCorrect);
+    const validTime = typeof responseTimeMs === 'number' && !isNaN(responseTimeMs) && responseTimeMs >= 0;
+
+    let badgeLabel = 'ללא תזמון';
+    let badgeColor = 'gray';
+    let feedbackText = correct ? 'תשובה נכונה!' : 'תשובה שגויה, כדאי לתרגל שוב';
+    let isFastAndCorrect = false;
+
+    if (confidenceData) {
+      badgeLabel = confidenceData.label || confidenceData.badgeLabel || confidenceData.tierLabel || badgeLabel;
+      badgeColor = confidenceData.color || confidenceData.badgeColor || confidenceData.tierColor || badgeColor;
+      feedbackText = confidenceData.feedback || confidenceData.feedbackText || feedbackText;
+      isFastAndCorrect = Boolean(confidenceData.isFastAndCorrect);
+    }
+    
+    if ((!confidenceData || badgeLabel === 'ללא תזמון') && validTime) {
+      if (correct) {
+        if (responseTimeMs < 3000) {
+          badgeLabel = 'שליטה מעולה';
+          badgeColor = 'green';
+          feedbackText = 'תשובה מהירה ומדויקת!';
+          isFastAndCorrect = true;
+        } else {
+          badgeLabel = 'תשובה נכונה';
+          badgeColor = 'blue';
+          feedbackText = 'תשובה נכונה, קח עוד קצת זמן לביטחון מלא.';
+        }
+      } else {
+        badgeLabel = 'חזרה מומלצת';
+        badgeColor = 'red';
+        feedbackText = 'תשובה שגויה, מומלץ לעבור על המילה שוב.';
+      }
+    }
+
+    return {
+      badgeLabel,
+      badgeColor,
+      feedbackText,
+      isFastAndCorrect
+    };
+  }
+
   function calculateVocabMasteryStats(masteredWordIds, vocabList) {
     const list = Array.isArray(vocabList) ? vocabList : [];
     const total = list.length;
@@ -301,6 +372,7 @@
   }
 
   return {
+    formatAnswerConfidenceBadge: formatAnswerConfidenceBadge,
     calculateVocabMasteryStats: calculateVocabMasteryStats,
     getDailyChallengeBannerData: getDailyChallengeBannerData,
     buildQuickStudyPlan: buildQuickStudyPlan,
