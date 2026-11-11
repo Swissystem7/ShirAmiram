@@ -132,6 +132,20 @@
 			return null;
 		}
 
+		let phoneticHint = "";
+		if (typeof root !== "undefined" && root.PronunciationHint && typeof root.PronunciationHint.generatePhoneticHint === "function") {
+			phoneticHint = root.PronunciationHint.generatePhoneticHint(matched.word);
+		} else if (typeof require === "function") {
+			try {
+				const PronunciationHint = require("./pronunciation_hint.js");
+				if (PronunciationHint && typeof PronunciationHint.generatePhoneticHint === "function") {
+					phoneticHint = PronunciationHint.generatePhoneticHint(matched.word);
+				}
+			} catch (e) {
+				// optional module require fallback
+			}
+		}
+
 		return {
 			word: String(matched.word),
 			translation: String(
@@ -140,6 +154,7 @@
 			definition: String(matched.hebrew_definition || matched.definition || ""),
 			partOfSpeech: String(matched.part_of_speech || matched.category || ""),
 			level: String(matched.level || matched.difficulty || ""),
+			phoneticHint: String(phoneticHint || ""),
 		};
 	}
 
