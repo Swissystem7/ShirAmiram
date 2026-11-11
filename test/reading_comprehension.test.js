@@ -237,6 +237,8 @@ test("12. lookupTargetWord resolves exact and inflected target words from Amiram
 	assert.ok(inflected, 'Inflected "allocates" should resolve to "allocate"');
 	assert.equal(inflected.word, "allocate");
 	assert.ok(inflected.translation.length > 0);
+	assert.ok(typeof inflected.phoneticHint === "string");
+	assert.ok(inflected.phoneticHint.length > 0);
 
 	assert.equal(AmiramReading.lookupTargetWord("", vocabBank), null);
 	assert.equal(
