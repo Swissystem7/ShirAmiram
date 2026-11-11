@@ -160,6 +160,22 @@ test('app.js initializes in browser context without require and resolves getDail
   assert.equal(banner.word, 'test');
 });
 
+test('calculateVocabMasteryStats correctly calculates overall and level stats', () => {
+  const sampleVocab = [
+    { word: 'crucial', difficulty: 'Medium' },
+    { word: 'undermine', difficulty: 'Hard' },
+    { word: 'hypothesis', difficulty: 'Medium' }
+  ];
+  const stats = A.calculateVocabMasteryStats(['crucial'], sampleVocab);
+  assert.equal(stats.overallPercent, (1 / 3) * 100);
+  assert.equal(stats.levelA.mastered, 1);
+  assert.equal(stats.levelA.total, 2);
+  assert.equal(stats.levelA.percent, 50);
+  assert.equal(stats.levelB.mastered, 0);
+  assert.equal(stats.levelB.total, 1);
+  assert.equal(stats.levelB.percent, 0);
+});
+
 test('buildQuickStudyPlan delegates planning to the optimizer', () => {
   const optimizer = {
     planTimeBoxedSession(input) {
