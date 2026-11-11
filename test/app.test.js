@@ -137,6 +137,29 @@ test('songDominantLevel and filterSongsByLevel use estimateSongVocabDifficulty',
   assert.ok(calls.length > 0);
 });
 
+test('app.js initializes in browser context without require and resolves getDailyChallengeBannerData with explicit or fallback scheduler', () => {
+  const code = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+  const context = { globalThis: {} };
+  // Execute in isolated function scope where require is undefined
+  const browserFn = new Function('globalThis', 'window', 'root', 'module', 'exports', code);
+  const fakeWindow = {};
+  browserFn(fakeWindow, fakeWindow, fakeWindow, undefined, undefined);
+  assert.ok(fakeWindow.ShirAmiram, 'ShirAmiram is attached to global/window');
+  assert.equal(typeof fakeWindow.ShirAmiram.filterVocab, 'function');
+  assert.equal(typeof fakeWindow.ShirAmiram.getDailyChallengeBannerData, 'function');
+
+  const dummyScheduler = {
+    generateDailyChallenge: () => ({
+      songOfTheDay: { title: 'Test Song', artist: 'Test Artist' },
+      wordOfTheDay: { word: 'test', translation: 'בדיקה' },
+      dateString: '2026-11-11'
+    })
+  };
+  const banner = fakeWindow.ShirAmiram.getDailyChallengeBannerData('2026-11-11', [], [], dummyScheduler);
+  assert.equal(banner.songTitle, 'Test Song');
+  assert.equal(banner.word, 'test');
+});
+
 test('buildQuickStudyPlan delegates planning to the optimizer', () => {
   const optimizer = {
     planTimeBoxedSession(input) {
