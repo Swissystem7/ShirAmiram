@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl" class="dark">
+<html lang="he" dir="rtl" class="dark" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +24,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {font-family:'Heebo',system-ui,sans-serif;background:#0f172a;color:#f8fafc;}
     .font-mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
@@ -48,6 +48,8 @@
     #songs-list{max-width:100%;overflow-wrap:anywhere;}
   </style>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/songbook.css">
+  <script>try{var t=localStorage.getItem('shiramiram-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6366f1">
 </head>
@@ -61,7 +63,8 @@
     <div class="flex items-center gap-2">
       <button id="btn-install-pwa" type="button" class="hidden text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 shadow" style="min-height:44px">📲 התקן אפליקציה</button>
     </div>
-    <div class="flex gap-2">
+    <div class="flex items-center gap-2">
+      <button id="theme-toggle" type="button" aria-pressed="false" style="min-height:44px;min-width:44px">מצב כהה</button>
       <button id="btn-play" type="button" aria-label="ניגון" aria-pressed="false" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition" style="min-height:44px;min-width:44px">▶️</button>
       <span id="timer" class="font-mono" aria-label="זמן ניגון">00:00</span>
     </div>
@@ -492,6 +495,8 @@
 
   </main>
 
+  <nav id="bottom-nav" aria-label="ניווט ראשי"></nav>
+
   <script src="app.js"></script>
   <script src="src/amiram_vocab_data.js"></script>
   <script src="src/amiram_restatements_data.js"></script>
@@ -509,6 +514,7 @@
   <script src="src/song_karaoke.js"></script>
   <script src="src/reading_comprehension.js"></script>
   <script src="src/karaoke.js"></script>
+  <script src="src/ui_shell.js"></script>
   <script>
     const A = window.ShirAmiram;
     const $ = (id) => document.getElementById(id);

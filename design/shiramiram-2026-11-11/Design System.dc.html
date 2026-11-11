@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--accent)}a:hover{color:var(--ink)}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;text-align:inherit}
+:root,[data-theme="light"]{--stage:#E9E2D3;--bg:#F6F1E7;--surface:#FFFDF8;--surface-2:#EDE6D8;--ink:#1F1B16;--ink-2:#5A5248;--line:#D9D0BF;--accent:#B93C14;--accent-ink:#FFFDF8;--mark:#FFE066;--mark-ink:#1F1B16;--ok:#1B6E43;--ok-bg:#DCEEE2;--bad:#A8231C;--bad-bg:#F8DDD9;--la:#1A6352;--la-bg:#D8ECE6;--lb:#7A4E00;--lb-bg:#F6E7C2;--lc:#8E2946;--lc-bg:#F5DCE3;--serif:'Frank Ruhl Libre',serif;--sans:'Heebo',sans-serif}
+[data-theme="dark"]{--stage:#0F0D0B;--bg:#1A1714;--surface:#24201B;--surface-2:#302A23;--ink:#F3ECDF;--ink-2:#B8AE9E;--line:#453C31;--accent:#FF8A5C;--accent-ink:#1A1714;--mark:#F2CB3D;--mark-ink:#1A1714;--ok:#74D29E;--ok-bg:#1D3A2A;--bad:#FF9D92;--bad-bg:#4A211D;--la:#7FD6BE;--la-bg:#16342D;--lb:#F0C060;--lb-bg:#3A2D10;--lc:#F29BB2;--lc-bg:#40192A}
+</style>
+</helmet>
+<div data-theme="light" style="background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.45;min-height:100vh">
+<div style="max-width:1120px;margin:0 auto;padding:40px 24px 80px">
+  <a href="ShirAmiram.dc.html" style="font-size:14px;font-weight:500">← Prototype</a>
+  <h1 style="margin:12px 0 4px;font-family:var(--serif);font-weight:900;font-size:48px;line-height:1.05">ShirAmiram design system</h1>
+  <p style="margin:0;color:var(--ink-2);max-width:640px">An annotated songbook: warm paper, serif headwords, a highlighter for Amiram words and one orange-red accent for the primary action. Every value below is a CSS variable; dark theme swaps values, not names.</p>
+
+  <h2 style="margin:48px 0 12px;font-family:var(--serif);font-weight:700;font-size:26px">Color tokens</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+    <sc-for list="{{ themes }}" as="th" hint-placeholder-count="2">
+      <div data-theme="{{ th.id }}" style="background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:16px">
+        <div style="font-weight:700;margin-bottom:10px">{{ th.label }}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
+          <sc-for list="{{ th.tokens }}" as="t" hint-placeholder-count="12">
+            <div><div style="height:44px;border-radius:8px;border:1px solid var(--line);background:{{ t.ref }}"></div><div style="font-family:ui-monospace,monospace;font-size:11px;margin-top:4px">{{ t.name }}</div><div style="font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-2)">{{ t.hex }}</div></div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <h2 style="margin:48px 0 12px;font-family:var(--serif);font-weight:700;font-size:26px">Type scale</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+    <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px">
+      <div style="font-size:13px;color:var(--ink-2);font-weight:700">Hebrew · Frank Ruhl Libre (display) + Heebo (text)</div>
+      <sc-for list="{{ typeHe }}" as="t" hint-placeholder-count="6">
+        <div dir="rtl" lang="he" style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)"><span style="font-family:{{ t.ff }};font-weight:{{ t.fw }};font-size:{{ t.fs }};line-height:1.15;min-width:0">{{ t.sample }}</span><span dir="ltr" style="flex:none;font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-2)">{{ t.spec }}</span></div>
+      </sc-for>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px">
+      <div style="font-size:13px;color:var(--ink-2);font-weight:700">English · same families, dir="ltr" inside RTL</div>
+      <sc-for list="{{ typeEn }}" as="t" hint-placeholder-count="6">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)"><span style="font-family:{{ t.ff }};font-weight:{{ t.fw }};font-size:{{ t.fs }};line-height:1.15;min-width:0">{{ t.sample }}</span><span style="flex:none;font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-2)">{{ t.spec }}</span></div>
+      </sc-for>
+    </div>
+  </div>
+
+  <h2 style="margin:48px 0 12px;font-family:var(--serif);font-weight:700;font-size:26px">Spacing and radii</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+    <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap">
+      <sc-for list="{{ spaces }}" as="p" hint-placeholder-count="7"><div style="text-align:center"><div style="width:{{ p.px }};height:{{ p.px }};background:var(--accent);margin:0 auto"></div><div style="font-family:ui-monospace,monospace;font-size:11px;margin-top:6px">{{ p.name }}</div><div style="font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-2)">{{ p.px }}</div></div></sc-for>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap">
+      <sc-for list="{{ radii }}" as="r" hint-placeholder-count="5"><div style="text-align:center"><div style="width:64px;height:64px;border:2px solid var(--ink);border-radius:{{ r.px }}"></div><div style="font-family:ui-monospace,monospace;font-size:11px;margin-top:6px">{{ r.name }}</div><div style="font-family:ui-monospace,monospace;font-size:11px;color:var(--ink-2)">{{ r.px }} · {{ r.use }}</div></div></sc-for>
+    </div>
+  </div>
+
+  <h2 style="margin:48px 0 4px;font-family:var(--serif);font-weight:700;font-size:26px">Components</h2>
+  <p style="margin:0 0 12px;color:var(--ink-2)">Shown in both themes. All tap targets are 44px or taller.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+    <sc-for list="{{ themes }}" as="th" hint-placeholder-count="2">
+      <div data-theme="{{ th.id }}" dir="rtl" lang="he" style="background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:24px;min-width:0">
+        <div dir="ltr" style="font-weight:700">{{ th.label }}</div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Buttons · primary / strong / secondary / chip on, off</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+            <button style="min-height:48px;padding:0 22px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:700">להמשיך ללמוד</button>
+            <button style="min-height:48px;padding:0 22px;border-radius:10px;background:var(--ink);color:var(--bg);font-weight:700">לשאלה הבאה</button>
+            <button style="min-height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--ink);font-weight:500">תרגלתי</button>
+            <button style="min-height:44px;padding:0 16px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:14px;font-weight:500">הכול</button>
+            <button style="min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);font-size:14px">פועל</button>
+            <button aria-label="השמעה" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--accent)"><span style="width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor;margin-left:3px"></span></button>
+          </div>
+        </div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Level badges</div>
+          <div style="display:flex;gap:8px">
+            <span style="min-width:28px;height:28px;border-radius:6px;background:var(--la-bg);color:var(--la);font-weight:700;display:inline-flex;align-items:center;justify-content:center">A</span>
+            <span style="min-width:28px;height:28px;border-radius:6px;background:var(--lb-bg);color:var(--lb);font-weight:700;display:inline-flex;align-items:center;justify-content:center">B</span>
+            <span style="min-width:28px;height:28px;border-radius:6px;background:var(--lc-bg);color:var(--lc);font-weight:700;display:inline-flex;align-items:center;justify-content:center">C</span>
+          </div>
+        </div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Word card (list row)</div>
+          <div style="padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+            <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:8px"><span dir="ltr" style="font-family:var(--serif);font-weight:700;font-size:24px;line-height:1.15">reluctant</span><span style="min-width:24px;height:24px;border-radius:6px;background:var(--lb-bg);color:var(--lb);font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center">B</span></div><div style="font-size:17px;margin-top:2px">מהסס, לא שש <span style="color:var(--ink-2);font-size:13px">· שם תואר</span></div></div><button aria-label="השמעה" style="width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--accent)"><span style="width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor;margin-left:3px"></span></button></div>
+            <div dir="ltr" style="text-align:left;font-size:15px;color:var(--ink-2);margin-top:6px">I was reluctant, standing at the door.</div>
+          </div>
+        </div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Flashcard · front / back</div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+            <div style="height:170px;background:var(--surface);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background-image:repeating-linear-gradient(to bottom,transparent 0 31px,var(--surface-2) 31px 32px)"><span dir="ltr" style="font-family:var(--serif);font-weight:900;font-size:30px">fragile</span><span style="font-size:13px;color:var(--ink-2)">הקישו כדי להפוך</span></div>
+            <div style="height:170px;background:var(--mark);color:var(--mark-ink);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:8px"><span style="font-family:var(--serif);font-weight:900;font-size:28px">שביר, עדין</span><span style="font-size:13px">שם תואר</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px">
+            <button style="min-height:56px;border-radius:10px;background:var(--bad-bg);color:var(--bad);text-align:center;font-weight:700">שוב</button>
+            <button style="min-height:56px;border-radius:10px;background:var(--surface);border:1px solid var(--line);text-align:center;font-weight:700">קשה</button>
+            <button style="min-height:56px;border-radius:10px;background:var(--ok-bg);color:var(--ok);text-align:center;font-weight:700">טוב</button>
+            <button style="min-height:56px;border-radius:10px;background:var(--ink);color:var(--bg);text-align:center;font-weight:700">קל</button>
+          </div>
+        </div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Question option · default / correct / wrong / dimmed</div>
+          <div dir="ltr" style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ optStates }}" as="o" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 14px;border-radius:10px;border:2px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};opacity:{{ o.op }}"><span style="width:26px;height:26px;flex:none;border-radius:50%;border:1px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">{{ o.n }}</span><span style="flex:1;font-size:17px">{{ o.t }}</span><span dir="rtl" style="font-size:13px;font-weight:700">{{ o.tag }}</span></div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Lyric line · past / current / upcoming, Amiram word</div>
+          <div dir="ltr" style="font-family:var(--serif);display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:18px;font-weight:500;color:var(--ink-2);opacity:.55;padding-left:13px">Every journey starts before we know</div>
+            <div style="font-size:27px;font-weight:700;border-left:3px solid var(--accent);padding-left:10px;line-height:1.25">I was <span style="background:var(--mark);color:var(--mark-ink);padding:0 4px;border-radius:3px">reluctant</span>, standing at the door</div>
+            <div style="font-size:18px;font-weight:500;color:var(--ink-2);padding-left:13px">But I won't <span style="background:var(--mark);color:var(--mark-ink);padding:0 4px;border-radius:3px">abandon</span> what we made</div>
+          </div>
+        </div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Progress bar · plain / with target marker</div>
+          <div style="height:10px;border-radius:5px;background:var(--surface-2)"><div style="width:45%;height:100%;border-radius:5px;background:var(--lb)"></div></div>
+          <div dir="ltr" style="position:relative;height:10px;border-radius:5px;background:var(--surface-2);margin-top:14px"><div style="width:62%;height:100%;border-radius:5px;background:var(--ink)"></div><div style="position:absolute;left:84%;top:-4px;width:2px;height:18px;background:var(--accent)"></div></div>
+        </div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Bottom nav</div>
+          <nav style="display:flex;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:4px">
+            <sc-for list="{{ nav }}" as="t" hint-placeholder-count="5"><div style="flex:1;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:{{ t.fg }}"><span style="height:4px;width:24px;border-radius:2px;background:{{ t.bar }}"></span><span style="font-family:var(--serif);font-weight:700;font-size:16px;line-height:1.2">{{ t.glyph }}</span><span style="font-size:12px;font-weight:{{ t.fw }}">{{ t.label }}</span></div></sc-for>
+          </nav>
+        </div>
+
+        <div><div dir="ltr" style="font-size:12px;color:var(--ink-2);margin-bottom:8px;font-family:ui-monospace,monospace">Empty state</div>
+          <div style="text-align:center;padding:24px 8px;background:var(--surface);border:1px solid var(--line);border-radius:14px"><div style="width:44px;height:44px;margin:0 auto 10px;border-radius:50%;border:2px dashed var(--line)"></div><div style="font-family:var(--serif);font-weight:700;font-size:20px">התור ריק</div><p style="color:var(--ink-2);margin:4px 0 0">אין כרגע מילים חלשות. מילים שתטעו בהן יופיעו כאן.</p></div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const L={stage:'#E9E2D3',bg:'#F6F1E7',surface:'#FFFDF8','surface-2':'#EDE6D8',ink:'#1F1B16','ink-2':'#5A5248',line:'#D9D0BF',accent:'#B93C14','accent-ink':'#FFFDF8',mark:'#FFE066','mark-ink':'#1F1B16',ok:'#1B6E43','ok-bg':'#DCEEE2',bad:'#A8231C','bad-bg':'#F8DDD9',la:'#1A6352','la-bg':'#D8ECE6',lb:'#7A4E00','lb-bg':'#F6E7C2',lc:'#8E2946','lc-bg':'#F5DCE3'};
+const D={stage:'#0F0D0B',bg:'#1A1714',surface:'#24201B','surface-2':'#302A23',ink:'#F3ECDF','ink-2':'#B8AE9E',line:'#453C31',accent:'#FF8A5C','accent-ink':'#1A1714',mark:'#F2CB3D','mark-ink':'#1A1714',ok:'#74D29E','ok-bg':'#1D3A2A',bad:'#FF9D92','bad-bg':'#4A211D',la:'#7FD6BE','la-bg':'#16342D',lb:'#F0C060','lb-bg':'#3A2D10',lc:'#F29BB2','lc-bg':'#40192A'};
+class Component extends DCLogic {
+  renderVals(){
+    const tk=o=>Object.keys(o).map(k=>({name:'--'+k,hex:o[k],ref:'var(--'+k+')'}));
+    const S='var(--serif)',H='var(--sans)';
+    const scale=[['display',S,900,'44px'],['h1',S,900,'30px'],['headword',S,700,'24px'],['title',S,700,'20px'],['body',H,400,'17px'],['label',H,700,'13px']];
+    const he=['112 נקודות','אוצר מילים','מהסס, לא שש','התור ריק','נשארו 5 מילים בשיר של היום.','המילה של היום'];
+    const en=['Paper Lanterns','Vocabulary','reluctant','Glass Rivers','I was reluctant, standing at the door.','Sentence completion'];
+    const ts=s=>scale.map(([n,ff,fw,fs],i)=>({sample:s[i],ff,fw,fs,spec:n+' · '+fs+' / '+fw}));
+    return {
+      themes:[{id:'light',label:'Light',tokens:tk(L)},{id:'dark',label:'Dark',tokens:tk(D)}],
+      typeHe:ts(he),typeEn:ts(en),
+      spaces:[['--s1','4px'],['--s2','8px'],['--s3','12px'],['--s4','16px'],['--s5','24px'],['--s6','32px'],['--s7','48px']].map(([name,px])=>({name,px})),
+      radii:[['--r-xs','3px','mark'],['--r-s','6px','badge'],['--r-m','10px','button'],['--r-l','14px','card'],['--r-pill','999px','chip']].map(([name,px,use])=>({name,px,use})),
+      optStates:[{n:1,t:'reluctant',bd:'var(--line)',bg:'var(--surface)',fg:'var(--ink)',op:1,tag:''},{n:2,t:'scarce',bd:'var(--ok)',bg:'var(--ok-bg)',fg:'var(--ok)',op:1,tag:'נכון'},{n:3,t:'fragile',bd:'var(--bad)',bg:'var(--bad-bg)',fg:'var(--bad)',op:1,tag:'לא נכון'},{n:4,t:'barely',bd:'var(--line)',bg:'var(--surface)',fg:'var(--ink)',op:.55,tag:''}],
+      nav:[['היום','●'],['מילים','Aa'],['תרגול','◆'],['שירים','♪'],['התקדמות','▲']].map(([label,glyph],i)=>({label,glyph,fg:i===0?'var(--ink)':'var(--ink-2)',fw:i===0?700:500,bar:i===0?'var(--accent)':'transparent'}))
+    };
+  }
+}
+</script>
+</body>
+</html>

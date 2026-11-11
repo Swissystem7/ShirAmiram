@@ -1,0 +1,373 @@
+/* ==========================================================================
+   ShirAmiram — "Annotated songbook" theme
+   Source: Claude Design export in design/shiramiram-2026-11-11/
+   Loaded after css/style.css. It only overrides presentation: every id,
+   class and data attribute the scripts rely on stays as it is.
+   ========================================================================== */
+
+:root,
+:root[data-theme="light"] {
+  --stage: #E9E2D3; --bg: #F6F1E7; --surface: #FFFDF8; --surface-2: #EDE6D8;
+  --ink: #1F1B16; --ink-2: #5A5248; --line: #D9D0BF;
+  --accent: #B93C14; --accent-ink: #FFFDF8;
+  --mark: #FFE066; --mark-ink: #1F1B16;
+  --ok: #1B6E43; --ok-bg: #DCEEE2; --bad: #A8231C; --bad-bg: #F8DDD9;
+  --la: #1A6352; --la-bg: #D8ECE6; --lb: #7A4E00; --lb-bg: #F6E7C2; --lc: #8E2946; --lc-bg: #F5DCE3;
+  --serif: 'Frank Ruhl Libre', 'Times New Roman', serif;
+  --sans: 'Heebo', system-ui, sans-serif;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+  --r-xs: 3px; --r-s: 6px; --r-m: 10px; --r-l: 14px; --r-pill: 999px;
+  --nav-h: 64px;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --stage: #0F0D0B; --bg: #1A1714; --surface: #24201B; --surface-2: #302A23;
+  --ink: #F3ECDF; --ink-2: #B8AE9E; --line: #453C31;
+  --accent: #FF8A5C; --accent-ink: #1A1714;
+  --mark: #F2CB3D; --mark-ink: #1A1714;
+  --ok: #74D29E; --ok-bg: #1D3A2A; --bad: #FF9D92; --bad-bg: #4A211D;
+  --la: #7FD6BE; --la-bg: #16342D; --lb: #F0C060; --lb-bg: #3A2D10; --lc: #F29BB2; --lc-bg: #40192A;
+  color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+:root[data-theme] body {
+  background: var(--bg) !important;
+  color: var(--ink) !important;
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.45;
+}
+:root[data-theme] ::selection { background: var(--mark); color: var(--mark-ink); }
+:root[data-theme] button:focus-visible,
+:root[data-theme] input:focus-visible,
+:root[data-theme] select:focus-visible,
+:root[data-theme] textarea:focus-visible,
+:root[data-theme] a:focus-visible { outline: 3px solid var(--accent) !important; outline-offset: 2px; }
+:root[data-theme] h2, :root[data-theme] h3, :root[data-theme] h4 { font-family: var(--serif); color: var(--ink) !important; }
+:root[data-theme] .text-muted { color: var(--ink-2); }
+:root[data-theme] .font-mono { font-family: ui-monospace, 'JetBrains Mono', monospace; }
+:root[data-theme] hr { border-color: var(--line) !important; }
+
+/* ---------- Header ---------- */
+:root[data-theme] header {
+  background: var(--bg) !important;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  border-bottom: 1px solid var(--line);
+  box-shadow: none;
+  padding: var(--s3) var(--s4);
+  gap: var(--s2);
+}
+:root[data-theme] header h1,
+:root[data-theme] header h1.text-neon-purple {
+  font-family: var(--serif); font-weight: 900; font-size: 26px; line-height: 1.1;
+  color: var(--ink) !important;
+}
+:root[data-theme] #timer { color: var(--ink-2); font-size: 14px; }
+:root[data-theme] #btn-play {
+  background: var(--accent) !important; color: var(--accent-ink) !important;
+  border-radius: 50%; width: 44px; height: 44px; padding: 0;
+}
+:root[data-theme] #theme-toggle {
+  min-height: 44px; min-width: 44px; padding: 0 var(--s3);
+  border: 1px solid var(--line); border-radius: var(--r-pill);
+  background: var(--surface); color: var(--ink); font-size: 14px; font-weight: 500;
+}
+:root[data-theme] #offline-badge { background: var(--lb-bg) !important; color: var(--lb) !important; border-color: var(--lb) !important; }
+
+/* ---------- Layout: bottom nav on phones, top bar on wide screens ---------- */
+:root[data-theme] main {
+  width: 100%; max-width: 880px; margin: 0 auto;
+  padding: var(--s4) var(--s4) calc(var(--nav-h) + var(--s5) + env(safe-area-inset-bottom, 0px));
+}
+#bottom-nav {
+  position: fixed; inset-inline: 0; bottom: 0; z-index: 40;
+  display: flex; background: var(--surface); border-top: 1px solid var(--line);
+  padding: 4px 4px calc(4px + env(safe-area-inset-bottom, 0px));
+}
+#bottom-nav button {
+  flex: 1; min-width: 0; min-height: 56px; border: 0; background: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  color: var(--ink-2); font-family: var(--sans); font-size: 12px; font-weight: 500;
+}
+#bottom-nav button::before {
+  content: ""; height: 4px; width: 24px; border-radius: 2px; background: transparent;
+}
+#bottom-nav button svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#bottom-nav button[aria-current="page"] { color: var(--ink); font-weight: 700; }
+#bottom-nav button[aria-current="page"]::before { background: var(--accent); }
+
+@media (min-width: 900px) {
+  :root[data-theme] body { background: var(--stage) !important; }
+  :root[data-theme] header, #bottom-nav, :root[data-theme] nav[aria-label="מסכים"] { order: 0; }
+  #bottom-nav {
+    position: static; order: 1; justify-content: center; gap: var(--s2);
+    border-top: 0; border-bottom: 1px solid var(--line); padding: 0 var(--s4);
+  }
+  #bottom-nav button { flex: 0 0 auto; flex-direction: row; gap: var(--s2); padding: 0 var(--s4); font-size: 15px; }
+  #bottom-nav button::before { display: none; }
+  #bottom-nav button[aria-current="page"] { box-shadow: inset 0 -3px 0 var(--accent); }
+  :root[data-theme] nav[aria-label="מסכים"] { order: 2; }
+  :root[data-theme] main {
+    order: 3; background: var(--bg); border-inline: 1px solid var(--line);
+    padding: var(--s5) var(--s6) var(--s7);
+  }
+}
+
+/* ---------- Sub navigation (the original tab buttons, shown per section) ---------- */
+:root[data-theme] nav[aria-label="מסכים"] {
+  background: transparent !important; backdrop-filter: none; -webkit-backdrop-filter: none;
+  border: 0; border-radius: 0; box-shadow: none;
+  width: 100%; max-width: 880px; margin: 0 auto; padding: var(--s3) var(--s4) 0;
+  display: flex; flex-wrap: nowrap; justify-content: flex-start; gap: var(--s2);
+  overflow-x: auto; scrollbar-width: none;
+}
+:root[data-theme] nav[aria-label="מסכים"]::-webkit-scrollbar { display: none; }
+:root[data-theme] nav[aria-label="מסכים"][data-single="true"] { display: none; }
+:root[data-theme] nav[aria-label="מסכים"] .tab-btn[hidden] { display: none !important; }
+
+:root[data-theme] .tab-btn,
+:root[data-theme] main .level-btn,
+:root[data-theme] main .playlist-btn {
+  flex: none; min-height: 44px; padding: 0 var(--s4) !important;
+  border-radius: var(--r-pill) !important; border: 1px solid var(--line) !important;
+  background: transparent !important; color: var(--ink) !important;
+  font-size: 14px !important; font-weight: 500 !important; white-space: nowrap;
+  box-shadow: none !important; transform: none !important; outline: 0;
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+}
+:root[data-theme] .tab-btn:hover,
+:root[data-theme] .level-btn:hover,
+:root[data-theme] .playlist-btn:hover { border-color: var(--ink) !important; }
+:root[data-theme] .tab-btn[aria-pressed="true"],
+:root[data-theme] main .level-btn[aria-pressed="true"],
+:root[data-theme] main .playlist-btn[aria-pressed="true"] {
+  background: var(--ink) !important; color: var(--bg) !important; border-color: var(--ink) !important;
+  font-weight: 700 !important;
+}
+
+/* ---------- Cards and surfaces ---------- */
+:root[data-theme] .glass-card,
+:root[data-theme] article,
+:root[data-theme] .karaoke-panel,
+:root[data-theme] #song > div:first-child,
+:root[data-theme] .quiz-q,
+:root[data-theme] #songs-list article,
+:root[data-theme] .embed-player,
+:root[data-theme] #karaoke-teleprompter,
+:root[data-theme] #karaoke-scoreboard,
+:root[data-theme] #karaoke-end,
+:root[data-theme] .rc-passage-box {
+  background: var(--surface) !important;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--r-l) !important;
+  box-shadow: none !important;
+  color: var(--ink);
+}
+:root[data-theme] #song > div:first-child { padding: var(--s3); }
+:root[data-theme] #karaoke-scoreboard { background: transparent !important; border: 0 !important; }
+:root[data-theme] .karaoke-scoreboard .cell { background: var(--surface-2); border-color: var(--line); color: var(--ink); }
+:root[data-theme] .shadow, :root[data-theme] .shadow-xl { box-shadow: none !important; }
+
+/* Tailwind colour utilities used by the markup and the scripts, mapped to tokens */
+:root[data-theme] .bg-stage-800 { background-color: var(--surface) !important; }
+:root[data-theme] .bg-stage-900, :root[data-theme] .bg-stage-950, :root[data-theme] .bg-slate-950,
+:root[data-theme] .bg-stage-900\/90, :root[data-theme] .bg-stage-900\/80, :root[data-theme] .bg-stage-900\/60 { background-color: var(--surface-2) !important; }
+:root[data-theme] .bg-gradient-to-br, :root[data-theme] .bg-gradient-to-r { background-image: none !important; }
+
+:root[data-theme] .text-white, :root[data-theme] .text-slate-100, :root[data-theme] .text-slate-200,
+:root[data-theme] .text-gray-100, :root[data-theme] .text-gray-200, :root[data-theme] .text-sky-200 { color: var(--ink) !important; }
+:root[data-theme] .text-slate-300, :root[data-theme] .text-slate-400,
+:root[data-theme] .text-gray-300, :root[data-theme] .text-gray-400 { color: var(--ink-2) !important; }
+:root[data-theme] .text-indigo-200, :root[data-theme] .text-indigo-300, :root[data-theme] .text-indigo-400,
+:root[data-theme] .text-purple-400, :root[data-theme] .text-pink-400,
+:root[data-theme] .text-neon-purple, :root[data-theme] .text-neon-pink { color: var(--accent) !important; }
+:root[data-theme] .text-emerald-200, :root[data-theme] .text-emerald-300, :root[data-theme] .text-emerald-400,
+:root[data-theme] .text-green-400 { color: var(--ok) !important; }
+:root[data-theme] .text-red-200, :root[data-theme] .text-red-400 { color: var(--bad) !important; }
+:root[data-theme] .text-amber-200, :root[data-theme] .text-amber-300, :root[data-theme] .text-amber-400 { color: var(--lb) !important; }
+
+:root[data-theme] .bg-indigo-600, :root[data-theme] .bg-indigo-500, :root[data-theme] .bg-neon-purple,
+:root[data-theme] .bg-neon-pink, :root[data-theme] .bg-pink-600, :root[data-theme] .bg-pink-500 {
+  background-color: var(--accent) !important; color: var(--accent-ink) !important;
+}
+:root[data-theme] .bg-indigo-950, :root[data-theme] .bg-indigo-950\/80, :root[data-theme] .bg-indigo-900,
+:root[data-theme] .bg-indigo-900\/60 { background-color: var(--surface-2) !important; color: var(--ink) !important; }
+:root[data-theme] .bg-amber-950, :root[data-theme] .bg-amber-900\/80, :root[data-theme] .bg-amber-900\/60 { background-color: var(--lb-bg) !important; color: var(--lb) !important; }
+:root[data-theme] .bg-emerald-950, :root[data-theme] .bg-emerald-900\/80,
+:root[data-theme] .from-emerald-950\/60 { background-color: var(--ok-bg) !important; color: var(--ok) !important; }
+:root[data-theme] .bg-emerald-600 { background-color: var(--ink) !important; color: var(--bg) !important; }
+:root[data-theme] .bg-red-900\/80 { background-color: var(--bad-bg) !important; color: var(--bad) !important; }
+:root[data-theme] .bg-sky-900\/80 { background-color: var(--ink) !important; color: var(--bg) !important; }
+
+:root[data-theme] [class*="border-white"], :root[data-theme] [class*="border-slate-"],
+:root[data-theme] [class*="border-stage-"], :root[data-theme] [class*="border-indigo-"] { border-color: var(--line) !important; }
+:root[data-theme] [class*="border-amber-"] { border-color: var(--lb) !important; }
+:root[data-theme] [class*="border-emerald-"] { border-color: var(--ok) !important; }
+
+/* ---------- Buttons ---------- */
+:root[data-theme] main button.bg-indigo-600, :root[data-theme] main button.bg-neon-purple,
+:root[data-theme] main button.bg-neon-pink:not(.playlist-btn), :root[data-theme] main button.bg-pink-600,
+:root[data-theme] #quiz-reset, :root[data-theme] #btn-install-pwa,
+:root[data-theme] #karaoke-start-btn {
+  background: var(--accent) !important; color: var(--accent-ink) !important;
+  border: 0; border-radius: var(--r-m) !important; min-height: 48px; padding-inline: var(--s5);
+  font-size: 15px; font-weight: 700; box-shadow: none !important; transform: none !important;
+}
+:root[data-theme] #karaoke-mic-btn {
+  background: transparent; color: var(--ink); border: 1px solid var(--ink);
+  border-radius: var(--r-m); box-shadow: none; transform: none;
+}
+:root[data-theme] .song-link {
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--r-m);
+}
+:root[data-theme] .song-link:hover { background: var(--surface-2); border-color: var(--ink); }
+:root[data-theme] button.song-link.bg-neon-purple, :root[data-theme] button.song-link.bg-neon-pink { border: 0; }
+
+/* ---------- Form fields ---------- */
+:root[data-theme] input[type="search"], :root[data-theme] input[type="text"],
+:root[data-theme] select, :root[data-theme] textarea {
+  min-height: 48px; padding: 0 var(--s3);
+  background: var(--surface) !important; color: var(--ink) !important;
+  border: 1px solid var(--line) !important; border-radius: var(--r-m) !important;
+  font-family: var(--sans); font-size: 16px;
+}
+:root[data-theme] textarea { padding: var(--s3); }
+:root[data-theme] input::placeholder { color: var(--ink-2); }
+:root[data-theme] input[type="range"] { accent-color: var(--accent); background: transparent; height: 44px; }
+:root[data-theme] .progress-track { background: var(--surface-2); }
+:root[data-theme] .progress-fill { background: var(--ink); }
+
+/* ---------- Song: lyrics ---------- */
+:root[data-theme] #song article { font-family: var(--serif); font-size: 20px; line-height: 1.5; padding: var(--s4); }
+:root[data-theme] .lyric-line {
+  color: var(--ink-2); border-right: 0; border-left: 3px solid transparent;
+  padding: 6px 0 6px 10px; border-radius: 0; font-weight: 500;
+}
+:root[data-theme] .lyrics-active {
+  background: none; color: var(--ink); border-left-color: var(--accent);
+  font-weight: 700; font-size: 24px; line-height: 1.3; transform: none;
+}
+:root[data-theme] .vocab-badge, :root[data-theme] .rc-target-word {
+  background: var(--mark) !important; color: var(--mark-ink) !important;
+  border: 0; border-radius: var(--r-xs); padding: 0 4px; margin: 0 1px; box-shadow: none; font-weight: inherit;
+}
+:root[data-theme] .vocab-badge:hover, :root[data-theme] .rc-target-word:hover,
+:root[data-theme] .rc-target-word:focus { box-shadow: 0 2px 0 var(--accent); }
+:root[data-theme] #insp-word { background: var(--surface-2) !important; border: 0; border-radius: var(--r-m); color: var(--ink); padding: var(--s3); }
+:root[data-theme] .wave-bar { background: var(--accent); }
+
+/* ---------- Vocabulary ---------- */
+:root[data-theme] #vocab table { background: transparent !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
+:root[data-theme] #vocab thead { background: transparent !important; color: var(--ink-2); font-size: 13px; }
+:root[data-theme] #vocab th { text-align: start; font-weight: 700; border-bottom: 1px solid var(--line); }
+:root[data-theme] #vocab-table td { border-color: var(--line) !important; vertical-align: top; }
+:root[data-theme] #vocab-table td:first-child span:first-child {
+  font-family: var(--serif); font-weight: 700; font-size: 22px; line-height: 1.15; color: var(--ink) !important;
+}
+:root[data-theme] #vocab-table td:nth-child(2) > span:first-child { font-size: 17px; font-weight: 500; }
+@media (max-width: 640px) {
+  /* The four-column table reads as one word card per row on a phone */
+  :root[data-theme] #vocab thead { display: none; }
+  :root[data-theme] #vocab-table tr {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--s3);
+    padding: var(--s3) 0; border-top: 1px solid var(--line);
+  }
+  :root[data-theme] #vocab-table td { display: block; padding: 0 !important; border: 0 !important; min-width: 0; }
+  :root[data-theme] #vocab-table td:nth-child(1) { grid-column: 1; grid-row: 1; text-align: left; }
+  :root[data-theme] #vocab-table td:nth-child(4) { grid-column: 2; grid-row: 1; align-self: center; }
+  :root[data-theme] #vocab-table td:nth-child(2) { grid-column: 1 / -1; grid-row: 2; margin-top: 2px; }
+  :root[data-theme] #vocab-table td:nth-child(3) { grid-column: 1 / -1; grid-row: 3; font-size: 13px; }
+}
+
+/* ---------- Quiz ---------- */
+:root[data-theme] .quiz-q { padding: var(--s4); }
+:root[data-theme] .quiz-q p { font-family: var(--serif); font-size: 20px; color: var(--ink) !important; }
+:root[data-theme] .quiz-opt {
+  min-height: 52px; padding: 8px 14px; text-align: start;
+  background: var(--surface) !important; color: var(--ink) !important;
+  border: 2px solid var(--line) !important; border-radius: var(--r-m) !important;
+  font-size: 17px; font-weight: 500; box-shadow: none !important; transform: none !important;
+}
+:root[data-theme] .quiz-opt:hover:not(:disabled) { border-color: var(--ink) !important; background: var(--surface) !important; }
+:root[data-theme] .quiz-opt:disabled { opacity: .55; }
+:root[data-theme] .quiz-opt.selected { opacity: 1; outline: 0; border-color: var(--ink) !important; background: var(--surface-2) !important; font-weight: 700; }
+:root[data-theme] .quiz-fb.text-green-400 { background: var(--ok-bg); color: var(--ok) !important; padding: var(--s3); border-radius: var(--r-m); }
+:root[data-theme] .quiz-fb.text-red-400 { background: var(--bad-bg); color: var(--bad) !important; padding: var(--s3); border-radius: var(--r-m); }
+:root[data-theme] #quiz-progress { color: var(--ink-2); font-size: 14px; }
+:root[data-theme] #quiz-explanation { color: var(--ink); }
+:root[data-theme] [role="group"][aria-label="סוג מבחן אמיר״ם"] { width: 100%; background: transparent !important; border: 0 !important; padding: 0; }
+:root[data-theme] [id^="exam-type-"] {
+  min-height: 44px; border-radius: var(--r-pill) !important; border: 1px solid var(--line);
+  font-size: 14px; padding-inline: var(--s4);
+}
+:root[data-theme] [id^="exam-type-"][aria-pressed="true"] { background: var(--ink) !important; color: var(--bg) !important; border-color: var(--ink); }
+:root[data-theme] [id^="exam-type-"][aria-pressed="false"] { background: transparent !important; color: var(--ink) !important; }
+:root[data-theme] .quiz-mode-bar button,
+:root[data-theme] .embed-toggle button {
+  background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+  border-radius: var(--r-m); font-weight: 500; box-shadow: none;
+}
+:root[data-theme] .quiz-mode-bar button[aria-pressed="true"],
+:root[data-theme] .embed-toggle button[aria-pressed="true"] {
+  background: var(--surface-2); color: var(--ink); border-color: var(--ink); font-weight: 700; box-shadow: none;
+}
+:root[data-theme] .rc-line { font-family: var(--serif); font-size: 17px; color: var(--ink); }
+:root[data-theme] .rc-line-num.marker { color: var(--accent); }
+:root[data-theme] .rc-line-num.dim { color: var(--line); }
+
+/* ---------- Flashcards ---------- */
+:root[data-theme] .srs-card-front, :root[data-theme] .srs-card-back {
+  backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none;
+  border: 1px solid var(--line); border-radius: var(--r-l);
+}
+:root[data-theme] .srs-card-front {
+  background: var(--surface);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 31px, var(--surface-2) 31px 32px);
+}
+:root[data-theme] .srs-card-back { background: var(--mark); color: var(--mark-ink); border-color: var(--mark); }
+:root[data-theme] .srs-card-back * { color: var(--mark-ink) !important; }
+:root[data-theme] .srs-card-back > div:nth-child(2) { background: rgba(255, 255, 255, .45) !important; border: 0 !important; }
+:root[data-theme] #srs-card-word { font-family: var(--serif); font-weight: 900; font-size: 34px; color: var(--ink) !important; }
+:root[data-theme] #srs-card-trans { font-family: var(--serif); font-weight: 900; font-size: 28px; }
+:root[data-theme] #srs-btn-flip { background: var(--ink) !important; color: var(--bg) !important; border-radius: var(--r-m); min-height: 48px; }
+:root[data-theme] #srs-actions button { min-height: 56px !important; border-radius: var(--r-m); font-size: 14px; }
+:root[data-theme] #srs-btn-hard { background: var(--surface) !important; color: var(--ink) !important; border: 1px solid var(--line); }
+:root[data-theme] #srs-box-badge { background: var(--surface-2) !important; color: var(--ink) !important; border: 0; border-radius: var(--r-s); }
+
+/* ---------- Progress dashboard ---------- */
+:root[data-theme] #amiram-score-display {
+  font-family: var(--serif); font-weight: 900; color: var(--ink) !important;
+  background: none !important; -webkit-text-fill-color: currentColor;
+}
+:root[data-theme] #dashboard [id^="metric-"] { font-family: var(--serif); font-size: 24px; color: var(--ink) !important; }
+:root[data-theme] #dashboard .rounded-full.h-2\.5 { background: var(--surface-2) !important; }
+:root[data-theme] #bar-level-a { background: var(--la) !important; }
+:root[data-theme] #bar-level-b { background: var(--lb) !important; }
+:root[data-theme] #bar-level-c { background: var(--lc) !important; }
+:root[data-theme] #amiram-cefr-badge { background: var(--mark) !important; color: var(--mark-ink) !important; border: 0; }
+
+/* ---------- Voice karaoke ---------- */
+:root[data-theme] .karaoke-status { box-shadow: none; border: 1px solid var(--line); }
+:root[data-theme] .karaoke-status-idle { background: var(--surface-2); color: var(--ink); }
+:root[data-theme] .karaoke-status-listening { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); }
+:root[data-theme] .karaoke-status-processing { background: var(--lb-bg); color: var(--lb); border-color: var(--lb); }
+:root[data-theme] #karaoke-teleprompter { font-family: var(--serif); }
+:root[data-theme] .karaoke-word.active { background: var(--mark); color: var(--mark-ink); outline: 0; transform: none; }
+:root[data-theme] .karaoke-word.hit { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); }
+:root[data-theme] .karaoke-word.miss { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); }
+:root[data-theme] .karaoke-choice { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+:root[data-theme] .karaoke-choice:hover:not(:disabled) { background: var(--surface-2); transform: none; }
+:root[data-theme] #karaoke-fallback-msg { background: var(--lb-bg); color: var(--lb); border-color: var(--lb); }
+:root[data-theme] #karaoke-feedback.hit { color: var(--ok); }
+:root[data-theme] #karaoke-feedback.miss { color: var(--bad); }
+:root[data-theme] .embed-frame-wrap { background: var(--surface-2); border-color: var(--line); }
+
+:root[data-theme] select { max-width: 100%; min-width: 0; }
+:root[data-theme] input[type="file"] { min-height: 44px; max-width: 100%; color: var(--ink-2); font-size: 14px; }
+:root[data-theme] .quiz-q button.text-xs { min-height: 44px; min-width: 44px; border: 1px solid var(--line); border-radius: 50%; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme] * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
