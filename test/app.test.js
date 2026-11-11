@@ -137,6 +137,18 @@ test('songDominantLevel and filterSongsByLevel use estimateSongVocabDifficulty',
   assert.ok(calls.length > 0);
 });
 
+test('buildQuickStudyPlan delegates planning to the optimizer', () => {
+  const optimizer = {
+    planTimeBoxedSession(input) {
+      return { targetMinutes: input.availableMinutes, activities: ['quiz'] };
+    }
+  };
+  const plan = A.buildQuickStudyPlan(15, ['word1'], [], [], optimizer);
+  assert.equal(plan.targetMinutes, 15);
+  assert.deepEqual(plan.activities, ['quiz']);
+  assert.throws(() => A.buildQuickStudyPlan(15, [], [], [], null), /Invalid optimizer/);
+});
+
 test('real estimator classifies the content songs and the page wires the level filter', () => {
   const est = require('../src/difficulty_estimator.js');
   const content = JSON.parse(fs.readFileSync(path.join(root, 'data/imports/content_v2.json'), 'utf8'));

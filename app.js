@@ -81,6 +81,29 @@
   function isCorrect(question, picked) { return !!question && picked === question.a; }
 
   // --- Task H: validated content_v2, platform links, recommendations, timing, Suno export ---
+  // Quick Study Plan Selector
+  /**
+   * Build a quick study plan using the provided optimizer.
+   * @param {number} availableMinutes - Total minutes available for the session.
+   * @param {Array} dueWords - Array of due word objects or strings.
+   * @param {Array} songCatalog - Array of song objects.
+   * @param {Array} questionPool - Array of question objects for quizzes.
+   * @param {object} optimizer - Object exposing `planTimeBoxedSession`.
+   * @returns {object} The planning result with targetMinutes, estimatedMinutes and activities.
+   */
+  function buildQuickStudyPlan(availableMinutes, dueWords, songCatalog, questionPool, optimizer) {
+    if (!optimizer || typeof optimizer.planTimeBoxedSession !== 'function') {
+      throw new Error('Invalid optimizer: must provide planTimeBoxedSession');
+    }
+    const input = {
+      availableMinutes,
+      dueWords,
+      songCatalog,
+      questionPool,
+    };
+    return optimizer.planTimeBoxedSession(input);
+  }
+
   var SPOTIFY_ID_RE = /^[A-Za-z0-9]{22}$/;
   var YOUTUBE_ID_RE = /^[A-Za-z0-9_-]{11}$/;
   var QUIZ_LAYOUT = { gapPx: 12, minTapPx: 44, singleColumn: true };
@@ -131,8 +154,10 @@
     var out = (songs || []).map(function (s) {
       var have = (s.highlight_words || []).map(function (w) { return String(w.word).toLowerCase(); });
       var matched = targets.filter(function (t) { return have.indexOf(t) !== -1; });
-      return { song: s, score: matched.length, matchedWords: matched,
-        reasons: matched.length ? ['כולל ' + matched.length + ' ממילות היעד: ' + matched.join(', ')] : ['ללא חפיפה למילות היעד'] };
+      return {
+        song: s, score: matched.length, matchedWords: matched,
+        reasons: matched.length ? ['כולל ' + matched.length + ' ממילות היעד: ' + matched.join(', ')] : ['ללא חפיפה למילות היעד']
+      };
     });
     out.sort(function (a, b) { return b.score - a.score || String(a.song.title).localeCompare(String(b.song.title)) || a.song.id - b.song.id; });
     return out.slice(0, limit > 0 ? limit : out.length);
@@ -166,10 +191,12 @@
   function buildSunoExport(words, title) {
     var ws = (words || []).slice(0, 12);
     var lyrics = ws.map(function (w) { return (w.example || (w.word + ' — ' + (w.translation || ''))); }).join('\n');
-    return { title: title || 'ShirAmiram vocabulary song', generation: 'pending_manual',
+    return {
+      title: title || 'ShirAmiram vocabulary song', generation: 'pending_manual',
       note: 'Export only. No Suno generation performed; paste manually in Suno if you choose.',
       stylePrompt: 'educational English vocabulary song, clear slow singing, simple melody, words: ' + ws.map(function (w) { return w.word; }).join(', '),
-      lyrics: lyrics, words: ws.map(function (w) { return w.word; }) };
+      lyrics: lyrics, words: ws.map(function (w) { return w.word; })
+    };
   }
 
   // Weak-words queue Empty State: show the card only when the queue is empty, otherwise show the word list.
@@ -204,6 +231,7 @@
   }
 
   return {
+    buildQuickStudyPlan: buildQuickStudyPlan,
     songDominantLevel: songDominantLevel, filterSongsByLevel: filterSongsByLevel, SONG_LEVELS: SONG_LEVELS,
     VOCAB: VOCAB, CATEGORIES: CATEGORIES, CATEGORY_HE: CATEGORY_HE, DIFFICULTY_HE: DIFFICULTY_HE, QUIZ: QUIZ,
     LINES: LINES, LINE_SEC: LINE_SEC, LOOP_SEC: LOOP_SEC, TUNE: TUNE, NOTE_SEC: NOTE_SEC,
