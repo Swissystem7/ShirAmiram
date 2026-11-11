@@ -109,3 +109,43 @@ test('formatWordItem returns syllablesDisplay/phoneticGuide and UI escapes guida
   assert.match(html, /esc\(guide\)/);
   assert.match(html, /ShirAmiramVocab\.formatWordItem/);
 });
+
+test('songDominantLevel and filterSongsByLevel use estimateSongVocabDifficulty', () => {
+  const calls = [];
+  const fake = {
+    estimateSongVocabDifficulty(words) {
+      calls.push(words);
+      const hard = words.filter((w) => w.length > 7).length;
+      const mid = words.filter((w) => w.length > 4 && w.length <= 7).length;
+      return {
+        avgScore: 0,
+        totalWords: words.length,
+        levelCounts: { A_foundational: words.length - hard - mid, B_intermediate: mid, C_advanced: hard },
+      };
+    },
+  };
+  const mk = (id, words) => ({ id, highlight_words: words.map((word) => ({ word })) });
+  const songs = [mk(1, ['cat', 'dog', 'sun']), mk(2, ['market', 'garden', 'silver']), mk(3, ['inevitable', 'nevertheless']), mk(4, [])];
+  assert.equal(A.songDominantLevel(songs[0], fake), 'A_foundational');
+  assert.equal(A.songDominantLevel(songs[1], fake), 'B_intermediate');
+  assert.equal(A.songDominantLevel(songs[2], fake), 'C_advanced');
+  assert.equal(A.songDominantLevel(songs[3], fake), null);
+  assert.equal(A.songDominantLevel(songs[0], null), null);
+  assert.deepEqual(A.filterSongsByLevel(songs, 'C_advanced', fake).map((s) => s.id), [3]);
+  assert.deepEqual(A.filterSongsByLevel(songs, 'B_intermediate', fake).map((s) => s.id), [2]);
+  assert.equal(A.filterSongsByLevel(songs, 'all', fake).length, 4);
+  assert.ok(calls.length > 0);
+});
+
+test('real estimator classifies the content songs and the page wires the level filter', () => {
+  const est = require('../src/difficulty_estimator.js');
+  const content = JSON.parse(fs.readFileSync(path.join(root, 'data/imports/content_v2.json'), 'utf8'));
+  const total = ['A_foundational', 'B_intermediate', 'C_advanced'].reduce(
+    (n, l) => n + A.filterSongsByLevel(content.songs, l, est).length,
+    0,
+  );
+  assert.ok(total > 0 && total <= content.songs.length);
+  assert.match(html, /id="karaoke-30-level"/);
+  assert.match(html, /src\/difficulty_estimator\.js/);
+  assert.match(html, /A\.filterSongsByLevel/);
+});

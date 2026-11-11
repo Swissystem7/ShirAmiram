@@ -184,7 +184,27 @@
     return { isEmpty: isEmpty, queueLength: n };
   }
 
+  // Dominant vocab level (A_foundational / B_intermediate / C_advanced) of a song's highlight words.
+  // `estimator` is the difficulty estimator (needs estimateSongVocabDifficulty). Ties go to the easier level.
+  var SONG_LEVELS = ['A_foundational', 'B_intermediate', 'C_advanced'];
+  function songDominantLevel(song, estimator) {
+    if (!estimator || typeof estimator.estimateSongVocabDifficulty !== 'function') return null;
+    var words = ((song && song.highlight_words) || []).map(function (w) { return w && w.word; }).filter(Boolean);
+    var stats = estimator.estimateSongVocabDifficulty(words);
+    if (!stats || !stats.totalWords) return null;
+    var best = null;
+    SONG_LEVELS.forEach(function (lvl) {
+      if (best === null || (stats.levelCounts[lvl] || 0) > (stats.levelCounts[best] || 0)) best = lvl;
+    });
+    return best;
+  }
+  function filterSongsByLevel(songs, level, estimator) {
+    if (!level || level === 'all') return (songs || []).slice();
+    return (songs || []).filter(function (s) { return songDominantLevel(s, estimator) === level; });
+  }
+
   return {
+    songDominantLevel: songDominantLevel, filterSongsByLevel: filterSongsByLevel, SONG_LEVELS: SONG_LEVELS,
     VOCAB: VOCAB, CATEGORIES: CATEGORIES, CATEGORY_HE: CATEGORY_HE, DIFFICULTY_HE: DIFFICULTY_HE, QUIZ: QUIZ,
     LINES: LINES, LINE_SEC: LINE_SEC, LOOP_SEC: LOOP_SEC, TUNE: TUNE, NOTE_SEC: NOTE_SEC,
     filterVocab: filterVocab, findWord: findWord, formatTime: formatTime, positionAt: positionAt, isCorrect: isCorrect,

@@ -376,6 +376,13 @@
           <span class="text-xs px-2 py-0.5 rounded bg-indigo-950 text-indigo-200 border border-indigo-700 font-bold">סנכרון חי</span>
         </div>
         
+        <label class="block text-xs text-muted mb-1" for="karaoke-30-level">סינון לפי רמת קושי דומיננטית של אוצר המילים:</label>
+        <select id="karaoke-30-level" class="w-full p-2 bg-stage-900 border border-white/10 rounded-lg text-sm text-gray-200 mb-3">
+          <option value="all">כל הרמות</option>
+          <option value="A_foundational">בסיסי (A)</option>
+          <option value="B_intermediate">בינוני (B)</option>
+          <option value="C_advanced">מתקדם (C)</option>
+        </select>
         <label class="block text-xs text-muted mb-1">בחרו שיר מהמאגר לתרגול וטלפרומפטר:</label>
         <select id="karaoke-30-select" class="w-full p-2 bg-stage-900 border border-white/10 rounded-lg text-sm text-gray-200 mb-3"></select>
 
@@ -497,6 +504,8 @@
   <script src="src/analytics.js"></script>
   <script src="src/speech.js"></script>
   <script src="src/restatement_simulator.js"></script>
+  <script src="src/pronunciation_hint.js"></script>
+  <script src="src/difficulty_estimator.js"></script>
   <script src="src/song_karaoke.js"></script>
   <script src="src/reading_comprehension.js"></script>
   <script src="src/karaoke.js"></script>
@@ -1059,9 +1068,18 @@
     function init30SongKaraoke(songs) {
       const sel = $('karaoke-30-select');
       if (!sel || !songs || !songs.length) return;
-      sel.innerHTML = songs.map(s => '<option value="' + s.id + '">' + esc(s.title) + ' — ' + esc(s.artist) + '</option>').join('');
-      sel.onchange = () => loadTeleprompterSong(Number(sel.value));
-      loadTeleprompterSong(songs[0].id);
+      const lvlSel = $('karaoke-30-level');
+      const estimator = window.ShirAmiramDifficultyEstimator;
+      const fill = () => {
+        const shown = (lvlSel && estimator) ? A.filterSongsByLevel(songs, lvlSel.value, estimator) : songs;
+        sel.innerHTML = shown.length
+          ? shown.map(s => '<option value="' + s.id + '">' + esc(s.title) + ' — ' + esc(s.artist) + '</option>').join('')
+          : '<option value="">אין שירים ברמה זו</option>';
+        if (shown.length) loadTeleprompterSong(shown[0].id);
+      };
+      sel.onchange = () => { if (sel.value) loadTeleprompterSong(Number(sel.value)); };
+      if (lvlSel) lvlSel.onchange = fill;
+      fill();
     }
 
     function loadTeleprompterSong(songId) {
