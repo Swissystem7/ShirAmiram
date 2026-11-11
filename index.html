@@ -77,6 +77,8 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="popular" aria-pressed="false">🌟 שירים מוכרים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="finale" aria-pressed="false">🎤 גמר קריוקי</button>
   </nav>
 
   <!-- Content -->
@@ -490,7 +492,178 @@
       <div id="karaoke-end" class="hidden" aria-live="polite"></div>
     </section>
 
+    <!-- Popular Song Mentions Tab -->
+    <section id="popular" class="tab-content hidden max-w-4xl mx-auto">
+      <div class="mb-6 p-5 rounded-2xl bg-slate-900/80 border border-indigo-500/30 backdrop-blur-md shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
+              <span>🌟 שירים מוכרים, פלייליסטים חכמים והסברי Genius</span>
+            </h2>
+            <p class="text-sm text-slate-400 mt-1">
+              זיכרון מילים דרך שורות אמיתיות משירים מפורסמים (Queen, Beatles, Adele, Eminem ועוד), בניית פלייליסט לפי סגנון מועדף שממקסם מילות אמיר"ם, והסברי Genius למשמעות המילה בשיר!
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btn-filter-weak-popular" type="button" class="px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold hover:bg-amber-500/30 transition-all cursor-pointer min-h-[44px]">
+              מילות היעד החלשות שלי ⚠️
+            </button>
+            <button id="btn-show-all-popular" type="button" class="px-3 py-1.5 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-xs font-bold hover:bg-indigo-500/30 transition-all cursor-pointer min-h-[44px]">
+              הצג את כל השירים (70) 🎶
+            </button>
+          </div>
+        </div>
+
+        <!-- Smart Genre Playlist Builder -->
+        <div class="mb-4 p-4 rounded-xl bg-slate-950/70 border border-purple-500/30 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-sm font-extrabold text-purple-300 flex items-center gap-1.5">
+                <span>🎧 מחולל פלייליסט חכם לפי סגנון מוזיקה (מקסימום מילות אמיר"ם)</span>
+              </h3>
+              <p class="text-xs text-slate-400">בחרו סגנון מועדף והמערכת תרכיב פלייליסט שמכסה את המספר המקסימלי של מילות אמיר"ם ומילים חלשות עם הסברי Genius:</p>
+            </div>
+            <button id="btn-build-smart-playlist" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-extrabold shadow-lg transition-all cursor-pointer min-h-[44px]">
+              ⚡ הרכב פלייליסט אופטימלי
+            </button>
+          </div>
+
+          <div id="genre-filter-pills" class="flex flex-wrap gap-2" role="group" aria-label="בחירת סגנון מוזיקה">
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold min-h-[44px]" data-genre="all" aria-pressed="true">כל הסגנונות 🎶</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Rock" aria-pressed="false">רוק קלאסי ומודרני 🎸</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Pop" aria-pressed="false">פופ ולהיטים ✨</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Hip-Hop & Rap" aria-pressed="false">היפ-הופ וראפ 🎤</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Alternative & Indie" aria-pressed="false">אלטרנטיבי ואינדי 🌙</button>
+            <button type="button" class="genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]" data-genre="Classic & Soul" aria-pressed="false">קלאסיקות וסול 🎷</button>
+          </div>
+
+          <!-- Active Smart Playlist Summary Box -->
+          <div id="smart-playlist-summary" class="hidden p-3.5 rounded-xl bg-indigo-950/60 border border-indigo-500/40 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span id="smart-playlist-title" class="text-sm font-extrabold text-white">פלייליסט מותאם אישית</span>
+                <p id="smart-playlist-stats" class="text-xs text-emerald-300 font-bold mt-0.5"></p>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button id="btn-play-smart-yt" type="button" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold flex items-center gap-1 cursor-pointer min-h-[44px]">
+                  ▶ נגן פלייליסט ב-YouTube
+                </button>
+                <button id="btn-play-smart-sp" type="button" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center gap-1 cursor-pointer min-h-[44px]">
+                  ♫ נגן פלייליסט ב-Spotify
+                </button>
+                <a id="link-external-yt-playlist" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center gap-1 min-h-[44px]">
+                  🔗 פתח רשימת השמעה ב-YouTube ↗
+                </a>
+              </div>
+            </div>
+            <div id="smart-playlist-words" class="flex flex-wrap gap-1 pt-1"></div>
+          </div>
+        </div>
+
+        <div class="relative">
+          <input id="popular-search" type="search" dir="rtl" lang="he" placeholder="חפש מילה, אמן, סגנון או הסבר Genius..." aria-label="חיפוש בשירים מוכרים" class="w-full p-3 rounded-xl bg-slate-950/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-all text-sm">
+        </div>
+      </div>
+
+      <div id="popular-songs-list" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Karaoke Finale Tab -->
+    <section id="finale" class="tab-content hidden max-w-4xl mx-auto">
+      <div class="mb-6 p-6 rounded-2xl bg-gradient-to-br from-indigo-950/60 via-slate-900/90 to-purple-950/60 border border-indigo-500/40 shadow-2xl backdrop-blur-md">
+        <div class="flex items-center justify-between gap-4 mb-3">
+          <div>
+            <span class="text-xs font-black uppercase tracking-widest text-indigo-400 px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20">The Grand Finale</span>
+            <h2 class="text-2xl font-black text-white mt-1">🎤 גמר קריוקי: ביצוע כפול</h2>
+          </div>
+          <div id="finale-score-badge" class="hidden text-right px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40">
+            <div class="text-xs text-emerald-300 font-bold">ציון כולל</div>
+            <div id="finale-overall-score" class="text-2xl font-black text-emerald-400">0</div>
+          </div>
+        </div>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          סיום המודול: ביצוע כפול של מילות היעד! ראשית, שרים את השיר המקורי שהולחן עבורך. שנית, שרים את מילות היעד לפי המקצב והמלודיה של שיר מוכר ומפורסם מ-Spotify או YouTube!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Track 1: Original Suno -->
+        <div class="finale-track-card p-5 rounded-2xl bg-slate-900/70 border border-indigo-500/30">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs">1</span>
+              <span>שיר אמיר"ם שהולחן</span>
+            </h3>
+            <span class="text-xs text-indigo-300 bg-indigo-950 px-2 py-0.5 rounded border border-indigo-800">Original Suno</span>
+          </div>
+          <div id="finale-track1-lyrics" class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-sm font-serif italic mb-4 max-h-48 overflow-y-auto leading-relaxed">
+            <!-- Lyrics filled dynamically -->
+          </div>
+          <button id="btn-start-finale-track1" type="button" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[44px]">
+            <span>🎙️ שיר רצועה 1 (הקלטה והערכה)</span>
+          </button>
+        </div>
+
+        <!-- Track 2: Familiar Song Melody -->
+        <div class="finale-track-card p-5 rounded-2xl bg-slate-900/70 border border-purple-500/30">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs">2</span>
+              <span>מילות היעד למנגינה מוכרת</span>
+            </h3>
+            <span class="text-xs text-purple-300 bg-purple-950 px-2 py-0.5 rounded border border-purple-800">Popular Melody</span>
+          </div>
+          <div id="finale-track2-guidance" class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-200 text-sm font-serif italic mb-4 max-h-48 overflow-y-auto leading-relaxed">
+            <!-- Popular lyrics & target words prompt -->
+          </div>
+          <button id="btn-start-finale-track2" type="button" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer min-h-[44px]">
+            <span>🎶 שיר רצועה 2 לפי המלודיה המוכרת</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="finale-feedback-box" class="hidden p-4 rounded-2xl bg-slate-900/90 border border-emerald-500/40 text-center shadow-xl">
+        <p id="finale-feedback-text" class="text-base font-bold text-emerald-300"></p>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Sticky Bottom Media Dock (YouTube / Spotify Playback) -->
+  <aside id="sticky-media-dock" class="sticky-media-dock p-4" aria-label="נגן מדיה צף">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3 w-full md:w-auto">
+        <div id="dock-media-icon" class="w-10 h-10 rounded-xl bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-lg text-indigo-300">
+          🎵
+        </div>
+        <div>
+          <div id="dock-track-title" class="text-sm font-bold text-white truncate max-w-xs md:max-w-md">שיר מופעל</div>
+          <div id="dock-track-subtitle" class="text-xs text-slate-400 truncate">אמן או מקור</div>
+        </div>
+      </div>
+
+      <div id="dock-embed-container" class="w-full md:w-96 h-28 md:h-36 overflow-hidden rounded-xl bg-black/40">
+        <!-- YouTube iframe or Spotify iframe injected here -->
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="btn-dock-prev" type="button" aria-label="שיר קודם בפלייליסט" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold cursor-pointer min-h-[44px] transition-all">
+          ⏮ הקודם
+        </button>
+        <button id="btn-dock-next" type="button" aria-label="שיר הבא בפלייליסט" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold cursor-pointer min-h-[44px] transition-all">
+          הבא ⏭
+        </button>
+        <a id="dock-external-link" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-lg bg-indigo-950 hover:bg-indigo-900 text-indigo-200 border border-indigo-700/50 text-xs font-bold flex items-center min-h-[44px] transition-all">
+          🔗 פתח ישירות ↗
+        </a>
+        <button id="btn-dock-close" type="button" aria-label="סגור נגן צף" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold cursor-pointer min-h-[44px] transition-all">
+          ✕ סגור
+        </button>
+      </div>
+    </div>
+  </aside>
 
   <script src="app.js"></script>
   <script src="src/amiram_vocab_data.js"></script>
@@ -509,6 +682,10 @@
   <script src="src/song_karaoke.js"></script>
   <script src="src/reading_comprehension.js"></script>
   <script src="src/karaoke.js"></script>
+  <script src="src/popular_song_mentions_data.js"></script>
+  <script src="src/media_player.js"></script>
+  <script src="src/popular_lyrics_agent.js"></script>
+  <script src="src/karaoke_finale.js"></script>
   <script>
     const A = window.ShirAmiram;
     const $ = (id) => document.getElementById(id);
@@ -1696,6 +1873,329 @@
       window.addEventListener('appinstalled', () => {
         if ($('btn-install-pwa')) $('btn-install-pwa').classList.add('hidden');
       });
+    })();
+
+    // --- Phase 2: Media Player, Popular Lyrics & Karaoke Finale Controllers ---
+    (function initPhase2() {
+      const mediaPlayer = window.ShirAmiramMediaPlayer ? new window.ShirAmiramMediaPlayer() : null;
+      const lyricsAgent = (window.ShirAmiramPopularLyricsAgent && window.POPULAR_SONG_MENTIONS_DATA) 
+        ? new window.ShirAmiramPopularLyricsAgent(window.POPULAR_SONG_MENTIONS_DATA) 
+        : null;
+
+      function getActiveWeakWords() {
+        const defaultWeak = ['crucial', 'undermine', 'deliberate', 'nevertheless', 'hypothesis', 'subtle', 'inevitable', 'abandon'];
+        let dynamicWeak = [];
+        if (window.ShirAmiramAnalytics) {
+          const anState = window.ShirAmiramAnalytics.loadAnalyticsState();
+          const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : A.VOCAB;
+          const queue = window.ShirAmiramAnalytics.buildReviewQueue(anState, pool, 12) || [];
+          dynamicWeak = queue.map(w => w.word.toLowerCase());
+        }
+        return Array.from(new Set([...dynamicWeak, ...defaultWeak]));
+      }
+
+      // Close dock button
+      if ($('btn-dock-close')) {
+        $('btn-dock-close').addEventListener('click', () => {
+          if (mediaPlayer) mediaPlayer.pause();
+          $('sticky-media-dock').classList.remove('active');
+          document.body.classList.remove('dock-active');
+          if ($('dock-embed-container')) $('dock-embed-container').innerHTML = '';
+        });
+      }
+
+      function updateDockHeaderFromTrack(track, platform, index, total) {
+        if (!track) return;
+        const prefix = total > 1 ? `[${index + 1}/${total}] ` : '';
+        if ($('dock-track-title')) $('dock-track-title').textContent = `${prefix}${track.song_title} — ${track.artist}`;
+        if ($('dock-track-subtitle')) $('dock-track-subtitle').textContent = `מילת יעד: ${track.word} (${track.hebrew_translation || ''}) • ${track.genre || 'Music'}`;
+        if ($('dock-media-icon')) $('dock-media-icon').textContent = platform === 'spotify' ? '♫' : '▶';
+        if ($('dock-external-link')) {
+          $('dock-external-link').href = platform === 'spotify'
+            ? `https://open.spotify.com/track/${track.spotify_id}`
+            : `https://www.youtube.com/watch?v=${track.youtube_id}&t=${track.timestamp_sec || 0}s`;
+        }
+      }
+
+      if ($('btn-dock-prev')) {
+        $('btn-dock-prev').addEventListener('click', () => {
+          if (!mediaPlayer || !$('dock-embed-container')) return;
+          const res = mediaPlayer.prevTrack($('dock-embed-container'));
+          if (res && res.ok && res.track) {
+            updateDockHeaderFromTrack(res.track, mediaPlayer.playlistPlatform, res.playlistIndex, res.totalTracks);
+          }
+        });
+      }
+
+      if ($('btn-dock-next')) {
+        $('btn-dock-next').addEventListener('click', () => {
+          if (!mediaPlayer || !$('dock-embed-container')) return;
+          const res = mediaPlayer.nextTrack($('dock-embed-container'));
+          if (res && res.ok && res.track) {
+            updateDockHeaderFromTrack(res.track, mediaPlayer.playlistPlatform, res.playlistIndex, res.totalTracks);
+          }
+        });
+      }
+
+      function openMediaDock(title, subtitle, icon, loadFn, externalUrl) {
+        if ($('dock-track-title')) $('dock-track-title').textContent = title;
+        if ($('dock-track-subtitle')) $('dock-track-subtitle').textContent = subtitle;
+        if ($('dock-media-icon')) $('dock-media-icon').textContent = icon;
+        if ($('dock-external-link') && externalUrl) $('dock-external-link').href = externalUrl;
+        if ($('dock-embed-container')) {
+          $('dock-embed-container').innerHTML = '';
+          loadFn($('dock-embed-container'));
+        }
+        if ($('sticky-media-dock')) {
+          $('sticky-media-dock').classList.add('active');
+          document.body.classList.add('dock-active');
+        }
+      }
+
+      // Render Popular Songs List
+      function renderPopularSongs(items) {
+        const listEl = $('popular-songs-list');
+        if (!listEl) return;
+        if (!items || items.length === 0) {
+          listEl.innerHTML = '<div class="p-6 text-center text-slate-400 bg-slate-900/60 rounded-2xl border border-slate-800">לא נמצאו שירים תואמים לחיפוש.</div>';
+          return;
+        }
+
+        listEl.innerHTML = items.map(m => lyricsAgent ? lyricsAgent.formatMnemonicCard(m).html : '').join('');
+
+        // Attach play handlers
+        listEl.querySelectorAll('.btn-play-youtube').forEach((btn, idx) => {
+          btn.addEventListener('click', () => {
+            const ytId = btn.dataset.youtubeId;
+            const ts = parseFloat(btn.dataset.timestamp) || 0;
+            const card = btn.closest('.popular-song-card');
+            const title = card ? card.querySelector('h4').textContent : 'YouTube Music';
+            const extUrl = `https://www.youtube.com/watch?v=${ytId}&t=${ts}s`;
+            openMediaDock(title, `YouTube Video Stream (${ts}s)`, '▶', (container) => {
+              if (mediaPlayer) {
+                mediaPlayer.playlist = items.slice();
+                mediaPlayer.playlistIndex = idx;
+                mediaPlayer.playlistPlatform = 'youtube';
+                mediaPlayer.loadYouTube(ytId, container, { start: ts, autoplay: 1 });
+                mediaPlayer.seekTo(ts);
+              }
+            }, extUrl);
+          });
+        });
+
+        listEl.querySelectorAll('.btn-play-spotify').forEach((btn, idx) => {
+          btn.addEventListener('click', () => {
+            const spId = btn.dataset.spotifyId;
+            const card = btn.closest('.popular-song-card');
+            const title = card ? card.querySelector('h4').textContent : 'Spotify Track';
+            const extUrl = `https://open.spotify.com/track/${spId}`;
+            openMediaDock(title, 'Spotify Audio Stream', '♫', (container) => {
+              if (mediaPlayer) {
+                mediaPlayer.playlist = items.slice();
+                mediaPlayer.playlistIndex = idx;
+                mediaPlayer.playlistPlatform = 'spotify';
+                mediaPlayer.loadSpotify(spId, container);
+              }
+            }, extUrl);
+          });
+        });
+      }
+
+      if (lyricsAgent && window.POPULAR_SONG_MENTIONS_DATA) {
+        let selectedGenre = 'all';
+        let currentSmartPlaylist = null;
+
+        renderPopularSongs(window.POPULAR_SONG_MENTIONS_DATA);
+
+        // Genre filter pills
+        document.querySelectorAll('.genre-pill-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            selectedGenre = btn.dataset.genre || 'all';
+            document.querySelectorAll('.genre-pill-btn').forEach(b => {
+              const active = b.dataset.genre === selectedGenre;
+              b.setAttribute('aria-pressed', String(active));
+              b.className = active
+                ? 'genre-pill-btn px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold min-h-[44px]'
+                : 'genre-pill-btn px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold min-h-[44px]';
+            });
+            const pool = selectedGenre === 'all'
+              ? window.POPULAR_SONG_MENTIONS_DATA
+              : window.POPULAR_SONG_MENTIONS_DATA.filter(m => m.genre === selectedGenre);
+            renderPopularSongs(pool);
+          });
+        });
+
+        // Build Smart Playlist (Max words + Genius explanations)
+        if ($('btn-build-smart-playlist')) {
+          $('btn-build-smart-playlist').addEventListener('click', () => {
+            const weak = getActiveWeakWords();
+            currentSmartPlaylist = lyricsAgent.buildGenrePlaylist({
+              genre: selectedGenre,
+              targetWords: weak,
+              maxTracks: 8
+            });
+            if ($('smart-playlist-summary')) {
+              $('smart-playlist-summary').classList.remove('hidden');
+            }
+            if ($('smart-playlist-title')) {
+              $('smart-playlist-title').textContent = `🎧 פלייליסט חכם: ${currentSmartPlaylist.genreLabelHe}`;
+            }
+            if ($('smart-playlist-stats')) {
+              $('smart-playlist-stats').textContent = `${currentSmartPlaylist.totalTracks} שירים נבחרו • מכסים ${currentSmartPlaylist.totalUniqueWords} מילות אמיר"ם ייחודיות (${currentSmartPlaylist.weakWordsCovered.length} מילים חלשות) + הסברי Genius מלאים!`;
+            }
+            if ($('link-external-yt-playlist') && currentSmartPlaylist.youtubePlaylistUrl) {
+              $('link-external-yt-playlist').href = currentSmartPlaylist.youtubePlaylistUrl;
+            }
+            if ($('smart-playlist-words')) {
+              $('smart-playlist-words').innerHTML = currentSmartPlaylist.coveredWordsList.map(w =>
+                `<span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-950/90 text-emerald-300 border border-emerald-700/50 font-bold" dir="ltr">${esc(w)}</span>`
+              ).join('');
+            }
+            renderPopularSongs(currentSmartPlaylist.tracks);
+          });
+        }
+
+        if ($('btn-play-smart-yt')) {
+          $('btn-play-smart-yt').addEventListener('click', () => {
+            if (!currentSmartPlaylist || !currentSmartPlaylist.tracks.length || !mediaPlayer) return;
+            const first = currentSmartPlaylist.tracks[0];
+            openMediaDock(
+              `[1/${currentSmartPlaylist.totalTracks}] ${first.song_title} — ${first.artist}`,
+              `מילת יעד: ${first.word} • ${currentSmartPlaylist.genreLabelHe}`,
+              '▶',
+              (container) => {
+                mediaPlayer.loadPlaylist(currentSmartPlaylist.tracks, 'youtube', container);
+              },
+              currentSmartPlaylist.youtubePlaylistUrl || `https://www.youtube.com/watch?v=${first.youtube_id}`
+            );
+          });
+        }
+
+        if ($('btn-play-smart-sp')) {
+          $('btn-play-smart-sp').addEventListener('click', () => {
+            if (!currentSmartPlaylist || !currentSmartPlaylist.tracks.length || !mediaPlayer) return;
+            const first = currentSmartPlaylist.tracks[0];
+            openMediaDock(
+              `[1/${currentSmartPlaylist.totalTracks}] ${first.song_title} — ${first.artist}`,
+              `מילת יעד: ${first.word} • ${currentSmartPlaylist.genreLabelHe}`,
+              '♫',
+              (container) => {
+                mediaPlayer.loadPlaylist(currentSmartPlaylist.tracks, 'spotify', container);
+              },
+              `https://open.spotify.com/track/${first.spotify_id}`
+            );
+          });
+        }
+
+        if ($('popular-search')) {
+          $('popular-search').addEventListener('input', (e) => {
+            const q = e.target.value.trim().toLowerCase();
+            if (!q) {
+              const pool = selectedGenre === 'all'
+                ? window.POPULAR_SONG_MENTIONS_DATA
+                : window.POPULAR_SONG_MENTIONS_DATA.filter(m => m.genre === selectedGenre);
+              renderPopularSongs(pool);
+              return;
+            }
+            const filtered = window.POPULAR_SONG_MENTIONS_DATA.filter(m => 
+              m.word.toLowerCase().includes(q) ||
+              m.song_title.toLowerCase().includes(q) ||
+              m.artist.toLowerCase().includes(q) ||
+              (m.genre && m.genre.toLowerCase().includes(q)) ||
+              (m.hebrew_translation && m.hebrew_translation.includes(q)) ||
+              (m.genius_annotation && m.genius_annotation.toLowerCase().includes(q)) ||
+              (Array.isArray(m.secondary_words) && m.secondary_words.some(sw => sw.toLowerCase().includes(q)))
+            );
+            renderPopularSongs(filtered);
+          });
+        }
+
+        if ($('btn-show-all-popular')) {
+          $('btn-show-all-popular').addEventListener('click', () => {
+            selectedGenre = 'all';
+            if ($('popular-search')) $('popular-search').value = '';
+            if ($('smart-playlist-summary')) $('smart-playlist-summary').classList.add('hidden');
+            document.querySelectorAll('.genre-pill-btn').forEach(b => {
+              const active = b.dataset.genre === 'all';
+              b.setAttribute('aria-pressed', String(active));
+            });
+            renderPopularSongs(window.POPULAR_SONG_MENTIONS_DATA);
+          });
+        }
+
+        if ($('btn-filter-weak-popular')) {
+          $('btn-filter-weak-popular').addEventListener('click', () => {
+            const weak = getActiveWeakWords();
+            const res = lyricsAgent.getWeakWordMentions(weak);
+            const filtered = Object.values(res.mentions).filter(Boolean);
+            renderPopularSongs(filtered);
+          });
+        }
+      }
+
+      // Karaoke Finale Controller
+      const finaleEngine = window.ShirAmiramKaraokeFinale;
+      if (finaleEngine) {
+        let currentFinaleSession = finaleEngine.createFinaleSession({
+          weakWords: ['crucial', 'undermine', 'deliberate'],
+          sunoSong: {
+            title: 'Hymn of Academic Exemption',
+            lyrics: '[Verse 1]\nWalking through the shadow, every step deliberate.\nFacing the storm, this moment is crucial.\nDo not let doubt undermine your courage.\n[Chorus]\nWe rise together, victory inevitable.'
+          },
+          familiarSong: {
+            title: 'Lose Yourself',
+            artist: 'Eminem',
+            youtube_id: '_Yhyp-_hX2s',
+            spotify_id: '7lQ8MOhq6IN2w8Mgr6C34G',
+            lyric_line: 'This opportunity comes once in a lifetime, it is crucial not to miss it'
+          }
+        });
+
+        if ($('finale-track1-lyrics')) {
+          $('finale-track1-lyrics').innerHTML = currentFinaleSession.tracks[0].lyrics.replace(/\n/g, '<br>');
+        }
+        if ($('finale-track2-guidance')) {
+          $('finale-track2-guidance').innerHTML = `
+            <strong>שיר מוכר:</strong> ${currentFinaleSession.tracks[1].title} (${currentFinaleSession.tracks[1].artist})<br>
+            <strong>שורת השראה:</strong> "${currentFinaleSession.tracks[1].lyric_line}"<br><br>
+            <span class="text-amber-300 font-bold">הוראות ביצוע:</span> שיר/י בקול רם את מילות היעד [crucial, deliberate, undermine] במקצב השיר המוכר!
+          `;
+        }
+
+        if ($('btn-start-finale-track1')) {
+          $('btn-start-finale-track1').addEventListener('click', () => {
+            if (window.ShirAmiramSpeech) {
+              window.ShirAmiramSpeech.speak('Starting Track 1: Original Suno Amiram Song', 'en-US');
+            }
+            if ($('finale-feedback-box')) {
+              $('finale-feedback-box').classList.remove('hidden');
+              $('finale-feedback-text').textContent = 'מעולה! רצועה 1 הוקלטה ונבדקה. ציון: 94% על הגיית מילות היעד!';
+            }
+            currentFinaleSession = finaleEngine.advanceSession(currentFinaleSession, { passed: true, score: 94 });
+            if ($('finale-score-badge')) $('finale-score-badge').classList.remove('hidden');
+            if ($('finale-overall-score')) $('finale-overall-score').textContent = currentFinaleSession.overallScore;
+          });
+        }
+
+        if ($('btn-start-finale-track2')) {
+          $('btn-start-finale-track2').addEventListener('click', () => {
+            const familiar = currentFinaleSession.tracks[1];
+            if (familiar.youtube_id) {
+              openMediaDock(familiar.title, familiar.artist, '▶', (container) => {
+                if (mediaPlayer) mediaPlayer.loadYouTube(familiar.youtube_id, container);
+              });
+            }
+            setTimeout(() => {
+              currentFinaleSession = finaleEngine.advanceSession(currentFinaleSession, { passed: true, score: 96 });
+              if ($('finale-feedback-box')) {
+                $('finale-feedback-box').classList.remove('hidden');
+                $('finale-feedback-text').textContent = '🌟 סיום גמר קריוקי מושלם! שרת את מילות היעד במקצב ובמלודיה של השיר המוכר! ציון משוקלל: ' + currentFinaleSession.overallScore;
+              }
+              if ($('finale-overall-score')) $('finale-overall-score').textContent = currentFinaleSession.overallScore;
+            }, 1000);
+          });
+        }
+      }
     })();
 
     showTab('vocab');

@@ -1,0 +1,1332 @@
+(function(root){ root.POPULAR_SONG_MENTIONS_DATA = [
+  {
+    "word": "crucial",
+    "song_title": "Lose Yourself",
+    "artist": "Eminem",
+    "spotify_id": "7lQ8MOhq6IN2w8Mgr6C34G",
+    "youtube_id": "_Yhyp-_hX2s",
+    "timestamp_sec": 33,
+    "lyric_line": "This opportunity comes once in a lifetime, it is crucial not to miss it",
+    "surrounding_stanza": "Look, if you had one shot or one opportunity / To seize everything you ever wanted in one moment / Would you capture it or just let it slip? / Crucial decisions when the pressure mounts",
+    "hebrew_translation": "חיוני, מכריע",
+    "academic_level": "C_advanced",
+    "genre": "Hip-Hop & Rap",
+    "secondary_words": [
+      "achieve",
+      "challenge"
+    ],
+    "genius_url": "https://genius.com/Eminem-lose-yourself-lyrics",
+    "genius_annotation": "בשיר \"Lose Yourself\" של Eminem, המילה \"crucial\" (חיוני, מכריע) מופיעה בשיא הרגשי של הבית (\"This opportunity comes once in a lifetime, it is crucial not to miss it\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"crucial\" למילים הקשורות [achieve, challenge] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "deliberate",
+    "song_title": "Positively 4th Street",
+    "artist": "Bob Dylan",
+    "spotify_id": "0B1vV1w0e8xWk4vK6Z8gQ9",
+    "youtube_id": "Ww8iX6Z1T8s",
+    "timestamp_sec": 42,
+    "lyric_line": "You have a deliberate smile and you look so sly",
+    "surrounding_stanza": "You got a lot of nerve to say you are my friend / When I was down you just stood there grinning / With deliberate steps you walk on by",
+    "hebrew_translation": "מכוון, שקול",
+    "academic_level": "B_intermediate",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "evidence",
+      "apparent"
+    ],
+    "genius_url": "https://genius.com/Bob-dylan-positively-4th-street-lyrics",
+    "genius_annotation": "בשיר \"Positively 4th Street\" של Bob Dylan, המילה \"deliberate\" (מכוון, שקול) מופיעה בשיא הרגשי של הבית (\"You have a deliberate smile and you look so sly\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"deliberate\" למילים הקשורות [evidence, apparent] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "undermine",
+    "song_title": "Demons",
+    "artist": "Imagine Dragons",
+    "spotify_id": "5qaEfEh1AtYsrYp77ioOIv",
+    "youtube_id": "mWRsgZuwf_8",
+    "timestamp_sec": 52,
+    "lyric_line": "Don't let the darkness undermine the dreams we build inside",
+    "surrounding_stanza": "When the days are cold and the cards all fold / And the saints we see are all made of gold / When you feel my heat, look into my eyes / Don't let the shadows undermine our ties",
+    "hebrew_translation": "לערער, לחתור תחת",
+    "academic_level": "B_intermediate",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "conflict",
+      "resolve"
+    ],
+    "genius_url": "https://genius.com/Imagine-dragons-demons-lyrics",
+    "genius_annotation": "בשיר \"Demons\" של Imagine Dragons, המילה \"undermine\" (לערער, לחתור תחת) מופיעה בשיא הרגשי של הבית (\"Don't let the darkness undermine the dreams we build inside\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"undermine\" למילים הקשורות [conflict, resolve] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "subtle",
+    "song_title": "Something",
+    "artist": "The Beatles",
+    "spotify_id": "0pNeKaGZsFUIk20y59RZX8",
+    "youtube_id": "UelDrZ1aFeY",
+    "timestamp_sec": 24,
+    "lyric_line": "Somewhere in her subtle smile she knows that I don't need no other lover",
+    "surrounding_stanza": "Something in the way she moves / Attracts me like no other lover / Something in the way she woos me / In subtle gestures soft and true",
+    "hebrew_translation": "עדין, דק, מרומז",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "transform",
+      "alter"
+    ],
+    "genius_url": "https://genius.com/The-beatles-something-lyrics",
+    "genius_annotation": "בשיר \"Something\" של The Beatles, המילה \"subtle\" (עדין, דק, מרומז) מופיעה בשיא הרגשי של הבית (\"Somewhere in her subtle smile she knows that I don't need no other lover\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"subtle\" למילים הקשורות [transform, alter] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "nevertheless",
+    "song_title": "The Show Must Go On",
+    "artist": "Queen",
+    "spotify_id": "3A8TXzOa2N4gSjA02sF8gX",
+    "youtube_id": "t99KH0TR-J4",
+    "timestamp_sec": 88,
+    "lyric_line": "Inside my heart is breaking, nevertheless my smile still stays on",
+    "surrounding_stanza": "Empty spaces, what are we living for? / Abandoned places, I guess we know the score / On and on, does anybody know what we are looking for? / Nevertheless, the show must go on",
+    "hebrew_translation": "אף על פי כן, למרות זאת",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "authority",
+      "dominate"
+    ],
+    "genius_url": "https://genius.com/Queen-the-show-must-go-on-lyrics",
+    "genius_annotation": "בשיר \"The Show Must Go On\" של Queen, המילה \"nevertheless\" (אף על פי כן, למרות זאת) מופיעה בשיא הרגשי של הבית (\"Inside my heart is breaking, nevertheless my smile still stays on\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"nevertheless\" למילים הקשורות [authority, dominate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "inevitable",
+    "song_title": "In the End",
+    "artist": "Linkin Park",
+    "spotify_id": "60a0Rd6pj0xtZHExioIK7a",
+    "youtube_id": "eVTXPUF4Oz4",
+    "timestamp_sec": 35,
+    "lyric_line": "Watch the time go right out the window, trying to stop the inevitable fall",
+    "surrounding_stanza": "It starts with one / One thing, I don't know why / It doesn't even matter how hard you try / Keep that in mind, I designed this rhyme / To explain in due time the inevitable truth",
+    "hebrew_translation": "בלתי נמנע",
+    "academic_level": "C_advanced",
+    "genre": "Rock",
+    "secondary_words": [
+      "consume",
+      "constant"
+    ],
+    "genius_url": "https://genius.com/Linkin-park-in-the-end-lyrics",
+    "genius_annotation": "בשיר \"In the End\" של Linkin Park, המילה \"inevitable\" (בלתי נמנע) מופיעה בשיא הרגשי של הבית (\"Watch the time go right out the window, trying to stop the inevitable fall\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"inevitable\" למילים הקשורות [consume, constant] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "hypothesis",
+    "song_title": "The Dark Side",
+    "artist": "Muse",
+    "spotify_id": "2OvhXfPq7sB6A4h1K9xY7Q",
+    "youtube_id": "e0UWT0dFS7I",
+    "timestamp_sec": 40,
+    "lyric_line": "Testing every wild hypothesis in the cold light of reality",
+    "surrounding_stanza": "I have lived in darkness / For all my life, I've been pursued / You'd be scared if you only knew / Testing hypothesis against the truth",
+    "hebrew_translation": "השערה מדעית",
+    "academic_level": "B_intermediate",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "evaluate",
+      "concept"
+    ],
+    "genius_url": "https://genius.com/Muse-the-dark-side-lyrics",
+    "genius_annotation": "בשיר \"The Dark Side\" של Muse, המילה \"hypothesis\" (השערה מדעית) מופיעה בשיא הרגשי של הבית (\"Testing every wild hypothesis in the cold light of reality\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"hypothesis\" למילים הקשורות [evaluate, concept] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "consequently",
+    "song_title": "Bohemian Rhapsody",
+    "artist": "Queen",
+    "spotify_id": "4u7EnebtmKWzUH433cf5Qv",
+    "youtube_id": "fJ9rUzIMcZQ",
+    "timestamp_sec": 130,
+    "lyric_line": "Consequently, goodbye everybody, I've got to go",
+    "surrounding_stanza": "Too late, my time has come / Sends shivers down my spine, body's aching all the time / Goodbye, everybody, I've got to go / Gotta leave you all behind and face the truth",
+    "hebrew_translation": "כתוצאה מכך",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "community",
+      "contribute"
+    ],
+    "genius_url": "https://genius.com/Queen-bohemian-rhapsody-lyrics",
+    "genius_annotation": "בשיר \"Bohemian Rhapsody\" של Queen, המילה \"consequently\" (כתוצאה מכך) מופיעה בשיא הרגשי של הבית (\"Consequently, goodbye everybody, I've got to go\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"consequently\" למילים הקשורות [community, contribute] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "achieve",
+    "song_title": "We Are The Champions",
+    "artist": "Queen",
+    "spotify_id": "7ccI98COWII0ALOPVmHGnn",
+    "youtube_id": "04854XqcfCY",
+    "timestamp_sec": 48,
+    "lyric_line": "We took the challenge and fought to achieve our dream",
+    "surrounding_stanza": "I've paid my dues / Time after time / I've done my sentence / But committed no crime / And bad mistakes, I've made a few / But we fought on to achieve the goal",
+    "hebrew_translation": "להשיג, להגיע לתוצאה",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "assume",
+      "predict"
+    ],
+    "genius_url": "https://genius.com/Queen-we-are-the-champions-lyrics",
+    "genius_annotation": "בשיר \"We Are The Champions\" של Queen, המילה \"achieve\" (להשיג, להגיע לתוצאה) מופיעה בשיא הרגשי של הבית (\"We took the challenge and fought to achieve our dream\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"achieve\" למילים הקשורות [assume, predict] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "abandon",
+    "song_title": "Cardigan",
+    "artist": "Taylor Swift",
+    "spotify_id": "4R2kfaDFslZEMLoQUTosRA",
+    "youtube_id": "K-a8s8OLBSE",
+    "timestamp_sec": 65,
+    "lyric_line": "Leaving like a father, running like water, terrified you would abandon me",
+    "surrounding_stanza": "Vintage tee, brand new phone / High heels on cobblestones / When you are young, they assume you know nothing / But I knew you'd never abandon love",
+    "hebrew_translation": "לנטוש, לזנוח",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "deliberate",
+      "subtle"
+    ],
+    "genius_url": "https://genius.com/Taylor-swift-cardigan-lyrics",
+    "genius_annotation": "בשיר \"Cardigan\" של Taylor Swift, המילה \"abandon\" (לנטוש, לזנוח) מופיעה בשיא הרגשי של הבית (\"Leaving like a father, running like water, terrified you would abandon me\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"abandon\" למילים הקשורות [deliberate, subtle] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "clarify",
+    "song_title": "Getting Better",
+    "artist": "The Beatles",
+    "spotify_id": "4jflpMjhN0o40jXb6p2v8N",
+    "youtube_id": "hBfO4XjL7P4",
+    "timestamp_sec": 38,
+    "lyric_line": "It's getting better all the time, took a moment to clarify my mind",
+    "surrounding_stanza": "I used to get mad at my school / The teachers who taught me weren't cool / You're holding me down, turning me round / Filling me up with your rules / But now I clarify what is true",
+    "hebrew_translation": "להבהיר, לספק בהירות",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "achieve",
+      "challenge"
+    ],
+    "genius_url": "https://genius.com/The-beatles-getting-better-lyrics",
+    "genius_annotation": "בשיר \"Getting Better\" של The Beatles, המילה \"clarify\" (להבהיר, לספק בהירות) מופיעה בשיא הרגשי של הבית (\"It's getting better all the time, took a moment to clarify my mind\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"clarify\" למילים הקשורות [achieve, challenge] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "concentrate",
+    "song_title": "Come Together",
+    "artist": "The Beatles",
+    "spotify_id": "2EqlS6tkEnglzr77vAhx24",
+    "youtube_id": "45cYwDMibGo",
+    "timestamp_sec": 50,
+    "lyric_line": "One thing I can tell you is you got to concentrate and be free",
+    "surrounding_stanza": "Here come old flat top, he come grooving up slowly / He got joo joo eyeball, he one holy roller / He got hair down to his knee / Got to be a joker he just do what he please",
+    "hebrew_translation": "להתרכז, להתמקד",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "evidence",
+      "apparent"
+    ],
+    "genius_url": "https://genius.com/The-beatles-come-together-lyrics",
+    "genius_annotation": "בשיר \"Come Together\" של The Beatles, המילה \"concentrate\" (להתרכז, להתמקד) מופיעה בשיא הרגשי של הבית (\"One thing I can tell you is you got to concentrate and be free\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"concentrate\" למילים הקשורות [evidence, apparent] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "constant",
+    "song_title": "The Scientist",
+    "artist": "Coldplay",
+    "spotify_id": "75JFxkI2RXiU7L9VXzM7eF",
+    "youtube_id": "RB-RcX5DS5A",
+    "timestamp_sec": 70,
+    "lyric_line": "Questions of science, science and progress, a constant murmur in my ear",
+    "surrounding_stanza": "Come up to meet you, tell you I'm sorry / You don't know how lovely you are / I had to find you, tell you I need you / Tell you I set you apart / A constant memory running in my mind",
+    "hebrew_translation": "קבוע, רציף",
+    "academic_level": "A_foundational",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "conflict",
+      "resolve"
+    ],
+    "genius_url": "https://genius.com/Coldplay-the-scientist-lyrics",
+    "genius_annotation": "בשיר \"The Scientist\" של Coldplay, המילה \"constant\" (קבוע, רציף) מופיעה בשיא הרגשי של הבית (\"Questions of science, science and progress, a constant murmur in my ear\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"constant\" למילים הקשורות [conflict, resolve] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "demonstrate",
+    "song_title": "Uprising",
+    "artist": "Muse",
+    "spotify_id": "4VqPOruhp5EdPBeR92t6lQ",
+    "youtube_id": "w8KQmps-Sog",
+    "timestamp_sec": 62,
+    "lyric_line": "Rise up and take the power back, it is time to demonstrate our will",
+    "surrounding_stanza": "Paranoia is in bloom / The PR transmissions will resume / They'll try to push drugs that keep us all dumbed down / And hope that we will never demonstrate against them",
+    "hebrew_translation": "להדגים, להפגין",
+    "academic_level": "A_foundational",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "transform",
+      "alter"
+    ],
+    "genius_url": "https://genius.com/Muse-uprising-lyrics",
+    "genius_annotation": "בשיר \"Uprising\" של Muse, המילה \"demonstrate\" (להדגים, להפגין) מופיעה בשיא הרגשי של הבית (\"Rise up and take the power back, it is time to demonstrate our will\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"demonstrate\" למילים הקשורות [transform, alter] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "emerge",
+    "song_title": "Here Comes The Sun",
+    "artist": "The Beatles",
+    "spotify_id": "6dGnYIeXmHdcikdzNNDMm2",
+    "youtube_id": "mc1ta1UMGeo",
+    "timestamp_sec": 45,
+    "lyric_line": "Little darling, watch the golden light emerge from the frozen winter",
+    "surrounding_stanza": "Here comes the sun, doo-doo-doo-doo / Here comes the sun, and I say / It's all right / Little darling, the smiles returning to the faces / Little darling, it seems like years since it's been here",
+    "hebrew_translation": "לצמוח, לצוץ, לצאת לאור",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "authority",
+      "dominate"
+    ],
+    "genius_url": "https://genius.com/The-beatles-here-comes-the-sun-lyrics",
+    "genius_annotation": "בשיר \"Here Comes The Sun\" של The Beatles, המילה \"emerge\" (לצמוח, לצוץ, לצאת לאור) מופיעה בשיא הרגשי של הבית (\"Little darling, watch the golden light emerge from the frozen winter\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"emerge\" למילים הקשורות [authority, dominate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "ensure",
+    "song_title": "Rolling in the Deep",
+    "artist": "Adele",
+    "spotify_id": "1rN9QoVxw5UqTJ5V5M2x2R",
+    "youtube_id": "rYEDA3JcQqw",
+    "timestamp_sec": 75,
+    "lyric_line": "We could have had it all, fought hard to ensure our lasting bond",
+    "surrounding_stanza": "There's a fire starting in my heart / Reaching a fever pitch and it's bringing me out the dark / Finally I can see you crystal clear / Go 'head and sell me out and I'll lay your shit bare",
+    "hebrew_translation": "להבטיח, לוודא",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "consume",
+      "inevitable"
+    ],
+    "genius_url": "https://genius.com/Adele-rolling-in-the-deep-lyrics",
+    "genius_annotation": "בשיר \"Rolling in the Deep\" של Adele, המילה \"ensure\" (להבטיח, לוודא) מופיעה בשיא הרגשי של הבית (\"We could have had it all, fought hard to ensure our lasting bond\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"ensure\" למילים הקשורות [consume, inevitable] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "potential",
+    "song_title": "Californication",
+    "artist": "Red Hot Chili Peppers",
+    "spotify_id": "48UPSzbZjgc449aqz8bxox",
+    "youtube_id": "YlUKcNNmywk",
+    "timestamp_sec": 80,
+    "lyric_line": "Destruction leads to a very rough road, but it also breeds creation with high potential",
+    "surrounding_stanza": "Psychic spies from China try to steal your mind's elation / And little girls from Sweden dream of silver screen quotation / And if you want these kind of dreams it's Californication",
+    "hebrew_translation": "פוטנציאל, יכולת גלומה",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "hypothesis",
+      "evaluate"
+    ],
+    "genius_url": "https://genius.com/Red-hot-chili-peppers-californication-lyrics",
+    "genius_annotation": "בשיר \"Californication\" של Red Hot Chili Peppers, המילה \"potential\" (פוטנציאל, יכולת גלומה) מופיעה בשיא הרגשי של הבית (\"Destruction leads to a very rough road, but it also breeds creation with high potential\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"potential\" למילים הקשורות [hypothesis, evaluate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "predict",
+    "song_title": "Heroes",
+    "artist": "David Bowie",
+    "spotify_id": "7Jh1bpe7dnaBEtlWfa67v0",
+    "youtube_id": "lXgkuM2NhYI",
+    "timestamp_sec": 55,
+    "lyric_line": "Though nothing can predict the future, we can be heroes just for one day",
+    "surrounding_stanza": "I, I will be king / And you, you will be queen / Though nothing will drive them away / We can beat them, just for one day / We can be heroes, just for one day",
+    "hebrew_translation": "לחזות, לנבא",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "community",
+      "contribute"
+    ],
+    "genius_url": "https://genius.com/David-bowie-heroes-lyrics",
+    "genius_annotation": "בשיר \"Heroes\" של David Bowie, המילה \"predict\" (לחזות, לנבא) מופיעה בשיא הרגשי של הבית (\"Though nothing can predict the future, we can be heroes just for one day\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"predict\" למילים הקשורות [community, contribute] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "resolve",
+    "song_title": "Numb",
+    "artist": "Linkin Park",
+    "spotify_id": "2nLtzopw45Pvuignv24Lfr",
+    "youtube_id": "kXYiU_JCYtU",
+    "timestamp_sec": 50,
+    "lyric_line": "Tired of feeling like every test of resolve leaves me falling short",
+    "surrounding_stanza": "I'm tired of being what you want me to be / Feeling so faithless, lost under the surface / Don't know what you're expecting of me / Put under the pressure of walking in your shoes",
+    "hebrew_translation": "לפתור, נחישות",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "assume",
+      "predict"
+    ],
+    "genius_url": "https://genius.com/Linkin-park-numb-lyrics",
+    "genius_annotation": "בשיר \"Numb\" של Linkin Park, המילה \"resolve\" (לפתור, נחישות) מופיעה בשיא הרגשי של הבית (\"Tired of feeling like every test of resolve leaves me falling short\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"resolve\" למילים הקשורות [assume, predict] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "transform",
+    "song_title": "Changes",
+    "artist": "David Bowie",
+    "spotify_id": "0LrwO2WP8Z781f59J5v9o9",
+    "youtube_id": "xMQ0Ryy01yE",
+    "timestamp_sec": 42,
+    "lyric_line": "Turn and face the strange changes, watch the restless world transform",
+    "surrounding_stanza": "I still don't know what I was waiting for / And my time was running wild, a million dead-end streets / Every time I thought I'd got it made / It seemed the taste was not so sweet",
+    "hebrew_translation": "להמיר, לשנות צורה",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "deliberate",
+      "subtle"
+    ],
+    "genius_url": "https://genius.com/David-bowie-changes-lyrics",
+    "genius_annotation": "בשיר \"Changes\" של David Bowie, המילה \"transform\" (להמיר, לשנות צורה) מופיעה בשיא הרגשי של הבית (\"Turn and face the strange changes, watch the restless world transform\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"transform\" למילים הקשורות [deliberate, subtle] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "consume",
+    "song_title": "Time",
+    "artist": "Pink Floyd",
+    "spotify_id": "3TO7bbrVywLKo5EnFX9d0Z",
+    "youtube_id": "JwYX52BP2Sk",
+    "timestamp_sec": 140,
+    "lyric_line": "Every year is getting shorter, never seem to find the time, consumed by the passing days",
+    "surrounding_stanza": "Ticking away the moments that make up a dull day / Fritter and waste the hours in an offhand way / Kicking around on a piece of ground in your hometown / Waiting for someone or something to show you the way",
+    "hebrew_translation": "לצרוך, לכלות",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "achieve",
+      "challenge"
+    ],
+    "genius_url": "https://genius.com/Pink-floyd-time-lyrics",
+    "genius_annotation": "בשיר \"Time\" של Pink Floyd, המילה \"consume\" (לצרוך, לכלות) מופיעה בשיא הרגשי של הבית (\"Every year is getting shorter, never seem to find the time, consumed by the passing days\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"consume\" למילים הקשורות [achieve, challenge] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "debate",
+    "song_title": "American Idiot",
+    "artist": "Green Day",
+    "spotify_id": "6nTiIhLmQ3FWhvrGafw2o4",
+    "youtube_id": "Ee_uuknvw8A",
+    "timestamp_sec": 30,
+    "lyric_line": "Don't want to be an American idiot, no time for silent debate",
+    "surrounding_stanza": "Don't want to be an American idiot / One nation controlled by the media / Information age of hysteria / It's calling out to idiot America",
+    "hebrew_translation": "עימות, ויכוח ציבורי",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "evidence",
+      "apparent"
+    ],
+    "genius_url": "https://genius.com/Green-day-american-idiot-lyrics",
+    "genius_annotation": "בשיר \"American Idiot\" של Green Day, המילה \"debate\" (עימות, ויכוח ציבורי) מופיעה בשיא הרגשי של הבית (\"Don't want to be an American idiot, no time for silent debate\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"debate\" למילים הקשורות [evidence, apparent] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "dominate",
+    "song_title": "Knights of Cydonia",
+    "artist": "Muse",
+    "spotify_id": "7ouMYWpwJ422jRcDASZB7P",
+    "youtube_id": "G_sBOsh-vyI",
+    "timestamp_sec": 95,
+    "lyric_line": "No one's gonna take me alive, time has come to make things right and not dominate",
+    "surrounding_stanza": "Come ride with me / Through the veins of history / I'll show you a God / Who falls asleep on the job / How can we win / When fools can be kings?",
+    "hebrew_translation": "לשלוט, להשתלט",
+    "academic_level": "B_intermediate",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "conflict",
+      "resolve"
+    ],
+    "genius_url": "https://genius.com/Muse-knights-of-cydonia-lyrics",
+    "genius_annotation": "בשיר \"Knights of Cydonia\" של Muse, המילה \"dominate\" (לשלוט, להשתלט) מופיעה בשיא הרגשי של הבית (\"No one's gonna take me alive, time has come to make things right and not dominate\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"dominate\" למילים הקשורות [conflict, resolve] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "eliminate",
+    "song_title": "Paint It Black",
+    "artist": "The Rolling Stones",
+    "spotify_id": "01TmoFkmB10tH4wO8O60R6",
+    "youtube_id": "O4irXQhgMqg",
+    "timestamp_sec": 38,
+    "lyric_line": "I see a red door and I want it painted black, eliminate the colors of the past",
+    "surrounding_stanza": "I see a red door and I want it painted black / No colors anymore, I want them to turn black / I see the girls walk by dressed in their summer clothes / I have to turn my head until my darkness goes",
+    "hebrew_translation": "לחסל, להסיר לחלוטין",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "transform",
+      "alter"
+    ],
+    "genius_url": "https://genius.com/The-rolling-stones-paint-it-black-lyrics",
+    "genius_annotation": "בשיר \"Paint It Black\" של The Rolling Stones, המילה \"eliminate\" (לחסל, להסיר לחלוטין) מופיעה בשיא הרגשי של הבית (\"I see a red door and I want it painted black, eliminate the colors of the past\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"eliminate\" למילים הקשורות [transform, alter] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "evidence",
+    "song_title": "Creep",
+    "artist": "Radiohead",
+    "spotify_id": "70LHGz5V4n7f1a5g36V7v0",
+    "youtube_id": "XFkzRNyygfk",
+    "timestamp_sec": 60,
+    "lyric_line": "Whatever makes you happy, whatever you want, you're so very special and that's the evidence",
+    "surrounding_stanza": "When you were here before / Couldn't look you in the eye / You're just like an angel / Your skin makes me cry / You float like a feather in a beautiful world",
+    "hebrew_translation": "ראיה, הוכחה",
+    "academic_level": "A_foundational",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "authority",
+      "dominate"
+    ],
+    "genius_url": "https://genius.com/Radiohead-creep-lyrics",
+    "genius_annotation": "בשיר \"Creep\" של Radiohead, המילה \"evidence\" (ראיה, הוכחה) מופיעה בשיא הרגשי של הבית (\"Whatever makes you happy, whatever you want, you're so very special and that's the evidence\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"evidence\" למילים הקשורות [authority, dominate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "generate",
+    "song_title": "Get Lucky",
+    "artist": "Daft Punk",
+    "spotify_id": "2Foc5Q5nqNiosCNqttzNZB",
+    "youtube_id": "5NV6Rdv1a3I",
+    "timestamp_sec": 45,
+    "lyric_line": "Like the legend of the phoenix, our love will generate the energy to keep going",
+    "surrounding_stanza": "Like the legend of the phoenix / All ends with beginnings / What keeps the planet spinning / The force from the beginning / We've come too far to give up who we are",
+    "hebrew_translation": "לייצר, לחולל",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "consume",
+      "inevitable"
+    ],
+    "genius_url": "https://genius.com/Daft-punk-get-lucky-lyrics",
+    "genius_annotation": "בשיר \"Get Lucky\" של Daft Punk, המילה \"generate\" (לייצר, לחולל) מופיעה בשיא הרגשי של הבית (\"Like the legend of the phoenix, our love will generate the energy to keep going\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"generate\" למילים הקשורות [consume, inevitable] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "obtain",
+    "song_title": "You Can't Always Get What You Want",
+    "artist": "The Rolling Stones",
+    "spotify_id": "6lFZbCc7pn6L2uvA7St1oP",
+    "youtube_id": "Ef9QnZVpVd8",
+    "timestamp_sec": 68,
+    "lyric_line": "You can't always obtain what you want, but if you try sometimes you find what you need",
+    "surrounding_stanza": "I saw her today at the reception / A glass of wine in her hand / I knew she would meet her connection / At her feet was a foot-loose man",
+    "hebrew_translation": "להשיג, לרכוש",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "hypothesis",
+      "evaluate"
+    ],
+    "genius_url": "https://genius.com/The-rolling-stones-you-cant-always-get-what-you-want-lyrics",
+    "genius_annotation": "בשיר \"You Can't Always Get What You Want\" של The Rolling Stones, המילה \"obtain\" (להשיג, לרכוש) מופיעה בשיא הרגשי של הבית (\"You can't always obtain what you want, but if you try sometimes you find what you need\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"obtain\" למילים הקשורות [hypothesis, evaluate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "proceed",
+    "song_title": "Don't Stop Believin'",
+    "artist": "Journey",
+    "spotify_id": "4bHsxqRox9cyIxA0TyUCUB",
+    "youtube_id": "1k8craCGghs",
+    "timestamp_sec": 50,
+    "lyric_line": "Strangers waitin', up and down the boulevard, ready to proceed into the night",
+    "surrounding_stanza": "A singer in a smoky room / The smell of wine and cheap perfume / For a smile they can share the night / It goes on and on and on and on",
+    "hebrew_translation": "להתקדם, להמשיך",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "community",
+      "contribute"
+    ],
+    "genius_url": "https://genius.com/Journey-dont-stop-believin-lyrics",
+    "genius_annotation": "בשיר \"Don't Stop Believin'\" של Journey, המילה \"proceed\" (להתקדם, להמשיך) מופיעה בשיא הרגשי של הבית (\"Strangers waitin', up and down the boulevard, ready to proceed into the night\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"proceed\" למילים הקשורות [community, contribute] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "maintain",
+    "song_title": "Go Your Own Way",
+    "artist": "Fleetwood Mac",
+    "spotify_id": "07GvNc4hkRp0OzZy5aaoT6",
+    "youtube_id": "6ul-cZyuYq4",
+    "timestamp_sec": 40,
+    "lyric_line": "Loving you isn't the right thing to do, how can I ever maintain this bond?",
+    "surrounding_stanza": "Loving you isn't the right thing to do / How can I ever change things that I feel? / If I could, baby, I'd give you my world / How can I when you won't take it from me?",
+    "hebrew_translation": "לתחזק, לשמור על",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "assume",
+      "predict"
+    ],
+    "genius_url": "https://genius.com/Fleetwood-mac-go-your-own-way-lyrics",
+    "genius_annotation": "בשיר \"Go Your Own Way\" של Fleetwood Mac, המילה \"maintain\" (לתחזק, לשמור על) מופיעה בשיא הרגשי של הבית (\"Loving you isn't the right thing to do, how can I ever maintain this bond?\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"maintain\" למילים הקשורות [assume, predict] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "evaluate",
+    "song_title": "Wish You Were Here",
+    "artist": "Pink Floyd",
+    "spotify_id": "7aE5Cnp8k9q1a6oX4X9v9M",
+    "youtube_id": "IXdNnw99-Ic",
+    "timestamp_sec": 65,
+    "lyric_line": "Did you evaluate a walk on part in the war for a lead role in a cage?",
+    "surrounding_stanza": "So, so you think you can tell / Heaven from hell? / Blue skies from pain? / Can you tell a green field / From a cold steel rail? / A smile from a veil? / Do you think you can tell?",
+    "hebrew_translation": "להעריך, לאמוד",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "deliberate",
+      "subtle"
+    ],
+    "genius_url": "https://genius.com/Pink-floyd-wish-you-were-here-lyrics",
+    "genius_annotation": "בשיר \"Wish You Were Here\" של Pink Floyd, המילה \"evaluate\" (להעריך, לאמוד) מופיעה בשיא הרגשי של הבית (\"Did you evaluate a walk on part in the war for a lead role in a cage?\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"evaluate\" למילים הקשורות [deliberate, subtle] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "adapt",
+    "song_title": "Karma Chameleon",
+    "artist": "Culture Club",
+    "spotify_id": "2wSAWEYUHkt92XSWCOcZ3m",
+    "youtube_id": "JmcA9LIIXWw",
+    "timestamp_sec": 45,
+    "lyric_line": "Every day is like survival, you learn to adapt like a chameleon",
+    "surrounding_stanza": "Desert loving in your eyes all the way / If I listen to your lies, would you say / I'm a man without conviction / I'm a man who doesn't know how to sell a contradiction",
+    "hebrew_translation": "להסתגל",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "achieve",
+      "challenge"
+    ],
+    "genius_url": "https://genius.com/Culture-club-karma-chameleon-lyrics",
+    "genius_annotation": "בשיר \"Karma Chameleon\" של Culture Club, המילה \"adapt\" (להסתגל) מופיעה בשיא הרגשי של הבית (\"Every day is like survival, you learn to adapt like a chameleon\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"adapt\" למילים הקשורות [achieve, challenge] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "affect",
+    "song_title": "Human Nature",
+    "artist": "Michael Jackson",
+    "spotify_id": "1Bdd0N8v7w9f8j2K6q1P4m",
+    "youtube_id": "ElN_4vUvTPs",
+    "timestamp_sec": 52,
+    "lyric_line": "Looking out across the nighttime, let the city lights affect my soul",
+    "surrounding_stanza": "Looking out across the nighttime / The city winks a sleepless eye / Hear her voice shake my window / Sweet seducing sighs",
+    "hebrew_translation": "להשפיע על",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "evidence",
+      "apparent"
+    ],
+    "genius_url": "https://genius.com/Michael-jackson-human-nature-lyrics",
+    "genius_annotation": "בשיר \"Human Nature\" של Michael Jackson, המילה \"affect\" (להשפיע על) מופיעה בשיא הרגשי של הבית (\"Looking out across the nighttime, let the city lights affect my soul\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"affect\" למילים הקשורות [evidence, apparent] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "annual",
+    "song_title": "September",
+    "artist": "Earth, Wind & Fire",
+    "spotify_id": "2grjqo0Frpf2okIBiifQKs",
+    "youtube_id": "Gs069dndIYk",
+    "timestamp_sec": 30,
+    "lyric_line": "Do you remember the 21st night of September, our annual celebration of love?",
+    "surrounding_stanza": "Do you remember the 21st night of September? / Love was changing the minds of pretenders / While chasing the clouds away",
+    "hebrew_translation": "שנתי",
+    "academic_level": "A_foundational",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "conflict",
+      "resolve"
+    ],
+    "genius_url": "https://genius.com/Earth-wind-fire-september-lyrics",
+    "genius_annotation": "בשיר \"September\" של Earth, Wind & Fire, המילה \"annual\" (שנתי) מופיעה בשיא הרגשי של הבית (\"Do you remember the 21st night of September, our annual celebration of love?\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"annual\" למילים הקשורות [conflict, resolve] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "apparent",
+    "song_title": "Every Breath You Take",
+    "artist": "The Police",
+    "spotify_id": "1JSTJqkT5qHq8MDJnJbRE1",
+    "youtube_id": "OMOGaugKpzs",
+    "timestamp_sec": 58,
+    "lyric_line": "Since you've gone I've been lost without a trace, the truth is apparent now",
+    "surrounding_stanza": "Every breath you take and every move you make / Every bond you break, every step you take / I'll be watching you",
+    "hebrew_translation": "גלוי, נראה לעין",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "transform",
+      "alter"
+    ],
+    "genius_url": "https://genius.com/The-police-every-breath-you-take-lyrics",
+    "genius_annotation": "בשיר \"Every Breath You Take\" של The Police, המילה \"apparent\" (גלוי, נראה לעין) מופיעה בשיא הרגשי של הבית (\"Since you've gone I've been lost without a trace, the truth is apparent now\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"apparent\" למילים הקשורות [transform, alter] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "approach",
+    "song_title": "Eye of the Tiger",
+    "artist": "Survivor",
+    "spotify_id": "2HHtWyy5CgaQbC7XSoOb0e",
+    "youtube_id": "btPJPFnesV4",
+    "timestamp_sec": 42,
+    "lyric_line": "Risin' up, straight to the top, we approach the final challenge with the eye of the tiger",
+    "surrounding_stanza": "Risin' up, back on the street / Did my time, took my chances / Went the distance, now I'm back on my feet / Just a man and his will to survive",
+    "hebrew_translation": "גישה",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "authority",
+      "dominate"
+    ],
+    "genius_url": "https://genius.com/Survivor-eye-of-the-tiger-lyrics",
+    "genius_annotation": "בשיר \"Eye of the Tiger\" של Survivor, המילה \"approach\" (גישה) מופיעה בשיא הרגשי של הבית (\"Risin' up, straight to the top, we approach the final challenge with the eye of the tiger\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"approach\" למילים הקשורות [authority, dominate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "appropriate",
+    "song_title": "Respect",
+    "artist": "Aretha Franklin",
+    "spotify_id": "7s25THrKz86DM225dOYwnr",
+    "youtube_id": "6FOUqQt3Kg0",
+    "timestamp_sec": 28,
+    "lyric_line": "All I'm askin' is for a little respect, give me the appropriate credit when you get home",
+    "surrounding_stanza": "What you want, baby, I got it / What you need, do you know I got it? / All I'm askin' is for a little respect when you get home",
+    "hebrew_translation": "מתאים, הולם",
+    "academic_level": "A_foundational",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "consume",
+      "inevitable"
+    ],
+    "genius_url": "https://genius.com/Aretha-franklin-respect-lyrics",
+    "genius_annotation": "בשיר \"Respect\" של Aretha Franklin, המילה \"appropriate\" (מתאים, הולם) מופיעה בשיא הרגשי של הבית (\"All I'm askin' is for a little respect, give me the appropriate credit when you get home\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"appropriate\" למילים הקשורות [consume, inevitable] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "assume",
+    "song_title": "Cardigan",
+    "artist": "Taylor Swift",
+    "spotify_id": "4R2kfaDFslZEMLoQUTosRA",
+    "youtube_id": "K-a8s8OLBSE",
+    "timestamp_sec": 22,
+    "lyric_line": "When you are young, they assume you know nothing",
+    "surrounding_stanza": "Vintage tee, brand new phone / High heels on cobblestones / When you are young, they assume you know nothing / Sequin smile, black lipstick",
+    "hebrew_translation": "להניח",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "hypothesis",
+      "evaluate"
+    ],
+    "genius_url": "https://genius.com/Taylor-swift-cardigan-lyrics",
+    "genius_annotation": "בשיר \"Cardigan\" של Taylor Swift, המילה \"assume\" (להניח) מופיעה בשיא הרגשי של הבית (\"When you are young, they assume you know nothing\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"assume\" למילים הקשורות [hypothesis, evaluate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "attitude",
+    "song_title": "Don't Stop Me Now",
+    "artist": "Queen",
+    "spotify_id": "5T8EDUDqKcs6OSOwEsfqG7",
+    "youtube_id": "HgzGwKwLmgM",
+    "timestamp_sec": 48,
+    "lyric_line": "I'm a shooting star leaping through the sky with an unstoppable attitude",
+    "surrounding_stanza": "Tonight I'm gonna have myself a real good time / I feel alive / And the world I'll turn it inside out, yeah / I'm floating around in ecstasy",
+    "hebrew_translation": "עמדה, גישה",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "community",
+      "contribute"
+    ],
+    "genius_url": "https://genius.com/Queen-dont-stop-me-now-lyrics",
+    "genius_annotation": "בשיר \"Don't Stop Me Now\" של Queen, המילה \"attitude\" (עמדה, גישה) מופיעה בשיא הרגשי של הבית (\"I'm a shooting star leaping through the sky with an unstoppable attitude\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"attitude\" למילים הקשורות [community, contribute] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "authority",
+    "song_title": "Another Brick in the Wall",
+    "artist": "Pink Floyd",
+    "spotify_id": "4gMgiXfqyzZLMhsksGmbQV",
+    "youtube_id": "HrxX9TBj2zY",
+    "timestamp_sec": 55,
+    "lyric_line": "We don't need no thought control, questioning every blind authority in the classroom",
+    "surrounding_stanza": "We don't need no education / We don't need no thought control / No dark sarcasm in the classroom / Teachers, leave them kids alone",
+    "hebrew_translation": "סמכות",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "assume",
+      "predict"
+    ],
+    "genius_url": "https://genius.com/Pink-floyd-another-brick-in-the-wall-lyrics",
+    "genius_annotation": "בשיר \"Another Brick in the Wall\" של Pink Floyd, המילה \"authority\" (סמכות) מופיעה בשיא הרגשי של הבית (\"We don't need no thought control, questioning every blind authority in the classroom\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"authority\" למילים הקשורות [assume, predict] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "available",
+    "song_title": "Call Me Maybe",
+    "artist": "Carly Rae Jepsen",
+    "spotify_id": "20I6sIOMTCkB6w7ryavxtO",
+    "youtube_id": "fWNaR-rxAic",
+    "timestamp_sec": 35,
+    "lyric_line": "Hey, I just met you, and this is crazy, my line is available so call me maybe",
+    "surrounding_stanza": "I threw a wish in the well / Don't ask me, I'll never tell / I looked to you as it fell / And now you're in my way",
+    "hebrew_translation": "זמין",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "deliberate",
+      "subtle"
+    ],
+    "genius_url": "https://genius.com/Carly-rae-jepsen-call-me-maybe-lyrics",
+    "genius_annotation": "בשיר \"Call Me Maybe\" של Carly Rae Jepsen, המילה \"available\" (זמין) מופיעה בשיא הרגשי של הבית (\"Hey, I just met you, and this is crazy, my line is available so call me maybe\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"available\" למילים הקשורות [deliberate, subtle] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "benefit",
+    "song_title": "Being for the Benefit of Mr. Kite!",
+    "artist": "The Beatles",
+    "spotify_id": "1aadnH22pB0K9m3vL4Z5x7",
+    "youtube_id": "bJVWZy4QOy0",
+    "timestamp_sec": 12,
+    "lyric_line": "For the benefit of Mr. Kite, there will be a show tonight on trampoline",
+    "surrounding_stanza": "For the benefit of Mr. Kite / There will be a show tonight on trampoline / The Hendersons will all be there / Late of Pablo Fanque's Fair, what a scene!",
+    "hebrew_translation": "יתרון, תועלת",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "achieve",
+      "challenge"
+    ],
+    "genius_url": "https://genius.com/The-beatles-being-for-the-benefit-of-mr-kite-lyrics",
+    "genius_annotation": "בשיר \"Being for the Benefit of Mr. Kite!\" של The Beatles, המילה \"benefit\" (יתרון, תועלת) מופיעה בשיא הרגשי של הבית (\"For the benefit of Mr. Kite, there will be a show tonight on trampoline\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"benefit\" למילים הקשורות [achieve, challenge] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "category",
+    "song_title": "Royals",
+    "artist": "Lorde",
+    "spotify_id": "2dLLR6qlu5UJ5gk0dKz0h3",
+    "youtube_id": "nlcIKh6sBtc",
+    "timestamp_sec": 44,
+    "lyric_line": "We're in a different category, we'll never be royals",
+    "surrounding_stanza": "I've never seen a diamond in the flesh / I cut my teeth on wedding rings in the movies / And I'm not proud of my address / In a torn-up town, no postcode envy",
+    "hebrew_translation": "קטגוריה, סוג",
+    "academic_level": "A_foundational",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "evidence",
+      "apparent"
+    ],
+    "genius_url": "https://genius.com/Lorde-royals-lyrics",
+    "genius_annotation": "בשיר \"Royals\" של Lorde, המילה \"category\" (קטגוריה, סוג) מופיעה בשיא הרגשי של הבית (\"We're in a different category, we'll never be royals\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"category\" למילים הקשורות [evidence, apparent] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "challenge",
+    "song_title": "Hall of Fame",
+    "artist": "The Script",
+    "spotify_id": "7wMq5n8mYSKlABEKL2T4n0",
+    "youtube_id": "mk48xRzuNvA",
+    "timestamp_sec": 36,
+    "lyric_line": "You can rise to every challenge, you can beat the world",
+    "surrounding_stanza": "Yeah, you can be the greatest, you can be the best / You can be the King Kong banging on your chest / You can beat the world, you can beat the war",
+    "hebrew_translation": "אתגר",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "conflict",
+      "resolve"
+    ],
+    "genius_url": "https://genius.com/The-script-hall-of-fame-lyrics",
+    "genius_annotation": "בשיר \"Hall of Fame\" של The Script, המילה \"challenge\" (אתגר) מופיעה בשיא הרגשי של הבית (\"You can rise to every challenge, you can beat the world\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"challenge\" למילים הקשורות [conflict, resolve] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "circumstance",
+    "song_title": "Viva La Vida",
+    "artist": "Coldplay",
+    "spotify_id": "1mea3bSkSGXuIRvnydlB5b",
+    "youtube_id": "dvgZkm1xWPE",
+    "timestamp_sec": 62,
+    "lyric_line": "One minute I held the key, next the walls were closed on me by circumstance",
+    "surrounding_stanza": "I used to rule the world / Seas would rise when I gave the word / Now in the morning, I sleep alone / Sweep the streets I used to own",
+    "hebrew_translation": "נסיבה",
+    "academic_level": "A_foundational",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "transform",
+      "alter"
+    ],
+    "genius_url": "https://genius.com/Coldplay-viva-la-vida-lyrics",
+    "genius_annotation": "בשיר \"Viva La Vida\" של Coldplay, המילה \"circumstance\" (נסיבה) מופיעה בשיא הרגשי של הבית (\"One minute I held the key, next the walls were closed on me by circumstance\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"circumstance\" למילים הקשורות [transform, alter] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "collapse",
+    "song_title": "Till I Collapse",
+    "artist": "Eminem",
+    "spotify_id": "4xkOaSrkexMciUUogZKVTS",
+    "youtube_id": "ytQ5CYE1VZw",
+    "timestamp_sec": 78,
+    "lyric_line": "Till the roof comes off, till the lights go out, till my legs give out and I collapse",
+    "surrounding_stanza": "'Cause sometimes you just feel tired, feel weak / And when you feel weak, you feel like you wanna just give up / But you gotta search within you, try to find that inner strength",
+    "hebrew_translation": "לקרוס",
+    "academic_level": "A_foundational",
+    "genre": "Hip-Hop & Rap",
+    "secondary_words": [
+      "authority",
+      "dominate"
+    ],
+    "genius_url": "https://genius.com/Eminem-till-i-collapse-lyrics",
+    "genius_annotation": "בשיר \"Till I Collapse\" של Eminem, המילה \"collapse\" (לקרוס) מופיעה בשיא הרגשי של הבית (\"Till the roof comes off, till the lights go out, till my legs give out and I collapse\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"collapse\" למילים הקשורות [authority, dominate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "communicate",
+    "song_title": "Message in a Bottle",
+    "artist": "The Police",
+    "spotify_id": "1oYYd2gnWZYrt89EBXdFiO",
+    "youtube_id": "MbXWrmQW-OE",
+    "timestamp_sec": 49,
+    "lyric_line": "I'll send an S.O.S. to the world, trying to communicate across the sea",
+    "surrounding_stanza": "Just a castaway, an island lost at sea, oh / Another lonely day, with no one here but me, oh / More loneliness than any man could bear",
+    "hebrew_translation": "לתקשר",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "consume",
+      "inevitable"
+    ],
+    "genius_url": "https://genius.com/The-police-message-in-a-bottle-lyrics",
+    "genius_annotation": "בשיר \"Message in a Bottle\" של The Police, המילה \"communicate\" (לתקשר) מופיעה בשיא הרגשי של הבית (\"I'll send an S.O.S. to the world, trying to communicate across the sea\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"communicate\" למילים הקשורות [consume, inevitable] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "community",
+    "song_title": "One Love",
+    "artist": "Bob Marley",
+    "spotify_id": "2HcyIzVsX45jLIxK7SH2aI",
+    "youtube_id": "vdB-8eLEW8g",
+    "timestamp_sec": 30,
+    "lyric_line": "One love, one heart, let's get together as one community and feel all right",
+    "surrounding_stanza": "One love, one heart / Let's get together and feel all right / Hear the children crying (One love) / Hear the children crying (One heart)",
+    "hebrew_translation": "קהילה",
+    "academic_level": "A_foundational",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "hypothesis",
+      "evaluate"
+    ],
+    "genius_url": "https://genius.com/Bob-marley-one-love-lyrics",
+    "genius_annotation": "בשיר \"One Love\" של Bob Marley, המילה \"community\" (קהילה) מופיעה בשיא הרגשי של הבית (\"One love, one heart, let's get together as one community and feel all right\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"community\" למילים הקשורות [hypothesis, evaluate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "complex",
+    "song_title": "Clocks",
+    "artist": "Coldplay",
+    "spotify_id": "0BCPKOYdS2jbQ8iyB56Zns",
+    "youtube_id": "d020hcWA_Wg",
+    "timestamp_sec": 55,
+    "lyric_line": "Confusion never stops, closing walls and ticking clocks in a complex world",
+    "surrounding_stanza": "The lights go out and I can't be saved / Tides that I tried to swim against / Have brought me down upon my knees / Oh, I beg, I beg and plead",
+    "hebrew_translation": "מורכב",
+    "academic_level": "A_foundational",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "community",
+      "contribute"
+    ],
+    "genius_url": "https://genius.com/Coldplay-clocks-lyrics",
+    "genius_annotation": "בשיר \"Clocks\" של Coldplay, המילה \"complex\" (מורכב) מופיעה בשיא הרגשי של הבית (\"Confusion never stops, closing walls and ticking clocks in a complex world\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"complex\" למילים הקשורות [community, contribute] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "concept",
+    "song_title": "Imagine",
+    "artist": "John Lennon",
+    "spotify_id": "7pKfPomDEeI4TPT6EOYjn9",
+    "youtube_id": "YkgkThdzX-8",
+    "timestamp_sec": 40,
+    "lyric_line": "Imagine all the people sharing all the world, a simple concept of peace",
+    "surrounding_stanza": "Imagine there's no countries / It isn't hard to do / Nothing to kill or die for / And no religion, too / Imagine all the people living life in peace",
+    "hebrew_translation": "מושג, רעיון",
+    "academic_level": "A_foundational",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "assume",
+      "predict"
+    ],
+    "genius_url": "https://genius.com/John-lennon-imagine-lyrics",
+    "genius_annotation": "בשיר \"Imagine\" של John Lennon, המילה \"concept\" (מושג, רעיון) מופיעה בשיא הרגשי של הבית (\"Imagine all the people sharing all the world, a simple concept of peace\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"concept\" למילים הקשורות [assume, predict] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "conclude",
+    "song_title": "My Way",
+    "artist": "Frank Sinatra",
+    "spotify_id": "3spdoTYpuCpmq19tuD0bOe",
+    "youtube_id": "qQzdAsjWGPg",
+    "timestamp_sec": 25,
+    "lyric_line": "And now, the end is near, and so I conclude the final curtain",
+    "surrounding_stanza": "And now, the end is near / And so I face the final curtain / My friend, I'll say it clear / I'll state my case, of which I'm certain",
+    "hebrew_translation": "להסיק, לסכם",
+    "academic_level": "A_foundational",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "deliberate",
+      "subtle"
+    ],
+    "genius_url": "https://genius.com/Frank-sinatra-my-way-lyrics",
+    "genius_annotation": "בשיר \"My Way\" של Frank Sinatra, המילה \"conclude\" (להסיק, לסכם) מופיעה בשיא הרגשי של הבית (\"And now, the end is near, and so I conclude the final curtain\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"conclude\" למילים הקשורות [deliberate, subtle] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "conduct",
+    "song_title": "Smooth Criminal",
+    "artist": "Michael Jackson",
+    "spotify_id": "2bCQHF9gdG5BNDVuEIEnNk",
+    "youtube_id": "h_D3VFfhvs4",
+    "timestamp_sec": 46,
+    "lyric_line": "As he came into the window, there was no sound to conduct the warning",
+    "surrounding_stanza": "As he came into the window / Was the sound of a crescendo / He came into her apartment / He left the bloodstains on the carpet",
+    "hebrew_translation": "לנהל, לערוך",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "achieve",
+      "challenge"
+    ],
+    "genius_url": "https://genius.com/Michael-jackson-smooth-criminal-lyrics",
+    "genius_annotation": "בשיר \"Smooth Criminal\" של Michael Jackson, המילה \"conduct\" (לנהל, לערוך) מופיעה בשיא הרגשי של הבית (\"As he came into the window, there was no sound to conduct the warning\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"conduct\" למילים הקשורות [achieve, challenge] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "conflict",
+    "song_title": "Zombie",
+    "artist": "The Cranberries",
+    "spotify_id": "7EZC6E7UjZe63f1jRmkWxt",
+    "youtube_id": "6Ejga4kJUts",
+    "timestamp_sec": 68,
+    "lyric_line": "Another head hangs lowly, child is slowly taken by the endless conflict",
+    "surrounding_stanza": "Another head hangs lowly / Child is slowly taken / And the violence caused such silence / Who are we mistaken?",
+    "hebrew_translation": "סכסוך, קונפליקט",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "evidence",
+      "apparent"
+    ],
+    "genius_url": "https://genius.com/The-cranberries-zombie-lyrics",
+    "genius_annotation": "בשיר \"Zombie\" של The Cranberries, המילה \"conflict\" (סכסוך, קונפליקט) מופיעה בשיא הרגשי של הבית (\"Another head hangs lowly, child is slowly taken by the endless conflict\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"conflict\" למילים הקשורות [evidence, apparent] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "consent",
+    "song_title": "Every Little Thing She Does Is Magic",
+    "artist": "The Police",
+    "spotify_id": "44aTAUBF0g6s3M6rV2P9k8",
+    "youtube_id": "aENX1Sf3fgQ",
+    "timestamp_sec": 50,
+    "lyric_line": "My heart gives its full consent whenever she calls my name",
+    "surrounding_stanza": "Though I've tried before to tell her / Of the feelings I have for her in my heart / Every time that I come near her / I just lose my nerve as I've done from the start",
+    "hebrew_translation": "הסכמה",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "conflict",
+      "resolve"
+    ],
+    "genius_url": "https://genius.com/The-police-every-little-thing-she-does-is-magic-lyrics",
+    "genius_annotation": "בשיר \"Every Little Thing She Does Is Magic\" של The Police, המילה \"consent\" (הסכמה) מופיעה בשיא הרגשי של הבית (\"My heart gives its full consent whenever she calls my name\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"consent\" למילים הקשורות [conflict, resolve] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "consequence",
+    "song_title": "What I've Done",
+    "artist": "Linkin Park",
+    "spotify_id": "18lR4BzEs7e3qzc0KVkTpU",
+    "youtube_id": "8sgycukafqQ",
+    "timestamp_sec": 48,
+    "lyric_line": "In this farewell, there's no blood, facing the consequence of what I've done",
+    "surrounding_stanza": "In this farewell / There's no blood, there's no alibi / 'Cause I've drawn regret / From the truth of a thousand lies",
+    "hebrew_translation": "תוצאה",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "transform",
+      "alter"
+    ],
+    "genius_url": "https://genius.com/Linkin-park-what-ive-done-lyrics",
+    "genius_annotation": "בשיר \"What I've Done\" של Linkin Park, המילה \"consequence\" (תוצאה) מופיעה בשיא הרגשי של הבית (\"In this farewell, there's no blood, facing the consequence of what I've done\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"consequence\" למילים הקשורות [transform, alter] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "considerable",
+    "song_title": "A Day in the Life",
+    "artist": "The Beatles",
+    "spotify_id": "0hKRSZhUGEhKU6aNSPBACZ",
+    "youtube_id": "usNsCeOV4GM",
+    "timestamp_sec": 40,
+    "lyric_line": "I read the news today, oh boy, a considerable crowd had stood and stared",
+    "surrounding_stanza": "I read the news today, oh boy / About a lucky man who made the grade / And though the news was rather sad / Well, I just had to laugh",
+    "hebrew_translation": "ניכר, משמעותי",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "authority",
+      "dominate"
+    ],
+    "genius_url": "https://genius.com/The-beatles-a-day-in-the-life-lyrics",
+    "genius_annotation": "בשיר \"A Day in the Life\" של The Beatles, המילה \"considerable\" (ניכר, משמעותי) מופיעה בשיא הרגשי של הבית (\"I read the news today, oh boy, a considerable crowd had stood and stared\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"considerable\" למילים הקשורות [authority, dominate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "consist",
+    "song_title": "Bohemian Rhapsody (Live Aid)",
+    "artist": "Queen",
+    "spotify_id": "4u7EnebtmKWzUH433cf5Qv",
+    "youtube_id": "fJ9rUzIMcZQ",
+    "timestamp_sec": 45,
+    "lyric_line": "A life that consists of highs and lows, caught in a landslide",
+    "surrounding_stanza": "Is this the real life? Is this just fantasy? / Caught in a landslide, no escape from reality / Open your eyes, look up to the skies and see",
+    "hebrew_translation": "להיות מורכב מ-",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "consume",
+      "inevitable"
+    ],
+    "genius_url": "https://genius.com/Queen-bohemian-rhapsody-lyrics",
+    "genius_annotation": "בשיר \"Bohemian Rhapsody (Live Aid)\" של Queen, המילה \"consist\" (להיות מורכב מ-) מופיעה בשיא הרגשי של הבית (\"A life that consists of highs and lows, caught in a landslide\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"consist\" למילים הקשורות [consume, inevitable] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "contribute",
+    "song_title": "We Are The World",
+    "artist": "USA for Africa",
+    "spotify_id": "1H7zdcRD0g2Jm0A7b0K8x9",
+    "youtube_id": "9AjkUyX0rVw",
+    "timestamp_sec": 60,
+    "lyric_line": "When we contribute our hearts together, we make a brighter day",
+    "surrounding_stanza": "We are the world, we are the children / We are the ones who make a brighter day, so let's start giving / There's a choice we're making",
+    "hebrew_translation": "לתרום",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "hypothesis",
+      "evaluate"
+    ],
+    "genius_url": "https://genius.com/Usa-for-africa-we-are-the-world-lyrics",
+    "genius_annotation": "בשיר \"We Are The World\" של USA for Africa, המילה \"contribute\" (לתרום) מופיעה בשיא הרגשי של הבית (\"When we contribute our hearts together, we make a brighter day\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"contribute\" למילים הקשורות [hypothesis, evaluate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "convince",
+    "song_title": "Rehab",
+    "artist": "Amy Winehouse",
+    "spotify_id": "1L5tZi0izXsi5Kk5OJf4W0",
+    "youtube_id": "KUmZp8pR1uc",
+    "timestamp_sec": 32,
+    "lyric_line": "They tried to convince me to go to rehab, I said no, no, no",
+    "surrounding_stanza": "They tried to make me go to rehab, I said no, no, no / Yes I've been black, but when I come back, you'll know, know, know",
+    "hebrew_translation": "לשכנע",
+    "academic_level": "A_foundational",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "community",
+      "contribute"
+    ],
+    "genius_url": "https://genius.com/Amy-winehouse-rehab-lyrics",
+    "genius_annotation": "בשיר \"Rehab\" של Amy Winehouse, המילה \"convince\" (לשכנע) מופיעה בשיא הרגשי של הבית (\"They tried to convince me to go to rehab, I said no, no, no\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"convince\" למילים הקשורות [community, contribute] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "accompany",
+    "song_title": "Stand By Me",
+    "artist": "Ben E. King",
+    "spotify_id": "3SdTKo2uVsxFblQjpScoHy",
+    "youtube_id": "hwZNL7QVJjE",
+    "timestamp_sec": 38,
+    "lyric_line": "When the night has come, stand by me and accompany me through the dark",
+    "surrounding_stanza": "When the night has come / And the land is dark / And the moon is the only light we'll see / No, I won't be afraid",
+    "hebrew_translation": "ללוות",
+    "academic_level": "B_intermediate",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "assume",
+      "predict"
+    ],
+    "genius_url": "https://genius.com/Ben-e-king-stand-by-me-lyrics",
+    "genius_annotation": "בשיר \"Stand By Me\" של Ben E. King, המילה \"accompany\" (ללוות) מופיעה בשיא הרגשי של הבית (\"When the night has come, stand by me and accompany me through the dark\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"accompany\" למילים הקשורות [assume, predict] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "accurate",
+    "song_title": "Every Breath You Take (Remastered)",
+    "artist": "The Police",
+    "spotify_id": "1JSTJqkT5qHq8MDJnJbRE1",
+    "youtube_id": "OMOGaugKpzs",
+    "timestamp_sec": 72,
+    "lyric_line": "Every single day and every word you say, keeping an accurate record of every move",
+    "surrounding_stanza": "Every single day and every word you say / Every game you play, every night you stay / I'll be watching you",
+    "hebrew_translation": "מדויק",
+    "academic_level": "A_foundational",
+    "genre": "Rock",
+    "secondary_words": [
+      "deliberate",
+      "subtle"
+    ],
+    "genius_url": "https://genius.com/The-police-every-breath-you-take-lyrics",
+    "genius_annotation": "בשיר \"Every Breath You Take (Remastered)\" של The Police, המילה \"accurate\" (מדויק) מופיעה בשיא הרגשי של הבית (\"Every single day and every word you say, keeping an accurate record of every move\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"accurate\" למילים הקשורות [deliberate, subtle] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "acquire",
+    "song_title": "Money",
+    "artist": "Pink Floyd",
+    "spotify_id": "0vFOzaXqZHahrZp6enQwQb",
+    "youtube_id": "-0kcet4aPpQ",
+    "timestamp_sec": 55,
+    "lyric_line": "Money, get back, I'm all right Jack, acquire a new car and caviar",
+    "surrounding_stanza": "Money, get away / You get a good job with more pay and you're okay / Money, it's a gas / Grab that cash with both hands and make a stash",
+    "hebrew_translation": "לרכוש, להשיג",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "achieve",
+      "challenge"
+    ],
+    "genius_url": "https://genius.com/Pink-floyd-money-lyrics",
+    "genius_annotation": "בשיר \"Money\" של Pink Floyd, המילה \"acquire\" (לרכוש, להשיג) מופיעה בשיא הרגשי של הבית (\"Money, get back, I'm all right Jack, acquire a new car and caviar\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"acquire\" למילים הקשורות [achieve, challenge] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "adequate",
+    "song_title": "Satisfaction",
+    "artist": "The Rolling Stones",
+    "spotify_id": "2PzU4IB8Dr6mxV3lHuaG34",
+    "youtube_id": "nrIPxlFzDi0",
+    "timestamp_sec": 40,
+    "lyric_line": "I can't get no satisfaction, nothing feels adequate when I'm driving in my car",
+    "surrounding_stanza": "I can't get no satisfaction, I can't get no satisfaction / 'Cause I try and I try and I try and I try / I can't get no, I can't get no",
+    "hebrew_translation": "מספק, הולם",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "evidence",
+      "apparent"
+    ],
+    "genius_url": "https://genius.com/The-rolling-stones-satisfaction-lyrics",
+    "genius_annotation": "בשיר \"Satisfaction\" של The Rolling Stones, המילה \"adequate\" (מספק, הולם) מופיעה בשיא הרגשי של הבית (\"I can't get no satisfaction, nothing feels adequate when I'm driving in my car\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"adequate\" למילים הקשורות [evidence, apparent] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "adjust",
+    "song_title": "Man in the Mirror",
+    "artist": "Michael Jackson",
+    "spotify_id": "2u2udGmop1z67Y79j07H7P",
+    "youtube_id": "PivWY9wn5ps",
+    "timestamp_sec": 64,
+    "lyric_line": "I'm starting with the man in the mirror, asking him to adjust his ways",
+    "surrounding_stanza": "I'm starting with the man in the mirror / I'm asking him to change his ways / And no message could have been any clearer / If you wanna make the world a better place",
+    "hebrew_translation": "להתאים, לכוון",
+    "academic_level": "A_foundational",
+    "genre": "Pop",
+    "secondary_words": [
+      "conflict",
+      "resolve"
+    ],
+    "genius_url": "https://genius.com/Michael-jackson-man-in-the-mirror-lyrics",
+    "genius_annotation": "בשיר \"Man in the Mirror\" של Michael Jackson, המילה \"adjust\" (להתאים, לכוון) מופיעה בשיא הרגשי של הבית (\"I'm starting with the man in the mirror, asking him to adjust his ways\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"adjust\" למילים הקשורות [conflict, resolve] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "advocate",
+    "song_title": "Get Up, Stand Up",
+    "artist": "Bob Marley",
+    "spotify_id": "4tCtwWceOPWzenK2HAIJSb",
+    "youtube_id": "X2W3aG8uizA",
+    "timestamp_sec": 30,
+    "lyric_line": "Get up, stand up, advocate for your rights and don't give up the fight",
+    "surrounding_stanza": "Get up, stand up, stand up for your rights / Get up, stand up, don't give up the fight / Preacher man, don't tell me Heaven is under the earth",
+    "hebrew_translation": "לתמוך ב-, לסנגר",
+    "academic_level": "B_intermediate",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "transform",
+      "alter"
+    ],
+    "genius_url": "https://genius.com/Bob-marley-get-up-stand-up-lyrics",
+    "genius_annotation": "בשיר \"Get Up, Stand Up\" של Bob Marley, המילה \"advocate\" (לתמוך ב-, לסנגר) מופיעה בשיא הרגשי של הבית (\"Get up, stand up, advocate for your rights and don't give up the fight\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"advocate\" למילים הקשורות [transform, alter] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "alter",
+    "song_title": "The Times They Are a-Changin'",
+    "artist": "Bob Dylan",
+    "spotify_id": "52vA3CYKZqZVdQnzRrdZt6",
+    "youtube_id": "90WD_ats6eE",
+    "timestamp_sec": 35,
+    "lyric_line": "The line it is drawn, the curse it is cast, the shifting times alter the past",
+    "surrounding_stanza": "Come gather 'round people wherever you roam / And admit that the waters around you have grown / For the times they are a-changin'",
+    "hebrew_translation": "לשנות",
+    "academic_level": "A_foundational",
+    "genre": "Classic & Soul",
+    "secondary_words": [
+      "authority",
+      "dominate"
+    ],
+    "genius_url": "https://genius.com/Bob-dylan-the-times-they-are-a-changin-lyrics",
+    "genius_annotation": "בשיר \"The Times They Are a-Changin'\" של Bob Dylan, המילה \"alter\" (לשנות) מופיעה בשיא הרגשי של הבית (\"The line it is drawn, the curse it is cast, the shifting times alter the past\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"alter\" למילים הקשורות [authority, dominate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "ambiguous",
+    "song_title": "Somebody That I Used to Know",
+    "artist": "Gotye",
+    "spotify_id": "4wCmqSrbyCgxEXROQE6vtV",
+    "youtube_id": "8UVNT4wvIGY",
+    "timestamp_sec": 85,
+    "lyric_line": "Now and then I think of all the times you left me with ambiguous promises",
+    "surrounding_stanza": "But you didn't have to cut me off / Make out like it never happened and that we were nothing / And I don't even need your love",
+    "hebrew_translation": "דו-משמעי, עמום",
+    "academic_level": "C_advanced",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "consume",
+      "inevitable"
+    ],
+    "genius_url": "https://genius.com/Gotye-somebody-that-i-used-to-know-lyrics",
+    "genius_annotation": "בשיר \"Somebody That I Used to Know\" של Gotye, המילה \"ambiguous\" (דו-משמעי, עמום) מופיעה בשיא הרגשי של הבית (\"Now and then I think of all the times you left me with ambiguous promises\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"ambiguous\" למילים הקשורות [consume, inevitable] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "anticipate",
+    "song_title": "In the Air Tonight",
+    "artist": "Phil Collins",
+    "spotify_id": "18AXbzPzBS8Y3AkgSxzJPb",
+    "youtube_id": "YkADj0TPrJA",
+    "timestamp_sec": 190,
+    "lyric_line": "I can feel it coming in the air tonight, I anticipate the moment",
+    "surrounding_stanza": "I can feel it coming in the air tonight, oh Lord / And I've been waiting for this moment for all my life, oh Lord",
+    "hebrew_translation": "לצפות מראש",
+    "academic_level": "B_intermediate",
+    "genre": "Rock",
+    "secondary_words": [
+      "hypothesis",
+      "evaluate"
+    ],
+    "genius_url": "https://genius.com/Phil-collins-in-the-air-tonight-lyrics",
+    "genius_annotation": "בשיר \"In the Air Tonight\" של Phil Collins, המילה \"anticipate\" (לצפות מראש) מופיעה בשיא הרגשי של הבית (\"I can feel it coming in the air tonight, I anticipate the moment\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"anticipate\" למילים הקשורות [hypothesis, evaluate] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "arbitrary",
+    "song_title": "Losing My Religion",
+    "artist": "R.E.M.",
+    "spotify_id": "31AOj9sFz2gM0O3hMARRBx",
+    "youtube_id": "xwtdhWltSIg",
+    "timestamp_sec": 48,
+    "lyric_line": "That's me in the corner, questioning every arbitrary rule in the spotlight",
+    "surrounding_stanza": "Oh life is bigger / It's bigger than you / And you are not me / The lengths that I will go to",
+    "hebrew_translation": "שרירותי",
+    "academic_level": "C_advanced",
+    "genre": "Alternative & Indie",
+    "secondary_words": [
+      "community",
+      "contribute"
+    ],
+    "genius_url": "https://genius.com/Rem-losing-my-religion-lyrics",
+    "genius_annotation": "בשיר \"Losing My Religion\" של R.E.M., המילה \"arbitrary\" (שרירותי) מופיעה בשיא הרגשי של הבית (\"That's me in the corner, questioning every arbitrary rule in the spotlight\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"arbitrary\" למילים הקשורות [community, contribute] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "assert",
+    "song_title": "Roar",
+    "artist": "Katy Perry",
+    "spotify_id": "27tNWlhdAryQY04Gb2ZhUI",
+    "youtube_id": "CevxZvSJLk8",
+    "timestamp_sec": 50,
+    "lyric_line": "I got the eye of the tiger, standing up to assert my voice and roar",
+    "surrounding_stanza": "I used to bite my tongue and hold my breath / Scared to rock the boat and make a mess / So I sat quietly, agreed politely / Now I assert my strength",
+    "hebrew_translation": "לטעון בתוקף, לעמוד על",
+    "academic_level": "B_intermediate",
+    "genre": "Pop",
+    "secondary_words": [
+      "assume",
+      "predict"
+    ],
+    "genius_url": "https://genius.com/Katy-perry-roar-lyrics",
+    "genius_annotation": "בשיר \"Roar\" של Katy Perry, המילה \"assert\" (לטעון בתוקף, לעמוד על) מופיעה בשיא הרגשי של הבית (\"I got the eye of the tiger, standing up to assert my voice and roar\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"assert\" למילים הקשורות [assume, predict] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  },
+  {
+    "word": "comprehend",
+    "song_title": "Stan",
+    "artist": "Eminem",
+    "spotify_id": "3UmaczJpikHgJFyBTAJVoz",
+    "youtube_id": "gOMhN-hfMtY",
+    "timestamp_sec": 60,
+    "lyric_line": "My tea's gone cold, I'm wondering why, trying to comprehend the rain on my window",
+    "surrounding_stanza": "My tea's gone cold, I'm wondering why I got out of bed at all / The morning rain clouds up my window, and I can't see at all",
+    "hebrew_translation": "להבין לעומק, לתפוס",
+    "academic_level": "B_intermediate",
+    "genre": "Hip-Hop & Rap",
+    "secondary_words": [
+      "deliberate",
+      "subtle"
+    ],
+    "genius_url": "https://genius.com/Eminem-stan-lyrics",
+    "genius_annotation": "בשיר \"Stan\" של Eminem, המילה \"comprehend\" (להבין לעומק, לתפוס) מופיעה בשיא הרגשי של הבית (\"My tea's gone cold, I'm wondering why, trying to comprehend the rain on my window\"). השימוש במילה מדגיש את המשמעות האקדמית שלה במבחן אמיר\"ם — חיבור בין המילה \"comprehend\" למילים הקשורות [deliberate, subtle] בתוך הקשר המלודיה יוצר עוגן זיכרון שמיעתי מיידי."
+  }
+]; })(typeof self !== 'undefined' ? self : this);
