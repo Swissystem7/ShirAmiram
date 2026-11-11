@@ -110,15 +110,17 @@
 
   function validateContent(raw) {
     var errors = [];
-    if (!raw || typeof raw !== 'object') return { songs: [], questions: [], words: [], errors: ['content is not an object'], examCoverage: 'unknown' };
-    var examCoverage = (raw.meta && raw.meta.exam_coverage) || 'unknown'; // never upgrade unknown/none_claimed
+    if (!raw || typeof raw !== 'object') {
+      return { songs: [], questions: [], words: [], errors: ['content is not an object'], examCoverage: 'unknown' };
+    }
+    var examCoverage = (raw.meta && raw.meta.exam_coverage) || 'unknown';
     var songs = (Array.isArray(raw.songs) ? raw.songs : []).map(function (s, i) {
       var c = Object.assign({}, s);
       if (!c.title || !c.artist) errors.push('song ' + (c.id != null ? c.id : i) + ': missing title/artist');
       if (c.spotify_id != null && !SPOTIFY_ID_RE.test(String(c.spotify_id))) { errors.push('song ' + c.id + ': invalid spotify_id'); c.spotify_id = null; }
       if (c.spotify_id && c.spotify_url && String(c.spotify_url).indexOf(c.spotify_id) === -1) errors.push('song ' + c.id + ': spotify_url does not contain spotify_id');
       if (c.youtube_id != null && !YOUTUBE_ID_RE.test(String(c.youtube_id))) { errors.push('song ' + c.id + ': invalid youtube_id'); c.youtube_id = null; }
-      if (c.youtube_id == null) { c.youtube_id = null; c.youtube_url = null; } // null stays null — no fabrication
+      if (c.youtube_id == null) { c.youtube_id = null; c.youtube_url = null; }
       c.exam_coverage = (c.provenance && c.provenance.exam_coverage) || 'unknown';
       c.highlight_words = Array.isArray(c.highlight_words) ? c.highlight_words : [];
       return c;
@@ -144,11 +146,11 @@
   function spotifyTrackUrl(id) { return SPOTIFY_ID_RE.test(String(id || '')) ? 'https://open.spotify.com/track/' + id : null; }
   function youtubeEmbedUrl(id) { return YOUTUBE_ID_RE.test(String(id || '')) ? 'https://www.youtube.com/embed/' + id : null; }
   function youtubeMusicLink(song) {
-    if (song && YOUTUBE_ID_RE.test(String(song.youtube_id || ''))) return {
-      kind: 'direct', url: 'https://music.youtube.com/watch?v=' + song.youtube_id };
+    if (song && YOUTUBE_ID_RE.test(String(song.youtube_id || ''))) {
+      return { kind: 'direct', url: 'https://music.youtube.com/watch?v=' + song.youtube_id };
+    }
     var q = encodeURIComponent(((song && song.title) || '') + ' ' + ((song && song.artist) || ''));
-    return {
-      kind: 'search', url: 'https://music.youtube.com/search?q=' + q }; // explicitly a search link, not a verified track
+    return { kind: 'search', url: 'https://music.youtube.com/search?q=' + q };
   }
 
   function recommendSongs(songs, targetWords, limit) {
@@ -250,9 +252,9 @@
     if (e.list && e.list.classList) e.list.classList.toggle('hidden', isEmpty);
     if (isEmpty && e.message) e.message.textContent = message || '';
     return {
-    isEmpty: isEmpty,
-    queueLength: n
-  }
+      isEmpty: isEmpty,
+      queueLength: n
+    };
   }
 
   // Dominant vocab level (A_foundational / B_intermediate / C_advanced) of a song's highlight words.
@@ -274,7 +276,32 @@
     return (songs || []).filter(function (s) { return songDominantLevel(s, estimator) === level; });
   }
 
+  function calculateVocabMasteryStats(masteredWordIds, vocabList) {
+    const list = Array.isArray(vocabList) ? vocabList : [];
+    const total = list.length;
+    const masteredSet = new Set(Array.isArray(masteredWordIds) ? masteredWordIds : []);
+    let masteredCount = 0;
+    const levelCounts = { levelA: { mastered: 0, total: 0 }, levelB: { mastered: 0, total: 0 }, levelC: { mastered: 0, total: 0 } };
+    list.forEach(v => {
+      const isMastered = masteredSet.has(v.word);
+      if (isMastered) masteredCount++;
+      const level = v.difficulty === 'Medium' ? 'levelA' : v.difficulty === 'Hard' ? 'levelB' : 'levelC';
+      if (levelCounts[level]) {
+        levelCounts[level].total++;
+        if (isMastered) levelCounts[level].mastered++;
+      }
+    });
+    const overallPercent = total ? (masteredCount / total) * 100 : 0;
+    return {
+      overallPercent,
+      levelA: { mastered: levelCounts.levelA.mastered, total: levelCounts.levelA.total, percent: levelCounts.levelA.total ? (levelCounts.levelA.mastered / levelCounts.levelA.total) * 100 : 0 },
+      levelB: { mastered: levelCounts.levelB.mastered, total: levelCounts.levelB.total, percent: levelCounts.levelB.total ? (levelCounts.levelB.mastered / levelCounts.levelB.total) * 100 : 0 },
+      levelC: { mastered: levelCounts.levelC.mastered, total: levelCounts.levelC.total, percent: levelCounts.levelC.total ? (levelCounts.levelC.mastered / levelCounts.levelC.total) * 100 : 0 }
+    };
+  }
+
   return {
+    calculateVocabMasteryStats: calculateVocabMasteryStats,
     getDailyChallengeBannerData: getDailyChallengeBannerData,
     buildQuickStudyPlan: buildQuickStudyPlan,
     songDominantLevel: songDominantLevel, filterSongsByLevel: filterSongsByLevel, SONG_LEVELS: SONG_LEVELS,
