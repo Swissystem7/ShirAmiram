@@ -160,6 +160,38 @@ test('app.js initializes in browser context without require and resolves getDail
   assert.equal(banner.word, 'test');
 });
 
+test('formatAnswerConfidenceBadge calculates badge info with or without estimator', () => {
+  const dummyEstimator = {
+    evaluateResponseConfidence(time, isCorrect) {
+      if (isCorrect && time < 2000) {
+        return { label: 'ביטחון גבוה', color: 'green', feedback: 'מהיר ומדויק!', isFastAndCorrect: true };
+      }
+      return { label: 'טעון שיפור', color: 'orange', feedback: 'נסה שוב', isFastAndCorrect: false };
+    }
+  };
+
+  const badgeWithEst = A.formatAnswerConfidenceBadge(1500, true, dummyEstimator);
+  assert.equal(badgeWithEst.badgeLabel, 'ביטחון גבוה');
+  assert.equal(badgeWithEst.badgeColor, 'green');
+  assert.equal(badgeWithEst.isFastAndCorrect, true);
+
+  const badgeFallbackFast = A.formatAnswerConfidenceBadge(2000, true, null);
+  assert.equal(badgeFallbackFast.badgeLabel, 'שליטה מעולה');
+  assert.equal(badgeFallbackFast.isFastAndCorrect, true);
+
+  const badgeFallbackSlow = A.formatAnswerConfidenceBadge(4000, true, null);
+  assert.equal(badgeFallbackSlow.badgeLabel, 'תשובה נכונה');
+  assert.equal(badgeFallbackSlow.isFastAndCorrect, false);
+
+  const badgeFallbackIncorrect = A.formatAnswerConfidenceBadge(1500, false, null);
+  assert.equal(badgeFallbackIncorrect.badgeLabel, 'חזרה מומלצת');
+  assert.equal(badgeFallbackIncorrect.badgeColor, 'red');
+
+  const badgeNoTime = A.formatAnswerConfidenceBadge(null, true, null);
+  assert.equal(badgeNoTime.badgeLabel, 'ללא תזמון');
+  assert.equal(badgeNoTime.isFastAndCorrect, false);
+});
+
 test('calculateVocabMasteryStats correctly calculates overall and level stats', () => {
   const sampleVocab = [
     { word: 'crucial', difficulty: 'Medium' },
