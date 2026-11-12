@@ -1,5 +1,5 @@
-// ShirAmiram — Offline Service Worker (Cache-First + Stale-While-Revalidate)
-const CACHE_NAME = 'shiramiram-cache-v2';
+// ShirAmiram — Offline Service Worker (network-first pages, stale-while-revalidate assets)
+const CACHE_NAME = 'shiramiram-cache-v3';
 
 const STATIC_ASSETS = [
   './',
@@ -7,6 +7,8 @@ const STATIC_ASSETS = [
   './manifest.json',
   './css/style.css',
   './app.js',
+  './src/ui_shell.js',
+  './css/volt.css',
   './src/amiram_vocab_data.js',
   './src/amiram_restatements_data.js',
   './src/amiram_reading_data.js',
@@ -56,37 +58,54 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const store = (request, response) => {
+    if (response && response.status === 200 && response.type === 'basic') {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+    }
+    return response;
+  };
+
+  // Pages: network first, revalidating past the browser HTTP cache (GitHub Pages sends
+  // max-age=600), so a new release shows on the first visit after it ships. The cached
+  // page is used when offline or when the network takes longer than 3 seconds.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      new Promise((resolve) => {
+        let settled = false;
+        const fromCache = () =>
+          caches.match(event.request).then((hit) => hit || caches.match('./index.html'));
+        const timer = setTimeout(() => {
+          fromCache().then((hit) => {
+            if (hit && !settled) { settled = true; resolve(hit); }
+          });
+        }, 3000);
+        fetch(event.request, { cache: 'no-cache' }).then((response) => {
+          clearTimeout(timer);
+          store(event.request, response);
+          if (!settled) { settled = true; resolve(response); }
+        }).catch(() => {
+          clearTimeout(timer);
+          fromCache().then((hit) => {
+            if (!settled) { settled = true; resolve(hit || Response.error()); }
+          });
+        });
+      })
+    );
+    return;
+  }
+
+  // Other assets: answer from cache at once and refresh the cache in the background.
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
+      const refresh = fetch(event.request, { cache: 'no-cache' })
+        .then((response) => store(event.request, response))
+        .catch(() => cachedResponse || Response.error());
       if (cachedResponse) {
-        // Fetch in background to update cache (stale-while-revalidate for local origin)
-        fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, networkResponse);
-            });
-          }
-        }).catch(() => {});
+        event.waitUntil(refresh);
         return cachedResponse;
       }
-
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
-        }
-
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
-
-        return networkResponse;
-      }).catch(() => {
-        // Offline navigation fallback
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
+      return refresh;
     })
   );
 });

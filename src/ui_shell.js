@@ -11,7 +11,7 @@
     { id: 'progress', label: 'התקדמות', tabs: ['dashboard'] }
   ];
   var THEME_KEY = 'shiramiram-theme';
-  var THEME_COLORS = { light: '#F6F1E7', dark: '#1A1714' };
+  var THEME_COLORS = { light: '#F3F4EF', dark: '#0B0C10' };
 
   function groupForTab(tabId) {
     for (var i = 0; i < GROUPS.length; i++) {
@@ -21,7 +21,7 @@
   }
 
   function normalizeTheme(value) {
-    return value === 'dark' ? 'dark' : 'light';
+    return value === 'light' ? 'light' : 'dark';
   }
 
   function nextTheme(current) {
@@ -60,8 +60,8 @@
 
   function initTheme() {
     var stored = readStoredTheme();
-    var prefersDark = root.matchMedia && root.matchMedia('(prefers-color-scheme: dark)').matches;
-    applyTheme(stored || (prefersDark ? 'dark' : 'light'));
+    // Dark-first: the light theme is used only when the learner picked it.
+    applyTheme(stored);
     var btn = doc.getElementById('theme-toggle');
     if (!btn) return;
     btn.addEventListener('click', function () {
