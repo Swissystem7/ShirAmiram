@@ -19,10 +19,18 @@ All content in the prototype is placeholder (12 sample words, invented songs and
 
 ## What is implemented in the app
 
-`css/volt.css` and `src/ui_shell.js` apply the v2 tokens and components to the existing screens:
-dark (default) and light themes, floating bottom navigation with four destinations, word cards instead of a table on phones,
-album-art covers on the song list, lyric lines with word chips, large quiz answers, flashcards and the progress dashboard.
+`css/volt.css` and `src/ui_shell.js` apply the v2 tokens, components and screens on top of the existing app logic:
 
-Not implemented yet, because they need new screens or behaviour wired to app data, not only styling:
-the album-art hero for today's song, the persistent mini now-playing bar, the word sheet opened from a lyric chip,
-the Practice hub screen, the score ring and streak week on Progress, and the signature-colour tweaks (coral, aqua).
+- Dark (default) and light themes, floating bottom navigation with four destinations.
+- Songs opens on today's song: album-art hero with progress and a play button, lyrics with word chips below it.
+- A mini now-playing bar above the navigation on every other screen.
+- Practice hub leading to flashcards, sentence completion, restatements and reading comprehension.
+- Words as level-coded cards on phones; drawn icons instead of emoji.
+- Progress with a score ring, metric tiles and level bars.
+- The song library keeps the catalogue up front and folds the import and export tools into "advanced tools".
+
+The hero title "Hold the Light" is a display name for the app's built-in original lyrics; change it in `index.html` if the song gets a real name.
+
+Not implemented yet: the word sheet opened from a lyric chip (the existing inline translation box is used instead),
+the streak week on Progress (the app does not keep a daily streak), album cards for recommendations on the first screen,
+and the signature-colour tweaks (coral, aqua).

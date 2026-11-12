@@ -1,5 +1,5 @@
 // ShirAmiram — Offline Service Worker (network-first pages, stale-while-revalidate assets)
-const CACHE_NAME = 'shiramiram-cache-v4';
+const CACHE_NAME = 'shiramiram-cache-v5';
 
 const STATIC_ASSETS = [
   './',
