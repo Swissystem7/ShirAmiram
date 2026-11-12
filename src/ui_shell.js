@@ -297,7 +297,20 @@
 
   function initScreens() { initPlayer(); initHub(); initScoreRing(); initAdvanced(); initPolish(); initLanding(); }
 
-  function init() { initTheme(); initNav(); initScreens(); }
+  function initFreshness() {
+    // Right after a release the page can arrive new while cached styles and scripts are still
+    // the old ones. When the new service worker takes over, reload once so they match.
+    var sw = root.navigator && root.navigator.serviceWorker;
+    if (!sw || !sw.controller) return;
+    var reloaded = false;
+    sw.addEventListener('controllerchange', function () {
+      if (reloaded) return;
+      reloaded = true;
+      root.location.reload();
+    });
+  }
+
+  function init() { initTheme(); initNav(); initScreens(); initFreshness(); }
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', init);
   else init();
 })(typeof window !== 'undefined' ? window : globalThis);
