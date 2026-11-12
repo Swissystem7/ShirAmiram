@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+::-webkit-scrollbar{display:none}
+a{color:var(--accent-text)}a:hover{color:var(--ink)}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;text-align:inherit}
+:root,[data-theme="dark"]{--stage:#050608;--bg:#0B0C10;--surface:#15171D;--surface-2:#1F222B;--surface-3:#2A2E39;--ink:#F4F5F7;--ink-2:#A6ABB8;--line:#2C303B;--accent:#C6FF3D;--accent-ink:#0B0C10;--accent-text:#C6FF3D;--nav:#1F222B;--nav-ink:#F4F5F7;--nav-ink-2:#A6ABB8;--cover-ink:#0B0C10;--ok:#5BE49B;--ok-bg:#10301F;--bad:#FF7B7B;--bad-bg:#3B1517;--la:#4FE3C1;--la-bg:#0F2F2A;--lb:#FFC247;--lb-bg:#33270C;--lc:#FF7AA8;--lc-bg:#3A1424;--sh-1:0 1px 2px rgba(0,0,0,.4);--sh-2:0 14px 32px -10px rgba(0,0,0,.7);--sh-float:0 18px 40px -10px rgba(0,0,0,.8);--glow:0 10px 36px -6px color-mix(in srgb,var(--accent) 60%,transparent);--r-s:8px;--r-m:14px;--r-l:22px;--r-xl:30px;--display:'Bricolage Grotesque','Rubik',sans-serif;--sans:'Rubik',sans-serif}
+[data-theme="light"]{--stage:#E4E6DE;--bg:#F3F4EF;--surface:#FFFFFF;--surface-2:#E9EBE3;--surface-3:#DDE0D5;--ink:#0E1014;--ink-2:#555B66;--line:#D5D8CE;--accent:#C6FF3D;--accent-ink:#0E1014;--accent-text:#3F6B00;--nav:#0E1014;--nav-ink:#F4F5F7;--nav-ink-2:#A6ABB8;--ok:#0F6B3C;--ok-bg:#D6F1E0;--bad:#B3261E;--bad-bg:#FADCD9;--la:#00705C;--la-bg:#D3F3EA;--lb:#7A4E00;--lb-bg:#FBE8B8;--lc:#B0184F;--lc-bg:#FCDDE8;--sh-1:0 1px 2px rgba(14,16,20,.08);--sh-2:0 14px 28px -14px rgba(14,16,20,.3);--sh-float:0 18px 40px -14px rgba(14,16,20,.5);--glow:0 12px 28px -10px color-mix(in srgb,var(--accent-text) 55%,transparent)}
+[data-accent="coral"]{--accent:#FF6B4A;--accent-text:#FF8A6E}
+[data-accent="aqua"]{--accent:#35E0FF;--accent-text:#35E0FF}
+[data-theme="light"][data-accent="coral"]{--accent-text:#B5310F}
+[data-theme="light"][data-accent="aqua"]{--accent-text:#006B80}
+</style>
+</helmet>
+<div data-theme="{{ theme }}" data-accent="{{ accent }}" style="min-height:100vh;background:var(--stage);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.45">
+<div dir="ltr" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:14px 16px">
+  <span style="font-family:var(--display);font-weight:800;font-size:18px;padding:0 8px;white-space:nowrap">ShirAmiram v2</span>
+  <button onClick="{{ toggleTheme }}" style="min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);font-size:14px;font-weight:500;white-space:nowrap">{{ themeLabel }}</button>
+  <a href="Design System v2.dc.html" style="min-height:44px;display:inline-flex;align-items:center;padding:0 12px;font-size:14px;font-weight:500;white-space:nowrap">Design system v2</a>
+  <a href="ShirAmiram.dc.html" style="min-height:44px;display:inline-flex;align-items:center;padding:0 12px;font-size:14px;font-weight:500;white-space:nowrap">v1</a>
+</div>
+
+<div style="display:flex;justify-content:center;padding:8px 0 48px">
+<div dir="rtl" lang="he" data-screen-label="Mobile prototype v2" style="width:375px;height:800px;flex:none;border:10px solid #000;border-radius:48px;overflow:hidden;background:var(--bg);display:flex;flex-direction:column;position:relative">
+<div style="flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none">
+
+<sc-if value="{{ isSongs }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="01 Songs" style="padding:18px 16px 0;display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+    <div style="font-weight:800;font-size:24px;white-space:nowrap">שיר<span style="color:var(--accent-text)">·</span>עמירם</div>
+    <sc-if value="{{ showStreak }}" hint-placeholder-val="{{ true }}">
+      <button onClick="{{ goProgress }}" style="min-height:44px;display:flex;align-items:center;gap:8px;padding:0 14px 0 6px;background:var(--surface);border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;flex:none"><span style="width:32px;height:32px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:var(--display);font-weight:800;display:flex;align-items:center;justify-content:center">6</span>ימי רצף</button>
+    </sc-if>
+  </div>
+  <div style="border-radius:var(--r-xl);padding:18px;color:var(--cover-ink);background:{{ today.cover }};box-shadow:{{ today.glow }};display:flex;flex-direction:column;min-height:300px;box-sizing:border-box">
+    <div style="display:flex;gap:8px"><span style="background:var(--cover-ink);color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:500">השיר של היום</span><span style="background:var(--cover-ink);color:#fff;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:700">B</span></div>
+    <div dir="ltr" style="text-align:left;font-family:var(--display);font-weight:800;font-size:46px;line-height:.95;letter-spacing:-.02em;margin-top:auto;padding-top:56px">Paper<br>Lanterns</div>
+    <div dir="ltr" style="text-align:left;font-weight:500;margin-top:8px">The Harbor Lights</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><div style="flex:1;height:6px;border-radius:3px;background:rgba(11,12,16,.2)"><div style="width:58%;height:100%;border-radius:3px;background:var(--cover-ink)"></div></div><span style="font-size:13px;font-weight:700;white-space:nowrap">7 מתוך 12 מילים</span></div>
+    <button onClick="{{ openPlayer }}" style="margin-top:14px;min-height:56px;border-radius:999px;background:var(--cover-ink);color:#fff;font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;gap:12px"><span style="width:0;height:0;border-style:solid;border-width:7px 0 7px 12px;border-color:transparent transparent transparent currentColor"></span>להמשיך ללמוד</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+    <button style="min-height:72px;border-radius:var(--r-l);padding:12px 14px;background:var(--surface)"><div dir="ltr" style="text-align:right;font-family:var(--display);font-weight:800;font-size:17px">Suno Studio</div><div style="font-size:13px;color:var(--ink-2)">שיר חדש מהמילים שלך</div></button>
+    <button style="min-height:72px;border-radius:var(--r-l);padding:12px 14px;background:var(--surface)"><div style="font-weight:700;font-size:17px">קריוקי קולי</div><div style="font-size:13px;color:var(--ink-2)">לשיר ולקבל משוב הגייה</div></button>
+  </div>
+  <div>
+    <div style="font-weight:800;font-size:22px;margin-bottom:10px">מומלץ בשבילך</div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+      <sc-for list="{{ recs }}" as="s" hint-placeholder-count="2">
+        <button onClick="{{ s.onClick }}" style="display:block">
+          <div style="aspect-ratio:1;border-radius:var(--r-l);background:{{ s.cover }};color:var(--cover-ink);padding:12px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--sh-2)"><span style="align-self:flex-start;background:var(--cover-ink);color:#fff;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700">{{ s.lv }}</span><span dir="ltr" style="text-align:left;font-family:var(--display);font-weight:800;font-size:22px;line-height:1;letter-spacing:-.01em">{{ s.title }}</span></div>
+          <div style="font-size:14px;font-weight:500;color:var(--accent-text);margin-top:8px">{{ s.why }}</div>
+          <div dir="ltr" style="text-align:right;font-size:13px;color:var(--ink-2)">{{ s.artist }}</div>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+  <div>
+    <div style="font-weight:800;font-size:22px;margin-bottom:10px">כל השירים</div>
+    <div style="display:flex;gap:8px">
+      <sc-for list="{{ songChips }}" as="c" hint-placeholder-count="4">
+        <button onClick="{{ c.onClick }}" style="flex:1;min-height:44px;border-radius:999px;background:{{ c.bg }};color:{{ c.fg }};font-weight:700;font-size:14px;text-align:center">{{ c.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;margin-top:10px">
+      <sc-for list="{{ songs }}" as="s" hint-placeholder-count="4">
+        <button onClick="{{ s.onClick }}" style="display:flex;width:100%;align-items:center;gap:12px;padding:8px 0;min-height:72px">
+          <span style="width:56px;height:56px;flex:none;border-radius:var(--r-m);background:{{ s.cover }}"></span>
+          <span style="flex:1;min-width:0"><span dir="ltr" style="display:block;text-align:right;font-family:var(--display);font-weight:800;font-size:18px;line-height:1.2">{{ s.title }}</span><span style="display:block;font-size:13px;color:var(--ink-2)"><span dir="ltr">{{ s.artist }}</span> · {{ s.words }} מילים · {{ s.status }}</span></span>
+          <span style="min-width:30px;height:30px;flex:none;border-radius:999px;background:{{ s.lvBg }};color:{{ s.lvFg }};font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center">{{ s.lv }}</span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPlayer }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="02 Lyrics" style="position:relative;padding:8px 16px 0">
+  <div style="position:absolute;top:-60px;left:-20px;right:-20px;height:280px;background:{{ today.cover }};filter:blur(56px);opacity:.38;pointer-events:none"></div>
+  <div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px"><button onClick="{{ backSongs }}" style="min-height:44px;padding:0 14px;border-radius:999px;background:var(--surface);font-weight:500;white-space:nowrap">→ שירים</button><div style="display:flex;align-items:center;gap:10px;min-width:0"><div dir="ltr" style="text-align:right;min-width:0"><div style="font-family:var(--display);font-weight:800;font-size:17px;line-height:1.1">Paper Lanterns</div><div style="font-size:12px;color:var(--ink-2)">The Harbor Lights</div></div><span style="width:44px;height:44px;flex:none;border-radius:var(--r-m);background:{{ today.cover }}"></span></div></div>
+  <div dir="ltr" onClick="{{ closePop }}" style="position:relative;padding-top:20px;display:flex;flex-direction:column;gap:6px">
+    <sc-for list="{{ lines }}" as="l" hint-placeholder-count="8">
+      <div onClick="{{ l.onClick }}" style="display:flex;flex-wrap:wrap;column-gap:7px;row-gap:6px;align-items:center;cursor:pointer;padding:8px 0;font-family:var(--display);line-height:1.2;letter-spacing:-.01em;font-weight:{{ l.fw }};font-size:{{ l.fs }};color:{{ l.fg }};opacity:{{ l.op }};transition:font-size .25s,opacity .25s">
+        <sc-for list="{{ l.toks }}" as="k" hint-placeholder-count="6"><span onClick="{{ k.onTap }}" style="cursor:{{ k.cur }};padding:{{ k.hit }};margin:{{ k.hitM }}"><span style="display:inline-block;background:{{ k.bg }};color:{{ k.fg }};box-shadow:{{ k.sh }};text-shadow:{{ k.ts }};padding:{{ k.pad }};border-radius:999px">{{ k.t }}</span></span></sc-for>
+      </div>
+    </sc-for>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWords }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="03 Words" style="padding:18px 16px 0">
+  <div style="display:flex;justify-content:space-between;align-items:baseline"><h1 style="margin:0;font-weight:800;font-size:34px;line-height:1.1">מילים</h1><span style="color:var(--ink-2);font-size:14px">{{ wordCount }}</span></div>
+  <input value="{{ q }}" onChange="{{ onQ }}" placeholder="חיפוש באנגלית או בעברית" style="margin-top:14px;width:100%;box-sizing:border-box;min-height:52px;padding:0 18px;border:0;border-radius:999px;background:var(--surface);color:var(--ink);font:inherit" style-focus="outline:2px solid var(--accent-text);outline-offset:2px">
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <sc-for list="{{ lvChips }}" as="c" hint-placeholder-count="4">
+      <button onClick="{{ c.onClick }}" style="flex:1;min-height:44px;border-radius:999px;background:{{ c.bg }};color:{{ c.fg }};font-weight:700;font-size:14px;text-align:center">{{ c.label }}</button>
+    </sc-for>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+    <sc-for list="{{ posChips }}" as="c" hint-placeholder-count="5">
+      <button onClick="{{ c.onClick }}" style="min-height:44px;padding:0 14px;border-radius:999px;background:{{ c.bg }};color:{{ c.fg }};font-size:14px;font-weight:500">{{ c.label }}</button>
+    </sc-for>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+    <sc-for list="{{ words }}" as="w" hint-placeholder-count="4">
+      <div style="background:var(--surface);border-radius:var(--r-l);padding:16px;box-shadow:var(--sh-1)">
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:8px"><span style="min-width:28px;height:28px;border-radius:999px;background:{{ w.lvBg }};color:{{ w.lvFg }};font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center">{{ w.lv }}</span><span style="font-size:13px;color:var(--ink-2)">{{ w.posHe }}</span></div>
+            <div dir="ltr" style="text-align:right;font-family:var(--display);font-weight:800;font-size:32px;line-height:1.1;letter-spacing:-.02em;color:{{ w.lvFg }};margin-top:8px">{{ w.en }}</div>
+            <div style="font-size:18px;font-weight:500;margin-top:2px">{{ w.he }} <span dir="ltr" style="color:var(--ink-2);font-size:13px;font-weight:400">{{ w.ipa }}</span></div>
+          </div>
+          <button onClick="{{ w.speak }}" aria-label="השמעת הגייה" style="width:48px;height:48px;flex:none;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center"><span style="width:0;height:0;border-style:solid;border-width:7px 0 7px 11px;border-color:transparent transparent transparent currentColor;margin-left:3px"></span></button>
+        </div>
+        <div dir="ltr" style="margin-top:12px;background:var(--surface-2);border-radius:var(--r-m);padding:10px 12px;font-size:15px;text-align:left">{{ w.exPre }}<strong style="color:{{ w.lvFg }}">{{ w.exWord }}</strong>{{ w.exPost }}</div>
+      </div>
+    </sc-for>
+    <sc-if value="{{ noWords }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center;padding:40px 16px"><div style="font-weight:800;font-size:22px">לא מצאנו מילה כזאת</div><p style="color:var(--ink-2);margin:6px 0 16px">אפשר לנסות איות אחר או לנקות את הסינון.</p><button onClick="{{ clearFilters }}" style="min-height:48px;padding:0 22px;border-radius:999px;background:var(--surface-2);font-weight:700">ניקוי סינון</button></div>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isHub }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="04 Practice hub" style="padding:18px 16px 0;display:flex;flex-direction:column;gap:14px">
+  <h1 style="margin:0;font-weight:800;font-size:34px;line-height:1.1">תרגול</h1>
+  <button onClick="{{ openCards }}" style="display:block;background:var(--accent);color:var(--accent-ink);border-radius:var(--r-xl);padding:20px 18px;box-shadow:var(--glow)">
+    <div style="font-size:14px;font-weight:700">כרטיסיות · שיטת לייטנר</div>
+    <div style="display:flex;align-items:baseline;gap:10px;margin-top:20px"><span style="font-family:var(--display);font-weight:800;font-size:76px;line-height:.9;letter-spacing:-.03em">18</span><span style="font-weight:800;font-size:22px;line-height:1.15">מילים מחכות לחזרה</span></div>
+    <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center"><span style="font-weight:500">בערך 6 דקות</span><span style="min-height:44px;padding:0 20px;border-radius:999px;background:var(--accent-ink);color:#fff;font-weight:700;display:flex;align-items:center">להתחיל</span></div>
+  </button>
+  <div style="font-weight:800;font-size:22px;margin-top:8px">סימולציית בחינה</div>
+  <sc-for list="{{ examTypes }}" as="e" hint-placeholder-count="3">
+    <button onClick="{{ e.onClick }}" style="display:flex;width:100%;box-sizing:border-box;align-items:center;gap:14px;min-height:80px;padding:12px 16px;background:var(--surface);border-radius:var(--r-l)">
+      <span style="width:48px;height:48px;flex:none;border-radius:var(--r-m);background:{{ e.bg }};color:{{ e.fg }};font-family:var(--display);font-weight:800;font-size:20px;display:flex;align-items:center;justify-content:center">{{ e.n }}</span>
+      <span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:19px">{{ e.he }}</span><span dir="ltr" style="display:block;text-align:right;font-size:13px;color:var(--ink-2)">{{ e.en }}</span></span>
+      <span style="font-size:13px;color:var(--ink-2);white-space:nowrap">{{ e.count }} שאלות</span>
+    </button>
+  </sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCards }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="05 Flashcards" style="padding:8px 16px 0;display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;align-items:center;justify-content:space-between"><button onClick="{{ backHub }}" style="min-height:44px;padding:0 14px;border-radius:999px;background:var(--surface);font-weight:500">→ תרגול</button><span style="font-size:14px;color:var(--ink-2)">{{ cardPos }}</span></div>
+  <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px">
+    <sc-for list="{{ boxes }}" as="b" hint-placeholder-count="5">
+      <div style="border-radius:var(--r-m);padding:6px 0;text-align:center;background:{{ b.bg }};color:{{ b.fg }}"><div style="font-size:11px">קופסה {{ b.n }}</div><div style="font-family:var(--display);font-weight:800;font-size:18px;line-height:1.1">{{ b.count }}</div></div>
+    </sc-for>
+  </div>
+  <sc-if value="{{ cardsLeft }}" hint-placeholder-val="{{ true }}">
+    <div style="position:relative;height:320px;margin-bottom:14px">
+      <div style="position:absolute;inset:0;border-radius:var(--r-xl);background:var(--surface-2);transform:translateY(20px) scale(.88)"></div>
+      <div style="position:absolute;inset:0;border-radius:var(--r-xl);background:var(--surface-3);transform:translateY(10px) scale(.94)"></div>
+      <button onClick="{{ flip }}" aria-label="הפיכת הכרטיס" style="position:absolute;inset:0;display:block;width:100%;perspective:1200px">
+        <div style="position:relative;width:100%;height:100%;transition:transform .5s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d;transform:{{ flipT }}">
+          <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r-xl);background:{{ card.frontBg }};box-shadow:var(--sh-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;box-sizing:border-box">
+            <span style="min-width:32px;height:32px;border-radius:999px;background:{{ card.lvBg }};color:{{ card.lvFg }};font-weight:700;display:inline-flex;align-items:center;justify-content:center">{{ card.lv }}</span>
+            <span dir="ltr" style="font-family:var(--display);font-weight:800;font-size:46px;line-height:1.05;letter-spacing:-.03em">{{ card.en }}</span>
+            <span dir="ltr" style="color:var(--ink-2)">{{ card.ipa }}</span>
+            <span style="font-size:14px;color:var(--ink-2);margin-top:16px">הקישו כדי להפוך</span>
+          </div>
+          <div style="position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:rotateY(180deg);border-radius:var(--r-xl);background:var(--accent);color:var(--accent-ink);box-shadow:var(--glow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px;box-sizing:border-box;text-align:center">
+            <span style="font-weight:800;font-size:38px;line-height:1.15">{{ card.he }}</span>
+            <span style="font-size:14px;font-weight:500">{{ card.posHe }}</span>
+            <span dir="ltr" style="font-size:16px;margin-top:12px;background:rgba(11,12,16,.12);border-radius:var(--r-m);padding:8px 12px">{{ card.ex }}</span>
+          </div>
+        </div>
+      </button>
+    </div>
+    <div style="display:flex;justify-content:center"><button onClick="{{ speakCard }}" style="min-height:44px;padding:0 18px;border-radius:999px;background:var(--surface);display:flex;align-items:center;gap:10px;font-weight:500"><span style="width:0;height:0;border-style:solid;border-width:6px 0 6px 10px;border-color:transparent transparent transparent currentColor"></span>השמעה</button></div>
+    <div>
+      <div style="font-size:13px;color:var(--ink-2);text-align:center;margin-bottom:8px">{{ rateHint }}</div>
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;opacity:{{ rateOpacity }}">
+        <sc-for list="{{ rates }}" as="r" hint-placeholder-count="4">
+          <button onClick="{{ r.onClick }}" style="min-height:64px;border-radius:var(--r-l);background:{{ r.bg }};color:{{ r.fg }};text-align:center"><div style="font-weight:700;font-size:17px">{{ r.label }}</div><div style="font-size:12px">{{ r.gap }}</div></button>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ cardsDone }}" hint-placeholder-val="{{ false }}">
+    <div style="text-align:center;padding:48px 8px"><div style="font-weight:800;font-size:32px;line-height:1.15">סיימת את החזרות להיום</div><p style="color:var(--ink-2);margin:8px 0 20px">הכרטיסים הבאים יחכו לך מחר.</p><button onClick="{{ restartCards }}" style="min-height:52px;padding:0 28px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:700;box-shadow:var(--glow)">עוד סיבוב</button></div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isExam }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="06 Quiz" style="padding:8px 16px 0;display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><button onClick="{{ backHub }}" style="min-height:44px;padding:0 14px;border-radius:999px;background:var(--surface);font-weight:500;white-space:nowrap">→ יציאה</button><span style="font-weight:700">{{ examTitle }}</span><span dir="ltr" style="font-family:var(--display);font-weight:800;font-variant-numeric:tabular-nums;min-height:44px;display:flex;align-items:center;padding:0 14px;background:var(--surface);border-radius:999px">{{ timer }}</span></div>
+  <sc-if value="{{ examRunning }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;gap:6px">
+      <sc-for list="{{ segs }}" as="g" hint-placeholder-count="3"><div style="flex:1;height:6px;border-radius:3px;background:{{ g.bg }}"></div></sc-for>
+    </div>
+    <sc-if value="{{ hasPassage }}" hint-placeholder-val="{{ false }}">
+      <div dir="ltr" style="background:var(--surface);border-radius:var(--r-l);padding:12px 12px 12px 6px">
+        <sc-for list="{{ passage }}" as="l" hint-placeholder-count="5">
+          <div style="display:flex;gap:8px;align-items:baseline"><span style="width:18px;flex:none;text-align:right;font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums">{{ l.n }}</span><div style="display:flex;flex-wrap:wrap;column-gap:5px;font-size:16px;line-height:2">
+            <sc-for list="{{ l.toks }}" as="k" hint-placeholder-count="6"><span onClick="{{ k.onTap }}" style="cursor:{{ k.cur }};background:{{ k.bg }};color:{{ k.fg }};box-shadow:{{ k.sh }};padding:{{ k.pad }};border-radius:999px">{{ k.t }}</span></sc-for>
+          </div></div>
+        </sc-for>
+        <div dir="rtl" style="margin:8px 6px 0 0;padding-top:8px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-2)">{{ glossText }}</div>
+      </div>
+    </sc-if>
+    <div><div style="font-size:13px;font-weight:700;color:var(--accent-text)">שאלה {{ qNum }} מתוך {{ qTotal }} · {{ qLabel }}</div><div dir="ltr" style="text-align:left;font-family:var(--display);font-weight:600;font-size:24px;line-height:1.3;margin-top:8px">{{ qText }}</div></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ opts }}" as="o" hint-placeholder-count="4">
+        <button dir="ltr" onClick="{{ o.onClick }}" style="display:flex;align-items:center;gap:14px;min-height:64px;padding:10px 16px;border-radius:var(--r-l);box-shadow:inset 0 0 0 2px {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};opacity:{{ o.op }};text-align:left"><span style="width:32px;height:32px;flex:none;border-radius:50%;background:{{ o.nBg }};color:{{ o.nFg }};display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800">{{ o.n }}</span><span style="flex:1;font-size:18px;font-weight:500">{{ o.t }}</span><span dir="rtl" style="font-size:14px;font-weight:700;white-space:nowrap">{{ o.tag }}</span></button>
+      </sc-for>
+    </div>
+    <sc-if value="{{ answered }}" hint-placeholder-val="{{ false }}">
+      <div style="border-radius:var(--r-l);padding:16px;background:{{ fbBg }}">
+        <div style="font-weight:800;font-size:22px;color:{{ fbFg }}">{{ fbTitle }}</div>
+        <p style="margin:4px 0 14px">{{ expl }}</p>
+        <button onClick="{{ nextQ }}" style="width:100%;min-height:52px;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:700;text-align:center">{{ nextLabel }}</button>
+      </div>
+    </sc-if>
+  </sc-if>
+  <sc-if value="{{ examDone }}" hint-placeholder-val="{{ false }}">
+    <div style="text-align:center;padding:40px 8px"><div style="font-size:14px;font-weight:700;color:var(--accent-text)">סיכום</div><div dir="ltr" style="font-family:var(--display);font-weight:800;font-size:88px;line-height:1.05;letter-spacing:-.03em">{{ scoreText }}</div><p style="color:var(--ink-2);margin:4px 0 20px">{{ scoreMsg }}</p><div style="display:flex;gap:8px;justify-content:center"><button onClick="{{ restartExam }}" style="min-height:52px;padding:0 26px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:700;box-shadow:var(--glow)">שוב</button><button onClick="{{ backHub }}" style="min-height:52px;padding:0 22px;border-radius:999px;background:var(--surface-2);font-weight:700">חזרה לתרגול</button></div></div>
+  </sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isProgress }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="07 Progress" style="padding:18px 16px 0;display:flex;flex-direction:column;gap:14px">
+  <h1 style="margin:0;font-weight:800;font-size:34px;line-height:1.1">התקדמות</h1>
+  <div style="background:var(--surface);border-radius:var(--r-xl);padding:24px 16px 20px;text-align:center">
+    <div style="position:relative;width:208px;height:208px;margin:0 auto;border-radius:50%;background:conic-gradient(from 180deg,var(--accent) 0 62%,var(--surface-2) 62% 100%);box-shadow:var(--glow)">
+      <div style="position:absolute;inset:18px;border-radius:50%;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-size:13px;color:var(--ink-2)">ציון אמיר״ם משוער</span><span style="font-family:var(--display);font-weight:800;font-size:68px;line-height:1;letter-spacing:-.03em">112</span><span dir="ltr" style="font-size:13px;color:var(--ink-2)">50 – 150</span></div>
+    </div>
+    <div style="font-weight:800;font-size:22px;margin-top:18px">מתקדמים א׳</div>
+    <div style="color:var(--ink-2)">עוד 22 נקודות לפטור מאנגלית (134)</div>
+  </div>
+  <sc-if value="{{ showStreak }}" hint-placeholder-val="{{ true }}">
+    <div style="background:var(--surface);border-radius:var(--r-l);padding:16px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:700">רצף לימוד</span><span><span style="font-family:var(--display);font-weight:800;font-size:28px;line-height:1">6</span> ימים</span></div>
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:12px">
+        <sc-for list="{{ week }}" as="d" hint-placeholder-count="7"><div style="height:44px;border-radius:var(--r-m);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;background:{{ d.bg }};color:{{ d.fg }};box-shadow:{{ d.sh }}">{{ d.d }}</div></sc-for>
+      </div>
+      <div style="font-size:14px;color:var(--ink-2);margin-top:10px">עוד יום אחד לתג ״שבוע שלם״.</div>
+    </div>
+  </sc-if>
+  <div style="background:var(--surface);border-radius:var(--r-l);padding:16px;display:flex;flex-direction:column;gap:16px">
+    <div style="font-weight:700">שליטה לפי רמה</div>
+    <sc-for list="{{ mastery }}" as="m" hint-placeholder-count="3">
+      <div><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="display:flex;align-items:center;gap:8px"><span style="min-width:28px;height:28px;border-radius:999px;background:{{ m.bg }};color:{{ m.fg }};font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center">{{ m.lv }}</span><span style="font-weight:500">{{ m.label }}</span></span><span dir="ltr" style="font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap;flex:none">{{ m.done }} / {{ m.total }}</span></div><div style="height:12px;border-radius:6px;background:var(--surface-2);margin-top:8px"><div style="height:100%;border-radius:6px;background:{{ m.fg }};width:{{ m.pct }}"></div></div></div>
+    </sc-for>
+  </div>
+  <div style="background:var(--surface);border-radius:var(--r-l);padding:16px 16px 6px">
+    <div style="font-weight:700;padding-bottom:8px">מילים שצריכות חיזוק</div>
+    <sc-for list="{{ weak }}" as="w" hint-placeholder-count="3">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;border-top:1px solid var(--line)"><span style="min-width:0"><span dir="ltr" style="display:block;text-align:right;font-family:var(--display);font-weight:800;font-size:20px">{{ w.en }}</span><span style="display:block;font-size:14px;color:var(--ink-2)">{{ w.he }} · {{ w.miss }} טעויות</span></span><button onClick="{{ w.onClick }}" style="min-height:44px;padding:0 16px;border-radius:999px;background:var(--surface-2);font-weight:700;white-space:nowrap;flex:none">תרגלתי</button></div>
+    </sc-for>
+    <sc-if value="{{ weakEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center;padding:24px 8px 28px;border-top:1px solid var(--line)"><div style="width:48px;height:48px;margin:0 auto 12px;border-radius:50%;background:var(--ok-bg);display:flex;align-items:center;justify-content:center"><span style="width:16px;height:8px;border-left:3px solid var(--ok);border-bottom:3px solid var(--ok);transform:rotate(-45deg) translate(1px,-2px)"></span></div><div style="font-weight:800;font-size:20px">התור ריק</div><p style="color:var(--ink-2);margin:4px 0 0">אין כרגע מילים חלשות. מילים שתטעו בהן יופיעו כאן.</p></div>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+<div style="height:{{ padB }}"></div>
+</div>
+
+<div style="position:absolute;left:10px;right:10px;bottom:10px;display:flex;flex-direction:column;gap:8px">
+  <sc-if value="{{ hasPop }}" hint-placeholder-val="{{ false }}">
+    <div style="background:var(--surface-3);border-radius:var(--r-l);padding:16px;box-shadow:var(--sh-float)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+        <div style="min-width:0"><div style="display:flex;align-items:center;gap:8px"><span dir="ltr" style="font-family:var(--display);font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-.02em">{{ pop.en }}</span><span style="min-width:28px;height:28px;border-radius:999px;background:{{ pop.lvBg }};color:{{ pop.lvFg }};font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center">{{ pop.lv }}</span></div><div style="font-size:18px;font-weight:500;margin-top:2px">{{ pop.he }} <span dir="ltr" style="font-size:13px;font-weight:400;color:var(--ink-2)">{{ pop.ipa }}</span></div></div>
+        <button onClick="{{ closePop }}" aria-label="סגירה" style="width:44px;height:44px;flex:none;margin:-8px -8px 0 0;font-size:24px;text-align:center">×</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button onClick="{{ pop.onAdd }}" style="flex:1;min-height:52px;border-radius:999px;background:{{ pop.addBg }};color:{{ pop.addFg }};font-weight:700;text-align:center">{{ pop.addLabel }}</button>
+        <button onClick="{{ pop.speak }}" aria-label="השמעת הגייה" style="width:52px;height:52px;flex:none;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center"><span style="width:0;height:0;border-style:solid;border-width:7px 0 7px 11px;border-color:transparent transparent transparent currentColor;margin-left:3px"></span></button>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isPlayer }}" hint-placeholder-val="{{ false }}">
+    <div dir="ltr" style="background:var(--nav);color:var(--nav-ink);border-radius:var(--r-l);padding:12px 14px 10px;box-shadow:var(--sh-float)">
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--nav-ink-2);font-variant-numeric:tabular-nums"><span>{{ tNow }}</span><div style="flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.18)"><div style="height:100%;border-radius:2px;background:var(--accent);transition:width 1s linear;width:{{ tPct }}"></div></div><span>0:24</span></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+        <button onClick="{{ toggleSpeed }}" style="min-width:56px;min-height:44px;border-radius:999px;background:rgba(255,255,255,.1);text-align:center;font-size:14px;font-weight:700">{{ speed }}</button>
+        <div style="display:flex;align-items:center;gap:12px">
+          <button onClick="{{ prevLine }}" aria-label="שורה קודמת" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:3px;height:14px;background:currentColor"></span><span style="width:0;height:0;border-style:solid;border-width:7px 11px 7px 0;border-color:transparent currentColor transparent transparent"></span></button>
+          <button onClick="{{ togglePlay }}" aria-label="נגן / השהה" style="width:60px;height:60px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 0 28px -4px var(--accent)">
+            <sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}"><span style="width:0;height:0;border-style:solid;border-width:10px 0 10px 16px;border-color:transparent transparent transparent currentColor;margin-left:4px"></span></sc-if>
+            <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:20px;background:currentColor"></span><span style="width:6px;height:20px;background:currentColor"></span></sc-if>
+          </button>
+          <button onClick="{{ nextLine }}" aria-label="שורה הבאה" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center"><span style="width:0;height:0;border-style:solid;border-width:7px 0 7px 11px;border-color:transparent transparent transparent currentColor"></span><span style="width:3px;height:14px;background:currentColor"></span></button>
+        </div>
+        <span dir="rtl" style="min-width:56px;text-align:center;font-size:13px;color:var(--nav-ink-2)">{{ addedCount }} נוספו</span>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ showMini }}" hint-placeholder-val="{{ true }}">
+    <div dir="ltr" onClick="{{ openPlayer }}" style="position:relative;overflow:hidden;cursor:pointer;background:var(--nav);color:var(--nav-ink);border-radius:var(--r-l);padding:8px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh-float)">
+      <span style="width:44px;height:44px;flex:none;border-radius:var(--r-m);background:{{ today.cover }}"></span>
+      <span style="flex:1;min-width:0"><span style="display:block;font-family:var(--display);font-weight:800;font-size:15px;line-height:1.2">Paper Lanterns</span><span style="display:block;font-size:13px;color:var(--nav-ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ curLine }}</span></span>
+      <button onClick="{{ miniToggle }}" aria-label="נגן / השהה" style="width:44px;height:44px;flex:none;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;gap:4px">
+        <sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}"><span style="width:0;height:0;border-style:solid;border-width:7px 0 7px 11px;border-color:transparent transparent transparent currentColor;margin-left:3px"></span></sc-if>
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><span style="width:4px;height:14px;background:currentColor"></span><span style="width:4px;height:14px;background:currentColor"></span></sc-if>
+      </button>
+      <span style="position:absolute;left:0;bottom:0;height:3px;background:var(--accent);transition:width 1s linear;width:{{ tPct }}"></span>
+    </div>
+  </sc-if>
+  <nav style="display:flex;gap:4px;background:var(--nav);color:var(--nav-ink-2);border-radius:28px;padding:6px;box-shadow:var(--sh-float)">
+    <button onClick="{{ nav.words.go }}" style="flex:1;min-height:52px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:{{ nav.words.bg }};color:{{ nav.words.fg }}"><span dir="ltr" style="font-family:var(--display);font-weight:800;font-size:17px;line-height:20px">Aa</span><span style="font-size:12px;font-weight:700">מילים</span></button>
+    <button onClick="{{ nav.practice.go }}" style="flex:1;min-height:52px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:{{ nav.practice.bg }};color:{{ nav.practice.fg }}"><span style="position:relative;width:22px;height:20px"><span style="position:absolute;inset:2px 8px 2px 0;border:2px solid currentColor;border-radius:4px;transform:rotate(-10deg)"></span><span style="position:absolute;inset:2px 0 2px 8px;background:currentColor;border-radius:4px;transform:rotate(8deg)"></span></span><span style="font-size:12px;font-weight:700">תרגול</span></button>
+    <button onClick="{{ nav.songs.go }}" style="flex:1;min-height:52px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:{{ nav.songs.bg }};color:{{ nav.songs.fg }}"><span style="display:flex;align-items:flex-end;gap:3px;height:20px"><span style="width:4px;height:9px;border-radius:2px;background:currentColor"></span><span style="width:4px;height:18px;border-radius:2px;background:currentColor"></span><span style="width:4px;height:13px;border-radius:2px;background:currentColor"></span><span style="width:4px;height:7px;border-radius:2px;background:currentColor"></span></span><span style="font-size:12px;font-weight:700">שירים</span></button>
+    <button onClick="{{ nav.progress.go }}" style="flex:1;min-height:52px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:{{ nav.progress.bg }};color:{{ nav.progress.fg }}"><span style="height:20px;display:flex;align-items:center"><span style="width:12px;height:12px;border:3px solid currentColor;border-right-color:transparent;border-radius:50%;transform:rotate(45deg)"></span></span><span style="font-size:12px;font-weight:700">התקדמות</span></button>
+  </nav>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'dark'|'light'&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;volt&quot;,&quot;coral&quot;,&quot;aqua&quot;],&quot;default&quot;:&quot;volt&quot;,&quot;tsType&quot;:&quot;'volt'|'coral'|'aqua'&quot;},&quot;lyricStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;chip&quot;,&quot;glow&quot;],&quot;default&quot;:&quot;chip&quot;,&quot;tsType&quot;:&quot;'chip'|'glow'&quot;},&quot;showStreak&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const LEX={
+abandon:{he:'לנטוש',pos:'v',lv:'A',ipa:'/əˈbændən/',ex:"But I won't abandon what we made."},
+reluctant:{he:'מהסס, לא שש',pos:'adj',lv:'B',ipa:'/rɪˈlʌktənt/',ex:'I was reluctant, standing at the door.'},
+inevitable:{he:'בלתי נמנע',pos:'adj',lv:'C',ipa:'/ɪˈnevɪtəbl/',ex:'Morning is inevitable, love.'},
+acquire:{he:'לרכוש, להשיג',pos:'v',lv:'B',ipa:'/əˈkwaɪər/',ex:'Music helps people acquire new vocabulary.'},
+consequence:{he:'תוצאה, השלכה',pos:'n',lv:'B',ipa:'/ˈkɒnsɪkwəns/',ex:'Every choice has a consequence.'},
+fragile:{he:'שביר, עדין',pos:'adj',lv:'A',ipa:'/ˈfrædʒaɪl/',ex:'Paper lanterns on a fragile wind.'},
+persist:{he:'להתמיד, להימשך',pos:'v',lv:'B',ipa:'/pərˈsɪst/',ex:'We persist through every quiet storm.'},
+ambiguous:{he:'דו־משמעי, לא ברור',pos:'adj',lv:'C',ipa:'/æmˈbɪɡjuəs/',ex:'The reasons remain ambiguous.'},
+journey:{he:'מסע',pos:'n',lv:'A',ipa:'/ˈdʒɜːrni/',ex:'Every journey starts before we know.'},
+barely:{he:'בקושי',pos:'adv',lv:'A',ipa:'/ˈberli/',ex:'Barely breathing, still we carry on.'},
+resemble:{he:'להידמות ל־',pos:'v',lv:'B',ipa:'/rɪˈzembl/',ex:'And the sky will resemble home.'},
+scarce:{he:'נדיר, במחסור',pos:'adj',lv:'C',ipa:'/skers/',ex:'Clean water is becoming scarce.'}};
+const POS={n:'שם עצם',v:'פועל',adj:'שם תואר',adv:'תואר הפועל'};
+const LYR=['Paper lanterns on a fragile wind','Every journey starts before we know','I was reluctant, standing at the door',"But I won't abandon what we made",'We persist through every quiet storm','Barely breathing, still we carry on','Morning is inevitable, love','And the sky will resemble home'];
+const DECK=['fragile','reluctant','persist','scarce','journey','ambiguous'];
+const PASSAGE=['Researchers have long argued that music helps people acquire','new vocabulary. In one study, students who sang unfamiliar words','remembered them longer than those who only read them. The effect','did not persist for every learner, however, and the reasons','remain ambiguous.'];
+const EXAMS={
+completion:{title:'השלמת משפטים',label:'השלימו את המשפט',qs:[
+{q:'The committee was ___ to approve the budget without further review.',o:['reluctant','fragile','scarce','barely'],c:0,x:'reluctant פירושו מהסס או לא שש. הוועדה לא רצתה לאשר בלי בדיקה נוספת.'},
+{q:'Clean water is becoming ___ in many regions of the world.',o:['ambiguous','scarce','reluctant','inevitable'],c:1,x:'scarce פירושו נדיר או במחסור, וזה מה שמתאים למים נקיים.'},
+{q:'Despite the criticism, she chose to ___ with her research.',o:['abandon','resemble','persist','acquire'],c:2,x:'persist with פירושו להתמיד ב־. המילה despite רומזת שהיא המשיכה למרות הביקורת.'}]},
+restate:{title:'ניסוח מחדש',label:'איזה משפט שומר על המשמעות?',qs:[
+{q:'Hardly anyone expected the team to win.',o:['Everyone was sure the team would win.','Almost nobody thought the team would win.','The team did not want to win.','Nobody watched the team win.'],c:1,x:'hardly anyone פירושו כמעט אף אחד, כמו almost nobody.'},
+{q:'The results of the experiment were ambiguous.',o:['The results were clearly positive.','The experiment had no results.','The results could be understood in more than one way.','The results were published late.'],c:2,x:'ambiguous פירושו דו־משמעי: אפשר להבין את התוצאות ביותר מדרך אחת.'}]},
+reading:{title:'הבנת הנקרא',label:'לפי הקטע',passage:true,qs:[
+{q:'According to the passage, students who sang new words —',o:['remembered them longer','forgot them quickly','disliked the study','read them more slowly'],c:0,x:'בשורות 2–3 כתוב שמי ששר את המילים זכר אותן זמן רב יותר ממי שרק קרא.'},
+{q:'The word "ambiguous" in line 5 is closest in meaning to —',o:['certain','rare','unclear','weak'],c:2,x:'ambiguous פירושו לא ברור או דו־משמעי. הסיבות להבדל בין הלומדים עדיין לא ברורות.'}]}};
+const cov=(a,b,x,y)=>'radial-gradient(circle at '+x+'% '+y+'%,rgba(255,255,255,.6) 0 13%,transparent 13.5%),radial-gradient(circle at '+x+'% '+y+'%,transparent 0 24%,rgba(11,12,16,.14) 24.5% 26%,transparent 26.5%),radial-gradient(circle at '+x+'% '+y+'%,transparent 0 36%,rgba(11,12,16,.1) 36.5% 37.5%,transparent 38%),linear-gradient(135deg,'+a+','+b+')';
+const SONGS=[
+{id:'pl',title:'Paper Lanterns',artist:'The Harbor Lights',lv:'B',words:12,status:'58% הושלם',c:['#FFD23F','#FF5C8A',78,22]},
+{id:'st',title:'Slow Train Home',artist:'Marlow & June',lv:'A',words:9,status:'הושלם',c:['#35E0FF','#5B7CFF',24,30]},
+{id:'gr',title:'Glass Rivers',artist:'Nora Vale',lv:'C',words:15,status:'חדש',c:['#7CF5C4','#35E0FF',74,30]},
+{id:'bt',title:'Borrowed Time Machine',artist:'Static Bloom',lv:'B',words:11,status:'20% הושלם',c:['#FF8A5C','#FFD23F',70,26]},
+{id:'kr',title:'Kitchen Radio',artist:'The Small Hours',lv:'A',words:8,status:'חדש',c:['#FF7AA8','#FFB36B',30,70]},
+{id:'ns',title:'Northern Static',artist:'Ada Wren',lv:'C',words:14,status:'חדש',c:['#B8C4FF','#7CF5C4',60,40]}].map(s=>({...s,cover:cov(...s.c),glow:'0 24px 48px -18px '+s.c[1]}));
+const lvc=l=>({lvBg:'var(--l'+l.toLowerCase()+'-bg)',lvFg:'var(--l'+l.toLowerCase()+')'});
+const chip=(a,c)=>({bg:a?(c||'var(--ink)'):'var(--surface)',fg:a?'var(--bg)':'var(--ink)'});
+const mmss=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+class Component extends DCLogic {
+  state={theme:null,tab:'songs',sub:null,q:'',lv:'all',pos:'all',songLv:'all',ci:0,flipped:false,boxes:[8,5,3,1,1],cardBox:{},examMode:'completion',qi:0,picked:null,score:0,timeLeft:300,playing:false,t:6,pop:null,added:{},weak:['reluctant','ambiguous','scarce'],gloss:null,slow:false};
+  componentDidMount(){this.iv=setInterval(()=>{const s=this.state;const ex=EXAMS[s.examMode];
+    if(s.sub==='exam'&&s.picked===null&&s.qi<ex.qs.length&&s.timeLeft>0)this.setState({timeLeft:s.timeLeft-1});
+    if(s.playing)this.setState(p=>({t:(p.t+1)%24}));},1000);}
+  componentWillUnmount(){clearInterval(this.iv);}
+  speak(w){try{const u=new SpeechSynthesisUtterance(w);u.lang='en-US';u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+  toks(line,onTap,cur){const glow=this.props.lyricStyle==='glow';const soft='color-mix(in srgb,var(--accent) 20%,transparent)';
+    return line.split(' ').map(t=>{const k=t.toLowerCase().replace(/[^a-z]/g,'');const w=LEX[k];
+      if(!w)return{t,cur:'inherit',bg:'transparent',fg:'inherit',sh:'none',ts:'none',pad:'0',hit:'0',hitM:'0'};
+      const base={t,cur:'pointer',hit:'10px 2px',hitM:'-10px -2px',onTap:e=>{e.stopPropagation();onTap(k);}};
+      if(glow)return{...base,bg:'transparent',fg:'var(--accent-text)',sh:'inset 0 -2px 0 var(--accent-text)',ts:cur?'0 0 18px color-mix(in srgb,var(--accent) 85%,transparent)':'none',pad:'0 1px'};
+      return{...base,bg:cur?'var(--accent)':soft,fg:cur?'var(--accent-ink)':'var(--accent-text)',sh:cur?'0 0 24px -2px var(--accent)':'inset 0 0 0 1px var(--accent-text)',ts:'none',pad:'1px 10px'};});}
+  renderVals(){
+    const s=this.state,set=o=>this.setState(o);
+    const theme=s.theme??this.props.theme??'dark';
+    const go=(tab,sub=null)=>()=>set({tab,sub,pop:null});
+    const word=k=>{const w=LEX[k],i=w.ex.toLowerCase().indexOf(k);return{en:k,...w,posHe:POS[w.pos],...lvc(w.lv),speak:()=>this.speak(k),exPre:w.ex.slice(0,i),exWord:w.ex.slice(i,i+k.length),exPost:w.ex.slice(i+k.length)};};
+    const ql=s.q.trim().toLowerCase();
+    const words=Object.keys(LEX).filter(k=>(s.lv==='all'||LEX[k].lv===s.lv)&&(s.pos==='all'||LEX[k].pos===s.pos)&&(!ql||k.includes(ql)||LEX[k].he.includes(ql))).sort().map(word);
+    const filtered=ql||s.lv!=='all'||s.pos!=='all';
+    const lvChip=(cur,key)=>[['all','הכול'],['A','A'],['B','B'],['C','C']].map(([id,label])=>({label,...chip(cur===id,id==='all'?null:'var(--l'+id.toLowerCase()+')'),onClick:()=>set({[key]:id})}));
+    const ck=DECK[s.ci],card=ck?{...word(ck),frontBg:'radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--l'+LEX[ck].lv.toLowerCase()+') 26%,transparent),transparent 70%),var(--surface)'}:{};
+    const curBox=ck?(s.cardBox[ck]||1):0;
+    const rate=d=>()=>{if(!s.flipped)return;const from=curBox,to=d===0?1:Math.min(5,from+d-1);const b=s.boxes.slice();b[from-1]--;b[to-1]++;set({boxes:b,cardBox:{...s.cardBox,[ck]:to},ci:s.ci+1,flipped:false});};
+    const rateDefs=[['שוב','דקה',0,'var(--bad-bg)','var(--bad)'],['קשה','10 דק׳',1,'var(--surface-2)','var(--ink)'],['טוב','מחר',2,'var(--ok-bg)','var(--ok)'],['קל','4 ימים',3,'var(--accent)','var(--accent-ink)']];
+    const ex=EXAMS[s.examMode],Q=ex.qs[s.qi],answered=s.picked!==null,right=Q&&s.picked===Q.c;
+    const startExam=m=>()=>set({tab:'practice',sub:'exam',examMode:m,qi:0,picked:null,score:0,timeLeft:300,gloss:null,pop:null});
+    const opts=Q?Q.o.map((t,i)=>{const isC=answered&&i===Q.c,isW=answered&&i===s.picked&&!right;return{t,n:i+1,bd:isC?'var(--ok)':isW?'var(--bad)':'transparent',bg:isC?'var(--ok-bg)':isW?'var(--bad-bg)':'var(--surface)',fg:isC?'var(--ok)':isW?'var(--bad)':'var(--ink)',nBg:isC?'var(--ok)':isW?'var(--bad)':'var(--surface-2)',nFg:isC?'var(--ok-bg)':isW?'var(--bad-bg)':'var(--ink)',op:answered&&!isC&&!isW?.5:1,tag:isC?'נכון':isW?'לא נכון':'',onClick:()=>{if(!answered)set({picked:i,score:s.score+(i===Q.c?1:0)});}};}):[];
+    const li=Math.floor(s.t/3);
+    const seek=i=>set({t:Math.max(0,Math.min(7,i))*3,pop:null});
+    const lines=LYR.map((l,i)=>({toks:this.toks(l,k=>set({pop:k,playing:false}),i===li),onClick:()=>seek(i),fs:i===li?'30px':'19px',fw:i===li?800:600,fg:i===li?'var(--ink)':'var(--ink-2)',op:i<li?.5:1}));
+    const pw=s.pop&&LEX[s.pop],isAdded=s.pop&&s.added[s.pop];
+    const isPlayer=s.sub==='player';
+    const navItem=id=>({go:go(id),bg:s.tab===id?'var(--accent)':'transparent',fg:s.tab===id?'var(--accent-ink)':'var(--nav-ink-2)'});
+    const today=SONGS[0];
+    const song=x=>({...x,...lvc(x.lv),onClick:go('songs','player')});
+    return {
+      theme,accent:this.props.accent??'volt',themeLabel:theme==='dark'?'Light theme':'Dark theme',toggleTheme:()=>set({theme:theme==='dark'?'light':'dark'}),
+      showStreak:this.props.showStreak??true,today,
+      nav:{words:navItem('words'),practice:navItem('practice'),songs:navItem('songs'),progress:navItem('progress')},
+      isSongs:s.tab==='songs'&&!s.sub,isPlayer,isWords:s.tab==='words',isHub:s.tab==='practice'&&!s.sub,isCards:s.sub==='cards',isExam:s.sub==='exam',isProgress:s.tab==='progress',
+      showMini:!isPlayer,padB:isPlayer?'230px':'164px',
+      goProgress:go('progress'),openPlayer:go('songs','player'),openCards:go('practice','cards'),backHub:go('practice'),backSongs:go('songs'),
+      songChips:lvChip(s.songLv,'songLv'),songs:SONGS.filter(x=>s.songLv==='all'||x.lv===s.songLv).map(song),
+      recs:[{...song(SONGS[3]),why:'4 מהמילים החלשות שלך'},{...song(SONGS[2]),why:'הצעד הבא: רמה C'}],
+      q:s.q,onQ:e=>set({q:e.target.value}),words,noWords:words.length===0,clearFilters:()=>set({q:'',lv:'all',pos:'all'}),
+      wordCount:filtered?words.length+' תוצאות':'300 מילים',lvChips:lvChip(s.lv,'lv'),
+      posChips:[['all','כל חלקי הדיבר'],...Object.entries(POS)].map(([id,label])=>({label,...chip(s.pos===id),onClick:()=>set({pos:id})})),
+      examTypes:[['completion','Sentence completion','a'],['restate','Restatements','b'],['reading','Reading comprehension','c']].map(([id,en,l],i)=>({he:EXAMS[id].title,en,n:i+1,count:EXAMS[id].qs.length,bg:'var(--l'+l+'-bg)',fg:'var(--l'+l+')',onClick:startExam(id)})),
+      card,cardsLeft:!!ck,cardsDone:!ck,cardPos:ck?(s.ci+1)+' מתוך '+DECK.length:'',flip:()=>set({flipped:!s.flipped}),flipT:s.flipped?'rotateY(180deg)':'rotateY(0deg)',speakCard:()=>this.speak(ck),
+      boxes:s.boxes.map((count,i)=>({n:i+1,count,bg:i+1===curBox?'var(--ink)':'var(--surface)',fg:i+1===curBox?'var(--bg)':'var(--ink)'})),
+      rates:rateDefs.map(([label,gap,d,bg,fg])=>({label,gap,bg,fg,onClick:rate(d)})),
+      rateHint:s.flipped?'כמה טוב זכרת?':'קודם הופכים את הכרטיס, אחר כך מדרגים',rateOpacity:s.flipped?1:.4,restartCards:()=>set({ci:0,flipped:false}),
+      examTitle:ex.title,timer:mmss(s.timeLeft),examRunning:!!Q,examDone:!Q,qNum:s.qi+1,qTotal:ex.qs.length,
+      segs:ex.qs.map((_,i)=>({bg:i<s.qi||(i===s.qi&&answered)?'var(--accent-text)':i===s.qi?'var(--ink-2)':'var(--surface-2)'})),
+      hasPassage:!!ex.passage,passage:PASSAGE.map((l,i)=>({n:i+1,toks:this.toks(l,k=>set({gloss:k}),false)})),glossText:s.gloss?s.gloss+' · '+LEX[s.gloss].he:'הקישו על מילה מסומנת לתרגום',
+      qLabel:ex.label,qText:Q?Q.q:'',opts,answered,fbBg:right?'var(--ok-bg)':'var(--bad-bg)',fbFg:right?'var(--ok)':'var(--bad)',fbTitle:right?'יפה, נכון':'לא בדיוק',expl:Q?Q.x:'',
+      nextQ:()=>set({qi:s.qi+1,picked:null,gloss:null}),nextLabel:s.qi+1<ex.qs.length?'לשאלה הבאה':'לסיכום',
+      scoreText:s.score+' / '+ex.qs.length,scoreMsg:s.score===ex.qs.length?'הכול נכון. כל הכבוד!':'הטעויות נוספו למילים לחיזוק.',restartExam:startExam(s.examMode),
+      lines,curLine:LYR[li],playing:s.playing,paused:!s.playing,togglePlay:()=>set({playing:!s.playing,pop:null}),miniToggle:e=>{e.stopPropagation();set({playing:!s.playing});},prevLine:()=>seek(li-1),nextLine:()=>seek(li+1),
+      tNow:mmss(s.t),tPct:(s.t/24*100)+'%',speed:s.slow?'0.75×':'1×',toggleSpeed:()=>set({slow:!s.slow}),addedCount:Object.keys(s.added).length,
+      hasPop:!!pw&&isPlayer,closePop:()=>set({pop:null}),
+      pop:pw?{en:s.pop,he:pw.he,ipa:pw.ipa,lv:pw.lv,...lvc(pw.lv),speak:()=>this.speak(s.pop),addLabel:isAdded?'נוסף לכרטיסיות':'הוספה לכרטיסיות',addBg:isAdded?'var(--ok-bg)':'var(--accent)',addFg:isAdded?'var(--ok)':'var(--accent-ink)',onAdd:()=>set({added:{...s.added,[s.pop]:true}})}:{},
+      mastery:[['A','בסיסי',82,120],['B','בינוני',54,110],['C','מתקדם',18,70]].map(([lv,label,done,total])=>({lv,label,done,total,pct:(done/total*100)+'%',bg:'var(--l'+lv.toLowerCase()+'-bg)',fg:'var(--l'+lv.toLowerCase()+')'})),
+      weak:s.weak.map((k,i)=>({en:k,he:LEX[k].he,miss:4-i,onClick:()=>set({weak:s.weak.filter(x=>x!==k)})})),weakEmpty:s.weak.length===0,
+      week:['א','ב','ג','ד','ה','ו','ש'].map((d,i)=>({d,bg:i<6?'var(--accent)':'var(--surface-2)',fg:i<6?'var(--accent-ink)':'var(--ink-2)',sh:i===5?'0 0 18px -2px var(--accent)':'none'}))
+    };
+  }
+}
+</script>
+</body>
+</html>

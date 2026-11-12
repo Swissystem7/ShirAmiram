@@ -1,33 +1,49 @@
 /* ==========================================================================
-   ShirAmiram — "Annotated songbook" theme
-   Source: Claude Design export in design/shiramiram-2026-11-11/
+   ShirAmiram — "Volt" theme (v2)
+   Source: Claude Design export in design/shiramiram-2026-11-12/
+   Dark-first, near-black base, one volt-lime signature colour, Rubik for
+   Hebrew and Bricolage Grotesque for English words.
    Loaded after css/style.css. It only overrides presentation: every id,
    class and data attribute the scripts rely on stays as it is.
    ========================================================================== */
 
 :root,
-:root[data-theme="light"] {
-  --stage: #E9E2D3; --bg: #F6F1E7; --surface: #FFFDF8; --surface-2: #EDE6D8;
-  --ink: #1F1B16; --ink-2: #5A5248; --line: #D9D0BF;
-  --accent: #B93C14; --accent-ink: #FFFDF8;
-  --mark: #FFE066; --mark-ink: #1F1B16;
-  --ok: #1B6E43; --ok-bg: #DCEEE2; --bad: #A8231C; --bad-bg: #F8DDD9;
-  --la: #1A6352; --la-bg: #D8ECE6; --lb: #7A4E00; --lb-bg: #F6E7C2; --lc: #8E2946; --lc-bg: #F5DCE3;
-  --serif: 'Frank Ruhl Libre', 'Times New Roman', serif;
-  --sans: 'Heebo', system-ui, sans-serif;
-  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
-  --r-xs: 3px; --r-s: 6px; --r-m: 10px; --r-l: 14px; --r-pill: 999px;
-  --nav-h: 64px;
-  color-scheme: light;
-}
 :root[data-theme="dark"] {
-  --stage: #0F0D0B; --bg: #1A1714; --surface: #24201B; --surface-2: #302A23;
-  --ink: #F3ECDF; --ink-2: #B8AE9E; --line: #453C31;
-  --accent: #FF8A5C; --accent-ink: #1A1714;
-  --mark: #F2CB3D; --mark-ink: #1A1714;
-  --ok: #74D29E; --ok-bg: #1D3A2A; --bad: #FF9D92; --bad-bg: #4A211D;
-  --la: #7FD6BE; --la-bg: #16342D; --lb: #F0C060; --lb-bg: #3A2D10; --lc: #F29BB2; --lc-bg: #40192A;
+  --stage: #050608; --bg: #0B0C10; --surface: #15171D; --surface-2: #1F222B; --surface-3: #2A2E39;
+  --ink: #F4F5F7; --ink-2: #A6ABB8; --line: #2C303B;
+  --accent: #C6FF3D; --accent-ink: #0B0C10; --accent-text: #C6FF3D;
+  --mark: #C6FF3D; --mark-ink: #0B0C10;
+  --nav: #1F222B; --nav-ink: #F4F5F7; --nav-ink-2: #A6ABB8; --cover-ink: #0B0C10;
+  --ok: #5BE49B; --ok-bg: #10301F; --bad: #FF7B7B; --bad-bg: #3B1517;
+  --la: #4FE3C1; --la-bg: #0F2F2A; --lb: #FFC247; --lb-bg: #33270C; --lc: #FF7AA8; --lc-bg: #3A1424;
+  --sh-1: 0 1px 2px rgba(0, 0, 0, .4);
+  --sh-2: 0 14px 32px -10px rgba(0, 0, 0, .7);
+  --sh-float: 0 18px 40px -10px rgba(0, 0, 0, .8);
+  --glow: 0 10px 36px -6px rgba(198, 255, 61, .6);
+  --display: 'Bricolage Grotesque', 'Rubik', sans-serif;
+  --sans: 'Rubik', system-ui, sans-serif;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+  --r-xs: 6px; --r-s: 8px; --r-m: 14px; --r-l: 22px; --r-xl: 30px; --r-pill: 999px;
+  --nav-h: 76px;
+  --cover-1: linear-gradient(135deg, #FFC247 0%, #FF8A4C 48%, #FF5E9A 100%);
+  --cover-2: linear-gradient(135deg, #4FE3C1 0%, #35B8FF 60%, #7A6BFF 100%);
+  --cover-3: linear-gradient(135deg, #C6FF3D 0%, #5BE49B 55%, #22C7B8 100%);
+  --cover-4: linear-gradient(135deg, #FF7AA8 0%, #B56BFF 60%, #6B7BFF 100%);
   color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --stage: #E4E6DE; --bg: #F3F4EF; --surface: #FFFFFF; --surface-2: #E9EBE3; --surface-3: #DDE0D5;
+  --ink: #0E1014; --ink-2: #555B66; --line: #D5D8CE;
+  --accent: #C6FF3D; --accent-ink: #0E1014; --accent-text: #3F6B00;
+  --mark: #C6FF3D; --mark-ink: #0E1014;
+  --nav: #0E1014; --nav-ink: #F4F5F7; --nav-ink-2: #A6ABB8; --cover-ink: #0B0C10;
+  --ok: #0F6B3C; --ok-bg: #D6F1E0; --bad: #B3261E; --bad-bg: #FADCD9;
+  --la: #00705C; --la-bg: #D3F3EA; --lb: #7A4E00; --lb-bg: #FBE8B8; --lc: #B0184F; --lc-bg: #FCDDE8;
+  --sh-1: 0 1px 2px rgba(14, 16, 20, .08);
+  --sh-2: 0 14px 28px -14px rgba(14, 16, 20, .3);
+  --sh-float: 0 18px 40px -14px rgba(14, 16, 20, .5);
+  --glow: 0 10px 30px -10px rgba(63, 107, 0, .55);
+  color-scheme: light;
 }
 
 /* ---------- Base ---------- */
@@ -43,8 +59,8 @@
 :root[data-theme] input:focus-visible,
 :root[data-theme] select:focus-visible,
 :root[data-theme] textarea:focus-visible,
-:root[data-theme] a:focus-visible { outline: 3px solid var(--accent) !important; outline-offset: 2px; }
-:root[data-theme] h2, :root[data-theme] h3, :root[data-theme] h4 { font-family: var(--serif); color: var(--ink) !important; }
+:root[data-theme] a:focus-visible { outline: 3px solid var(--accent-text) !important; outline-offset: 2px; }
+:root[data-theme] h2, :root[data-theme] h3, :root[data-theme] h4 { font-family: var(--display); color: var(--ink) !important; }
 :root[data-theme] .text-muted { color: var(--ink-2); }
 :root[data-theme] .font-mono { font-family: ui-monospace, 'JetBrains Mono', monospace; }
 :root[data-theme] hr { border-color: var(--line) !important; }
@@ -60,7 +76,7 @@
 }
 :root[data-theme] header h1,
 :root[data-theme] header h1.text-neon-purple {
-  font-family: var(--serif); font-weight: 900; font-size: 26px; line-height: 1.1;
+  font-family: var(--display); font-weight: 900; font-size: 26px; line-height: 1.1;
   color: var(--ink) !important;
 }
 :root[data-theme] #timer { color: var(--ink-2); font-size: 14px; }
@@ -106,7 +122,7 @@
   }
   #bottom-nav button { flex: 0 0 auto; flex-direction: row; gap: var(--s2); padding: 0 var(--s4); font-size: 15px; }
   #bottom-nav button::before { display: none; }
-  #bottom-nav button[aria-current="page"] { box-shadow: inset 0 -3px 0 var(--accent); }
+  #bottom-nav button[aria-current="page"] { box-shadow: none; }
   :root[data-theme] nav[aria-label="מסכים"] { order: 2; }
   :root[data-theme] main {
     order: 3; background: var(--bg); border-inline: 1px solid var(--line);
@@ -182,7 +198,7 @@
 :root[data-theme] .text-gray-300, :root[data-theme] .text-gray-400 { color: var(--ink-2) !important; }
 :root[data-theme] .text-indigo-200, :root[data-theme] .text-indigo-300, :root[data-theme] .text-indigo-400,
 :root[data-theme] .text-purple-400, :root[data-theme] .text-pink-400,
-:root[data-theme] .text-neon-purple, :root[data-theme] .text-neon-pink { color: var(--accent) !important; }
+:root[data-theme] .text-neon-purple, :root[data-theme] .text-neon-pink { color: var(--accent-text) !important; }
 :root[data-theme] .text-emerald-200, :root[data-theme] .text-emerald-300, :root[data-theme] .text-emerald-400,
 :root[data-theme] .text-green-400 { color: var(--ok) !important; }
 :root[data-theme] .text-red-200, :root[data-theme] .text-red-400 { color: var(--bad) !important; }
@@ -240,13 +256,13 @@
 :root[data-theme] .progress-fill { background: var(--ink); }
 
 /* ---------- Song: lyrics ---------- */
-:root[data-theme] #song article { font-family: var(--serif); font-size: 20px; line-height: 1.5; padding: var(--s4); }
+:root[data-theme] #song article { font-family: var(--display); font-size: 20px; line-height: 1.5; padding: var(--s4); }
 :root[data-theme] .lyric-line {
   color: var(--ink-2); border-right: 0; border-left: 3px solid transparent;
   padding: 6px 0 6px 10px; border-radius: 0; font-weight: 500;
 }
 :root[data-theme] .lyrics-active {
-  background: none; color: var(--ink); border-left-color: var(--accent);
+  background: none; color: var(--ink); border-left-color: var(--accent-text);
   font-weight: 700; font-size: 24px; line-height: 1.3; transform: none;
 }
 :root[data-theme] .vocab-badge, :root[data-theme] .rc-target-word {
@@ -254,7 +270,7 @@
   border: 0; border-radius: var(--r-xs); padding: 0 4px; margin: 0 1px; box-shadow: none; font-weight: inherit;
 }
 :root[data-theme] .vocab-badge:hover, :root[data-theme] .rc-target-word:hover,
-:root[data-theme] .rc-target-word:focus { box-shadow: 0 2px 0 var(--accent); }
+:root[data-theme] .rc-target-word:focus { box-shadow: 0 0 0 2px var(--accent-text); }
 :root[data-theme] #insp-word { background: var(--surface-2) !important; border: 0; border-radius: var(--r-m); color: var(--ink); padding: var(--s3); }
 :root[data-theme] .wave-bar { background: var(--accent); }
 
@@ -264,7 +280,7 @@
 :root[data-theme] #vocab th { text-align: start; font-weight: 700; border-bottom: 1px solid var(--line); }
 :root[data-theme] #vocab-table td { border-color: var(--line) !important; vertical-align: top; }
 :root[data-theme] #vocab-table td:first-child span:first-child {
-  font-family: var(--serif); font-weight: 700; font-size: 22px; line-height: 1.15; color: var(--ink) !important;
+  font-family: var(--display); font-weight: 700; font-size: 22px; line-height: 1.15; color: var(--ink) !important;
 }
 :root[data-theme] #vocab-table td:nth-child(2) > span:first-child { font-size: 17px; font-weight: 500; }
 @media (max-width: 640px) {
@@ -283,7 +299,7 @@
 
 /* ---------- Quiz ---------- */
 :root[data-theme] .quiz-q { padding: var(--s4); }
-:root[data-theme] .quiz-q p { font-family: var(--serif); font-size: 20px; color: var(--ink) !important; }
+:root[data-theme] .quiz-q p { font-family: var(--display); font-size: 20px; color: var(--ink) !important; }
 :root[data-theme] .quiz-opt {
   min-height: 52px; padding: 8px 14px; text-align: start;
   background: var(--surface) !important; color: var(--ink) !important;
@@ -313,8 +329,8 @@
 :root[data-theme] .embed-toggle button[aria-pressed="true"] {
   background: var(--surface-2); color: var(--ink); border-color: var(--ink); font-weight: 700; box-shadow: none;
 }
-:root[data-theme] .rc-line { font-family: var(--serif); font-size: 17px; color: var(--ink); }
-:root[data-theme] .rc-line-num.marker { color: var(--accent); }
+:root[data-theme] .rc-line { font-family: var(--display); font-size: 17px; color: var(--ink); }
+:root[data-theme] .rc-line-num.marker { color: var(--accent-text); }
 :root[data-theme] .rc-line-num.dim { color: var(--line); }
 
 /* ---------- Flashcards ---------- */
@@ -329,8 +345,8 @@
 :root[data-theme] .srs-card-back { background: var(--mark); color: var(--mark-ink); border-color: var(--mark); }
 :root[data-theme] .srs-card-back * { color: var(--mark-ink) !important; }
 :root[data-theme] .srs-card-back > div:nth-child(2) { background: rgba(255, 255, 255, .45) !important; border: 0 !important; }
-:root[data-theme] #srs-card-word { font-family: var(--serif); font-weight: 900; font-size: 34px; color: var(--ink) !important; }
-:root[data-theme] #srs-card-trans { font-family: var(--serif); font-weight: 900; font-size: 28px; }
+:root[data-theme] #srs-card-word { font-family: var(--display); font-weight: 900; font-size: 34px; color: var(--ink) !important; }
+:root[data-theme] #srs-card-trans { font-family: var(--display); font-weight: 900; font-size: 28px; }
 :root[data-theme] #srs-btn-flip { background: var(--ink) !important; color: var(--bg) !important; border-radius: var(--r-m); min-height: 48px; }
 :root[data-theme] #srs-actions button { min-height: 56px !important; border-radius: var(--r-m); font-size: 14px; }
 :root[data-theme] #srs-btn-hard { background: var(--surface) !important; color: var(--ink) !important; border: 1px solid var(--line); }
@@ -338,10 +354,10 @@
 
 /* ---------- Progress dashboard ---------- */
 :root[data-theme] #amiram-score-display {
-  font-family: var(--serif); font-weight: 900; color: var(--ink) !important;
+  font-family: var(--display); font-weight: 900; color: var(--ink) !important;
   background: none !important; -webkit-text-fill-color: currentColor;
 }
-:root[data-theme] #dashboard [id^="metric-"] { font-family: var(--serif); font-size: 24px; color: var(--ink) !important; }
+:root[data-theme] #dashboard [id^="metric-"] { font-family: var(--display); font-size: 24px; color: var(--ink) !important; }
 :root[data-theme] #dashboard .rounded-full.h-2\.5 { background: var(--surface-2) !important; }
 :root[data-theme] #bar-level-a { background: var(--la) !important; }
 :root[data-theme] #bar-level-b { background: var(--lb) !important; }
@@ -353,7 +369,7 @@
 :root[data-theme] .karaoke-status-idle { background: var(--surface-2); color: var(--ink); }
 :root[data-theme] .karaoke-status-listening { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); }
 :root[data-theme] .karaoke-status-processing { background: var(--lb-bg); color: var(--lb); border-color: var(--lb); }
-:root[data-theme] #karaoke-teleprompter { font-family: var(--serif); }
+:root[data-theme] #karaoke-teleprompter { font-family: var(--display); }
 :root[data-theme] .karaoke-word.active { background: var(--mark); color: var(--mark-ink); outline: 0; transform: none; }
 :root[data-theme] .karaoke-word.hit { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); }
 :root[data-theme] .karaoke-word.miss { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); }
@@ -371,3 +387,173 @@
 @media (prefers-reduced-motion: reduce) {
   :root[data-theme] * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+/* ==========================================================================
+   v2 "Volt" components. These come after the structural rules above and
+   replace the v1 look: borderless surfaces, large radii, floating nav,
+   accent glow on the primary action only.
+   ========================================================================== */
+
+:root[data-theme] body { font-size: 16px; line-height: 1.5; }
+:root[data-theme] h2, :root[data-theme] h3, :root[data-theme] h4 { font-weight: 800; letter-spacing: -.01em; }
+:root[data-theme] [lang="en"], :root[data-theme] [dir="ltr"] { font-family: var(--display); }
+
+/* Header */
+:root[data-theme] header {
+  position: sticky; top: 0; z-index: 30; border-bottom: 0;
+  background: color-mix(in srgb, var(--bg) 88%, transparent) !important;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+:root[data-theme] header h1,
+:root[data-theme] header h1.text-neon-purple { font-family: var(--sans); font-weight: 800; font-size: 24px; letter-spacing: -.02em; }
+:root[data-theme] #btn-play { box-shadow: var(--glow); border: 0; }
+:root[data-theme] #theme-toggle { border: 0; background: var(--surface); box-shadow: var(--sh-1); font-weight: 600; }
+
+/* Floating bottom navigation */
+#bottom-nav {
+  inset-inline: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  background: var(--nav); border: 0; border-radius: var(--r-xl); padding: 6px; gap: 4px;
+  box-shadow: var(--sh-float);
+}
+#bottom-nav button {
+  min-height: 52px; border-radius: var(--r-l); color: var(--nav-ink-2); font-size: 12px; font-weight: 500;
+}
+#bottom-nav button::before { display: none; }
+#bottom-nav button[aria-current="page"] { background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+@media (min-width: 900px) {
+  #bottom-nav {
+    position: sticky; top: 76px; bottom: auto; inset-inline: auto; align-self: center;
+    margin: var(--s2) auto; padding: 6px; border-bottom: 0; z-index: 29;
+  }
+  #bottom-nav button { min-height: 44px; padding: 0 var(--s5); font-size: 14px; }
+  :root[data-theme] main { border-inline: 0; background: transparent; }
+}
+
+/* Chips: sub navigation and filters */
+:root[data-theme] .tab-btn,
+:root[data-theme] main .level-btn,
+:root[data-theme] main .playlist-btn {
+  border: 0 !important; background: var(--surface) !important; font-weight: 500 !important;
+}
+:root[data-theme] .tab-btn:hover,
+:root[data-theme] .level-btn:hover,
+:root[data-theme] .playlist-btn:hover { background: var(--surface-2) !important; }
+:root[data-theme] .tab-btn[aria-pressed="true"],
+:root[data-theme] main .level-btn[aria-pressed="true"],
+:root[data-theme] main .playlist-btn[aria-pressed="true"] { background: var(--ink) !important; color: var(--bg) !important; }
+
+/* Surfaces */
+:root[data-theme] .glass-card,
+:root[data-theme] article,
+:root[data-theme] .karaoke-panel,
+:root[data-theme] #song > div:first-child,
+:root[data-theme] .quiz-q,
+:root[data-theme] #songs-list article,
+:root[data-theme] .embed-player,
+:root[data-theme] #karaoke-teleprompter,
+:root[data-theme] #karaoke-end,
+:root[data-theme] .rc-passage-box {
+  border: 0 !important; border-radius: var(--r-l) !important; box-shadow: var(--sh-1) !important;
+}
+
+/* Primary action */
+:root[data-theme] main button.bg-indigo-600, :root[data-theme] main button.bg-neon-purple,
+:root[data-theme] main button.bg-neon-pink:not(.playlist-btn), :root[data-theme] main button.bg-pink-600,
+:root[data-theme] #quiz-reset, :root[data-theme] #btn-install-pwa,
+:root[data-theme] #karaoke-start-btn {
+  border-radius: var(--r-pill) !important; min-height: 52px; font-size: 16px;
+}
+:root[data-theme] #karaoke-start-btn, :root[data-theme] #srs-btn-flip { box-shadow: var(--glow) !important; }
+:root[data-theme] #karaoke-mic-btn { border-radius: var(--r-pill); border: 2px solid var(--ink); }
+:root[data-theme] .song-link { border: 0; background: var(--surface-2); border-radius: var(--r-pill); font-weight: 600; }
+:root[data-theme] .song-link:hover { background: var(--surface-3); }
+
+/* Fields */
+:root[data-theme] input[type="search"], :root[data-theme] input[type="text"],
+:root[data-theme] select, :root[data-theme] textarea {
+  border: 2px solid transparent !important; background: var(--surface) !important; border-radius: var(--r-m) !important;
+}
+:root[data-theme] input[type="search"]:focus, :root[data-theme] input[type="text"]:focus,
+:root[data-theme] select:focus, :root[data-theme] textarea:focus { border-color: var(--accent-text) !important; outline: 0 !important; }
+:root[data-theme] .progress-fill { background: var(--accent-text); }
+
+/* Songs: album-art covers */
+:root[data-theme] #songs-list article {
+  position: relative; overflow: hidden; padding-top: 108px !important;
+}
+:root[data-theme] #songs-list article::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 96px; background: var(--cover-1);
+}
+:root[data-theme] #songs-list article::after {
+  content: ""; position: absolute; top: -34px; inset-inline-end: -20px; width: 150px; height: 150px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, .55) 0 26%, transparent 27% 44%, rgba(255, 255, 255, .22) 45% 47%, transparent 48% 64%, rgba(255, 255, 255, .16) 65% 67%, transparent 68%);
+  pointer-events: none;
+}
+:root[data-theme] #songs-list article:nth-child(4n+2)::before { background: var(--cover-2); }
+:root[data-theme] #songs-list article:nth-child(4n+3)::before { background: var(--cover-3); }
+:root[data-theme] #songs-list article:nth-child(4n+4)::before { background: var(--cover-4); }
+:root[data-theme] #songs-list article h3, :root[data-theme] #songs-list article h4 { font-size: 20px; }
+
+/* Lyrics */
+:root[data-theme] #song article { font-family: var(--display); font-size: 19px; line-height: 1.55; padding: var(--s4); background: var(--surface) !important; }
+:root[data-theme] .lyric-line { border-left: 0; padding: 6px 0; color: var(--ink-2); transition: color .2s, font-size .2s; }
+:root[data-theme] .lyrics-active { color: var(--ink); font-weight: 800; font-size: 26px; line-height: 1.25; letter-spacing: -.02em; }
+:root[data-theme] .vocab-badge, :root[data-theme] .rc-target-word {
+  background: var(--surface-3) !important; color: var(--accent-text) !important;
+  border-radius: var(--r-pill); padding: 1px 10px; margin: 0 2px; font-weight: 700;
+}
+:root[data-theme] .lyrics-active .vocab-badge { background: var(--accent) !important; color: var(--accent-ink) !important; box-shadow: var(--glow); }
+:root[data-theme] .wave-bar { background: var(--accent-text); }
+
+/* Vocabulary: one card per word on phones */
+:root[data-theme] #vocab-table td:first-child span:first-child { font-family: var(--display); font-weight: 800; font-size: 26px; letter-spacing: -.02em; }
+@media (max-width: 640px) {
+  :root[data-theme] #vocab-table { display: block; }
+  :root[data-theme] #vocab-table tr {
+    background: var(--surface); border-top: 0; border-radius: var(--r-l); box-shadow: var(--sh-1);
+    padding: var(--s4); margin-bottom: var(--s3);
+  }
+}
+
+/* Quiz */
+:root[data-theme] .quiz-q p { font-family: var(--sans); font-weight: 600; font-size: 19px; }
+:root[data-theme] .quiz-opt {
+  min-height: 64px; padding: 10px 16px; border: 0 !important; border-radius: var(--r-l) !important;
+  background: var(--surface-2) !important; box-shadow: inset 0 0 0 2px transparent !important; font-size: 17px;
+}
+:root[data-theme] .quiz-opt:hover:not(:disabled) { background: var(--surface-3) !important; }
+:root[data-theme] .quiz-opt.selected { background: var(--surface-3) !important; box-shadow: inset 0 0 0 2px var(--accent-text) !important; }
+:root[data-theme] .quiz-fb.text-green-400, :root[data-theme] .quiz-fb.text-red-400 { border-radius: var(--r-l); font-weight: 600; }
+:root[data-theme] [id^="exam-type-"] { border: 0; background: var(--surface) !important; }
+:root[data-theme] .quiz-mode-bar button, :root[data-theme] .embed-toggle button { border: 0; border-radius: var(--r-pill); background: var(--surface-2); }
+:root[data-theme] .quiz-mode-bar button[aria-pressed="true"],
+:root[data-theme] .embed-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+:root[data-theme] .rc-line { font-family: var(--display); }
+
+/* Flashcards */
+:root[data-theme] .srs-card-front, :root[data-theme] .srs-card-back { border: 0; border-radius: var(--r-xl); box-shadow: var(--sh-2); }
+:root[data-theme] .srs-card-front { background: var(--surface-2); background-image: none; }
+:root[data-theme] .srs-card-back { background: var(--accent); color: var(--accent-ink); }
+:root[data-theme] .srs-card-back > div:nth-child(2) { background: rgba(11, 12, 16, .1) !important; }
+:root[data-theme] #srs-card-word { font-family: var(--display); font-weight: 800; font-size: 44px; letter-spacing: -.03em; line-height: 1.05; }
+:root[data-theme] #srs-card-trans { font-family: var(--sans); font-weight: 800; font-size: 30px; }
+:root[data-theme] #srs-btn-flip { background: var(--accent) !important; color: var(--accent-ink) !important; border-radius: var(--r-pill); min-height: 52px; font-weight: 700; }
+:root[data-theme] #srs-actions button { border-radius: var(--r-l); font-weight: 700; }
+:root[data-theme] #srs-btn-hard { border: 0; background: var(--surface-2) !important; }
+:root[data-theme] #srs-box-badge { border-radius: var(--r-pill); }
+
+/* Progress */
+:root[data-theme] #amiram-score-display {
+  font-family: var(--display); font-weight: 800; font-size: 76px; line-height: .9; letter-spacing: -.03em;
+  color: var(--accent-text) !important; -webkit-text-fill-color: currentColor;
+}
+:root[data-theme] #dashboard [id^="metric-"] { font-family: var(--display); font-weight: 800; font-size: 28px; }
+:root[data-theme] #dashboard .rounded-full.h-2\.5 { height: 10px; }
+:root[data-theme] #amiram-cefr-badge { border-radius: var(--r-pill); font-weight: 700; }
+
+/* Voice karaoke */
+:root[data-theme] .karaoke-status { border: 0; border-radius: var(--r-pill); }
+:root[data-theme] #karaoke-teleprompter { font-family: var(--display); }
+:root[data-theme] .karaoke-word.active { box-shadow: var(--glow); border-radius: var(--r-s); }
+:root[data-theme] .karaoke-choice { border: 0; background: var(--surface-2); border-radius: var(--r-l); }
+:root[data-theme] .karaoke-choice:hover:not(:disabled) { background: var(--surface-3); }
