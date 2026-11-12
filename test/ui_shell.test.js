@@ -53,3 +53,34 @@ test('volt.css defines the same colour tokens for light and dark', () => {
     assert.ok(dark.includes(token), `${token} defined in dark`);
   }
 });
+
+test('practice hub cards point at real tabs and controls', () => {
+  const cards = [...html.matchAll(/<button[^>]*class="hub-card"[^>]*>/g)].map((m) => m[0]);
+  assert.ok(cards.length >= 3);
+  for (const card of cards) {
+    const tab = card.match(/data-hub-tab="([^"]+)"/)[1];
+    assert.match(html, new RegExp('<section id="' + tab + '"'));
+    const click = card.match(/data-hub-click="([^"]+)"/);
+    if (click) assert.match(html, new RegExp('id="' + click[1] + '"'));
+  }
+});
+
+test('hero and mini player are wired to the existing play button', () => {
+  for (const id of ['song-hero', 'hero-play', 'mini-player', 'mini-play', 'mini-open', 'btn-play', 'seek', 'timer']) {
+    assert.match(html, new RegExp('id="' + id + '"'), id);
+  }
+});
+
+test('stripEmoji removes pictographs and keeps Hebrew, English and punctuation', () => {
+  assert.equal(shell.stripEmoji('\u{1F3AF} מילים מומלצות לחיזוק'), 'מילים מומלצות לחיזוק');
+  assert.equal(shell.stripEmoji('▶️'), '');
+  assert.equal(shell.stripEmoji('אמיר״ם: 50% (A–C) → ok'), 'אמיר״ם: 50% (A–C) → ok');
+});
+
+test('scoreToPercent maps the 50–150 scale onto 0–100 and tolerates junk', () => {
+  assert.equal(shell.scoreToPercent('50'), 0);
+  assert.equal(shell.scoreToPercent('112'), 62);
+  assert.equal(shell.scoreToPercent(150), 100);
+  assert.equal(shell.scoreToPercent(999), 100);
+  assert.equal(shell.scoreToPercent('—'), 0);
+});

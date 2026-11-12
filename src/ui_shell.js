@@ -6,7 +6,7 @@
 
   var GROUPS = [
     { id: 'words', label: 'מילים', tabs: ['vocab'] },
-    { id: 'practice', label: 'תרגול', tabs: ['quiz', 'flashcards'] },
+    { id: 'practice', label: 'תרגול', tabs: ['practice', 'quiz', 'flashcards'] },
     { id: 'songs', label: 'שירים', tabs: ['song', 'songs', 'suno', 'karaoke'] },
     { id: 'progress', label: 'התקדמות', tabs: ['dashboard'] }
   ];
@@ -28,7 +28,20 @@
     return normalizeTheme(current) === 'dark' ? 'light' : 'dark';
   }
 
-  var api = { GROUPS: GROUPS, groupForTab: groupForTab, normalizeTheme: normalizeTheme, nextTheme: nextTheme };
+  var EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{23E9}-\u{23FF}\u{25B6}\u{25C0}]️?/gu;
+
+  function stripEmoji(text) {
+    return String(text).replace(EMOJI, '').replace(/️/g, '').replace(/^[ \t]+/, '').replace(/[ \t]{2,}/g, ' ');
+  }
+
+  function scoreToPercent(score) {
+    var n = Number(score);
+    if (!isFinite(n)) return 0;
+    return Math.max(0, Math.min(100, Math.round(n - 50)));
+  }
+
+  var api = { GROUPS: GROUPS, groupForTab: groupForTab, normalizeTheme: normalizeTheme, nextTheme: nextTheme,
+    stripEmoji: stripEmoji, scoreToPercent: scoreToPercent };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.ShirAmiramShell = api;
 
@@ -42,6 +55,15 @@
     progress: '<path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/>'
   };
 
+  var UI_ICONS = {
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    moon: '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+    play: '<path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/>',
+    pause: '<path d="M7 4.5h3.5v15H7zM13.5 4.5H17v15h-3.5z" fill="currentColor" stroke="none"/>',
+    speaker: '<path d="M4 9.5v5h3.5l4.5 4v-13l-4.5 4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>'
+  };
+  function svg(inner) { return '<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">' + inner + '</svg>'; }
+
   function readStoredTheme() {
     try { return root.localStorage.getItem(THEME_KEY); } catch (e) { return null; }
   }
@@ -53,7 +75,10 @@
     if (meta) meta.setAttribute('content', THEME_COLORS[theme]);
     var btn = doc.getElementById('theme-toggle');
     if (btn) {
-      btn.textContent = theme === 'dark' ? 'מצב בהיר' : 'מצב כהה';
+      var label = theme === 'dark' ? 'מצב בהיר' : 'מצב כהה';
+      btn.innerHTML = svg(theme === 'dark' ? UI_ICONS.sun : UI_ICONS.moon);
+      btn.setAttribute('aria-label', label);
+      btn.title = label;
       btn.setAttribute('aria-pressed', String(theme === 'dark'));
     }
   }
@@ -128,7 +153,151 @@
     sync();
   }
 
-  function init() { initTheme(); initNav(); }
+  // ---- v2 screens: hero, mini player, practice hub, score ring, tidy-ups ----
+  // Everything here mirrors state the app already keeps in the DOM; it never owns data.
+
+  function goTab(tabId) {
+    var b = doc.querySelector('nav[aria-label="מסכים"] .tab-btn[data-tab="' + tabId + '"]');
+    if (b) b.click();
+    root.scrollTo(0, 0);
+  }
+
+  function initPlayer() {
+    var play = doc.getElementById('btn-play');
+    var heroPlay = doc.getElementById('hero-play');
+    var miniPlay = doc.getElementById('mini-play');
+    var mini = doc.getElementById('mini-player');
+    if (!play || !heroPlay || !miniPlay || !mini) return;
+    var seek = doc.getElementById('seek');
+    var timer = doc.getElementById('timer');
+    var words = doc.querySelectorAll('#song article .vocab-badge').length;
+    var heroWords = doc.getElementById('hero-words');
+    if (heroWords && words) heroWords.textContent = words + ' מילות אמיר״ם';
+
+    function paint() {
+      var on = play.getAttribute('aria-pressed') === 'true';
+      var started = !!timer && timer.textContent !== '00:00';
+      var label = on ? 'השהיה' : (started ? 'להמשיך ללמוד' : 'להתחיל לשיר');
+      heroPlay.innerHTML = svg(on ? UI_ICONS.pause : UI_ICONS.play) + '<span>' + label + '</span>';
+      miniPlay.innerHTML = svg(on ? UI_ICONS.pause : UI_ICONS.play);
+      miniPlay.setAttribute('aria-label', on ? 'השהיה' : 'ניגון');
+      var pct = seek ? Number(seek.value) || 0 : 0;
+      var a = doc.getElementById('hero-bar-fill'), b = doc.getElementById('mini-bar-fill'), t = doc.getElementById('hero-time');
+      if (a) a.style.width = pct + '%';
+      if (b) b.style.width = pct + '%';
+      if (t && timer) t.textContent = timer.textContent;
+    }
+    function placeMini() {
+      var song = doc.getElementById('song');
+      mini.hidden = !song || !song.classList.contains('hidden');
+      doc.body.classList.toggle('has-mini', !mini.hidden);
+    }
+    heroPlay.addEventListener('click', function () { play.click(); });
+    miniPlay.addEventListener('click', function () { play.click(); });
+    var open = doc.getElementById('mini-open');
+    if (open) open.addEventListener('click', function () { goTab('song'); });
+    if (root.MutationObserver) {
+      new root.MutationObserver(paint).observe(play, { attributes: true, attributeFilter: ['aria-pressed'] });
+      if (timer) new root.MutationObserver(paint).observe(timer, { childList: true, characterData: true, subtree: true });
+      var song = doc.getElementById('song');
+      if (song) new root.MutationObserver(placeMini).observe(song, { attributes: true, attributeFilter: ['class'] });
+    }
+    if (seek) seek.addEventListener('input', paint);
+    paint(); placeMini();
+  }
+
+  function initHub() {
+    doc.querySelectorAll('[data-hub-tab]').forEach(function (card) {
+      card.addEventListener('click', function () {
+        goTab(card.getAttribute('data-hub-tab'));
+        var extra = card.getAttribute('data-hub-click');
+        var target = extra && doc.getElementById(extra);
+        if (target) target.click();
+      });
+    });
+  }
+
+  function initScoreRing() {
+    var score = doc.getElementById('amiram-score-display');
+    if (!score || !score.parentElement) return;
+    var ring = score.parentElement;
+    ring.classList.add('score-ring');
+    function paint() { ring.style.setProperty('--pct', scoreToPercent(score.textContent) + '%'); }
+    if (root.MutationObserver) new root.MutationObserver(paint).observe(score, { childList: true, characterData: true, subtree: true });
+    paint();
+  }
+
+  function initAdvanced() {
+    // The song library mixes the catalogue with import and export tools. Fold the tools away.
+    var songs = doc.getElementById('songs');
+    if (!songs) return;
+    var firstRule = null;
+    for (var i = 0; i < songs.children.length; i++) {
+      if (songs.children[i].tagName === 'HR') { firstRule = songs.children[i]; break; }
+    }
+    if (!firstRule) return;
+    var details = doc.createElement('details');
+    details.className = 'advanced';
+    var summary = doc.createElement('summary');
+    summary.textContent = 'כלים מתקדמים: שמע מקומי, תזמון וייצוא';
+    details.appendChild(summary);
+    songs.insertBefore(details, firstRule);
+    var node = firstRule;
+    while (node) { var next = node.nextSibling; details.appendChild(node); node = next; }
+    var status = doc.getElementById('content-status');
+    var coverage = status && status.nextElementSibling;
+    if (coverage && coverage.tagName === 'P') details.insertBefore(coverage, summary.nextSibling);
+  }
+
+  function polish(scope) {
+    // Emoji used as icons read as unfinished: labels keep their text, icon-only buttons get a drawn icon.
+    var walker = doc.createTreeWalker(scope, 4, null);
+    var nodes = [], n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(function (t) {
+      var el = t.parentElement;
+      if (!el || /^(SCRIPT|STYLE|TEXTAREA|PRE|OPTION)$/.test(el.tagName)) return;
+      var clean = stripEmoji(t.nodeValue);
+      if (clean === t.nodeValue) return;
+      var speaker = t.nodeValue.indexOf('🔊') !== -1;
+      if (el.tagName === 'BUTTON' && !clean.trim() && el.childNodes.length === 1) {
+        el.innerHTML = svg(speaker ? UI_ICONS.speaker : UI_ICONS.play);
+      } else if (el.tagName === 'BUTTON' && speaker && !el.querySelector('svg')) {
+        t.nodeValue = ' ' + clean;
+        el.insertAdjacentHTML('afterbegin', svg(UI_ICONS.speaker));
+      } else {
+        t.nodeValue = clean;
+      }
+    });
+    if (scope.querySelectorAll) {
+      scope.querySelectorAll('#vocab-table tr').forEach(function (tr) {
+        var m = /רמה\s*([ABC])/.exec(tr.textContent || '');
+        if (m) tr.setAttribute('data-level', m[1]);
+      });
+    }
+  }
+
+  function initPolish() {
+    var main = doc.querySelector('main');
+    if (!main || !doc.createTreeWalker) return;
+    polish(doc.body);
+    if (!root.MutationObserver) return;
+    var pending = false;
+    new root.MutationObserver(function () {
+      if (pending) return;
+      pending = true;
+      root.setTimeout(function () { pending = false; polish(main); }, 60);
+    }).observe(main, { childList: true, subtree: true });
+  }
+
+  function initLanding() {
+    // The v2 design opens on today's song. Run after the app's own start-up picked its tab.
+    root.setTimeout(function () { goTab('song'); }, 0);
+  }
+
+  function initScreens() { initPlayer(); initHub(); initScoreRing(); initAdvanced(); initPolish(); initLanding(); }
+
+  function init() { initTheme(); initNav(); initScreens(); }
   if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', init);
   else init();
 })(typeof window !== 'undefined' ? window : globalThis);

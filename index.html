@@ -74,6 +74,7 @@
   <nav class="flex bg-stage-800 p-2 gap-2" aria-label="מסכים">
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false">מרכז תרגול</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false">כרטיסיות SRS</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false">מדד אמיר"ם</button>
@@ -86,6 +87,14 @@
   <main class="flex-1 p-4 overflow-auto">
     <!-- Song Tab -->
     <section id="song" class="tab-content">
+      <!-- Today's song hero (v2 design). The title is a display name for the built-in original lyrics. -->
+      <div id="song-hero" class="song-hero">
+        <div class="hero-tags"><span>השיר של היום</span><span id="hero-words"></span></div>
+        <div class="hero-title" dir="ltr" lang="en">Hold the<br>Light</div>
+        <div class="hero-sub" dir="ltr" lang="en">ShirAmiram Originals</div>
+        <div class="hero-progress"><div class="hero-bar"><i id="hero-bar-fill"></i></div><span id="hero-time">00:00</span></div>
+        <button id="hero-play" type="button" class="hero-cta">להתחיל לשיר</button>
+      </div>
       <div class="mb-4">
         <div class="flex items-center gap-2 mb-2">
           <input id="seek" type="range" min="0" max="100" value="0" aria-label="מיקום בשיר" class="flex-1 progress-track">
@@ -152,6 +161,29 @@
         <tbody id="vocab-table"></tbody>
       </table>
       <p id="vocab-empty" class="mt-2 text-sm opacity-75 hidden">לא נמצאו מילים.</p>
+    </section>
+
+    <!-- Practice hub (v2 design): entry points to the practice modes -->
+    <section id="practice" class="tab-content hidden">
+      <h2 class="hub-title">מה מתרגלים היום?</h2>
+      <div class="hub-grid">
+        <button type="button" class="hub-card" data-hub-tab="flashcards" data-hub-tone="a">
+          <span class="hub-name">כרטיסיות</span>
+          <span class="hub-desc">חזרה מרווחת על מילים, עם הפיכת כרטיס ודירוג</span>
+        </button>
+        <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-cloze" data-hub-tone="b">
+          <span class="hub-name">השלמת משפטים</span>
+          <span class="hub-desc">שאלות אמיר״ם עם ארבע תשובות והסבר</span>
+        </button>
+        <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-restatement" data-hub-tone="c">
+          <span class="hub-name">ניסוח מחדש</span>
+          <span class="hub-desc">בחירת המשפט ששומר על המשמעות</span>
+        </button>
+        <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-reading" data-hub-tone="d">
+          <span class="hub-name">הבנת הנקרא</span>
+          <span class="hub-desc">קטע קריאה עם מילים לחיצות ושאלות</span>
+        </button>
+      </div>
     </section>
 
     <!-- Quiz Tab -->
@@ -495,6 +527,14 @@
 
   </main>
 
+  <div id="mini-player" hidden>
+    <button id="mini-open" type="button" aria-label="פתיחת השיר של היום">
+      <span class="mini-cover" aria-hidden="true"></span>
+      <span class="mini-text"><span class="mini-title" dir="ltr" lang="en">Hold the Light</span><span class="mini-sub">השיר של היום</span></span>
+    </button>
+    <button id="mini-play" type="button" aria-label="ניגון"></button>
+    <i id="mini-bar-fill" aria-hidden="true"></i>
+  </div>
   <nav id="bottom-nav" aria-label="ניווט ראשי"></nav>
 
   <script src="app.js"></script>
