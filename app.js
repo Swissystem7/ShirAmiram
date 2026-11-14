@@ -21,7 +21,7 @@
 
   // The filter buttons of the vocabulary tab: only categories that exist in the data.
   const CATEGORIES = [
-    { id: 'connector', he: 'קונקטורים' },
+    { id: 'connector', he: 'מילות קישור' },
     { id: 'adjective', he: 'שמות תואר' },
     { id: 'verb', he: 'פעלים' },
     { id: 'noun', he: 'שמות עצם' },
@@ -371,8 +371,30 @@
     };
   }
 
+  /**
+   * The analytics key for a quiz answer. Words are keyed like the vocabulary list (its id), so
+   * the weak-words queue finds them. Question numbers from other banks (song quiz 1..50,
+   * restatements 1..n) also run from 1, so they get a prefix instead of colliding with word ids.
+   * @param {object} item - Quiz item as rendered.
+   * @param {string} bank - 'cloze', 'restatement' or 'reading'.
+   * @param {Array} vocab - The vocabulary list ({ id, word }).
+   * @param {number} index - Position in the quiz, used only when the item has no id.
+   */
+  function quizCardKey(item, bank, vocab, index) {
+    const it = item && typeof item === 'object' ? item : {};
+    const word = typeof it.word === 'string' ? it.word.trim().toLowerCase() : '';
+    if (word && !it.source_sentence && typeof it.correct_index !== 'number') {
+      const hit = (Array.isArray(vocab) ? vocab : []).find((v) => v && typeof v.word === 'string' && v.word.toLowerCase() === word);
+      if (hit) return String(hit.id != null ? hit.id : hit.word);
+      return 'word:' + word;
+    }
+    const id = it.id != null ? it.id : index;
+    return (bank || 'quiz') + ':' + String(id);
+  }
+
   return {
     formatAnswerConfidenceBadge: formatAnswerConfidenceBadge,
+    quizCardKey: quizCardKey,
     calculateVocabMasteryStats: calculateVocabMasteryStats,
     getDailyChallengeBannerData: getDailyChallengeBannerData,
     buildQuickStudyPlan: buildQuickStudyPlan,
