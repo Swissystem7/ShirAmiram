@@ -78,6 +78,7 @@
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false">מרכז תרגול</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false">כרטיסיות SRS</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="alias" aria-pressed="false">משחק מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false">מדד אמיר"ם</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
@@ -192,6 +193,10 @@
           <span class="hub-name">הבנת הנקרא</span>
           <span class="hub-desc">קטע קריאה עם מילים לחיצות ושאלות</span>
         </button>
+        <button type="button" class="hub-card" data-hub-tab="alias" data-open-alias="" data-hub-tone="e">
+          <span class="hub-name">נחשו את המילה</span>
+          <span class="hub-desc">משחק רמזים בסגנון Alias, עם עדיפות למילים החלשות</span>
+        </button>
       </div>
       <div id="quick-plan" class="plan-card">
         <h3 class="plan-title">כמה זמן יש לך?</h3>
@@ -264,7 +269,97 @@
     </section>
 
     <!-- Flashcards SRS Tab -->
+    <!-- Alias word game (solo). Logic: src/alias_engine.js, screens: src/alias_ui.js -->
+    <section id="alias" class="tab-content hidden" aria-labelledby="alias-title">
+      <div id="alias-start" class="alias-screen">
+        <h2 id="alias-title" class="alias-title">נחשו את המילה</h2>
+        <p class="alias-lead">מקבלים רמזים באנגלית ומקלידים את המילה. כמה שפחות רמזים, יותר נקודות. 30 שניות למילה.</p>
+        <div class="alias-decks" role="radiogroup" aria-label="בחירת חפיסה">
+          <button type="button" role="radio" aria-checked="true" data-alias-deck="mix"><span class="deck-name">מיקס חכם</span><span class="deck-desc">חלשות, לחזרה, חדשות ומילה שכבר שולטים בה</span><span class="deck-meta"></span></button>
+          <button type="button" role="radio" aria-checked="false" data-alias-deck="today"><span class="deck-name">להיום</span><span class="deck-desc">מילים שהגיע זמן החזרה שלהן</span><span class="deck-meta"></span></button>
+          <button type="button" role="radio" aria-checked="false" data-alias-deck="weak"><span class="deck-name">רק חלשות</span><span class="deck-desc">המילים שהכי קשות לכם</span><span class="deck-meta"></span></button>
+        </div>
+        <ul class="alias-rules">
+          <li><b>10</b> נק׳ בלי עזרה, <b>7</b> אחרי רמז 2, <b>4</b> אחרי רמז 3, <b>2</b> אחרי התרגום</li>
+          <li><b>+5</b> על כל תשובה נכונה מהשלישית ברצף</li>
+          <li>שגיאת הקלדה אחת מותרת במילים של 5 אותיות ומעלה</li>
+        </ul>
+        <p id="alias-start-note" class="alias-note" aria-live="polite"></p>
+        <div class="alias-bottom">
+          <button id="alias-review-btn" type="button" class="alias-secondary">מילים חלשות (<span id="alias-weak-count">0</span>)</button>
+          <button id="alias-start-btn" type="button" class="alias-primary">התחלת משחק</button>
+        </div>
+      </div>
+
+      <div id="alias-play" class="alias-screen" hidden>
+        <div class="alias-hud">
+          <span id="alias-progress">מילה 1 מתוך 10</span>
+          <span id="alias-run" class="alias-run"></span>
+          <span id="alias-score" class="alias-score">0 נק׳</span>
+        </div>
+        <div class="alias-timer-row">
+          <div id="alias-timer" class="alias-timer" aria-hidden="true"><span id="alias-timer-fill"></span></div>
+          <span id="alias-timer-text" class="alias-timer-text" role="timer" aria-label="זמן שנותר למילה">30 שנ׳</span>
+        </div>
+        <ol id="alias-clues" class="alias-clues" aria-live="polite" aria-label="רמזים"></ol>
+        <p id="alias-feedback" class="alias-feedback" aria-live="assertive"></p>
+        <form id="alias-form" class="alias-form" autocomplete="off" novalidate>
+          <label for="alias-input" class="alias-label">המילה באנגלית</label>
+          <input id="alias-input" class="alias-input" type="text" dir="ltr" lang="en" inputmode="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" maxlength="40">
+          <p id="alias-hebrew-warning" class="alias-warning" role="alert" hidden>נראה שהמקלדת בעברית. כתבו את המילה באנגלית.</p>
+          <div class="alias-bottom">
+            <div class="alias-pair">
+              <button id="alias-hint" type="button" class="alias-secondary">רמז נוסף</button>
+              <button id="alias-skip" type="button" class="alias-secondary">דילוג</button>
+            </div>
+            <button id="alias-check" type="submit" class="alias-primary">בדיקה</button>
+          </div>
+        </form>
+        <div id="alias-reveal" class="alias-reveal" hidden>
+          <p class="alias-reveal-word" id="alias-reveal-word" dir="ltr" lang="en"></p>
+          <p class="alias-reveal-he" id="alias-reveal-he"></p>
+          <p class="alias-reveal-msg" id="alias-reveal-msg" aria-live="polite"></p>
+          <div class="alias-bottom">
+            <button id="alias-next" type="button" class="alias-primary">המילה הבאה</button>
+          </div>
+        </div>
+        <button id="alias-quit" type="button" class="alias-link">סיום המשחק עכשיו</button>
+      </div>
+
+      <div id="alias-results" class="alias-screen" hidden>
+        <h2 class="alias-title">תוצאות</h2>
+        <p class="alias-total"><span id="alias-total">0</span> נק׳</p>
+        <dl class="alias-split">
+          <div><dt>בלי עזרה</dt><dd id="alias-solo"></dd></div>
+          <div><dt>עם עזרה</dt><dd id="alias-helped"></dd></div>
+          <div><dt>פספוסים</dt><dd id="alias-missed"></dd></div>
+        </dl>
+        <p id="alias-bonus" class="alias-note"></p>
+        <p id="alias-weak-prompt" class="alias-note" hidden>למילים שהיו קשות: כתבו משפט משלכם. זה עוזר לזכור אותן.</p>
+        <ol id="alias-result-list" class="alias-result-list"></ol>
+        <div class="alias-bottom">
+          <button id="alias-results-review" type="button" class="alias-secondary">מילים חלשות</button>
+          <button id="alias-again" type="button" class="alias-primary">משחק נוסף</button>
+        </div>
+      </div>
+
+      <div id="alias-review" class="alias-screen" hidden>
+        <h2 class="alias-title">מילים חלשות</h2>
+        <p class="alias-lead">מילה נכנסת לכאן כשמנחשים אותה רק מהתרגום, מדלגים עליה או טועים בה בחידון. היא יוצאת אחרי שתי הצלחות חזקות בימים שונים.</p>
+        <p id="alias-review-empty" class="alias-note">אין כרגע מילים חלשות.</p>
+        <ol id="alias-review-list" class="alias-result-list"></ol>
+        <div class="alias-bottom">
+          <button id="alias-review-back" type="button" class="alias-secondary">חזרה</button>
+          <button id="alias-review-play" type="button" class="alias-primary">לשחק רק עם החלשות</button>
+        </div>
+      </div>
+    </section>
+
     <section id="flashcards" class="tab-content hidden">
+      <button type="button" class="alias-banner" data-open-alias="">
+        <span class="alias-banner-name">משחק: נחשו את המילה</span>
+        <span class="alias-banner-desc">10 מילים, רמזים באנגלית ושעון. המילים החלשות קודמות.</span>
+      </button>
       <div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="סינון רמת כרטיסיות">
         <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="all" aria-pressed="true">הכול</button>
         <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="A" aria-pressed="false">רמה A</button>
@@ -594,6 +689,9 @@
   <script src="src/study_session_optimizer.js"></script>
   <script src="src/progress_tracker.js"></script>
   <script src="src/progress_ui.js"></script>
+  <script src="src/alias_clues_data.js"></script>
+  <script src="src/alias_engine.js"></script>
+  <script src="src/alias_ui.js"></script>
   <script src="src/ui_shell.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -1424,6 +1522,7 @@
       }
 
       function startSrsSession() {
+        srsState = SRS.loadState(); // the word game may have rated cards since
         const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : (CONTENT ? CONTENT.words : A.VOCAB);
         srsSession = SRS.createSession(pool, srsState.cards, {
           level: srsLevel === 'all' ? undefined : srsLevel,
@@ -1435,6 +1534,7 @@
 
       function handleRating(result) {
         if (!srsSession.length) return;
+        srsState = SRS.loadState();
         const card = srsSession[srsIndex];
         const key = String(card.id || card.word);
         const currentProg = srsState.cards[key] || SRS.initProgress(key);
@@ -1485,6 +1585,15 @@
 
       window.recordQuizAttempt = function(cardId, isRight) {
         state = AN.recordAttempt(state, cardId, 'cloze', isRight);
+        AN.saveAnalyticsState(state);
+        if (window.ShirAmiramProgressUI) window.ShirAmiramProgressUI.onAnswer(isRight);
+        if (!isRight && window.ShirAmiramAliasUI) window.ShirAmiramAliasUI.noteMistake(cardId);
+        renderDashboard();
+      };
+
+      // The word game reports each answer here, so it counts like a quiz answer.
+      window.recordWordAttempt = function(cardId, isRight, mode) {
+        state = AN.recordAttempt(state, cardId, mode || 'alias', isRight);
         AN.saveAnalyticsState(state);
         if (window.ShirAmiramProgressUI) window.ShirAmiramProgressUI.onAnswer(isRight);
         renderDashboard();
