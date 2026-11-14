@@ -6,7 +6,7 @@
 
   var GROUPS = [
     { id: 'words', label: 'מילים', tabs: ['vocab'] },
-    { id: 'practice', label: 'תרגול', tabs: ['practice', 'quiz', 'flashcards'] },
+    { id: 'practice', label: 'תרגול', tabs: ['practice', 'quiz', 'flashcards', 'alias'] },
     { id: 'songs', label: 'שירים', tabs: ['song', 'songs', 'suno', 'karaoke'] },
     { id: 'progress', label: 'התקדמות', tabs: ['dashboard'] }
   ];
@@ -14,7 +14,7 @@
   var THEME_COLORS = { light: '#F3F4EF', dark: '#0B0C10' };
 
   function groupForTab(tabId) {
-    for (var i = 0; i < GROUPS.length; i++) {
+    for (let i = 0; i < GROUPS.length; i++) {
       if (GROUPS[i].tabs.indexOf(tabId) !== -1) return GROUPS[i];
     }
     return null;
@@ -29,6 +29,8 @@
   }
 
   var EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{23E9}-\u{23FF}\u{25B6}\u{25C0}]️?/gu;
+
+  var HAS_EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{23E9}-\u{23FF}\u{25B6}\u{25C0}]/u;
 
   function stripEmoji(text) {
     return String(text).replace(EMOJI, '').replace(/️/g, '').replace(/^[ \t]+/, '').replace(/[ \t]{2,}/g, ' ');
@@ -75,7 +77,7 @@
     if (meta) meta.setAttribute('content', THEME_COLORS[theme]);
     var btn = doc.getElementById('theme-toggle');
     if (btn) {
-      var label = theme === 'dark' ? 'מצב בהיר' : 'מצב כהה';
+      const label = theme === 'dark' ? 'מצב בהיר' : 'מצב כהה';
       btn.innerHTML = svg(theme === 'dark' ? UI_ICONS.sun : UI_ICONS.moon);
       btn.setAttribute('aria-label', label);
       btn.title = label;
@@ -106,7 +108,7 @@
 
     function visibleTab() {
       var sections = doc.querySelectorAll('.tab-content');
-      for (var i = 0; i < sections.length; i++) {
+      for (let i = 0; i < sections.length; i++) {
         if (!sections[i].classList.contains('hidden')) return sections[i].id;
       }
       return null;
@@ -145,7 +147,7 @@
     // Tabs also change from inside the page (for example the empty-state button),
     // so follow the sections themselves instead of the clicks.
     if (root.MutationObserver) {
-      var observer = new root.MutationObserver(sync);
+      const observer = new root.MutationObserver(sync);
       doc.querySelectorAll('.tab-content').forEach(function (sec) {
         observer.observe(sec, { attributes: true, attributeFilter: ['class'] });
       });
@@ -199,7 +201,7 @@
     if (root.MutationObserver) {
       new root.MutationObserver(paint).observe(play, { attributes: true, attributeFilter: ['aria-pressed'] });
       if (timer) new root.MutationObserver(paint).observe(timer, { childList: true, characterData: true, subtree: true });
-      var song = doc.getElementById('song');
+      const song = doc.getElementById('song');
       if (song) new root.MutationObserver(placeMini).observe(song, { attributes: true, attributeFilter: ['class'] });
     }
     if (seek) seek.addEventListener('input', paint);
@@ -232,7 +234,7 @@
     var songs = doc.getElementById('songs');
     if (!songs) return;
     var firstRule = null;
-    for (var i = 0; i < songs.children.length; i++) {
+    for (let i = 0; i < songs.children.length; i++) {
       if (songs.children[i].tagName === 'HR') { firstRule = songs.children[i]; break; }
     }
     if (!firstRule) return;
@@ -243,7 +245,7 @@
     details.appendChild(summary);
     songs.insertBefore(details, firstRule);
     var node = firstRule;
-    while (node) { var next = node.nextSibling; details.appendChild(node); node = next; }
+    while (node) { const next = node.nextSibling; details.appendChild(node); node = next; }
     var status = doc.getElementById('content-status');
     var coverage = status && status.nextElementSibling;
     if (coverage && coverage.tagName === 'P') details.insertBefore(coverage, summary.nextSibling);
@@ -253,10 +255,12 @@
     // Emoji used as icons read as unfinished: labels keep their text, icon-only buttons get a drawn icon.
     var walker = doc.createTreeWalker(scope, 4, null);
     var nodes = [], n;
-    while ((n = walker.nextNode())) nodes.push(n);
+    for (n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
     nodes.forEach(function (t) {
       var el = t.parentElement;
       if (!el || /^(SCRIPT|STYLE|TEXTAREA|PRE|OPTION)$/.test(el.tagName)) return;
+      // Only text that holds an emoji is touched; otherwise the space after <b>10</b> would be lost.
+      if (!HAS_EMOJI.test(t.nodeValue)) return;
       var clean = stripEmoji(t.nodeValue);
       if (clean === t.nodeValue) return;
       var speaker = t.nodeValue.indexOf('🔊') !== -1;
