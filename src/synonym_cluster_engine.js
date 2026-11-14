@@ -60,8 +60,6 @@
 	}
 
 	return {
-		CLUSTERS,
-		ANTONYM_PAIRS,
 		findSynonyms,
 		findAntonyms,
 		checkSemanticRelation,

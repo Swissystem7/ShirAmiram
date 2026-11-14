@@ -64,5 +64,5 @@
 		};
 	}
 
-	return { TRUE_COGNATES, FALSE_FRIENDS, checkCognateStatus };
+	return { checkCognateStatus };
 });

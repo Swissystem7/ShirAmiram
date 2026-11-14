@@ -1,0 +1,27 @@
+[
+  {
+    "name": "index.html",
+    "path": "index.html",
+    "limit": "23 kB"
+  },
+  {
+    "name": "app.js",
+    "path": "app.js",
+    "limit": "7 kB"
+  },
+  {
+    "name": "src/*.js (all modules incl. data)",
+    "path": "src/*.js",
+    "limit": "154 kB"
+  },
+  {
+    "name": "css/*",
+    "path": "css/*",
+    "limit": "12 kB"
+  },
+  {
+    "name": "sw.js",
+    "path": "sw.js",
+    "limit": "2 kB"
+  }
+]

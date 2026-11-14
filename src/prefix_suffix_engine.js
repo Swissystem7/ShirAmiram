@@ -93,5 +93,5 @@
 		};
 	}
 
-	return { PREFIXES, SUFFIXES, decomposeAffixes };
+	return { PREFIXES, decomposeAffixes };
 });

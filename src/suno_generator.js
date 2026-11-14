@@ -226,7 +226,6 @@
 	}
 
 	return {
-		THEMES,
 		findMissingWords,
 		clusterWords,
 		generateSongForWords,

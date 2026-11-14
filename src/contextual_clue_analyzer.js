@@ -56,5 +56,5 @@
 		return "REINFORCING";
 	}
 
-	return { SIGNALS, detectTransitionSignals, predictSemanticDirection };
+	return { detectTransitionSignals, predictSemanticDirection };
 });

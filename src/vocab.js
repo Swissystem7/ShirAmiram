@@ -143,7 +143,6 @@
 
   return {
     LEVELS,
-    LEVEL_MAP,
     filterByLevel,
     validateVocabDataset,
     formatWordItem
