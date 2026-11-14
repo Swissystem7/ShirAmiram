@@ -35,7 +35,7 @@
 	function calculateActivityXP(activityType, details = {}) {
 		if (
 			typeof activityType !== "string" ||
-			!Object.hasOwn(ACTIVITY_TYPES, activityType)
+			!Object.prototype.hasOwnProperty.call(ACTIVITY_TYPES, activityType)
 		) {
 			return 0;
 		}

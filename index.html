@@ -51,7 +51,8 @@
   <link rel="stylesheet" href="css/volt.css">
   <script>try{var t=localStorage.getItem('shiramiram-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#6366f1">
+  <link rel="icon" href="assets/icon-192.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#0B0C10">
 </head>
 <body class="min-h-screen flex flex-col">
   <!-- Header -->
@@ -165,6 +166,14 @@
 
     <!-- Practice hub (v2 design): entry points to the practice modes -->
     <section id="practice" class="tab-content hidden">
+      <div id="xp-widget" class="xp-card" role="group" aria-label="ההתקדמות שלי">
+        <div class="xp-top">
+          <span class="xp-level">שלב <b id="xp-level">1</b></span>
+          <span id="xp-note" class="xp-note">0 נק׳</span>
+        </div>
+        <div id="xp-bar" class="xp-bar" role="progressbar" aria-label="התקדמות לשלב הבא" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="xp-fill"></span></div>
+        <p id="xp-streak" class="xp-streak" data-live="off" aria-live="polite"></p>
+      </div>
       <h2 class="hub-title">מה מתרגלים היום?</h2>
       <div class="hub-grid">
         <button type="button" class="hub-card" data-hub-tab="flashcards" data-hub-tone="a">
@@ -183,6 +192,16 @@
           <span class="hub-name">הבנת הנקרא</span>
           <span class="hub-desc">קטע קריאה עם מילים לחיצות ושאלות</span>
         </button>
+      </div>
+      <div id="quick-plan" class="plan-card">
+        <h3 class="plan-title">כמה זמן יש לך?</h3>
+        <div class="plan-chips" role="group" aria-label="זמן פנוי לתרגול">
+          <button type="button" data-plan-min="5" aria-pressed="false">5 דק׳</button>
+          <button type="button" data-plan-min="10" aria-pressed="false">10 דק׳</button>
+          <button type="button" data-plan-min="20" aria-pressed="false">20 דק׳</button>
+        </div>
+        <ol id="plan-list" class="plan-list"></ol>
+        <p id="plan-note" class="plan-note" aria-live="polite"></p>
       </div>
     </section>
 
@@ -336,6 +355,14 @@
         </div>
       </div>
 
+      <!-- Practice calendar (last 28 days) -->
+      <div id="heatmap-card" class="heat-card">
+        <h3 class="heat-title">ימי תרגול ב-28 הימים האחרונים</h3>
+        <div id="heatmap-grid" class="heat-grid" role="img" aria-label="לוח תרגול"></div>
+        <div class="heat-legend" aria-hidden="true"><span>פחות</span><span class="heat-cell" data-i="0"></span><span class="heat-cell" data-i="1"></span><span class="heat-cell" data-i="2"></span><span class="heat-cell" data-i="3"></span><span class="heat-cell" data-i="4"></span><span>יותר</span></div>
+        <p id="heatmap-summary" class="heat-summary"></p>
+      </div>
+
       <!-- Level Mastery Breakdown -->
       <div class="p-4 bg-stage-800 rounded border border-white/5 mb-4 space-y-3">
         <h3 class="font-bold text-sm text-indigo-200">שליטה באוצר מילים לפי רמות (300 מילים)</h3>
@@ -386,6 +413,10 @@
         <div id="weak-words-list" class="space-y-2 mt-3">
           <p class="text-xs text-muted">עדיין אין מילים מסומנות לחיזוק. בצע מבחן או כרטיסיות כדי לעקוב אחר טעויות.</p>
         </div>
+      </div>
+      <div class="export-row">
+        <button id="btn-export-progress" type="button" class="export-btn">הורדת דוח התקדמות</button>
+        <p id="export-status" class="export-status" aria-live="polite">קובץ Markdown עם הציון המשוער, השליטה במילים והמילים לחיזוק.</p>
       </div>
     </section>
 
@@ -554,6 +585,15 @@
   <script src="src/song_karaoke.js"></script>
   <script src="src/reading_comprehension.js"></script>
   <script src="src/karaoke.js"></script>
+  <script src="src/xp_engine.js"></script>
+  <script src="src/study_streak_badges.js"></script>
+  <script src="src/review_calendar_grid.js"></script>
+  <script src="src/confidence_score_estimator.js"></script>
+  <script src="src/export_summary_formatter.js"></script>
+  <script src="src/song_recommender.js"></script>
+  <script src="src/study_session_optimizer.js"></script>
+  <script src="src/progress_tracker.js"></script>
+  <script src="src/progress_ui.js"></script>
   <script src="src/ui_shell.js"></script>
   <script>
     const A = window.ShirAmiram;
@@ -562,8 +602,10 @@
 
     // Tabs
     function showTab(id) {
+      const quizWasHidden = $('quiz').classList.contains('hidden');
       document.querySelectorAll('.tab-content').forEach((sec) => sec.classList.toggle('hidden', sec.id !== id));
       document.querySelectorAll('.tab-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tab === id)));
+      if (id === 'quiz' && quizWasHidden) quizShownAt = Date.now();
     }
     document.querySelectorAll('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
 
@@ -571,6 +613,8 @@
     let CONTENT = null;
     let timed = [];
     let category = 'all';
+    // When the current quiz question came on screen: the confidence badge is based on answer time.
+    let quizShownAt = Date.now();
     let currentLevel = 'all';
     let AMIRAM_VOCAB = window.AMIRAM_VOCAB_DATA || [];
     let AMIRAM_RESTATEMENTS = window.AMIRAM_RESTATEMENTS_DATA || [];
@@ -590,7 +634,9 @@
         // Category / part of speech filter
         if (category !== 'all') {
           const itemCat = v.part_of_speech || v.category;
-          if (itemCat !== category) return false;
+          // The Amiram word list tags linking words as 'conjunction'; the button id is 'connector'.
+          const wanted = category === 'connector' ? ['connector', 'conjunction'] : [category];
+          if (!wanted.includes(itemCat)) return false;
         }
 
         // Search query filter
@@ -951,6 +997,7 @@
       score = 0;
       quizPool = pickQuizPool();
       quizIndex = 0;
+      quizShownAt = Date.now();
       $('quiz-score').textContent = '0';
       $('quiz-total').textContent = String(quizPool.length);
       $('quiz-container').innerHTML = '';
@@ -1041,11 +1088,18 @@
 
             btn.classList.add('selected');
             fb.className = 'quiz-fb mt-2 text-sm ' + (right ? 'text-green-400' : 'text-red-400');
+            const answerMs = Date.now() - quizShownAt;
+            const conf = A.formatAnswerConfidenceBadge(answerMs, right);
+            const confChip = document.createElement('span');
+            confChip.className = 'conf-badge';
+            confChip.dataset.tone = conf.badgeColor;
+            confChip.textContent = conf.badgeLabel + ' · ' + (answerMs / 1000).toFixed(1) + ' שנ׳';
+            fb.appendChild(confChip);
             $('quiz-explanation').textContent = explanation;
             if (right) score++;
             $('quiz-score').textContent = String(score);
             if (typeof window.recordQuizAttempt === 'function') {
-              window.recordQuizAttempt(item.id || item.word || i, right);
+              window.recordQuizAttempt(A.quizCardKey(item, examType, AMIRAM_VOCAB, i), right);
             }
             div.querySelectorAll('.quiz-opt').forEach((b) => { b.disabled = true; });
             quizIndex = i;
@@ -1056,6 +1110,7 @@
                 div.classList.add('hidden');
                 next.classList.remove('hidden');
                 quizIndex = i + 1;
+                quizShownAt = Date.now();
                 updateQuizProgress();
                 $('quiz-explanation').textContent = '';
               }, 650);
@@ -1386,6 +1441,7 @@
         const nextProg = SRS.calculateNextState(currentProg, result);
         srsState.cards[key] = nextProg;
         SRS.saveState(srsState);
+        if (window.ShirAmiramProgressUI) window.ShirAmiramProgressUI.onReview();
 
         srsIndex++;
         if (srsIndex >= srsSession.length) {
@@ -1430,7 +1486,30 @@
       window.recordQuizAttempt = function(cardId, isRight) {
         state = AN.recordAttempt(state, cardId, 'cloze', isRight);
         AN.saveAnalyticsState(state);
+        if (window.ShirAmiramProgressUI) window.ShirAmiramProgressUI.onAnswer(isRight);
         renderDashboard();
+      };
+
+      // What the progress widgets need from this page: the loaded catalogue, words worth
+      // reviewing and the numbers the dashboard last showed.
+      let lastSnapshot = null;
+      // The review queue also lists words answered right once (still in box 1). The report and
+      // the plan speak of words the learner got wrong, so they count mistakes.
+      function mistakesOf(w) {
+        const card = state.cards[String(w.id || w.word)];
+        return card ? (card.clozeIncorrect || 0) + (card.incorrect || 0) : 0;
+      }
+      window.ShirAmiramContext = function () {
+        const pool = (Array.isArray(AMIRAM_VOCAB) && AMIRAM_VOCAB.length > 0) ? AMIRAM_VOCAB : (CONTENT ? CONTENT.words : A.VOCAB);
+        const weak = AN.buildReviewQueue(state, pool, 12);
+        const missed = weak.filter((w) => mistakesOf(w) > 0);
+        return {
+          songs: CONTENT && Array.isArray(CONTENT.songs) ? CONTENT.songs : [],
+          questions: CONTENT && Array.isArray(CONTENT.questions) ? CONTENT.questions : [],
+          dueWords: weak.length ? weak : pool.slice(0, 12),
+          hasWeakWords: missed.length > 0,
+          snapshot: lastSnapshot
+        };
       };
 
       function renderDashboard() {
@@ -1453,6 +1532,13 @@
         const cefrRes = AN.estimateCefr(scoreRes.score);
         const mastery = AN.summarizeMastery(pool, state.cards);
         const weakWords = AN.buildReviewQueue(state, pool, 6);
+        lastSnapshot = {
+          score: scoreRes.score,
+          cefr: cefrRes.cefr,
+          mastered: mastery.A.mastered + mastery.B.mastered + mastery.C.mastered,
+          total: mastery.A.total + mastery.B.total + mastery.C.total,
+          weakWords: AN.buildReviewQueue(state, pool, 12).filter((w) => mistakesOf(w) > 0).slice(0, 6)
+        };
 
         if ($('amiram-score-display')) $('amiram-score-display').textContent = String(scoreRes.score);
         if ($('amiram-cefr-badge')) $('amiram-cefr-badge').textContent = 'רמה ' + cefrRes.cefr + ' • ' + cefrRes.academicLevel;

@@ -97,7 +97,8 @@ test('6. dark theme palette + glassmorphism are wired', () => {
     assert.ok(html.includes(color), `index.html uses ${color}`);
   }
   assert.match(css, /backdrop-filter:\s*blur\(/);
-  assert.match(html, /<meta name="theme-color" content="#6366f1">/);
+  // The browser chrome follows the Volt base colour since the v2 redesign.
+  assert.match(html, /<meta name="theme-color" content="#0B0C10">/);
 });
 
 test('7. PWA: service worker registered from the UI with a guarded feature check', () => {
