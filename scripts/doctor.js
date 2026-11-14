@@ -3,7 +3,7 @@
 // Every step runs even if an earlier one fails; the exit code is 1 if any step failed.
 const { spawnSync } = require('node:child_process');
 
-const STEPS = ['test', 'check:deadcode', 'check:size', 'check:html', 'check:reachability'];
+const STEPS = ['test', 'check:deadcode', 'check:size', 'check:html', 'check:reachability', 'check:assets'];
 
 const results = [];
 for (const step of STEPS) {

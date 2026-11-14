@@ -9,7 +9,8 @@
     "check:size": "size-limit",
     "check:html": "node scripts/check-html.js",
     "check:reachability": "node scripts/check-reachability.js",
-    "doctor": "node scripts/doctor.js"
+    "doctor": "node scripts/doctor.js",
+    "check:assets": "node scripts/check-assets.js"
   },
   "devDependencies": {
     "@size-limit/file": "14.3.0",
