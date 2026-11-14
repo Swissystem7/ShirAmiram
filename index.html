@@ -605,11 +605,11 @@
     // Tabs
     function showTab(id) {
       const quizWasHidden = $('quiz').classList.contains('hidden');
-      document.querySelectorAll('.tab-content').forEach((sec) => sec.classList.toggle('hidden', sec.id !== id));
-      document.querySelectorAll('.tab-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tab === id)));
+      document.querySelectorAll('.tab-content').forEach((sec) => { sec.classList.toggle('hidden', sec.id !== id); });
+      document.querySelectorAll('.tab-btn').forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.tab === id)); });
       if (id === 'quiz' && quizWasHidden) quizShownAt = Date.now();
     }
-    document.querySelectorAll('.tab-btn').forEach((btn) => btn.addEventListener('click', () => showTab(btn.dataset.tab)));
+    document.querySelectorAll('.tab-btn').forEach((btn) => { btn.addEventListener('click', () => showTab(btn.dataset.tab)); });
 
     // Vocabulary table: the search box, level buttons and category buttons work together
     let CONTENT = null;
@@ -703,17 +703,17 @@
       });
 
       $('vocab-empty').classList.toggle('hidden', rows.length > 0);
-      document.querySelectorAll('.playlist-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === category)));
-      document.querySelectorAll('.level-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === currentLevel)));
+      document.querySelectorAll('.playlist-btn').forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.cat === category)); });
+      document.querySelectorAll('.level-btn').forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.level === currentLevel)); });
     }
-    document.querySelectorAll('.level-btn').forEach((b) => b.addEventListener('click', () => { currentLevel = b.dataset.level; renderVocab(); }));
+    document.querySelectorAll('.level-btn').forEach((b) => { b.addEventListener('click', () => { currentLevel = b.dataset.level; renderVocab(); }); });
     $('vocab-filters').innerHTML = A.CATEGORIES.map((c) => '<button type="button" class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.he) + '</button>').join('');
-    document.querySelectorAll('.playlist-btn').forEach((b) => b.addEventListener('click', () => { category = b.dataset.cat; renderVocab(); }));
+    document.querySelectorAll('.playlist-btn').forEach((b) => { b.addEventListener('click', () => { category = b.dataset.cat; renderVocab(); }); });
     $('vocab-search').addEventListener('input', renderVocab);
     renderVocab();
 
     // A highlighted word in the song shows its translation and example
-    document.querySelectorAll('.vocab-badge').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.vocab-badge').forEach((b) => { b.addEventListener('click', () => {
       const entry = A.findWord(b.dataset.word);
       if (!entry) return;
       $('insp-word').innerHTML = '<strong dir="ltr">' + esc(entry.word) + '</strong> <button type="button" id="btn-insp-speak" class="text-xs px-2 py-0.5 rounded bg-stage-900 text-indigo-300 hover:text-white" style="min-height:44px">🔊 השמע</button> – ' + esc(entry.translation)
@@ -721,7 +721,7 @@
         + '<br><em>דוגמה:</em> <span dir="ltr">' + esc(entry.sample_sentence) + '</span>';
       const spk = $('btn-insp-speak');
       if (spk) spk.onclick = () => { if (window.ShirAmiramSpeech) window.ShirAmiramSpeech.speak(entry.word); };
-    }));
+    }); });
 
     // The song: a short tune that loops, a timer, and the line being sung is highlighted.
     // elapsed counts "song seconds", so the speed changes the tempo and not the pitch.
@@ -734,8 +734,8 @@
       const pos = A.positionAt(elapsed);
       $('timer').textContent = A.formatTime(elapsed);
       $('seek').value = pos.percent;
-      lines.forEach((l, i) => l.classList.toggle('lyrics-active', (playing || elapsed > 0) && i === pos.line));
-      bars.forEach((b) => b.classList.toggle('on', playing));
+      lines.forEach((l, i) => { l.classList.toggle('lyrics-active', (playing || elapsed > 0) && i === pos.line); });
+      bars.forEach((b) => { b.classList.toggle('on', playing); });
       if (osc && audioCtx) osc.frequency.setValueAtTime(pos.hz, audioCtx.currentTime);
     }
     function tick(now) {
@@ -1151,7 +1151,7 @@
       }
       $('embed-tab-spotify').onclick = () => setEmbedTab('spotify');
       $('embed-tab-youtube').onclick = () => setEmbedTab('youtube');
-      document.querySelectorAll('[data-spotify]').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-spotify]').forEach(b=>{ b.addEventListener('click',()=>{
         const u=A.spotifyEmbedUrl(b.dataset.spotify);
         $('spotify-box').innerHTML = u ? '<iframe title="Spotify embed" src="'+u+'" width="100%" height="152" loading="lazy" allow="encrypted-media"></iframe>' : '<p>אין מזהה Spotify תקין.</p>';
         const song=CONTENT.songs.find(s=>s.spotify_id===b.dataset.spotify);
@@ -1160,7 +1160,7 @@
           ? '<iframe title="YouTube" src="'+yid+'" width="100%" height="100%" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'
           : '<p>אין מזהה YouTube מאומת לשיר זה — מוצג רק קישור חיפוש ב-YouTube Music בכרטיס השיר.</p>';
         setEmbedTab(yid ? 'youtube' : 'spotify');
-      }));
+      }); });
     }
 
     // --- 30-Song Karaoke Teleprompter Controller ---
@@ -1296,7 +1296,7 @@
     });
     $('audio-file').addEventListener('change', e=>{ const f=e.target.files[0]; const v=A.validateAudioFile(f||{}); if(v.ok) $('local-audio').src=URL.createObjectURL(f); else alert(v.reason); });
     $('timing-file').addEventListener('change', async e=>{ const f=e.target.files[0]; if(!f) return; timed=A.parseTimingData(await f.text()); renderTimed(); });
-    function renderTimed(){ const idx=A.activeTimedLine(timed, $('local-audio').currentTime||0); $('timed-lines').innerHTML=timed.map((l,i)=>'<button type="button" class="quiz-opt '+(i===idx?'bg-neon-purple':'bg-stage-800')+' rounded" data-t="'+l.time+'">'+esc(l.text)+'</button>').join(''); document.querySelectorAll('#timed-lines [data-t]').forEach(b=>b.addEventListener('click',()=>{ $('local-audio').currentTime=Number(b.dataset.t); renderTimed(); })); }
+    function renderTimed(){ const idx=A.activeTimedLine(timed, $('local-audio').currentTime||0); $('timed-lines').innerHTML=timed.map((l,i)=>'<button type="button" class="quiz-opt '+(i===idx?'bg-neon-purple':'bg-stage-800')+' rounded" data-t="'+l.time+'">'+esc(l.text)+'</button>').join(''); document.querySelectorAll('#timed-lines [data-t]').forEach(b=>{ b.addEventListener('click',()=>{ $('local-audio').currentTime=Number(b.dataset.t); renderTimed(); }); }); }
     $('local-audio').addEventListener('timeupdate', renderTimed);
 
 
@@ -1465,7 +1465,7 @@
       document.querySelectorAll('.srs-level-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           srsLevel = btn.dataset.level;
-          document.querySelectorAll('.srs-level-btn').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.level === srsLevel)));
+          document.querySelectorAll('.srs-level-btn').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.level === srsLevel)); });
           startSrsSession();
         });
       });
@@ -1679,7 +1679,7 @@
         const choices = session.rhythmChoices(distractors);
         wrap.classList.remove('hidden');
         wrap.innerHTML = choices.map(c => '<button type="button" class="karaoke-choice" data-c="' + c + '">' + c + '</button>').join('');
-        wrap.querySelectorAll('.karaoke-choice').forEach(btn => btn.addEventListener('click', () => {
+        wrap.querySelectorAll('.karaoke-choice').forEach(btn => { btn.addEventListener('click', () => {
           const res = session.tryRhythmTap(btn.dataset.c);
           $('karaoke-feedback').textContent = res.ok ? '✅ נכון!' : '❌ לא נכון';
           $('karaoke-feedback').className = res.ok ? 'hit' : 'miss';
@@ -1687,7 +1687,7 @@
           renderPrompt();
           if (session.state.ended) showEnd();
           else renderChoices();
-        }));
+        }); });
       }
       function stopMic() {
         if (recog) { try { recog.onresult = null; recog.onerror = null; recog.stop(); } catch (e) {} recog = null; }
