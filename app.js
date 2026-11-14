@@ -398,7 +398,7 @@
     calculateVocabMasteryStats: calculateVocabMasteryStats,
     getDailyChallengeBannerData: getDailyChallengeBannerData,
     buildQuickStudyPlan: buildQuickStudyPlan,
-    songDominantLevel: songDominantLevel, filterSongsByLevel: filterSongsByLevel, SONG_LEVELS: SONG_LEVELS,
+    songDominantLevel: songDominantLevel, filterSongsByLevel: filterSongsByLevel,
     VOCAB: VOCAB, CATEGORIES: CATEGORIES, CATEGORY_HE: CATEGORY_HE, DIFFICULTY_HE: DIFFICULTY_HE, QUIZ: QUIZ,
     LINES: LINES, LINE_SEC: LINE_SEC, LOOP_SEC: LOOP_SEC, TUNE: TUNE, NOTE_SEC: NOTE_SEC,
     filterVocab: filterVocab, findWord: findWord, formatTime: formatTime, positionAt: positionAt, isCorrect: isCorrect,

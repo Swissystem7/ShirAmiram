@@ -266,7 +266,6 @@
 
   return {
     STORAGE_KEY,
-    clamp,
     estimateCefr,
     calculateAmiramScore,
     summarizeMastery,

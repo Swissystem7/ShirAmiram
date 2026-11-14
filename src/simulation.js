@@ -333,14 +333,10 @@
   }
 
   return {
-    QUESTION_COUNT: QUESTION_COUNT,
-    DURATION_MINUTES: DURATION_MINUTES,
-    DURATION_SEC: DURATION_SEC,
     LEVELS: LEVELS,
     createSimulation: createSimulation,
     calculateAmiramScore: calculateAmiramScore,
     levelForScore: levelForScore,
-    getLevel: levelForScore,
     answerQuestion: answerQuestion,
     submitSimulation: submitSimulation
   };

@@ -407,7 +407,6 @@
 	}
 
 	return {
-		loadPassages,
 		filterByLevel,
 		formatParagraphLines,
 		lookupTargetWord,

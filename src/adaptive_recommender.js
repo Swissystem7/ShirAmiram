@@ -343,14 +343,10 @@
 
   return {
     MAX_CATALOGUE: MAX_CATALOGUE,
-    KARAOKE_TARGET_COUNT: KARAOKE_TARGET_COUNT,
-    QUIZ_QUESTION_COUNT: QUIZ_QUESTION_COUNT,
     normalizePartOfSpeech: normalizePartOfSpeech,
     normalizeDifficulty: normalizeDifficulty,
     analyzeErrors: analyzeErrors,
-    buildLearnerProfile: analyzeErrors,
     rankSongs: rankSongs,
     buildStudyPlan: buildStudyPlan,
-    createStudyPlan: buildStudyPlan
   };
 }));

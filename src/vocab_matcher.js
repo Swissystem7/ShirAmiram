@@ -681,6 +681,5 @@
     bridgeQuestions: bridgeQuestionsToVocab,
     bridgeSongs,
     resolveWordEnrichment,
-    SEMANTIC_FAMILIES
   });
 }));
