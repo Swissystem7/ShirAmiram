@@ -206,8 +206,9 @@
   // Weak-words queue Empty State: show the card only when the queue is empty, otherwise show the word list.
 
   function resolveDailyChallengeScheduler() {
-    if (typeof root !== 'undefined' && root && root.ShirAmiramDailyChallengeScheduler) {
-      return root.ShirAmiramDailyChallengeScheduler;
+    // the page global (the factory has no `root` in scope, so the old root.* lookup never found it)
+    if (typeof globalThis !== 'undefined' && globalThis.ShirAmiramDailyChallengeScheduler) {
+      return globalThis.ShirAmiramDailyChallengeScheduler;
     }
     if (typeof require === 'function') {
       try {
@@ -278,8 +279,9 @@
   }
 
   function resolveConfidenceScoreEstimator() {
-    if (typeof root !== 'undefined' && root && root.ShirAmiramConfidenceScoreEstimator) {
-      return root.ShirAmiramConfidenceScoreEstimator;
+    // the page global (the factory has no `root` in scope, so the old root.* lookup never found it)
+    if (typeof globalThis !== 'undefined' && globalThis.ShirAmiramConfidenceScoreEstimator) {
+      return globalThis.ShirAmiramConfidenceScoreEstimator;
     }
     if (typeof require === 'function') {
       try {
