@@ -36,9 +36,3 @@ export function getStreakEncouragement(streakDays) {
   const daysToNext = nextMilestone - validStreak;
   return `You have a ${validStreak}‑day streak. Only ${daysToNext} more day${daysToNext > 1 ? "s" : ""} to reach ${nextMilestone} days!`;
 }
-
-// Default export for convenience.
-export default {
-  getNextMilestone,
-  getStreakEncouragement,
-};

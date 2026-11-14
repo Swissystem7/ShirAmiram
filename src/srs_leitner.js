@@ -221,7 +221,6 @@
 
   return {
     STORAGE_KEY,
-    BOX_INTERVALS_DAYS,
     initProgress,
     calculateNextState,
     createSession,

@@ -1,5 +1,5 @@
 // ShirAmiram — Offline Service Worker (network-first pages, stale-while-revalidate assets)
-const CACHE_NAME = 'shiramiram-cache-v8';
+const CACHE_NAME = 'shiramiram-cache-v9';
 
 const STATIC_ASSETS = [
   './',
@@ -36,6 +36,8 @@ const STATIC_ASSETS = [
   './src/difficulty_estimator.js',
   './src/song_karaoke.js',
   './src/reading_comprehension.js',
+  './src/karaoke_scoring.js',
+  './src/daily_challenge_scheduler.js',
   './src/karaoke.js',
   './data/imports/amiram_vocab_full.json',
   './data/imports/amiram_restatements.json',
@@ -59,11 +61,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
+        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
       );
     }).then(() => self.clients.claim())
   );

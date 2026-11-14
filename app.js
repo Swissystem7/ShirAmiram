@@ -206,8 +206,9 @@
   // Weak-words queue Empty State: show the card only when the queue is empty, otherwise show the word list.
 
   function resolveDailyChallengeScheduler() {
-    if (typeof root !== 'undefined' && root && root.ShirAmiramDailyChallengeScheduler) {
-      return root.ShirAmiramDailyChallengeScheduler;
+    // the page global (the factory has no `root` in scope, so the old root.* lookup never found it)
+    if (typeof globalThis !== 'undefined' && globalThis.ShirAmiramDailyChallengeScheduler) {
+      return globalThis.ShirAmiramDailyChallengeScheduler;
     }
     if (typeof require === 'function') {
       try {
@@ -278,8 +279,9 @@
   }
 
   function resolveConfidenceScoreEstimator() {
-    if (typeof root !== 'undefined' && root && root.ShirAmiramConfidenceScoreEstimator) {
-      return root.ShirAmiramConfidenceScoreEstimator;
+    // the page global (the factory has no `root` in scope, so the old root.* lookup never found it)
+    if (typeof globalThis !== 'undefined' && globalThis.ShirAmiramConfidenceScoreEstimator) {
+      return globalThis.ShirAmiramConfidenceScoreEstimator;
     }
     if (typeof require === 'function') {
       try {
@@ -398,7 +400,7 @@
     calculateVocabMasteryStats: calculateVocabMasteryStats,
     getDailyChallengeBannerData: getDailyChallengeBannerData,
     buildQuickStudyPlan: buildQuickStudyPlan,
-    songDominantLevel: songDominantLevel, filterSongsByLevel: filterSongsByLevel, SONG_LEVELS: SONG_LEVELS,
+    songDominantLevel: songDominantLevel, filterSongsByLevel: filterSongsByLevel,
     VOCAB: VOCAB, CATEGORIES: CATEGORIES, CATEGORY_HE: CATEGORY_HE, DIFFICULTY_HE: DIFFICULTY_HE, QUIZ: QUIZ,
     LINES: LINES, LINE_SEC: LINE_SEC, LOOP_SEC: LOOP_SEC, TUNE: TUNE, NOTE_SEC: NOTE_SEC,
     filterVocab: filterVocab, findWord: findWord, formatTime: formatTime, positionAt: positionAt, isCorrect: isCorrect,

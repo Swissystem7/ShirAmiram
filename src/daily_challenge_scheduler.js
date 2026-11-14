@@ -97,7 +97,6 @@
 	}
 
 	return {
-		QUESTS,
 		generateDailyChallenge,
 		updateStreak,
 	};

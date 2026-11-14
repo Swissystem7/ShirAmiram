@@ -15,8 +15,8 @@ const NOW = new Date(2026, 10, 14, 12);
 
 test('answers: exact, case and spaces ignored, one typo only for words of 5+ letters', () => {
   assert.deepEqual(G.checkAnswer('  Achieve ', 'achieve'), { correct: true, typo: false });
-  assert.deepEqual(G.checkAnswer('acheive', 'achieve'), { correct: false, typo: false }, 'a swap is two edits');
-  assert.deepEqual(G.checkAnswer('achive', 'achieve'), { correct: true, typo: true });
+  assert.deepEqual(G.checkAnswer('achieev', 'achieve'), { correct: false, typo: false }, 'a swap is two edits');
+  assert.deepEqual(G.checkAnswer('acieve', 'achieve'), { correct: true, typo: true });
   assert.deepEqual(G.checkAnswer('achievee', 'achieve'), { correct: true, typo: true });
   assert.deepEqual(G.checkAnswer('acxieve', 'achieve'), { correct: true, typo: true });
   assert.equal(G.checkAnswer('acxievx', 'achieve').correct, false);
@@ -90,7 +90,7 @@ test('every vocabulary word has clue data that never contains the word itself', 
     assert.equal(c.word, w.word);
     assert.ok(c.synonyms.length === 0 || (c.synonyms.length >= 3 && c.synonyms.length <= 4), w.word);
     assert.ok(c.taboo.length >= 3 && c.taboo.length <= 4, w.word);
-    const stem = w.word.length > 4 ? w.word.replace(/[esy]$/, '') : w.word;
+    const stem = w.word.length > 4 ? w.word.replace(/[sey]$/, '') : w.word;
     for (const s of [...c.synonyms, ...c.taboo, c.en_def]) assert.ok(!s.toLowerCase().includes(stem.toLowerCase()), `${w.word}: ${s}`);
   }
 });

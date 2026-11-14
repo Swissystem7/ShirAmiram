@@ -736,10 +736,5 @@
     statusClass: statusClass,
     finishSession: finishSession,
     highlightTeleprompterText: highlightTeleprompterText,
-    INFLECTIONS: INFLECTIONS,
-    DEFAULT_WINDOW_MS: DEFAULT_WINDOW_MS,
-    BASE_POINTS: BASE_POINTS,
-    STREAK_2: STREAK_2,
-    STREAK_3: STREAK_3
   };
 });
