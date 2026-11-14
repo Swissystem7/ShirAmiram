@@ -1,5 +1,5 @@
 // ShirAmiram — Offline Service Worker (network-first pages, stale-while-revalidate assets)
-const CACHE_NAME = 'shiramiram-cache-v7';
+const CACHE_NAME = 'shiramiram-cache-v8';
 
 const STATIC_ASSETS = [
   './',
@@ -34,7 +34,6 @@ const STATIC_ASSETS = [
   './src/song_karaoke.js',
   './src/reading_comprehension.js',
   './src/karaoke_scoring.js',
-  './src/confidence_score_estimator.js',
   './src/daily_challenge_scheduler.js',
   './src/karaoke.js',
   './data/imports/amiram_vocab_full.json',

@@ -23,9 +23,9 @@ function browserRun(files) {
 // karaoke.js, app.js and the three modules: the logic files, in page order (the rest of the page needs a DOM)
 const LOGIC = PAGE_SCRIPTS.filter((f) => /^(app\.js|src\/(karaoke_scoring|confidence_score_estimator|daily_challenge_scheduler|karaoke)\.js)$/.test(f));
 
-test('index.html loads the three modules, karaoke_scoring before karaoke.js (which reads it when it loads)', () => {
+test('index.html loads the three modules once each, karaoke_scoring before karaoke.js (which reads it when it loads)', () => {
   for (const f of ['src/karaoke_scoring.js', 'src/confidence_score_estimator.js', 'src/daily_challenge_scheduler.js']) {
-    assert.ok(PAGE_SCRIPTS.includes(f), f + ' has a <script> tag');
+    assert.equal(PAGE_SCRIPTS.filter((src) => src === f).length, 1, f + ' has exactly one <script> tag');
   }
   assert.ok(PAGE_SCRIPTS.indexOf('src/karaoke_scoring.js') < PAGE_SCRIPTS.indexOf('src/karaoke.js'));
   assert.equal(LOGIC.length, 5);
