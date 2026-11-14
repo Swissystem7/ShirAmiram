@@ -81,7 +81,7 @@ test('timer text and song position: the line, the progress bar and the tune foll
 });
 
 test('the page loads app.js and no longer carries the broken v1 pieces', () => {
-  assert.match(html, /<script src="app\.js"><\/script>/);
+  assert.match(html, /<script (?:defer )?src="app\.js"><\/script>/);
   assert.doesNotMatch(html, /data-cat="science"|data-cat="society"/, 'filters for categories that are not in the data');
   assert.doesNotMatch(html, /renderVocab\(v=>/, 'a function passed as the search text');
   assert.match(html, /id="btn-play"[^>]*aria-label=/);
