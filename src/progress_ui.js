@@ -59,7 +59,7 @@
     if (s.streakDays === 0) {
       streak.textContent = 'עוד אין רצף. תשובה אחת היום מתחילה אותו.';
     } else {
-      var text = 'רצף של ' + daysWord(s.streakDays);
+      let text = 'רצף של ' + daysWord(s.streakDays);
       if (s.streakTitle) text += ' · ' + s.streakTitle;
       if (!s.practisedToday) text += ' · תרגול היום שומר עליו';
       else if (s.nextMilestoneDays) text += ' · היעד הבא: ' + s.nextMilestoneDays + ' ימים';
@@ -165,7 +165,9 @@
     var practice = $('practice');
     if (saved && practice && root.MutationObserver) {
       new root.MutationObserver(function () {
-        if (!practice.classList.contains('hidden')) renderPlan(saved = currentMinutes() || saved);
+        if (practice.classList.contains('hidden')) return;
+        saved = currentMinutes() || saved;
+        renderPlan(saved);
       }).observe(practice, { attributes: true, attributeFilter: ['class'] });
     }
   }
@@ -218,8 +220,8 @@
       if (!md) { status.textContent = 'הדוח לא זמין כרגע. נסו שוב אחרי שהנתונים נטענו.'; return; }
       var name = 'shiramiram-progress-' + P.localISODate(new Date()) + '.md';
       try {
-        var url = root.URL.createObjectURL(new root.Blob([md], { type: 'text/markdown;charset=utf-8' }));
-        var a = el('a');
+        const url = root.URL.createObjectURL(new root.Blob([md], { type: 'text/markdown;charset=utf-8' }));
+        const a = el('a');
         a.href = url;
         a.download = name;
         doc.body.appendChild(a);
