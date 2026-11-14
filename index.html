@@ -4,24 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ShirAmiram • שיראמיר״ם</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: { primary: '#6366f1', hover: '#4f46e5', success: '#10b981', error: '#ef4444' },
-            neon: { purple: '#6366f1', pink: '#f472b6', cyan: '#22d3ee' },
-            stage: { 950: '#07060f', 900: '#0f172a', 800: '#1e293b' }
-          },
-          boxShadow: {
-            glow: '0 0 40px rgba(99,102,241,0.35)',
-            'glow-pink': '0 0 28px rgba(244,114,182,0.4)'
-          }
-        }
-      }
-    }
-  </script>
+  <meta name="description" content="שיראמיר״ם: לומדים את אוצר המילים של אמיר״ם דרך מילים של שירים, עם תרגול, מבחנים וכרטיסיות. עובד בדפדפן, גם בלי רשת.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Rubik:wght@400;500;600;700;800&family=Heebo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -53,6 +36,8 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/icon-192.svg" type="image/svg+xml">
   <meta name="theme-color" content="#0B0C10">
+  <!-- Tailwind utilities, built locally (npm run build:css); last in <head>, where the Play CDN used to inject them -->
+  <link rel="stylesheet" href="css/tailwind.css">
 </head>
 <body class="min-h-screen flex flex-col">
   <!-- Header -->

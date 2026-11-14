@@ -5,6 +5,8 @@
   "description": "Learn English vocabulary through song lyrics",
   "scripts": {
     "test": "node --test test/*.test.js",
+    "build:css": "tailwindcss -c tailwind.config.js -i css/tailwind.src.css -o css/tailwind.css --minify",
+    "check:css": "node scripts/check-css.js",
     "check:deadcode": "knip",
     "check:size": "size-limit",
     "check:html": "node scripts/check-html.js",
@@ -15,6 +17,7 @@
   "devDependencies": {
     "@size-limit/file": "14.3.0",
     "knip": "6.45.1",
-    "size-limit": "14.3.0"
+    "size-limit": "14.3.0",
+    "tailwindcss": "3.4.17"
   }
 }
