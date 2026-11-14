@@ -4,6 +4,13 @@
   "private": true,
   "description": "Learn English vocabulary through song lyrics",
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "check:deadcode": "knip",
+    "check:size": "size-limit"
+  },
+  "devDependencies": {
+    "@size-limit/file": "14.3.0",
+    "knip": "6.45.1",
+    "size-limit": "14.3.0"
   }
 }
