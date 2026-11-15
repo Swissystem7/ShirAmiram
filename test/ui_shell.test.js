@@ -77,6 +77,20 @@ test('stripEmoji removes pictographs and keeps Hebrew, English and punctuation',
   assert.equal(shell.stripEmoji('אמיר״ם: 50% (A–C) → ok'), 'אמיר״ם: 50% (A–C) → ok');
 });
 
+test('highlight neighbours keep a hard space and drop a space before punctuation', () => {
+  const NBSP = '\u00A0';
+  const around = shell.adjustHighlightNeighbors('Hold the ', ' Light');
+  assert.equal(around.prev, 'Hold the' + NBSP);
+  assert.equal(around.next, NBSP + 'Light');
+  const punct = shell.adjustHighlightNeighbors('we sing ', ', we rise');
+  assert.equal(punct.next, ', we rise');
+  assert.equal(shell.adjustHighlightNeighbors('we sing ', '.').next, '.');
+  const again = shell.adjustHighlightNeighbors(around.prev, around.next);
+  assert.deepEqual(again, around);
+  assert.equal(shell.ensureBreakSpace('Hold the'), 'Hold the' + NBSP);
+  assert.equal(shell.ensureBreakSpace('Hold the' + NBSP), 'Hold the' + NBSP);
+});
+
 test('scoreToPercent maps the 50–150 scale onto 0–100 and tolerates junk', () => {
   assert.equal(shell.scoreToPercent('50'), 0);
   assert.equal(shell.scoreToPercent('112'), 62);

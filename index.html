@@ -4,24 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ShirAmiram • שיראמיר״ם</title>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: { primary: '#6366f1', hover: '#4f46e5', success: '#10b981', error: '#ef4444' },
-            neon: { purple: '#6366f1', pink: '#f472b6', cyan: '#22d3ee' },
-            stage: { 950: '#07060f', 900: '#0f172a', 800: '#1e293b' }
-          },
-          boxShadow: {
-            glow: '0 0 40px rgba(99,102,241,0.35)',
-            'glow-pink': '0 0 28px rgba(244,114,182,0.4)'
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="css/tailwind.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Rubik:wght@400;500;600;700;800&family=Heebo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -61,10 +44,8 @@
       <h1 class="text-2xl font-bold text-neon-purple">שיראמיר״ם</h1>
       <span id="offline-badge" class="hidden text-xs px-2 py-0.5 rounded bg-amber-900/80 text-amber-200 border border-amber-700">מצב אופליין</span>
     </div>
-    <div class="flex items-center gap-2">
-      <button id="btn-install-pwa" type="button" class="hidden text-xs px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-bold hover:bg-indigo-500 shadow" style="min-height:44px">📲 התקן אפליקציה</button>
-    </div>
-    <div class="flex items-center gap-2">
+    <button id="btn-start-practice" type="button">התחל תרגול</button>
+    <div class="header-tools flex items-center gap-2">
       <button id="theme-toggle" type="button" aria-pressed="true" style="min-height:44px;min-width:44px">מצב בהיר</button>
       <button id="btn-play" type="button" aria-label="ניגון" aria-pressed="false" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition" style="min-height:44px;min-width:44px">▶️</button>
       <span id="timer" class="font-mono" aria-label="זמן ניגון">00:00</span>
@@ -75,13 +56,13 @@
   <nav class="flex bg-stage-800 p-2 gap-2" aria-label="מסכים">
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false">מרכז תרגול</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false" aria-label="מרכז תרגול">תרגול</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false">כרטיסיות SRS</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false" aria-label="כרטיסיות SRS">כרטיסיות</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false">מדד אמיר"ם</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false">שירים והמלצות</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false">Suno Studio</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false">קריוקי קולי</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false" aria-label="שירים והמלצות">שירים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false" aria-label="Suno Studio">Suno</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false" aria-label="קריוקי קולי">קריוקי</button>
   </nav>
 
   <!-- Content -->
@@ -91,11 +72,12 @@
       <!-- Today's song hero (v2 design). The title is a display name for the built-in original lyrics. -->
       <div id="song-hero" class="song-hero">
         <div class="hero-tags"><span>השיר של היום</span><span id="hero-words"></span></div>
-        <div class="hero-title" dir="ltr" lang="en">Hold the<br>Light</div>
+        <div class="hero-title" dir="ltr" lang="en">Hold the&nbsp;<br>Light</div>
         <div class="hero-sub" dir="ltr" lang="en">ShirAmiram Originals</div>
         <div class="hero-progress"><div class="hero-bar"><i id="hero-bar-fill"></i></div><span id="hero-time">00:00</span></div>
         <button id="hero-play" type="button" class="hero-cta">להתחיל לשיר</button>
       </div>
+      <button id="btn-install-pwa" type="button" class="install-secondary hidden" style="min-height:44px">התקן אפליקציה</button>
       <div class="mb-4">
         <div class="flex items-center gap-2 mb-2">
           <input id="seek" type="range" min="0" max="100" value="0" aria-label="מיקום בשיר" class="flex-1 progress-track">
@@ -177,20 +159,24 @@
       <h2 class="hub-title">מה מתרגלים היום?</h2>
       <div class="hub-grid">
         <button type="button" class="hub-card" data-hub-tab="flashcards" data-hub-tone="a">
-          <span class="hub-name">כרטיסיות</span>
-          <span class="hub-desc">חזרה מרווחת על מילים, עם הפיכת כרטיס ודירוג</span>
+          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5L12 12 4 7.5 12 3z"/><path d="M4 12l8 4.5L20 12"/><path d="M4 16.5L12 21l8-4.5"/></svg></span>
+          <span class="hub-copy"><span class="hub-name">כרטיסיות</span>
+          <span class="hub-desc">חזרה מרווחת על מילים, עם הפיכת כרטיס ודירוג</span></span>
         </button>
         <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-cloze" data-hub-tone="b">
-          <span class="hub-name">השלמת משפטים</span>
-          <span class="hub-desc">שאלות אמיר״ם עם ארבע תשובות והסבר</span>
+          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h7M13 12h7M4 17h16"/></svg></span>
+          <span class="hub-copy"><span class="hub-name">השלמת משפטים</span>
+          <span class="hub-desc">שאלות אמיר״ם עם ארבע תשובות והסבר</span></span>
         </button>
         <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-restatement" data-hub-tone="c">
-          <span class="hub-name">ניסוח מחדש</span>
-          <span class="hub-desc">בחירת המשפט ששומר על המשמעות</span>
+          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h10M4 12h16M4 17h8"/><path d="M17 15l3 3-3 3"/><path d="M20 18H11"/></svg></span>
+          <span class="hub-copy"><span class="hub-name">ניסוח מחדש</span>
+          <span class="hub-desc">בחירת המשפט ששומר על המשמעות</span></span>
         </button>
         <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-reading" data-hub-tone="d">
-          <span class="hub-name">הבנת הנקרא</span>
-          <span class="hub-desc">קטע קריאה עם מילים לחיצות ושאלות</span>
+          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6c-2.5-1.6-5.2-2-8-2v14c2.8 0 5.5.4 8 2 2.5-1.6 5.2-2 8-2V4c-2.8 0-5.5.4-8 2z"/><path d="M12 6v14"/></svg></span>
+          <span class="hub-copy"><span class="hub-name">הבנת הנקרא</span>
+          <span class="hub-desc">קטע קריאה עם מילים לחיצות ושאלות</span></span>
         </button>
       </div>
       <div id="quick-plan" class="plan-card">
@@ -207,18 +193,18 @@
 
     <!-- Quiz Tab -->
     <section id="quiz" class="tab-content hidden">
-      <div class="flex flex-wrap items-center gap-2 mb-3 p-1 bg-stage-900 rounded-lg border border-white/5 w-fit" role="group" aria-label="סוג מבחן אמיר״ם">
-        <button type="button" id="exam-type-cloze" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-indigo-600 text-white" aria-pressed="true">השלמת משפטים (Cloze)</button>
-        <button type="button" id="exam-type-restatement" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false">שחבור וניסוח מחדש (Restatements)</button>
-        <button type="button" id="exam-type-reading" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false">הבנת הנקרא (Reading Comprehension)</button>
+      <div class="exam-types flex flex-wrap items-center gap-2 mb-3 p-1 bg-stage-900 rounded-lg border border-white/5" role="group" aria-label="סוג מבחן אמיר״ם">
+        <button type="button" id="exam-type-cloze" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-indigo-600 text-white" aria-pressed="true" aria-label="השלמת משפטים (Cloze)">השלמה</button>
+        <button type="button" id="exam-type-restatement" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false" aria-label="שחבור וניסוח מחדש (Restatements)">שחבור</button>
+        <button type="button" id="exam-type-reading" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false" aria-label="הבנת הנקרא (Reading Comprehension)">קריאה</button>
       </div>
 
       <!-- Reading Comprehension Modes Bar -->
       <div id="reading-mode-bar" class="quiz-mode-bar hidden" role="group" aria-label="מצב הבנת הנקרא">
-        <button type="button" id="reading-mode-mix" aria-pressed="true">כל הקטעים (סימולציה)</button>
-        <button type="button" id="reading-mode-a" aria-pressed="false">טקסט רמה A (בסיס)</button>
-        <button type="button" id="reading-mode-b" aria-pressed="false">טקסט רמה B (ביניים)</button>
-        <button type="button" id="reading-mode-c" aria-pressed="false">טקסט רמה C (פטור)</button>
+        <button type="button" id="reading-mode-mix" aria-pressed="true" aria-label="כל הקטעים (סימולציה)">הכל</button>
+        <button type="button" id="reading-mode-a" aria-pressed="false" aria-label="טקסט רמה A (בסיס)">רמה A</button>
+        <button type="button" id="reading-mode-b" aria-pressed="false" aria-label="טקסט רמה B (ביניים)">רמה B</button>
+        <button type="button" id="reading-mode-c" aria-pressed="false" aria-label="טקסט רמה C (פטור)">רמה C</button>
       </div>
 
       <!-- Reading Passage Box (Displayed in reading mode) -->
@@ -239,20 +225,20 @@
 
       <!-- Restatement Modes Bar -->
       <div id="restatement-mode-bar" class="quiz-mode-bar hidden" role="group" aria-label="מצב שחבור">
-        <button type="button" id="restatement-mode-mix" aria-pressed="true">סימולציית שחבור (15 שאלות)</button>
-        <button type="button" id="restatement-mode-a" aria-pressed="false">שחבור רמה A</button>
-        <button type="button" id="restatement-mode-b" aria-pressed="false">שחבור רמה B</button>
-        <button type="button" id="restatement-mode-c" aria-pressed="false">שחבור רמה C</button>
+        <button type="button" id="restatement-mode-mix" aria-pressed="true" aria-label="סימולציית שחבור (15 שאלות)">סימולציה</button>
+        <button type="button" id="restatement-mode-a" aria-pressed="false" aria-label="שחבור רמה A">רמה A</button>
+        <button type="button" id="restatement-mode-b" aria-pressed="false" aria-label="שחבור רמה B">רמה B</button>
+        <button type="button" id="restatement-mode-c" aria-pressed="false" aria-label="שחבור רמה C">רמה C</button>
       </div>
 
       <!-- Cloze Modes Bar -->
       <div id="cloze-mode-bar" class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
-        <button type="button" id="quiz-mode-quick" aria-pressed="true">מבחן מהיר (10 שאלות)</button>
-        <button type="button" id="quiz-mode-full" aria-pressed="false">מבחן מלא (50 שאלות)</button>
-        <button type="button" id="quiz-mode-amiram-mix" aria-pressed="false">סימולציית אמיר"ם (25 שאלות)</button>
-        <button type="button" id="quiz-mode-amiram-a" aria-pressed="false">אמיר"ם רמה A</button>
-        <button type="button" id="quiz-mode-amiram-b" aria-pressed="false">אמיר"ם רמה B</button>
-        <button type="button" id="quiz-mode-amiram-c" aria-pressed="false">אמיר"ם רמה C</button>
+        <button type="button" id="quiz-mode-quick" aria-pressed="true" aria-label="מבחן מהיר (10 שאלות)">מהיר</button>
+        <button type="button" id="quiz-mode-full" aria-pressed="false" aria-label="מבחן מלא (50 שאלות)">מלא</button>
+        <button type="button" id="quiz-mode-amiram-mix" aria-pressed="false" aria-label="סימולציית אמיר״ם (25 שאלות)">אמיר״ם</button>
+        <button type="button" id="quiz-mode-amiram-a" aria-pressed="false" aria-label="אמיר״ם רמה A">רמה A</button>
+        <button type="button" id="quiz-mode-amiram-b" aria-pressed="false" aria-label="אמיר״ם רמה B">רמה B</button>
+        <button type="button" id="quiz-mode-amiram-c" aria-pressed="false" aria-label="אמיר״ם רמה C">רמה C</button>
       </div>
       <div id="quiz-progress" aria-live="polite">שאלה 0 מתוך 0</div>
       <div id="quiz-container" class="space-y-4">
@@ -1067,7 +1053,7 @@
           const optText = typeof opt === 'object' ? opt.text : opt;
           const btn = document.createElement('button');
           btn.type = 'button';
-          btn.className = 'quiz-opt bg-neon-pink rounded';
+          btn.className = 'quiz-opt';
           btn.textContent = optText;
           btn.addEventListener('click', () => {
             let right = false;
