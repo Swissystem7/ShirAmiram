@@ -224,8 +224,8 @@
 
 /* ---------- Buttons ---------- */
 :root[data-theme] main button.bg-indigo-600, :root[data-theme] main button.bg-neon-purple,
-:root[data-theme] main button.bg-neon-pink:not(.playlist-btn), :root[data-theme] main button.bg-pink-600,
-:root[data-theme] #quiz-reset, :root[data-theme] #btn-install-pwa,
+:root[data-theme] main button.bg-neon-pink:not(.playlist-btn):not(.quiz-opt), :root[data-theme] main button.bg-pink-600,
+:root[data-theme] #quiz-reset,
 :root[data-theme] #karaoke-start-btn {
   background: var(--accent) !important; color: var(--accent-ink) !important;
   border: 0; border-radius: var(--r-m) !important; min-height: 48px; padding-inline: var(--s5);
@@ -458,8 +458,8 @@
 
 /* Primary action */
 :root[data-theme] main button.bg-indigo-600, :root[data-theme] main button.bg-neon-purple,
-:root[data-theme] main button.bg-neon-pink:not(.playlist-btn), :root[data-theme] main button.bg-pink-600,
-:root[data-theme] #quiz-reset, :root[data-theme] #btn-install-pwa,
+:root[data-theme] main button.bg-neon-pink:not(.playlist-btn):not(.quiz-opt), :root[data-theme] main button.bg-pink-600,
+:root[data-theme] #quiz-reset,
 :root[data-theme] #karaoke-start-btn {
   border-radius: var(--r-pill) !important; min-height: 52px; font-size: 16px;
 }
@@ -500,7 +500,7 @@
 :root[data-theme] .lyrics-active { color: var(--ink); font-weight: 800; font-size: 26px; line-height: 1.25; letter-spacing: -.02em; }
 :root[data-theme] .vocab-badge, :root[data-theme] .rc-target-word {
   background: var(--surface-3) !important; color: var(--accent-text) !important;
-  border-radius: var(--r-pill); padding: 1px 10px; margin: 0 2px; font-weight: 700;
+  border-radius: var(--r-pill); padding: 0 4px; margin: 0; font-weight: 700;
 }
 :root[data-theme] .lyrics-active .vocab-badge { background: var(--accent) !important; color: var(--accent-ink) !important; box-shadow: var(--glow); }
 :root[data-theme] .wave-bar { background: var(--accent-text); }
@@ -518,7 +518,7 @@
 /* Quiz */
 :root[data-theme] .quiz-q p { font-family: var(--sans); font-weight: 600; font-size: 19px; }
 :root[data-theme] .quiz-opt {
-  min-height: 64px; padding: 10px 16px; border: 0 !important; border-radius: var(--r-l) !important;
+  min-height: 56px; padding: 10px 16px; border: 0 !important; border-radius: var(--r-l) !important;
   background: var(--surface-2) !important; box-shadow: inset 0 0 0 2px transparent !important; font-size: 17px;
 }
 :root[data-theme] .quiz-opt:hover:not(:disabled) { background: var(--surface-3) !important; }
@@ -764,3 +764,136 @@
 .conf-badge[data-tone="red"] { box-shadow: inset 0 0 0 1px var(--bad); }
 
 @media (prefers-reduced-motion: reduce) { .xp-bar > span { transition: none; } }
+
+/* ==========================================================================
+   Polish pass (15 Nov 2026)
+   The mini player and the bottom nav sit in the page column, so the main
+   area ends above them. Highlighted English words keep a hard space, quiz
+   answers rest as dark pills, and the phone chrome shrinks during practice.
+   ========================================================================== */
+
+:root[data-theme] html,
+:root[data-theme] body { height: 100%; }
+:root[data-theme] body {
+  height: 100dvh; max-height: 100dvh; overflow: hidden;
+  display: flex !important; flex-direction: column;
+}
+:root[data-theme] main {
+  flex: 1 1 auto; min-height: 0; overflow: auto;
+  padding-bottom: var(--s4) !important;
+}
+#bottom-nav {
+  position: relative; inset: auto; bottom: auto; flex: none;
+  margin: 0 12px calc(12px + env(safe-area-inset-bottom, 0px));
+}
+#mini-player {
+  position: relative; inset: auto; left: auto; right: auto; bottom: auto;
+  transform: none; width: auto; flex: none; margin: 8px 12px 8px;
+}
+@media (min-width: 900px) {
+  #bottom-nav { position: relative; top: auto; order: 1; margin: 8px auto; }
+  #mini-player { order: 4; width: min(420px, calc(100% - 32px)); margin: 0 auto 16px; }
+  :root[data-theme] main { padding-bottom: var(--s6) !important; }
+  :root[data-theme] body.has-mini main { padding-bottom: var(--s6) !important; }
+}
+:root[data-theme] body.has-mini main { padding-bottom: var(--s4) !important; }
+
+/* Header: "התחל תרגול" is the lime action. Install stays a quiet secondary. */
+:root[data-theme] header {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center; column-gap: 8px; row-gap: 8px;
+}
+:root[data-theme] header > div:first-child { grid-column: 1; grid-row: 1; min-width: 0; }
+:root[data-theme] #btn-start-practice { grid-column: 2; grid-row: 1; }
+:root[data-theme] header .header-tools { grid-column: 3; grid-row: 1; }
+#btn-start-practice {
+  min-height: 44px; padding: 0 18px; border: 0; border-radius: var(--r-pill); cursor: pointer;
+  background: var(--accent); color: var(--accent-ink); font-family: var(--sans);
+  font-weight: 700; font-size: 16px; line-height: 1; box-shadow: var(--glow); white-space: nowrap;
+}
+#btn-start-practice:hover { filter: brightness(1.05); }
+:root[data-theme] #btn-install-pwa,
+:root[data-theme] button.install-secondary {
+  background: var(--surface) !important; color: var(--ink-2) !important;
+  border: 1px solid var(--line) !important; box-shadow: none !important;
+  border-radius: var(--r-pill) !important; min-height: 44px; padding: 0 16px;
+  font-size: 14px; font-weight: 600; width: auto;
+}
+:root[data-theme] #btn-install-pwa.hidden { display: none !important; }
+
+/* Songs sub-nav must wrap instead of clipping "קריוקי". */
+@media (max-width: 700px) {
+  :root[data-theme] nav[aria-label="מסכים"] { flex-wrap: wrap; overflow: visible; }
+}
+
+/* Practice on a phone: one compact row of real buttons, then the question. */
+:root[data-theme] .exam-types {
+  width: 100%; background: transparent !important; border: 0 !important; padding: 0 !important;
+  box-shadow: none !important;
+}
+:root[data-theme] [id^="exam-type-"][aria-pressed="false"] {
+  background: var(--surface) !important; color: var(--ink) !important;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+:root[data-theme] [id^="exam-type-"][aria-pressed="true"] {
+  background: var(--ink) !important; color: var(--bg) !important; box-shadow: none;
+}
+:root[data-theme] .quiz-mode-bar:not(.hidden) {
+  display: flex !important; flex-wrap: wrap; gap: 8px; width: 100%; margin: 0;
+}
+:root[data-theme] .quiz-mode-bar.hidden { display: none !important; }
+:root[data-theme] .quiz-mode-bar button {
+  width: auto !important; flex: none; min-height: 44px; padding: 0 14px !important; font-size: 14px;
+}
+@media (max-width: 640px) {
+  :root[data-theme] .quiz-mode-bar:not(.hidden) { flex-wrap: nowrap; overflow-x: auto; gap: 6px; }
+  :root[data-theme] .quiz-mode-bar button { padding: 0 10px !important; font-size: 13px; }
+  :root[data-theme] main button.quiz-opt { min-height: 48px; }
+}
+:root[data-theme] .rc-passage-box { max-height: min(280px, calc(100dvh - 380px)); }
+@media (max-width: 640px) {
+  :root[data-theme] header { grid-template-columns: minmax(0, 1fr) auto; }
+  :root[data-theme] header .header-tools { grid-column: 2; grid-row: 1; }
+  :root[data-theme] #btn-start-practice { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+  body.is-practicing header { padding: 8px 12px; }
+  body.is-practicing header h1,
+  body.is-practicing header h1.text-neon-purple { font-size: 20px; }
+  body.is-practicing #btn-start-practice,
+  body.is-practicing #btn-install-pwa { display: none !important; }
+  body.is-practicing nav[aria-label="מסכים"] { padding: 6px 12px 0; }
+}
+
+/* Answers rest as dark pills with light text. Lime is the selection. */
+:root[data-theme] main button.quiz-opt {
+  background: var(--surface-2) !important; color: var(--ink) !important; opacity: 1;
+}
+:root[data-theme] main button.quiz-opt:hover:not(:disabled) {
+  background: var(--surface-3) !important; color: var(--ink) !important;
+}
+:root[data-theme] main button.quiz-opt.selected {
+  background: var(--accent) !important; color: var(--accent-ink) !important; opacity: 1;
+}
+:root[data-theme] main button.quiz-opt:disabled { opacity: 1; }
+
+/* Featured practice card: a real icon, and no empty lime field. */
+.hub-icon {
+  position: absolute; top: 14px; inset-inline-start: 14px; z-index: 1;
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  color: var(--cover-ink); pointer-events: none;
+}
+.hub-icon svg {
+  width: 22px; height: 22px; stroke: currentColor; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.hub-copy { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.hub-card:first-child {
+  flex-direction: row; align-items: center; justify-content: flex-start;
+  gap: 14px; min-height: 96px; padding: 16px 18px;
+}
+.hub-card:first-child::before { display: none; }
+.hub-card:first-child .hub-icon {
+  position: relative; top: auto; inset-inline-start: auto; flex: none;
+  background: var(--accent-ink); border-radius: 12px; color: var(--accent);
+}
+:root[data-theme] .srs-card-back .opacity-60 { opacity: 1; font-weight: 600; }
