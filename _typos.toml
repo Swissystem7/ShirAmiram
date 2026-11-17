@@ -1,0 +1,5 @@
+# typos (crate-ci) settings for dell-ci/full-gate.
+# fonts/ holds binary .woff2 files and an @font-face sheet of unicode-range codes (U+20BA ...),
+# not prose; scanning them only yields false positives.
+[files]
+extend-exclude = ["fonts/"]

@@ -12,6 +12,10 @@ Updated: 2026-11-17 (Claude Code, branch `fix/a11y-biome`)
 - Note: `npm run check:size` already fails on main (index.html, src/*.js, css/* over their limits); this
   branch does not add to it (fonts.css lives in fonts/, index.html got smaller).
 
+- 17.11 17:07: dell-ci/full-gate failed on `typos` (51 false positives inside the binary .woff2 files).
+  Added `_typos.toml` with `extend-exclude = ["fonts/"]` (coordinator decision). Local typos 1.52.2:
+  0 hits under fonts/, also with --binary.
+
 ## Next step
 - Wait for CI on the PR. Claude Code never merges; the servers merge.
 
