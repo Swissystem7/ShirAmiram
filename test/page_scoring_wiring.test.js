@@ -9,7 +9,7 @@ const vm = require('node:vm');
 
 const ROOT = path.join(__dirname, '..');
 const HTML = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-const PAGE_SCRIPTS = [...HTML.matchAll(/<script src="([^"]+)"><\/script>/g)].map((m) => m[1]).filter((src) => !/^https?:/.test(src));
+const PAGE_SCRIPTS = [...HTML.matchAll(/<script (?:defer )?src="([^"]+)"><\/script>/g)].map((m) => m[1]).filter((src) => !/^https?:/.test(src));
 
 function browserRun(files) {
   const sandbox = { console };

@@ -118,7 +118,7 @@ test('index.html loads every engine the widgets use, before the page script', ()
   const pageScript = html.indexOf('const A = window.ShirAmiram;');
   assert.ok(pageScript > 0);
   for (const name of needed) {
-    const at = html.indexOf('<script src="src/' + name + '.js"></script>');
+    const at = html.indexOf('<script defer src="src/' + name + '.js"></script>');
     assert.ok(at > 0 && at < pageScript, name + ' must load before the page script');
     assert.ok(sw.includes("'./src/" + name + ".js'"), name + ' must be precached for offline use');
   }

@@ -212,7 +212,7 @@ test('the page wires the game into flashcards, practice, analytics and the offli
   assert.match(html, /<input id="alias-input"[^>]*dir="ltr" lang="en"/);
   assert.match(html, /id="alias-clues" class="alias-clues" aria-live="polite"/);
   for (const f of ['alias_clues_data', 'alias_engine', 'alias_ui']) {
-    assert.ok(html.includes(`<script src="src/${f}.js"></script>`), f);
+    assert.ok(html.includes(`<script defer src="src/${f}.js"></script>`), f);
     assert.ok(sw.includes(`'./src/${f}.js'`), `${f} precached`);
   }
   const shell = require('../src/ui_shell.js');

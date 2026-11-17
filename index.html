@@ -696,39 +696,42 @@
   </div>
   <nav id="bottom-nav" aria-label="ניווט ראשי"></nav>
 
-  <script src="app.js"></script>
-  <script src="src/amiram_vocab_data.js"></script>
-  <script src="src/amiram_restatements_data.js"></script>
-  <script src="src/amiram_reading_data.js"></script>
-  <script src="src/vocab.js"></script>
-  <script src="src/suno_generator.js"></script>
-  <script src="src/audio_player.js"></script>
-  <script src="src/exam_simulator.js"></script>
-  <script src="src/srs_leitner.js"></script>
-  <script src="src/analytics.js"></script>
-  <script src="src/speech.js"></script>
-  <script src="src/restatement_simulator.js"></script>
-  <script src="src/pronunciation_hint.js"></script>
-  <script src="src/difficulty_estimator.js"></script>
-  <script src="src/song_karaoke.js"></script>
-  <script src="src/reading_comprehension.js"></script>
-  <script src="src/karaoke_scoring.js"></script>
-  <script src="src/daily_challenge_scheduler.js"></script>
-  <script src="src/karaoke.js"></script>
-  <script src="src/xp_engine.js"></script>
-  <script src="src/study_streak_badges.js"></script>
-  <script src="src/review_calendar_grid.js"></script>
-  <script src="src/confidence_score_estimator.js"></script>
-  <script src="src/export_summary_formatter.js"></script>
-  <script src="src/song_recommender.js"></script>
-  <script src="src/study_session_optimizer.js"></script>
-  <script src="src/progress_tracker.js"></script>
-  <script src="src/progress_ui.js"></script>
-  <script src="src/alias_clues_data.js"></script>
-  <script src="src/alias_engine.js"></script>
-  <script src="src/alias_ui.js"></script>
-  <script src="src/ui_shell.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="src/amiram_vocab_data.js"></script>
+  <script defer src="src/amiram_restatements_data.js"></script>
+  <script defer src="src/amiram_reading_data.js"></script>
+  <script defer src="src/vocab.js"></script>
+  <script defer src="src/suno_generator.js"></script>
+  <script defer src="src/audio_player.js"></script>
+  <script defer src="src/exam_simulator.js"></script>
+  <script defer src="src/srs_leitner.js"></script>
+  <script defer src="src/analytics.js"></script>
+  <script defer src="src/speech.js"></script>
+  <script defer src="src/restatement_simulator.js"></script>
+  <script defer src="src/pronunciation_hint.js"></script>
+  <script defer src="src/difficulty_estimator.js"></script>
+  <script defer src="src/song_karaoke.js"></script>
+  <script defer src="src/reading_comprehension.js"></script>
+  <script defer src="src/karaoke_scoring.js"></script>
+  <script defer src="src/daily_challenge_scheduler.js"></script>
+  <script defer src="src/karaoke.js"></script>
+  <script defer src="src/xp_engine.js"></script>
+  <script defer src="src/study_streak_badges.js"></script>
+  <script defer src="src/review_calendar_grid.js"></script>
+  <script defer src="src/confidence_score_estimator.js"></script>
+  <script defer src="src/export_summary_formatter.js"></script>
+  <script defer src="src/song_recommender.js"></script>
+  <script defer src="src/study_session_optimizer.js"></script>
+  <script defer src="src/progress_tracker.js"></script>
+  <script defer src="src/progress_ui.js"></script>
+  <script defer src="src/alias_clues_data.js"></script>
+  <script defer src="src/alias_engine.js"></script>
+  <script defer src="src/alias_ui.js"></script>
+  <script defer src="src/ui_shell.js"></script>
   <script>
+  // The scripts above load with defer, so this start-up waits for them: DOMContentLoaded fires after
+  // every deferred script has run, and before the DOMContentLoaded init of progress_ui.js and ui_shell.js.
+  document.addEventListener('DOMContentLoaded', () => {
     const A = window.ShirAmiram;
     const $ = (id) => document.getElementById(id);
     const esc = (v) => String(v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1974,8 +1977,10 @@
       });
     })();
 
-    showTab('vocab');
+    // ui_shell.js opens on the song tab right after this; starting there avoids hiding and re-showing it.
+    showTab('song');
     paint();
+  });
 </script>
 </body>
 </html>

@@ -602,6 +602,9 @@
     show('alias-start');
   }
 
-  if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', () => safely(init));
+  // Loaded with defer the document is already 'interactive', but init must still wait for the page's
+  // own DOMContentLoaded start-up in index.html, as it did when the scripts were not deferred.
+  const deferred = !!(doc.currentScript && doc.currentScript.defer);
+  if (doc.readyState === 'loading' || deferred) doc.addEventListener('DOMContentLoaded', () => safely(init));
   else safely(init);
 })(typeof window !== 'undefined' ? window : globalThis);
