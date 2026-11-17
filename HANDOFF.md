@@ -15,6 +15,9 @@ Updated: 2026-11-17 (Claude Code, branch `fix/a11y-biome`)
 - 17.11 17:07: dell-ci/full-gate failed on `typos` (51 false positives inside the binary .woff2 files).
   Added `_typos.toml` with `extend-exclude = ["fonts/"]` (coordinator decision). Local typos 1.52.2:
   0 hits under fonts/, also with --binary.
+- The gate still failed (it likely passes changed files by name, which bypasses extend-exclude). Added
+  `[type.woff2]` (*.woff2) and `[type.fontfacecss]` (fonts.css) with `check-file = false`: typos never reads
+  their contents, however it is called. Local check with the changed files passed by name: 0 hits, rc 0.
 
 ## Next step
 - Wait for CI on the PR. Claude Code never merges; the servers merge.

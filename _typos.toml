@@ -3,3 +3,12 @@
 # not prose; scanning them only yields false positives.
 [files]
 extend-exclude = ["fonts/"]
+
+# The gate may pass changed files by name, which bypasses extend-exclude: never read font files as text.
+[type.woff2]
+extend-glob = ["*.woff2"]
+check-file = false
+
+[type.fontfacecss]
+extend-glob = ["fonts.css"]
+check-file = false
