@@ -81,14 +81,14 @@
 
   function recordedAnswer(session, question, index, id, reviewById) {
     var maps = [session.answers, session.responses, session.userAnswers];
-    for (var m = 0; m < maps.length; m++) {
-      var map = maps[m];
+    for (let m = 0; m < maps.length; m++) {
+      let map = maps[m];
       if (Array.isArray(map) && map[index] !== undefined) return map[index];
       if (isObj(map) && map[id] !== undefined) return map[id];
     }
     if (isObj(question)) {
-      var fields = ['userAnswer', 'selectedAnswer', 'selected', 'givenAnswer', 'response'];
-      for (var f = 0; f < fields.length; f++) {
+      let fields = ['userAnswer', 'selectedAnswer', 'selected', 'givenAnswer', 'response'];
+      for (let f = 0; f < fields.length; f++) {
         if (question[fields[f]] !== undefined) return question[fields[f]];
       }
     }
@@ -126,7 +126,7 @@
         return answer.trim() !== '' && !Number.isNaN(Number(answer));
       }
       if (options) {
-        var wanted = answer.trim().toLowerCase();
+        let wanted = answer.trim().toLowerCase();
         return options.some(function (opt) {
           return String(opt).trim().toLowerCase() === wanted;
         });
@@ -164,8 +164,8 @@
 
   function categoryOf(question) {
     var fields = ['category', 'part_of_speech', 'pos'];
-    for (var i = 0; i < fields.length; i++) {
-      var v = question[fields[i]];
+    for (let i = 0; i < fields.length; i++) {
+      let v = question[fields[i]];
       if (typeof v === 'string' && v.trim()) return v.trim();
     }
     return 'unknown';
@@ -206,8 +206,8 @@
       if (isCorrectAnswer(question, answer)) {
         if (!seenCorrect[word]) { seenCorrect[word] = true; correctWords.push(word); }
       } else {
-        var category = categoryOf(question);
-        var key = word + '\u0000' + category + '\u0000' + id;
+        let category = categoryOf(question);
+        let key = word + '\u0000' + category + '\u0000' + id;
         if (!seenError[key]) {
           seenError[key] = true;
           errors.push({ word: word, category: category, questionId: id });
