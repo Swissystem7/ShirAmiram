@@ -6,6 +6,9 @@
   <title>ShirAmiram • שיראמיר״ם</title>
   <meta name="description" content="שיראמיר״ם: לומדים את אוצר המילים של אמיר״ם דרך מילים של שירים, עם תרגול, מבחנים וכרטיסיות. עובד בדפדפן, גם בלי רשת.">
   <link rel="stylesheet" href="css/tailwind.css">
+  <link rel="preload" href="fonts/rubik-hebrew.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/rubik-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="fonts/fonts.css">
   <style>
     body {font-family:'Heebo',system-ui,sans-serif;background:#0f172a;color:#f8fafc;}
@@ -53,13 +56,13 @@
 
   <!-- Tabs -->
   <nav class="flex bg-stage-800 p-2 gap-2" aria-label="מסכים">
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false" aria-label="מרכז תרגול">תרגול</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false" aria-label="כרטיסיות SRS">כרטיסיות</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="alias" aria-pressed="false">משחק מילים</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false">מדד אמיר"ם</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="true">שיר</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false" hidden>אוצר מילים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false" hidden aria-label="מרכז תרגול">תרגול</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false" hidden>מבחן</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false" hidden aria-label="כרטיסיות SRS">כרטיסיות</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="alias" aria-pressed="false" hidden>משחק מילים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false" hidden>מדד אמיר"ם</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false" aria-label="שירים והמלצות">שירים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false" aria-label="Suno Studio">Suno</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false" aria-label="קריוקי קולי">קריוקי</button>
@@ -742,11 +745,14 @@
     const esc = (v) => String(v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
     // Tabs
+    // The 300-row word table is built the first time its screen opens, not at start-up (it is hidden then).
+    let vocabBuilt = false;
     function showTab(id) {
       const quizWasHidden = $('quiz').classList.contains('hidden');
       document.querySelectorAll('.tab-content').forEach((sec) => { sec.classList.toggle('hidden', sec.id !== id); });
       document.querySelectorAll('.tab-btn').forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.tab === id)); });
       if (id === 'quiz' && quizWasHidden) quizShownAt = Date.now();
+      if (id === 'vocab' && !vocabBuilt) { vocabBuilt = true; renderVocab(); }
     }
     document.querySelectorAll('.tab-btn').forEach((btn) => { btn.addEventListener('click', () => showTab(btn.dataset.tab)); });
 
@@ -849,7 +855,7 @@
     $('vocab-filters').innerHTML = A.CATEGORIES.map((c) => '<button type="button" class="playlist-btn px-2 py-1 bg-neon-pink rounded" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.he) + '</button>').join('');
     document.querySelectorAll('.playlist-btn').forEach((b) => { b.addEventListener('click', () => { category = b.dataset.cat; renderVocab(); }); });
     $('vocab-search').addEventListener('input', renderVocab);
-    renderVocab();
+    if (!$('vocab').classList.contains('hidden')) { vocabBuilt = true; renderVocab(); }
 
     // A highlighted word in the song shows its translation and example
     document.querySelectorAll('.vocab-badge').forEach((b) => { b.addEventListener('click', () => {
@@ -941,7 +947,7 @@
         .then(data => {
           if (Array.isArray(data)) {
             AMIRAM_VOCAB = data;
-            renderVocab();
+            if (vocabBuilt) renderVocab();
           }
         })
         .catch(() => {});
