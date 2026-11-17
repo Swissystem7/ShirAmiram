@@ -34,15 +34,15 @@ function runDeferred(file, readyState, deferred) {
     documentElement: { getAttribute: () => null, setAttribute() {} },
   };
   // progress_ui.js needs its tracker to be present; init only runs later, so the stub is never called
-  const sandbox = { console, document: doc, setTimeout: () => 0, ShirAmiramProgress: { load: () => ({}) } };
+  const sandbox = { console, document: doc, setTimeout: () => 0, ShirAmiramProgress: { load: () => ({}) }, ShirAmiramAlias: { load: () => ({}) } };
   sandbox.window = sandbox;
   vm.createContext(sandbox);
   vm.runInContext(fs.readFileSync(path.join(ROOT, file), 'utf8'), sandbox, { filename: file });
   return listeners.filter(([type]) => type === 'DOMContentLoaded').length;
 }
 
-test('progress_ui.js and ui_shell.js wait for DOMContentLoaded when deferred, as they did while loading', () => {
-  for (const file of ['src/progress_ui.js', 'src/ui_shell.js']) {
+test('progress_ui.js, alias_ui.js and ui_shell.js wait for DOMContentLoaded when deferred, as they did while loading', () => {
+  for (const file of ['src/progress_ui.js', 'src/alias_ui.js', 'src/ui_shell.js']) {
     assert.equal(runDeferred(file, 'loading', false), 1, file + ' while loading');
     assert.equal(runDeferred(file, 'interactive', true), 1, file + ' when deferred');
   }

@@ -6,7 +6,7 @@
 
   var GROUPS = [
     { id: 'words', label: 'מילים', tabs: ['vocab'] },
-    { id: 'practice', label: 'תרגול', tabs: ['practice', 'quiz', 'flashcards'] },
+    { id: 'practice', label: 'תרגול', tabs: ['practice', 'quiz', 'flashcards', 'alias'] },
     { id: 'songs', label: 'שירים', tabs: ['song', 'songs', 'suno', 'karaoke'] },
     { id: 'progress', label: 'התקדמות', tabs: ['dashboard'] }
   ];
@@ -14,7 +14,7 @@
   var THEME_COLORS = { light: '#F3F4EF', dark: '#0B0C10' };
 
   function groupForTab(tabId) {
-    for (var i = 0; i < GROUPS.length; i++) {
+    for (let i = 0; i < GROUPS.length; i++) {
       if (GROUPS[i].tabs.indexOf(tabId) !== -1) return GROUPS[i];
     }
     return null;
@@ -30,6 +30,8 @@
 
   var EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{23E9}-\u{23FF}\u{25B6}\u{25C0}]️?/gu;
 
+  var HAS_EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{23E9}-\u{23FF}\u{25B6}\u{25C0}]/u;
+
   function stripEmoji(text) {
     return String(text).replace(EMOJI, '').replace(/️/g, '').replace(/^[ \t]+/, '').replace(/[ \t]{2,}/g, ' ');
   }
@@ -40,8 +42,35 @@
     return Math.max(0, Math.min(100, Math.round(n - 50)));
   }
 
+  var NBSP = '\u00A0';
+  var PUNCT_AFTER = /^[,.;:!?%)\]\}]/;
+
+  // Hard space around a highlighted word, and no space before punctuation.
+  // prev/next are the neighbouring text nodes, or null when there is none.
+  function adjustHighlightNeighbors(prev, next) {
+    var outPrev = prev;
+    var outNext = next;
+    if (typeof outPrev === 'string' && /\S/.test(outPrev)) {
+      outPrev = outPrev.replace(/[\s\u00A0]+$/, '') + NBSP;
+    }
+    if (typeof outNext === 'string') {
+      const rest = outNext.replace(/^[\s\u00A0]+/, '');
+      if (rest && PUNCT_AFTER.test(rest)) outNext = rest;
+      else if (rest) outNext = NBSP + rest;
+    }
+    return { prev: outPrev, next: outNext };
+  }
+
+  // "Hold the" + a line break + "Light" must stay two words when read as text.
+  function ensureBreakSpace(prev) {
+    if (typeof prev !== 'string') return prev;
+    if (/\S/.test(prev) && !/[ \t\u00A0]$/.test(prev)) return prev + NBSP;
+    return prev;
+  }
+
   var api = { GROUPS: GROUPS, groupForTab: groupForTab, normalizeTheme: normalizeTheme, nextTheme: nextTheme,
-    stripEmoji: stripEmoji, scoreToPercent: scoreToPercent };
+    stripEmoji: stripEmoji, scoreToPercent: scoreToPercent,
+    adjustHighlightNeighbors: adjustHighlightNeighbors, ensureBreakSpace: ensureBreakSpace };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.ShirAmiramShell = api;
 
@@ -75,7 +104,7 @@
     if (meta) meta.setAttribute('content', THEME_COLORS[theme]);
     var btn = doc.getElementById('theme-toggle');
     if (btn) {
-      var label = theme === 'dark' ? 'מצב בהיר' : 'מצב כהה';
+      let label = theme === 'dark' ? 'מצב בהיר' : 'מצב כהה';
       btn.innerHTML = svg(theme === 'dark' ? UI_ICONS.sun : UI_ICONS.moon);
       btn.setAttribute('aria-label', label);
       btn.title = label;
@@ -106,7 +135,7 @@
 
     function visibleTab() {
       var sections = doc.querySelectorAll('.tab-content');
-      for (var i = 0; i < sections.length; i++) {
+      for (let i = 0; i < sections.length; i++) {
         if (!sections[i].classList.contains('hidden')) return sections[i].id;
       }
       return null;
@@ -127,6 +156,7 @@
         if (b.dataset.group === group.id) b.setAttribute('aria-current', 'page');
         else b.removeAttribute('aria-current');
       });
+      doc.body.classList.toggle('is-practicing', tabId === 'quiz' || tabId === 'flashcards');
     }
 
     GROUPS.forEach(function (group) {
@@ -145,7 +175,7 @@
     // Tabs also change from inside the page (for example the empty-state button),
     // so follow the sections themselves instead of the clicks.
     if (root.MutationObserver) {
-      var observer = new root.MutationObserver(sync);
+      let observer = new root.MutationObserver(sync);
       doc.querySelectorAll('.tab-content').forEach(function (sec) {
         observer.observe(sec, { attributes: true, attributeFilter: ['class'] });
       });
@@ -199,7 +229,7 @@
     if (root.MutationObserver) {
       new root.MutationObserver(paint).observe(play, { attributes: true, attributeFilter: ['aria-pressed'] });
       if (timer) new root.MutationObserver(paint).observe(timer, { childList: true, characterData: true, subtree: true });
-      var song = doc.getElementById('song');
+      let song = doc.getElementById('song');
       if (song) new root.MutationObserver(placeMini).observe(song, { attributes: true, attributeFilter: ['class'] });
     }
     if (seek) seek.addEventListener('input', paint);
@@ -232,7 +262,7 @@
     var songs = doc.getElementById('songs');
     if (!songs) return;
     var firstRule = null;
-    for (var i = 0; i < songs.children.length; i++) {
+    for (let i = 0; i < songs.children.length; i++) {
       if (songs.children[i].tagName === 'HR') { firstRule = songs.children[i]; break; }
     }
     if (!firstRule) return;
@@ -243,20 +273,41 @@
     details.appendChild(summary);
     songs.insertBefore(details, firstRule);
     var node = firstRule;
-    while (node) { var next = node.nextSibling; details.appendChild(node); node = next; }
+    while (node) { let next = node.nextSibling; details.appendChild(node); node = next; }
     var status = doc.getElementById('content-status');
     var coverage = status && status.nextElementSibling;
     if (coverage && coverage.tagName === 'P') details.insertBefore(coverage, summary.nextSibling);
+  }
+
+  function spaceHighlights(scope) {
+    if (!scope || !scope.querySelectorAll) return;
+    scope.querySelectorAll('.vocab-badge, .rc-target-word, .teleprompter-token-btn, .karaoke-word').forEach(function (el) {
+      var prev = el.previousSibling;
+      var next = el.nextSibling;
+      var prevText = prev && prev.nodeType === 3 ? prev.nodeValue : null;
+      var nextText = next && next.nodeType === 3 ? next.nodeValue : null;
+      var edited = adjustHighlightNeighbors(prevText, nextText);
+      if (prev && prev.nodeType === 3 && edited.prev !== prevText && edited.prev != null) prev.nodeValue = edited.prev;
+      if (next && next.nodeType === 3 && edited.next !== nextText && edited.next != null) next.nodeValue = edited.next;
+    });
+    scope.querySelectorAll('.hero-title br').forEach(function (br) {
+      var prev = br.previousSibling;
+      if (!prev || prev.nodeType !== 3) return;
+      var fixed = ensureBreakSpace(prev.nodeValue);
+      if (fixed !== prev.nodeValue) prev.nodeValue = fixed;
+    });
   }
 
   function polish(scope) {
     // Emoji used as icons read as unfinished: labels keep their text, icon-only buttons get a drawn icon.
     var walker = doc.createTreeWalker(scope, 4, null);
     var nodes = [], n;
-    while ((n = walker.nextNode())) nodes.push(n);
+    for (n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
     nodes.forEach(function (t) {
       var el = t.parentElement;
       if (!el || /^(SCRIPT|STYLE|TEXTAREA|PRE|OPTION)$/.test(el.tagName)) return;
+      // Only text that holds an emoji is touched; otherwise the space after <b>10</b> would be lost.
+      if (!HAS_EMOJI.test(t.nodeValue)) return;
       var clean = stripEmoji(t.nodeValue);
       if (clean === t.nodeValue) return;
       var speaker = t.nodeValue.indexOf('🔊') !== -1;
@@ -269,6 +320,7 @@
         t.nodeValue = clean;
       }
     });
+    spaceHighlights(scope);
     if (scope.querySelectorAll) {
       scope.querySelectorAll('#vocab-table tr').forEach(function (tr) {
         var m = /רמה\s*([ABC])/.exec(tr.textContent || '');
@@ -295,7 +347,13 @@
     root.setTimeout(function () { goTab('song'); }, 0);
   }
 
-  function initScreens() { initPlayer(); initHub(); initScoreRing(); initAdvanced(); initPolish(); initLanding(); }
+  function initStartPractice() {
+    var btn = doc.getElementById('btn-start-practice');
+    if (!btn) return;
+    btn.addEventListener('click', function () { goTab('practice'); });
+  }
+
+  function initScreens() { initPlayer(); initHub(); initScoreRing(); initAdvanced(); initStartPractice(); initPolish(); initLanding(); }
 
   function initFreshness() {
     // Right after a release the page can arrive new while cached styles and scripts are still

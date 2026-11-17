@@ -111,3 +111,14 @@ test('8. pickDistractors does not treat missing POS tags as a same-POS match', (
   assert.equal(new Set(q.options).size, 4);
   assert.ok(q.options.includes('target'));
 });
+
+test('9. buildQuestion treats regex characters in the word literally', () => {
+  const pool = vocab.slice(0, 10);
+  // "a.b" used to be a pattern where "." matched any letter, so "axb" was blanked instead of "a.b"
+  const dotted = Exam.buildQuestion({ id: 'x1', word: 'a.b', sample_sentence: 'Not axb but a.b here.' }, pool);
+  assert.equal(dotted.question, 'Not axb but ______ here.');
+  // "c++" used to throw "Nothing to repeat"
+  const plus = Exam.buildQuestion({ id: 'x2', word: 'C++', sample_sentence: 'I write c++ every day.' }, pool);
+  assert.equal(plus.question, 'I write ______ every day.');
+  assert.equal(plus.answer, 'c++');
+});

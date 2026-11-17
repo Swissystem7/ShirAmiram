@@ -26,5 +26,6 @@ function scriptsFromHtml() {
 module.exports = {
   $schema: 'https://unpkg.com/knip@6/schema.json',
   entry: [...scriptsFromHtml(), ...['sw.js', 'test/**/*.js']],
-  project: ['*.js', 'src/**/*.js', 'test/**/*.js'],
+  project: ['*.js', 'src/**/*.js', 'test/**/*.js', '!tailwind.config.js'],
+  ignoreDependencies: ['tailwindcss'],
 };
