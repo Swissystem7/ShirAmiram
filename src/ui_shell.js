@@ -332,13 +332,65 @@
   function initPolish() {
     var main = doc.querySelector('main');
     if (!main || !doc.createTreeWalker) return;
-    polish(doc.body);
-    if (!root.MutationObserver) return;
+    // What is on screen is polished now; hidden screens wait for an idle moment or for the moment they
+    // open, whichever comes first. Walking the whole page at start-up was the longest task on a phone.
+    var waiting = [];
+    Array.prototype.forEach.call(main.children, function (el) {
+      if (el.classList.contains('tab-content') && el.classList.contains('hidden')) waiting.push(el);
+    });
+    Array.prototype.forEach.call(doc.body.children, function (el) {
+      if (el === main) {
+        Array.prototype.forEach.call(main.children, function (c) { if (waiting.indexOf(c) === -1) polish(c); });
+      } else if (el.tagName !== 'SCRIPT') {
+        polish(el);
+      }
+    });
+    function take(el) {
+      var i = waiting.indexOf(el);
+      if (i === -1) return;
+      waiting.splice(i, 1);
+      polish(el);
+    }
+    var idle = root.requestIdleCallback || function (fn) { return root.setTimeout(fn, 50); };
+    function drain() {
+      if (!waiting.length) return;
+      take(waiting[0]);
+      if (waiting.length) idle(drain, { timeout: 2000 });
+    }
+    idle(drain, { timeout: 2000 });
+    if (!root.MutationObserver) {
+      while (waiting.length) take(waiting[0]);
+      return;
+    }
+    waiting.slice().forEach(function (sec) {
+      var obs = new root.MutationObserver(function () {
+        if (!sec.classList.contains('hidden')) { take(sec); obs.disconnect(); }
+      });
+      obs.observe(sec, { attributes: true, attributeFilter: ['class'] });
+    });
+    // Later changes: polish only the parts that changed, not all of main.
+    var targets = [];
     var pending = false;
-    new root.MutationObserver(function () {
+    function inWaiting(node) {
+      for (var i = 0; i < waiting.length; i++) if (waiting[i].contains(node)) return true;
+      return false;
+    }
+    new root.MutationObserver(function (records) {
+      records.forEach(function (r) {
+        if (targets.indexOf(r.target) === -1) targets.push(r.target);
+      });
       if (pending) return;
       pending = true;
-      root.setTimeout(function () { pending = false; polish(main); }, 60);
+      root.setTimeout(function () {
+        pending = false;
+        var list = targets;
+        targets = [];
+        list.forEach(function (t) {
+          if (!t.isConnected || inWaiting(t)) return;
+          if (list.some(function (o) { return o !== t && o.contains(t); })) return;
+          polish(t);
+        });
+      }, 60);
     }).observe(main, { childList: true, subtree: true });
   }
 
