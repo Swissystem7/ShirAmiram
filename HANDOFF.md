@@ -3,13 +3,24 @@
 Updated: 2026-11-17 (Claude Code, branch `fix/a11y-biome`)
 
 ## Current state
-- 17.11: #120 and #121 merged. `biome lint` (@biomejs/biome 2.6.7, design/ ignored): 0 errors.
-- Branch `fix/tests-crlf`: the two tests that failed only on a Windows (CRLF) checkout now normalise CRLF->LF
-  (content.test.js hash of content_v2.json, script_loading.test.js multi-line checks on index.html).
-  npm test 748/748 on Windows and on an LF clone.
+- 17.11: #122 merged (748/748 tests on Windows and CI).
+- Branch `feat/self-host-fonts`: no more Google Fonts. fonts/ holds the 20 woff2 files Google served for the
+  old css2 link (same subsets), fonts/fonts.css with the same 76 @font-face rules, and OFL-*.txt for the four
+  families. sw.js precaches them; cache v10 -> v11. Checked: screenshots of 10 screens at 390/1280 identical
+  to the Google Fonts version (only the time-rotated quiz question differs); offline with the service worker
+  every request is served locally, no console errors. 748/748 tests, biome lint 0.
+- Note: `npm run check:size` already fails on main (index.html, src/*.js, css/* over their limits); this
+  branch does not add to it (fonts.css lives in fonts/, index.html got smaller).
+
+- 17.11 17:07: dell-ci/full-gate failed on `typos` (51 false positives inside the binary .woff2 files).
+  Added `_typos.toml` with `extend-exclude = ["fonts/"]` (coordinator decision). Local typos 1.52.2:
+  0 hits under fonts/, also with --binary.
+- The gate still failed (it likely passes changed files by name, which bypasses extend-exclude). Added
+  `[type.woff2]` (*.woff2) and `[type.fontfacecss]` (fonts.css) with `check-file = false`: typos never reads
+  their contents, however it is called. Local check with the changed files passed by name: 0 hits, rc 0.
 
 ## Next step
-- Wait for CI on the PR. Do not merge (the GitHub agent merges after Gemini's say-so).
+- Wait for CI on the PR. Claude Code never merges; the servers merge.
 
 ## Rate limits
 - None hit.
