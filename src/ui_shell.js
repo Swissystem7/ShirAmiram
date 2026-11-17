@@ -352,9 +352,18 @@
       polish(el);
     }
     var idle = root.requestIdleCallback || function (fn) { return root.setTimeout(fn, 50); };
-    function drain() {
-      if (!waiting.length) return;
-      take(waiting[0]);
+    // A hidden screen is polished one child element at a time while the browser has idle time, so even
+    // the 300-row word table does not become one long task. Opening the screen finishes it at once.
+    var queue = [];
+    function drain(deadline) {
+      var left = function () { return deadline && deadline.timeRemaining ? deadline.timeRemaining() : 8; };
+      var start = Date.now();
+      while (waiting.length && (left() > 4 && Date.now() - start < 12)) {
+        const sec = waiting[0];
+        if (!queue.length || queue.owner !== sec) { queue = Array.prototype.slice.call(sec.children); queue.owner = sec; }
+        if (queue.length) polish(queue.shift());
+        if (!queue.length) { waiting.splice(0, 1); queue = []; }
+      }
       if (waiting.length) idle(drain, { timeout: 2000 });
     }
     idle(drain, { timeout: 2000 });
