@@ -579,8 +579,13 @@
 :root[data-theme] main [class*="p-6"][class*="bg-stage-800"] { border: 0 !important; border-radius: var(--r-l) !important; padding: var(--s4); box-shadow: var(--sh-1); }
 :root[data-theme] main [class*="bg-stage-900"]:not(input):not(select):not(textarea):not(button) { border: 0 !important; border-radius: var(--r-m); }
 
-/* Header: brand and one icon button; playback lives in the hero and the mini player */
-:root[data-theme] header #btn-play, :root[data-theme] header #timer { display: none; }
+/* Header: brand, theme toggle, and the song's play button with its elapsed time. */
+:root[data-theme] header #btn-play { display: inline-flex; align-items: center; justify-content: center; width: 44px; padding: 0; border-radius: 50%; font-size: 0; color: var(--accent-ink); }
+/* Drawn icon instead of the emoji: a triangle to play, two bars while playing. */
+:root[data-theme] header #btn-play > * { display: none; }
+:root[data-theme] header #btn-play::before { content: ""; width: 0; height: 0; border-style: solid; border-width: 8px 0 8px 13px; border-color: transparent transparent transparent currentColor; margin-inline-start: 3px; }
+:root[data-theme] header #btn-play[aria-pressed="true"]::before { width: 4px; height: 16px; border: 0; margin: 0; background: currentColor; box-shadow: 8px 0 0 currentColor; transform: translateX(-4px); }
+:root[data-theme] header #timer { display: inline-block; min-width: 3.2em; text-align: center; font-variant-numeric: tabular-nums; }
 :root[data-theme] header h1::after { content: ""; display: inline-block; width: 8px; height: 8px; margin-inline-start: 6px; border-radius: 50%; background: var(--accent-text); }
 :root[data-theme] #theme-toggle { width: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; }
 
