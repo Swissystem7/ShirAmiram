@@ -6,7 +6,7 @@
 
   var GROUPS = [
     { id: 'words', label: 'מילים', tabs: ['vocab'] },
-    { id: 'practice', label: 'תרגול', tabs: ['practice', 'quiz', 'flashcards'] },
+    { id: 'practice', label: 'תרגול', tabs: ['practice', 'quiz', 'flashcards', 'alias'] },
     { id: 'songs', label: 'שירים', tabs: ['song', 'songs', 'suno', 'karaoke'] },
     { id: 'progress', label: 'התקדמות', tabs: ['dashboard'] }
   ];
@@ -30,6 +30,8 @@
 
   var EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{23E9}-\u{23FF}\u{25B6}\u{25C0}]️?/gu;
 
+  var HAS_EMOJI = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{23E9}-\u{23FF}\u{25B6}\u{25C0}]/u;
+
   function stripEmoji(text) {
     return String(text).replace(EMOJI, '').replace(/️/g, '').replace(/^[ \t]+/, '').replace(/[ \t]{2,}/g, ' ');
   }
@@ -52,7 +54,7 @@
       outPrev = outPrev.replace(/[\s\u00A0]+$/, '') + NBSP;
     }
     if (typeof outNext === 'string') {
-      var rest = outNext.replace(/^[\s\u00A0]+/, '');
+      const rest = outNext.replace(/^[\s\u00A0]+/, '');
       if (rest && PUNCT_AFTER.test(rest)) outNext = rest;
       else if (rest) outNext = NBSP + rest;
     }
@@ -304,6 +306,8 @@
     nodes.forEach(function (t) {
       var el = t.parentElement;
       if (!el || /^(SCRIPT|STYLE|TEXTAREA|PRE|OPTION)$/.test(el.tagName)) return;
+      // Only text that holds an emoji is touched; otherwise the space after <b>10</b> would be lost.
+      if (!HAS_EMOJI.test(t.nodeValue)) return;
       var clean = stripEmoji(t.nodeValue);
       if (clean === t.nodeValue) return;
       var speaker = t.nodeValue.indexOf('🔊') !== -1;
