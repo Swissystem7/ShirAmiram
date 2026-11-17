@@ -259,23 +259,23 @@
     <section id="alias" class="tab-content hidden" aria-labelledby="alias-title">
       <div id="alias-start" class="alias-screen">
         <h2 id="alias-title" class="alias-title">משחק מילים</h2>
-        <div class="alias-modes" role="radiogroup" aria-label="סוג משחק">
-          <button type="button" role="radio" aria-checked="true" data-alias-mode="guess"><span class="mode-name">ניחוש מרמזים</span><span class="mode-desc">לבד: מקלידים את המילה</span></button>
-          <button type="button" role="radio" aria-checked="false" data-alias-mode="explain"><span class="mode-name">להסביר בלי לומר</span><span class="mode-desc">Alias קלאסי, בקול לחברים</span></button>
-        </div>
+        <fieldset class="alias-modes"><legend class="alias-legend">סוג משחק</legend>
+          <label class="alias-choice" data-alias-mode="guess"><input type="radio" class="alias-radio" name="alias-mode" value="guess" checked><span class="mode-name">ניחוש מרמזים</span><span class="mode-desc">לבד: מקלידים את המילה</span></label>
+          <label class="alias-choice" data-alias-mode="explain"><input type="radio" class="alias-radio" name="alias-mode" value="explain"><span class="mode-name">להסביר בלי לומר</span><span class="mode-desc">Alias קלאסי, בקול לחברים</span></label>
+        </fieldset>
         <p id="alias-lead" class="alias-lead">מקבלים רמזים באנגלית ומקלידים את המילה. כמה שפחות רמזים, יותר נקודות. 30 שניות למילה.</p>
         <div id="alias-explain-opts" class="alias-explain-opts" hidden>
-          <div class="alias-langs" role="radiogroup" aria-label="שפת ההסבר">
-            <button type="button" role="radio" aria-checked="true" data-alias-lang="en">מסבירים באנגלית</button>
-            <button type="button" role="radio" aria-checked="false" data-alias-lang="he">מסבירים בעברית</button>
-          </div>
+          <fieldset class="alias-langs"><legend class="alias-legend">שפת ההסבר</legend>
+            <label class="alias-choice" data-alias-lang="en"><input type="radio" class="alias-radio" name="alias-lang" value="en" checked>מסבירים באנגלית</label>
+            <label class="alias-choice" data-alias-lang="he"><input type="radio" class="alias-radio" name="alias-lang" value="he">מסבירים בעברית</label>
+          </fieldset>
           <label class="alias-party"><input id="alias-party" type="checkbox"> משחקים עם חברים ומעבירים את הטלפון (מילה אסורה מורידה נקודה)</label>
         </div>
-        <div class="alias-decks" role="radiogroup" aria-label="בחירת חפיסה">
-          <button type="button" role="radio" aria-checked="true" data-alias-deck="mix"><span class="deck-name">מיקס חכם</span><span class="deck-desc">חלשות, לחזרה, חדשות ומילה שכבר שולטים בה</span><span class="deck-meta"></span></button>
-          <button type="button" role="radio" aria-checked="false" data-alias-deck="today"><span class="deck-name">להיום</span><span class="deck-desc">מילים שהגיע זמן החזרה שלהן</span><span class="deck-meta"></span></button>
-          <button type="button" role="radio" aria-checked="false" data-alias-deck="weak"><span class="deck-name">רק חלשות</span><span class="deck-desc">המילים שהכי קשות לכם</span><span class="deck-meta"></span></button>
-        </div>
+        <fieldset class="alias-decks"><legend class="alias-legend">בחירת חפיסה</legend>
+          <label class="alias-choice" data-alias-deck="mix"><input type="radio" class="alias-radio" name="alias-deck" value="mix" checked><span class="deck-name">מיקס חכם</span><span class="deck-desc">חלשות, לחזרה, חדשות ומילה שכבר שולטים בה</span><span class="deck-meta"></span></label>
+          <label class="alias-choice" data-alias-deck="today"><input type="radio" class="alias-radio" name="alias-deck" value="today"><span class="deck-name">להיום</span><span class="deck-desc">מילים שהגיע זמן החזרה שלהן</span><span class="deck-meta"></span></label>
+          <label class="alias-choice" data-alias-deck="weak"><input type="radio" class="alias-radio" name="alias-deck" value="weak"><span class="deck-name">רק חלשות</span><span class="deck-desc">המילים שהכי קשות לכם</span><span class="deck-meta"></span></label>
+        </fieldset>
         <ul class="alias-rules" data-rules-mode="explain" hidden>
           <li><b>10</b> נק׳ כשהצליחו בקלות, <b>6</b> במאמץ, <b>0</b> בדילוג</li>
           <li>אסור לומר את המילה, את התרגום שלה ואת המילים האסורות שעל הכרטיס</li>

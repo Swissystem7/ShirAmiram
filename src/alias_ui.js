@@ -120,12 +120,12 @@
     const counts = { mix: deckFor('mix', 1).length, today: deckFor('today', 1).length, weak: deckFor('weak', 1).length };
     doc.querySelectorAll('[data-alias-deck]').forEach((b) => {
       const name = b.getAttribute('data-alias-deck');
-      b.setAttribute('aria-checked', String(name === deckChoice));
+      b.querySelector('input').checked = name === deckChoice;
       const meta = b.querySelector('.deck-meta');
       if (meta) meta.textContent = counts[name] ? `${counts[name]} מילים` : 'אין מילים כרגע';
     });
-    doc.querySelectorAll('[data-alias-mode]').forEach((b) => { b.setAttribute('aria-checked', String(b.getAttribute('data-alias-mode') === modeChoice)); });
-    doc.querySelectorAll('[data-alias-lang]').forEach((b) => { b.setAttribute('aria-checked', String(b.getAttribute('data-alias-lang') === langChoice)); });
+    doc.querySelectorAll('[data-alias-mode]').forEach((b) => { b.querySelector('input').checked = b.getAttribute('data-alias-mode') === modeChoice; });
+    doc.querySelectorAll('[data-alias-lang]').forEach((b) => { b.querySelector('input').checked = b.getAttribute('data-alias-lang') === langChoice; });
     $('alias-explain-opts').hidden = modeChoice !== 'explain';
     doc.querySelectorAll('[data-rules-mode]').forEach((r) => { r.hidden = r.getAttribute('data-rules-mode') !== modeChoice; });
     $('alias-lead').textContent = modeChoice === 'explain'
@@ -561,13 +561,13 @@
 
   function init() {
     if (!$('alias')) return;
-    doc.querySelectorAll('[data-alias-deck]').forEach((b) => { b.addEventListener('click', () => {
+    doc.querySelectorAll('[data-alias-deck]').forEach((b) => { b.addEventListener('change', () => {
       deckChoice = b.getAttribute('data-alias-deck');
       renderStart();
     }); });
     $('alias-start-btn').addEventListener('click', () => startGame(deckChoice));
-    doc.querySelectorAll('[data-alias-mode]').forEach((b) => { b.addEventListener('click', () => { modeChoice = b.getAttribute('data-alias-mode'); renderStart(); }); });
-    doc.querySelectorAll('[data-alias-lang]').forEach((b) => { b.addEventListener('click', () => { langChoice = b.getAttribute('data-alias-lang'); renderStart(); }); });
+    doc.querySelectorAll('[data-alias-mode]').forEach((b) => { b.addEventListener('change', () => { modeChoice = b.getAttribute('data-alias-mode'); renderStart(); }); });
+    doc.querySelectorAll('[data-alias-lang]').forEach((b) => { b.addEventListener('change', () => { langChoice = b.getAttribute('data-alias-lang'); renderStart(); }); });
     ['easy', 'effort', 'skip'].forEach((o) => { $(`alias-x-${o}`).addEventListener('click', () => finishExplain(o)); });
     $('alias-x-taboo-btn').addEventListener('click', () => finishExplain('taboo'));
     $('alias-x-quit').addEventListener('click', quit);
