@@ -1,0 +1,12 @@
+# Weekly npm updates for the dev tools in package.json / package-lock.json (knip, size-limit and the like).
+# One grouped pull request a week; GitHub Actions and other ecosystems are not covered here.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      npm-dev-tools:
+        dependency-type: "development"

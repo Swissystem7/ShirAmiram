@@ -42,8 +42,35 @@
     return Math.max(0, Math.min(100, Math.round(n - 50)));
   }
 
+  var NBSP = '\u00A0';
+  var PUNCT_AFTER = /^[,.;:!?%)\]\}]/;
+
+  // Hard space around a highlighted word, and no space before punctuation.
+  // prev/next are the neighbouring text nodes, or null when there is none.
+  function adjustHighlightNeighbors(prev, next) {
+    var outPrev = prev;
+    var outNext = next;
+    if (typeof outPrev === 'string' && /\S/.test(outPrev)) {
+      outPrev = outPrev.replace(/[\s\u00A0]+$/, '') + NBSP;
+    }
+    if (typeof outNext === 'string') {
+      var rest = outNext.replace(/^[\s\u00A0]+/, '');
+      if (rest && PUNCT_AFTER.test(rest)) outNext = rest;
+      else if (rest) outNext = NBSP + rest;
+    }
+    return { prev: outPrev, next: outNext };
+  }
+
+  // "Hold the" + a line break + "Light" must stay two words when read as text.
+  function ensureBreakSpace(prev) {
+    if (typeof prev !== 'string') return prev;
+    if (/\S/.test(prev) && !/[ \t\u00A0]$/.test(prev)) return prev + NBSP;
+    return prev;
+  }
+
   var api = { GROUPS: GROUPS, groupForTab: groupForTab, normalizeTheme: normalizeTheme, nextTheme: nextTheme,
-    stripEmoji: stripEmoji, scoreToPercent: scoreToPercent };
+    stripEmoji: stripEmoji, scoreToPercent: scoreToPercent,
+    adjustHighlightNeighbors: adjustHighlightNeighbors, ensureBreakSpace: ensureBreakSpace };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   root.ShirAmiramShell = api;
 
@@ -77,7 +104,7 @@
     if (meta) meta.setAttribute('content', THEME_COLORS[theme]);
     var btn = doc.getElementById('theme-toggle');
     if (btn) {
-      const label = theme === 'dark' ? 'מצב בהיר' : 'מצב כהה';
+      let label = theme === 'dark' ? 'מצב בהיר' : 'מצב כהה';
       btn.innerHTML = svg(theme === 'dark' ? UI_ICONS.sun : UI_ICONS.moon);
       btn.setAttribute('aria-label', label);
       btn.title = label;
@@ -129,6 +156,7 @@
         if (b.dataset.group === group.id) b.setAttribute('aria-current', 'page');
         else b.removeAttribute('aria-current');
       });
+      doc.body.classList.toggle('is-practicing', tabId === 'quiz' || tabId === 'flashcards');
     }
 
     GROUPS.forEach(function (group) {
@@ -147,7 +175,7 @@
     // Tabs also change from inside the page (for example the empty-state button),
     // so follow the sections themselves instead of the clicks.
     if (root.MutationObserver) {
-      const observer = new root.MutationObserver(sync);
+      let observer = new root.MutationObserver(sync);
       doc.querySelectorAll('.tab-content').forEach(function (sec) {
         observer.observe(sec, { attributes: true, attributeFilter: ['class'] });
       });
@@ -201,7 +229,7 @@
     if (root.MutationObserver) {
       new root.MutationObserver(paint).observe(play, { attributes: true, attributeFilter: ['aria-pressed'] });
       if (timer) new root.MutationObserver(paint).observe(timer, { childList: true, characterData: true, subtree: true });
-      const song = doc.getElementById('song');
+      let song = doc.getElementById('song');
       if (song) new root.MutationObserver(placeMini).observe(song, { attributes: true, attributeFilter: ['class'] });
     }
     if (seek) seek.addEventListener('input', paint);
@@ -245,10 +273,29 @@
     details.appendChild(summary);
     songs.insertBefore(details, firstRule);
     var node = firstRule;
-    while (node) { const next = node.nextSibling; details.appendChild(node); node = next; }
+    while (node) { let next = node.nextSibling; details.appendChild(node); node = next; }
     var status = doc.getElementById('content-status');
     var coverage = status && status.nextElementSibling;
     if (coverage && coverage.tagName === 'P') details.insertBefore(coverage, summary.nextSibling);
+  }
+
+  function spaceHighlights(scope) {
+    if (!scope || !scope.querySelectorAll) return;
+    scope.querySelectorAll('.vocab-badge, .rc-target-word, .teleprompter-token-btn, .karaoke-word').forEach(function (el) {
+      var prev = el.previousSibling;
+      var next = el.nextSibling;
+      var prevText = prev && prev.nodeType === 3 ? prev.nodeValue : null;
+      var nextText = next && next.nodeType === 3 ? next.nodeValue : null;
+      var edited = adjustHighlightNeighbors(prevText, nextText);
+      if (prev && prev.nodeType === 3 && edited.prev !== prevText && edited.prev != null) prev.nodeValue = edited.prev;
+      if (next && next.nodeType === 3 && edited.next !== nextText && edited.next != null) next.nodeValue = edited.next;
+    });
+    scope.querySelectorAll('.hero-title br').forEach(function (br) {
+      var prev = br.previousSibling;
+      if (!prev || prev.nodeType !== 3) return;
+      var fixed = ensureBreakSpace(prev.nodeValue);
+      if (fixed !== prev.nodeValue) prev.nodeValue = fixed;
+    });
   }
 
   function polish(scope) {
@@ -273,6 +320,7 @@
         t.nodeValue = clean;
       }
     });
+    spaceHighlights(scope);
     if (scope.querySelectorAll) {
       scope.querySelectorAll('#vocab-table tr').forEach(function (tr) {
         var m = /רמה\s*([ABC])/.exec(tr.textContent || '');
@@ -299,7 +347,13 @@
     root.setTimeout(function () { goTab('song'); }, 0);
   }
 
-  function initScreens() { initPlayer(); initHub(); initScoreRing(); initAdvanced(); initPolish(); initLanding(); }
+  function initStartPractice() {
+    var btn = doc.getElementById('btn-start-practice');
+    if (!btn) return;
+    btn.addEventListener('click', function () { goTab('practice'); });
+  }
+
+  function initScreens() { initPlayer(); initHub(); initScoreRing(); initAdvanced(); initStartPractice(); initPolish(); initLanding(); }
 
   function initFreshness() {
     // Right after a release the page can arrive new while cached styles and scripts are still

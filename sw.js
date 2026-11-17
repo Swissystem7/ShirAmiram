@@ -6,6 +6,7 @@ const STATIC_ASSETS = [
   './index.html',
   './manifest.json',
   './css/style.css',
+  './css/tailwind.css',
   './app.js',
   './src/ui_shell.js',
   './src/xp_engine.js',

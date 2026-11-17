@@ -57,6 +57,10 @@
     return selected;
   }
 
+  function escapeRegExp(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
   /**
    * Generate an Amiram cloze question from a vocabulary record.
    * Replaces the target word in its sample sentence with '______'.
@@ -68,8 +72,9 @@
     const word = wordItem.word.toLowerCase();
     const sentence = wordItem.sample_sentence || '';
     
-    // Case-insensitive replacement of whole word
-    const regex = new RegExp(`\\b${word}\\b`, 'i');
+    // Case-insensitive replacement of whole word; the word is escaped so a '.', '+' or '(' in it
+    // matches itself instead of acting as regex syntax (or throwing)
+    const regex = new RegExp(`\\b${escapeRegExp(word)}\\b`, 'i');
     let clozeSentence = sentence.replace(regex, '______');
     if (!clozeSentence.includes('______')) {
       // Fallback if inflected in sentence
