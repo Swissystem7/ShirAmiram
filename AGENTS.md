@@ -11,3 +11,9 @@ The project's existing logo, color palette, and fonts must be preserved:
 - Fonts already loaded in `index.html` and `css/volt.css`: Rubik for Hebrew, Bricolage Grotesque for English words, Heebo, and JetBrains Mono.
 
 When the skill would deal a palette, a type pairing, or a mark, keep the logo, palette, and fonts above.
+
+## Modern web
+
+HTML, CSS, and client-side JavaScript work should use the Modern Web Guidance skill at `.agents/skills/modern-web-guidance`. It is the Apache-2.0 [modern-web-guidance](https://github.com/GoogleChrome/modern-web-guidance) skill from commit [`64a6d708f5a43f2cd3fde5d4d7db3905ba1bdf65`](https://github.com/GoogleChrome/modern-web-guidance/commit/64a6d708f5a43f2cd3fde5d4d7db3905ba1bdf65) (v1.0.1). This copy is `SKILL.md`, `LICENSE`, and `NOTICE`. The guide corpus is not in the repo.
+
+Run it with `npx -y modern-web-guidance@latest`. The command works offline and needs no API keys. Follow the skill at the start of HTML, CSS, and client-side JS tasks.
