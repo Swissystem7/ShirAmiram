@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
   "files": {
-    "includes": ["**", "!css/tailwind.css"]
+    "includes": ["**", "!css/tailwind.css", "!design"]
   },
   "overrides": [
     {
