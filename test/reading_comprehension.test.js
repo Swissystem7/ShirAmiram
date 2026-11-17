@@ -103,6 +103,22 @@ test("5. highlightVocab wraps target words in interactive badges", () => {
 	assert.ok(highlighted.includes('class="rc-target-word" data-word="adapt"'));
 });
 
+test("5b. highlightVocab puts a hard space around a target word and none before punctuation", () => {
+	const NBSP = "\u00A0";
+	const html = AmiramReading.highlightVocab(
+		"it becomes apparent that learners adapt traditional habits and achieve higher rates. The benefit. A glued apparentthat and challengeof learning.",
+		["apparent", "adapt", "achieve", "benefit", "challenge"],
+	);
+	const text = html.replace(/<[^>]+>/g, "");
+	assert.ok(text.includes(`apparent${NBSP}that`), text);
+	assert.ok(text.includes(`adapt${NBSP}traditional`), text);
+	assert.ok(text.includes(`achieve${NBSP}higher`), text);
+	assert.ok(text.includes(`benefit.`), text);
+	assert.equal(text.includes("benefit ."), false);
+	assert.equal(/apparentthat|adapttraditional|achievehigher|challengeof/.test(text), false, text);
+	assert.ok(text.includes(`challenge${NBSP}of`), text);
+});
+
 test("6. evaluateAnswer checks correctness, line reference, and returns Hebrew explanation", () => {
 	const q = {
 		id: "test_q",

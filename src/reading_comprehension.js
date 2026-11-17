@@ -172,35 +172,108 @@
 	 * @param {Array<Object>} vocabBank
 	 * @returns {string} HTML with interactive badges
 	 */
+	const NBSP = "\u00A0";
+	const PUNCT_AFTER = /^[,.;:!?%)\]\}]/;
+
+	function escapeRegExp(str) {
+		return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	}
+
+	/**
+	 * Run fn on text that is not inside an existing highlight span.
+	 * Tags are left untouched so a word boundary never matches markup.
+	 */
+	function mapTextOutsideHighlights(html, fn) {
+		const parts = String(html).split(/(<[^>]+>)/);
+		let depth = 0;
+		return parts
+			.map((part) => {
+				if (part.charAt(0) === "<") {
+					if (/^<span\b[^>]*\brc-target-word\b/i.test(part)) depth += 1;
+					else if (/^<\/span\b/i.test(part) && depth) depth -= 1;
+					return part;
+				}
+				if (depth || !part) return part;
+				return fn(part);
+			})
+			.join("");
+	}
+
+	function highlightTextSegment(segment, regex, spanFor) {
+		const flags = regex.flags.includes("g") ? regex.flags : `${regex.flags}g`;
+		const re = new RegExp(regex.source, flags);
+		let out = "";
+		let cursor = 0;
+		let match = re.exec(segment);
+		while (match) {
+			const start = match.index;
+			const word = match[1] || match[0];
+			if (!word || start < cursor) break;
+			let before = segment.slice(cursor, start);
+			if (/\S/.test(before)) before = before.replace(/[ \t\u00A0]+$/, "") + NBSP;
+			const after = segment.slice(start + word.length);
+			const leadLen = (/^[ \t\u00A0]*/.exec(after) || [""])[0].length;
+			const nextChar = after.charAt(leadLen);
+			const punct = PUNCT_AFTER.test(nextChar);
+			out += before + spanFor(word);
+			if (punct) {
+				cursor = start + word.length + leadLen;
+			} else {
+				out += NBSP;
+				cursor = start + word.length + (nextChar ? leadLen : 0);
+			}
+			re.lastIndex = cursor;
+			match = re.exec(segment);
+		}
+		out += segment.slice(cursor);
+		return out;
+	}
+
+	function spanForMatch(word, vocabBank) {
+		const entry = lookupTargetWord(word, vocabBank);
+		const transAttr =
+			entry && entry.translation
+				? ` data-translation="${escapeAttr(entry.translation)}"`
+				: "";
+		const titleText =
+			entry && entry.translation
+				? `מילת אמיר״ם (${escapeAttr(entry.translation)}): לחץ לשמיעה ותרגום`
+				: "מילת אמיר״ם: לחץ לשמיעה";
+		const safe = escapeAttr(word);
+		return `<span class="rc-target-word" data-word="${safe}"${transAttr} tabindex="0" title="${titleText}">${safe}</span>`;
+	}
+
+	function wordAlternation(targetWords) {
+		return targetWords
+			.map((word) => (word && typeof word === "string" ? word.trim() : ""))
+			.filter(Boolean)
+			.sort((a, b) => b.length - a.length)
+			.map(escapeRegExp)
+			.join("|");
+	}
+
 	function highlightVocab(text, targetWords = [], vocabBank = []) {
 		if (!text || typeof text !== "string") return "";
 		if (!Array.isArray(targetWords) || targetWords.length === 0) return text;
-
-		let highlighted = text;
-		targetWords.forEach((word) => {
-			if (!word || typeof word !== "string") return;
-			const escapedWord = word.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-			if (!escapedWord) return;
-			const entry = lookupTargetWord(word, vocabBank);
-			const transAttr =
-				entry && entry.translation
-					? ` data-translation="${escapeAttr(entry.translation)}"`
-					: "";
-			const titleText =
-				entry && entry.translation
-					? `מילת אמיר״ם (${escapeAttr(entry.translation)}): לחץ לשמיעה ותרגום`
-					: "מילת אמיר״ם: לחץ לשמיעה";
-			// Match whole word or standard inflection, case-insensitive
-			const regex = new RegExp(
-				`\\b(${escapedWord}(?:s|es|d|ed|ing)?)\\b`,
-				"gi",
-			);
-			highlighted = highlighted.replace(
-				regex,
-				`<span class="rc-target-word" data-word="$1"${transAttr} tabindex="0" title="${titleText}">$1</span>`,
-			);
-		});
-
+		const alts = wordAlternation(targetWords);
+		if (!alts) return text;
+		const spanFor = (word) => spanForMatch(word, vocabBank);
+		// Whole word, including a simple inflection, with a hard space on each side.
+		let highlighted = mapTextOutsideHighlights(text, (segment) =>
+			highlightTextSegment(
+				segment,
+				new RegExp(`\\b((?:${alts})(?:s|es|d|ed|ing)?)\\b`, "gi"),
+				spanFor,
+			),
+		);
+		// Recovery for a target word that was stored glued to the next word ("apparentthat").
+		highlighted = mapTextOutsideHighlights(highlighted, (segment) =>
+			highlightTextSegment(
+				segment,
+				new RegExp(`\\b((?:${alts}))(?=[A-Za-z])`, "gi"),
+				spanFor,
+			),
+		);
 		return highlighted;
 	}
 
