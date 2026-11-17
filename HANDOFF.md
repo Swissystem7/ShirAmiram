@@ -3,21 +3,14 @@
 Updated: 2026-11-17 (Claude Code, branch `fix/a11y-biome`)
 
 ## Current state
-- 17.11: #122 merged (748/748 tests on Windows and CI).
-- Branch `feat/self-host-fonts`: no more Google Fonts. fonts/ holds the 20 woff2 files Google served for the
-  old css2 link (same subsets), fonts/fonts.css with the same 76 @font-face rules, and OFL-*.txt for the four
-  families. sw.js precaches them; cache v10 -> v11. Checked: screenshots of 10 screens at 390/1280 identical
-  to the Google Fonts version (only the time-rotated quiz question differs); offline with the service worker
-  every request is served locally, no console errors. 748/748 tests, biome lint 0.
-- Note: `npm run check:size` already fails on main (index.html, src/*.js, css/* over their limits); this
-  branch does not add to it (fonts.css lives in fonts/, index.html got smaller).
-
-- 17.11 17:07: dell-ci/full-gate failed on `typos` (51 false positives inside the binary .woff2 files).
-  Added `_typos.toml` with `extend-exclude = ["fonts/"]` (coordinator decision). Local typos 1.52.2:
-  0 hits under fonts/, also with --binary.
-- The gate still failed (it likely passes changed files by name, which bypasses extend-exclude). Added
-  `[type.woff2]` (*.woff2) and `[type.fontfacecss]` (fonts.css) with `check-file = false`: typos never reads
-  their contents, however it is called. Local check with the changed files passed by name: 0 hits, rc 0.
+- 17.11: #123 merged (self-hosted fonts).
+- Branch `feat/song-link-embed`: paste a YouTube/Spotify link or ID on the songs screen and it plays in the
+  existing player. Parser src/media_links.js (YouTube watch/youtu.be/shorts/embed/live/music/playlist with start
+  time; Spotify track/album/playlist incl. /intl-xx/ and /embed/; spotify: URIs; bare IDs), no API keys.
+  test/media_links.test.js (7 tests). Form above the player with the screen's existing classes; iframe built
+  with createElement from validated IDs. sw.js precaches the module; cache v11 -> v12.
+- Checked: npm test 755/755, biome lint 0, Playwright 390/1280 (19 checks each incl. bad/HTML input), other
+  screens unchanged.
 
 ## Next step
 - Wait for CI on the PR. Claude Code never merges; the servers merge.
