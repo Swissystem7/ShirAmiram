@@ -124,8 +124,8 @@
       const meta = b.querySelector('.deck-meta');
       if (meta) meta.textContent = counts[name] ? `${counts[name]} מילים` : 'אין מילים כרגע';
     });
-    doc.querySelectorAll('[data-alias-mode]').forEach((b) => b.setAttribute('aria-checked', String(b.getAttribute('data-alias-mode') === modeChoice)));
-    doc.querySelectorAll('[data-alias-lang]').forEach((b) => b.setAttribute('aria-checked', String(b.getAttribute('data-alias-lang') === langChoice)));
+    doc.querySelectorAll('[data-alias-mode]').forEach((b) => { b.setAttribute('aria-checked', String(b.getAttribute('data-alias-mode') === modeChoice)); });
+    doc.querySelectorAll('[data-alias-lang]').forEach((b) => { b.setAttribute('aria-checked', String(b.getAttribute('data-alias-lang') === langChoice)); });
     $('alias-explain-opts').hidden = modeChoice !== 'explain';
     doc.querySelectorAll('[data-rules-mode]').forEach((r) => { r.hidden = r.getAttribute('data-rules-mode') !== modeChoice; });
     $('alias-lead').textContent = modeChoice === 'explain'
