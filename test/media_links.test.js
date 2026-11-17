@@ -34,6 +34,9 @@ test('YouTube watch, youtu.be, shorts, music, embed and live links', () => {
   const music = parseMediaLink(`https://music.youtube.com/watch?v=${YT}&si=x`);
   assert.equal(music.embedUrl, `https://www.youtube.com/embed/${YT}`);
   assert.equal(music.openUrl, `https://music.youtube.com/watch?v=${YT}`);
+  assert.equal(music.music, true);
+  assert.equal(parseMediaLink(`https://youtu.be/${YT}`).music, false);
+  assert.equal(parseMediaLink(`spotify:track:${SP}`).music, false);
 });
 
 test('YouTube start time is kept for the embed and the open link', () => {

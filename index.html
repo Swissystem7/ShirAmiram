@@ -1302,21 +1302,41 @@
       }); });
     }
 
-    // Paste a YouTube or Spotify link (or ID) and play it in the player above. The iframe URL is rebuilt by
-    // src/media_links.js from a validated ID; the pasted text never reaches the DOM as HTML.
+    // Paste a YouTube or Spotify link (or ID) and play it in the player above. src/media_links.js validates
+    // the ID; the URLs below are built from fixed origins, an allow-listed kind and the encoded ID, so the
+    // pasted text never reaches the DOM as a URL or as HTML.
     (function initMediaLinkForm() {
       const ML = window.ShirAmiramMediaLinks;
       const form = $('media-link-form');
       if (!ML || !form) return;
       const status = $('media-link-status');
-      function frame(info) {
+      const SPOTIFY_KINDS = { track: 'track', album: 'album', playlist: 'playlist' };
+      const YT_EMBED = 'https://www.youtube.com/embed/';
+      function urlsFor(info) {
+        const id = encodeURIComponent(info.id);
+        if (info.provider === 'spotify') {
+          const kind = SPOTIFY_KINDS[info.kind];
+          if (!kind) return null;
+          return { embed: 'https://open.spotify.com/embed/' + kind + '/' + id, open: 'https://open.spotify.com/' + kind + '/' + id };
+        }
+        const site = info.music ? 'https://music.youtube.com/' : 'https://www.youtube.com/';
+        if (info.kind === 'playlist') {
+          return { embed: YT_EMBED + 'videoseries?list=' + id, open: site + 'playlist?list=' + id };
+        }
+        const start = Math.max(0, Math.floor(Number(info.start) || 0));
+        return {
+          embed: YT_EMBED + id + (start ? '?start=' + start : ''),
+          open: site + 'watch?v=' + id + (start ? '&t=' + start : '')
+        };
+      }
+      function frame(info, src) {
         const f = document.createElement('iframe');
-        f.src = info.embedUrl;
+        f.src = src;
         f.loading = 'lazy';
         f.width = '100%';
         if (info.provider === 'spotify') {
           f.title = 'Spotify embed';
-          f.height = String(info.height);
+          f.height = info.kind === 'track' ? '152' : '352';
           f.allow = 'encrypted-media';
         } else {
           f.title = 'YouTube';
@@ -1329,23 +1349,24 @@
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const info = ML.parseMediaLink($('media-link-input').value);
+        const urls = info ? urlsFor(info) : null;
         status.textContent = '';
-        if (!info) {
+        if (!urls) {
           status.textContent = 'לא זוהה קישור לשיר. אפשר להדביק קישור מ-YouTube, YouTube Music או Spotify (שיר, אלבום או פלייליסט).';
           return;
         }
         const sp = info.provider === 'spotify';
         const box = $(sp ? 'spotify-box' : 'youtube-box');
-        box.replaceChildren(frame(info));
+        box.replaceChildren(frame(info, urls.embed));
         $('embed-tab-spotify').setAttribute('aria-pressed', String(sp));
         $('embed-tab-youtube').setAttribute('aria-pressed', String(!sp));
         $('spotify-box').classList.toggle('hidden', !sp);
         $('youtube-box').classList.toggle('hidden', sp);
-        const name = sp ? 'Spotify' : (info.openUrl.indexOf('music.youtube.com') !== -1 ? 'YouTube Music' : 'YouTube');
+        const name = sp ? 'Spotify' : (info.music ? 'YouTube Music' : 'YouTube');
         status.append('מנגן למטה. ');
         const a = document.createElement('a');
         a.className = 'song-link bg-stage-900 rounded';
-        a.href = info.openUrl;
+        a.href = urls.open;
         a.target = '_blank';
         a.rel = 'noopener';
         a.textContent = 'פתיחה ב-' + name;

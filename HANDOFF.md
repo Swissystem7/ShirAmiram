@@ -12,6 +12,10 @@ Updated: 2026-11-17 (Claude Code, branch `fix/a11y-biome`)
 - Checked: npm test 755/755, biome lint 0, Playwright 390/1280 (19 checks each incl. bad/HTML input), other
   screens unchanged.
 
+- CodeQL flagged 3 high alerts (URL from DOM text into iframe src / a href, and a substring check on
+  music.youtube.com). The page now builds both URLs from fixed origins, an allow-listed kind and
+  encodeURIComponent(id); the parser returns a `music` flag instead of the substring check.
+
 ## Next step
 - Wait for CI on the PR. Claude Code never merges; the servers merge.
 

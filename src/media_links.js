@@ -28,6 +28,7 @@
       kind: 'video',
       id,
       start,
+      music: !!music,
       embedUrl: `https://www.youtube.com/embed/${id}${q}`,
       openUrl: music ? `https://music.youtube.com/watch?v=${id}${t}` : `https://www.youtube.com/watch?v=${id}${t}`,
       height: null
@@ -40,6 +41,7 @@
       kind: 'playlist',
       id: list,
       start: 0,
+      music: !!music,
       embedUrl: `https://www.youtube.com/embed/videoseries?list=${list}`,
       openUrl: music ? `https://music.youtube.com/playlist?list=${list}` : `https://www.youtube.com/playlist?list=${list}`,
       height: null
@@ -52,6 +54,7 @@
       kind,
       id,
       start: 0,
+      music: false,
       embedUrl: `https://open.spotify.com/embed/${kind}/${id}`,
       openUrl: `https://open.spotify.com/${kind}/${id}`,
       height: kind === 'track' ? 152 : 352
