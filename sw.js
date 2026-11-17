@@ -1,5 +1,5 @@
 // ShirAmiram — Offline Service Worker (network-first pages, stale-while-revalidate assets)
-const CACHE_NAME = 'shiramiram-cache-v10';
+const CACHE_NAME = 'shiramiram-cache-v11';
 
 const STATIC_ASSETS = [
   './',
@@ -7,6 +7,27 @@ const STATIC_ASSETS = [
   './manifest.json',
   './css/style.css',
   './css/tailwind.css',
+  './fonts/fonts.css',
+  './fonts/bricolage-grotesque-latin-ext.woff2',
+  './fonts/bricolage-grotesque-latin.woff2',
+  './fonts/bricolage-grotesque-vietnamese.woff2',
+  './fonts/heebo-hebrew.woff2',
+  './fonts/heebo-latin-ext.woff2',
+  './fonts/heebo-latin.woff2',
+  './fonts/heebo-math.woff2',
+  './fonts/heebo-symbols.woff2',
+  './fonts/jetbrains-mono-cyrillic-ext.woff2',
+  './fonts/jetbrains-mono-cyrillic.woff2',
+  './fonts/jetbrains-mono-greek.woff2',
+  './fonts/jetbrains-mono-latin-ext.woff2',
+  './fonts/jetbrains-mono-latin.woff2',
+  './fonts/jetbrains-mono-vietnamese.woff2',
+  './fonts/rubik-arabic.woff2',
+  './fonts/rubik-cyrillic-ext.woff2',
+  './fonts/rubik-cyrillic.woff2',
+  './fonts/rubik-hebrew.woff2',
+  './fonts/rubik-latin-ext.woff2',
+  './fonts/rubik-latin.woff2',
   './app.js',
   './src/ui_shell.js',
   './src/xp_engine.js',
