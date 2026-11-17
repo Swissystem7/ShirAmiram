@@ -28,8 +28,8 @@ test('every word has a translation, a known category, a difficulty and an exampl
 test('every highlighted word in the song is in the vocabulary, and every vocabulary word is in the song', () => {
   const inSong = [...html.matchAll(/class="vocab-badge" data-word="([a-z]+)"/g)].map((m) => m[1]);
   assert.ok(inSong.length >= 8);
-  inSong.forEach((w) => assert.ok(A.findWord(w), w + ' is highlighted but has no entry'));
-  A.VOCAB.forEach((v) => assert.ok(inSong.includes(v.word), v.word + ' is not in the song'));
+  inSong.forEach((w) => { assert.ok(A.findWord(w), w + ' is highlighted but has no entry'); });
+  A.VOCAB.forEach((v) => { assert.ok(inSong.includes(v.word), v.word + ' is not in the song'); });
   assert.equal((html.match(/class="lyric-line /g) || []).length, A.LINES, 'one highlightable line per song line');
 });
 
@@ -37,12 +37,12 @@ test('category filter: every button shows at least one word, and "all" shows eve
   A.CATEGORIES.forEach((c) => {
     const rows = A.filterVocab('', c.id);
     assert.ok(rows.length >= 1, c.id + ' shows nothing');
-    if (c.id !== 'all') rows.forEach((v) => assert.equal(v.category, c.id));
+    if (c.id !== 'all') rows.forEach((v) => { assert.equal(v.category, c.id); });
   });
   assert.equal(A.filterVocab('', 'all').length, A.VOCAB.length);
   assert.equal(A.filterVocab('', '').length, A.VOCAB.length);
   // every category in the data has a button
-  new Set(A.VOCAB.map((v) => v.category)).forEach((c) => assert.ok(A.CATEGORIES.some((b) => b.id === c), c));
+  new Set(A.VOCAB.map((v) => v.category)).forEach((c) => { assert.ok(A.CATEGORIES.some((b) => b.id === c), c); });
 });
 
 test('search: by English word in any letter case and by Hebrew translation, together with the category', () => {
@@ -61,7 +61,7 @@ test('quiz: the right answer is always one of the options, once, and is a real t
     assert.equal(new Set(q.opts).size, q.opts.length, 'question ' + (i + 1) + ' repeats an option');
     assert.ok(A.VOCAB.some((v) => v.translation === q.a), 'question ' + (i + 1) + ' answer is a vocabulary translation');
     assert.ok(A.isCorrect(q, q.a));
-    q.opts.filter((o) => o !== q.a).forEach((o) => assert.ok(!A.isCorrect(q, o)));
+    q.opts.filter((o) => o !== q.a).forEach((o) => { assert.ok(!A.isCorrect(q, o)); });
   });
 });
 
@@ -77,7 +77,7 @@ test('timer text and song position: the line, the progress bar and the tune foll
   assert.equal(A.positionAt(A.LOOP_SEC).line, 0, 'the song loops');
   assert.equal(A.positionAt(A.LOOP_SEC + 15).percent, 50);
   assert.ok(new Set([0, 0.5, 1, 1.5, 2].map((t) => A.positionAt(t).hz)).size >= 4, 'the tune moves: it is not one held tone');
-  A.TUNE.forEach((hz) => assert.ok(hz >= 110 && hz <= 880));
+  A.TUNE.forEach((hz) => { assert.ok(hz >= 110 && hz <= 880); });
 });
 
 test('the page loads app.js and no longer carries the broken v1 pieces', () => {
