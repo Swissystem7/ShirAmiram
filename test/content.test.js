@@ -6,7 +6,8 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const A = require('../app.js');
 const root = path.join(__dirname, '..');
-const rawBytes = fs.readFileSync(path.join(root, 'data/imports/content_v2.json'));
+// Hash the LF form, so a Windows checkout (CRLF) and CI give the same bytes for the same content.
+const rawBytes = Buffer.from(fs.readFileSync(path.join(root, 'data/imports/content_v2.json'), 'utf8').replace(/\r\n/g, '\n'), 'utf8');
 const raw = JSON.parse(rawBytes);
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const C = A.validateContent(raw);
