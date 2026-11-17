@@ -3,18 +3,15 @@
 Updated: 2026-11-17 (Claude Code, branch `fix/a11y-biome`)
 
 ## Current state
-- 17.11: #123 merged (self-hosted fonts).
-- Branch `feat/song-link-embed`: paste a YouTube/Spotify link or ID on the songs screen and it plays in the
-  existing player. Parser src/media_links.js (YouTube watch/youtu.be/shorts/embed/live/music/playlist with start
-  time; Spotify track/album/playlist incl. /intl-xx/ and /embed/; spotify: URIs; bare IDs), no API keys.
-  test/media_links.test.js (7 tests). Form above the player with the screen's existing classes; iframe built
-  with createElement from validated IDs. sw.js precaches the module; cache v11 -> v12.
-- Checked: npm test 755/755, biome lint 0, Playwright 390/1280 (19 checks each incl. bad/HTML input), other
-  screens unchanged.
-
-- CodeQL flagged 3 high alerts (URL from DOM text into iframe src / a href, and a substring check on
-  music.youtube.com). The page now builds both URLs from fixed origins, an allow-listed kind and
-  encodeURIComponent(id); the parser returns a `music` flag instead of the substring check.
+- 17.11: #124 merged (paste a YouTube/Spotify link to play it).
+- Branch `fix/embed-offline`: with no network the player iframe showed the browser's offline page and the status
+  said "מנגן למטה". Now, when navigator.onLine is false, the song-card button and the pasted-link form show a
+  short message in the player box; the pasted-link status keeps the open link for later. No console errors.
+- Embed hosts blocked while online: the frame shows the browser's "blocked" page (cross-origin, the page cannot
+  detect it); the "פתיחה ב-…" link under the form stays as the fallback. No console errors. No change made.
+- Lighthouse 12.8.2 (local http-server): 390 mobile perf 49 / a11y 100 / best practices 100;
+  1280 desktop perf 79 / a11y 100 / best practices 100; 0 console errors. Perf left as is (out of scope):
+  mobile LCP 8.8 s, TBT 810 ms; desktop CLS 0.302.
 
 ## Next step
 - Wait for CI on the PR. Claude Code never merges; the servers merge.

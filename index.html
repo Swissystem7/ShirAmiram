@@ -1291,6 +1291,13 @@
       $('embed-tab-spotify').onclick = () => setEmbedTab('spotify');
       $('embed-tab-youtube').onclick = () => setEmbedTab('youtube');
       document.querySelectorAll('[data-spotify]').forEach(b=>{ b.addEventListener('click',()=>{
+        if (navigator.onLine === false) {
+          // Offline the frame would only show the browser's error page: say so instead.
+          $('spotify-box').innerHTML = '<p class="embed-offline text-sm" role="status">אין חיבור לרשת, ולכן הנגן לא נטען. כשהחיבור יחזור, לחצו שוב.</p>';
+          $('youtube-box').innerHTML = '<p class="embed-offline text-sm" role="status">אין חיבור לרשת, ולכן הנגן לא נטען. כשהחיבור יחזור, לחצו שוב.</p>';
+          setEmbedTab('spotify');
+          return;
+        }
         const u=A.spotifyEmbedUrl(b.dataset.spotify);
         $('spotify-box').innerHTML = u ? '<iframe title="Spotify embed" src="'+u+'" width="100%" height="152" loading="lazy" allow="encrypted-media"></iframe>' : '<p>אין מזהה Spotify תקין.</p>';
         const song=CONTENT.songs.find(s=>s.spotify_id===b.dataset.spotify);
@@ -1357,13 +1364,22 @@
         }
         const sp = info.provider === 'spotify';
         const box = $(sp ? 'spotify-box' : 'youtube-box');
-        box.replaceChildren(frame(info, urls.embed));
+        const offline = navigator.onLine === false;
+        if (offline) {
+          const note = document.createElement('p');
+          note.className = 'embed-offline text-sm';
+          note.setAttribute('role', 'status');
+          note.textContent = 'אין חיבור לרשת, ולכן הנגן לא נטען. כשהחיבור יחזור, לחצו שוב.';
+          box.replaceChildren(note);
+        } else {
+          box.replaceChildren(frame(info, urls.embed));
+        }
         $('embed-tab-spotify').setAttribute('aria-pressed', String(sp));
         $('embed-tab-youtube').setAttribute('aria-pressed', String(!sp));
         $('spotify-box').classList.toggle('hidden', !sp);
         $('youtube-box').classList.toggle('hidden', sp);
         const name = sp ? 'Spotify' : (info.music ? 'YouTube Music' : 'YouTube');
-        status.append('מנגן למטה. ');
+        status.append(offline ? 'אין חיבור לרשת. אפשר לפתוח את השיר אחר כך: ' : 'מנגן למטה. ');
         const a = document.createElement('a');
         a.className = 'song-link bg-stage-900 rounded';
         a.href = urls.open;

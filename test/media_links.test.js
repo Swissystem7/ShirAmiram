@@ -114,3 +114,10 @@ test('the songs screen has the link form and loads the parser', () => {
   assert.match(html, /<script defer src="src\/media_links\.js"><\/script>/);
   assert.ok(sw.includes("'./src/media_links.js'"));
 });
+
+test('offline, the players show a message instead of an iframe', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.equal((html.match(/navigator\.onLine === false/g) || []).length, 2, 'song cards and pasted links both check');
+  assert.match(html, /אין חיבור לרשת, ולכן הנגן לא נטען/);
+  assert.match(html, /status\.append\(offline \? /);
+});
