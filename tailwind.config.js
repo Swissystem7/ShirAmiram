@@ -1,6 +1,8 @@
-/* Prebuilt stylesheet source. `npm run build:css` regenerates css/tailwind.css.
-   The committed file is what the site and CI serve, so the deploy does not
-   need a Tailwind step in GitHub Actions. */
+// Tailwind 3.4.17 build of css/tailwind.css (npm run build:css). The theme is the one index.html used
+// to hand to the Play CDN (tailwind.config = {...}); content lists every file whose class names reach
+// the page, the page itself and the scripts that write markup. The committed file is what the site
+// and CI serve, so the deploy does not need a Tailwind step in GitHub Actions.
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./index.html', './app.js', './src/**/*.js', './sw.js'],
   theme: {

@@ -66,6 +66,12 @@
 npm test
 ```
 
+עיצוב Tailwind נבנה מקומית לקובץ `css/tailwind.css` (בלי CDN). אחרי שינוי מחלקות ב-`index.html`, `app.js` או `src/`:
+```bash
+npm run build:css   # בונה מחדש (Tailwind 3.4.17, tailwind.config.js)
+npm run check:css   # נכשל אם הקובץ לא מעודכן; רץ גם ב-npm run doctor
+```
+
 בדיקת רספונסיביות מובייל (Playwright):
 ```bash
 python scripts/mobile_ui_check.py
