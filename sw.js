@@ -1,5 +1,5 @@
 // ShirAmiram — Offline Service Worker (network-first pages, stale-while-revalidate assets)
-const CACHE_NAME = 'shiramiram-cache-v11';
+const CACHE_NAME = 'shiramiram-cache-v12';
 
 const STATIC_ASSETS = [
   './',
@@ -30,6 +30,7 @@ const STATIC_ASSETS = [
   './fonts/rubik-latin.woff2',
   './app.js',
   './src/ui_shell.js',
+  './src/media_links.js',
   './src/xp_engine.js',
   './src/study_streak_badges.js',
   './src/review_calendar_grid.js',
