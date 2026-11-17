@@ -1057,3 +1057,10 @@ body:has(#alias:not(.hidden)) #mini-player { display: none; }
 
 /* Groups of controls are fieldsets for assistive tech; they keep the old div box. */
 :where(fieldset.ui-group) { margin: 0; padding: 0; border: 0; min-width: 0; min-inline-size: 0; }
+
+/* The bottom nav is built by ui_shell.js after the deferred scripts load. Reserve its final height
+   while it is still empty, so the page does not jump when it fills in (desktop: it sits above main). */
+#bottom-nav:empty { min-height: 64px; }
+@media (min-width: 900px) {
+  #bottom-nav:empty { min-height: 56px; }
+}

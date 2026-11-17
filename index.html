@@ -6,6 +6,9 @@
   <title>ShirAmiram • שיראמיר״ם</title>
   <meta name="description" content="שיראמיר״ם: לומדים את אוצר המילים של אמיר״ם דרך מילים של שירים, עם תרגול, מבחנים וכרטיסיות. עובד בדפדפן, גם בלי רשת.">
   <link rel="stylesheet" href="css/tailwind.css">
+  <link rel="preload" href="fonts/rubik-hebrew.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/rubik-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="fonts/fonts.css">
   <style>
     body {font-family:'Heebo',system-ui,sans-serif;background:#0f172a;color:#f8fafc;}
@@ -53,13 +56,13 @@
 
   <!-- Tabs -->
   <nav class="flex bg-stage-800 p-2 gap-2" aria-label="מסכים">
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="false">שיר</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false">אוצר מילים</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false" aria-label="מרכז תרגול">תרגול</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false">מבחן</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false" aria-label="כרטיסיות SRS">כרטיסיות</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="alias" aria-pressed="false">משחק מילים</button>
-    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false">מדד אמיר"ם</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="true">שיר</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false" hidden>אוצר מילים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false" hidden aria-label="מרכז תרגול">תרגול</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="quiz" aria-pressed="false" hidden>מבחן</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="flashcards" aria-pressed="false" hidden aria-label="כרטיסיות SRS">כרטיסיות</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="alias" aria-pressed="false" hidden>משחק מילים</button>
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="dashboard" aria-pressed="false" hidden>מדד אמיר"ם</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="songs" aria-pressed="false" aria-label="שירים והמלצות">שירים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="suno" aria-pressed="false" aria-label="Suno Studio">Suno</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="karaoke" aria-pressed="false" aria-label="קריוקי קולי">קריוקי</button>
