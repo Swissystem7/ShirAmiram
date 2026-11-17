@@ -42,7 +42,7 @@ function seededRandom(seed) {
 }
 function realCoordinatorOutput(wrongWords) {
   const session = Sim.createSimulation(QUESTIONS, { questionCount: QUESTIONS.length, random: seededRandom(7) });
-  session.questions.forEach((q) => Sim.answerQuestion(session, q.id, wrongWords.includes(q.word) ? 'definitely-wrong' : q.answer));
+  session.questions.forEach((q) => { Sim.answerQuestion(session, q.id, wrongWords.includes(q.word) ? 'definitely-wrong' : q.answer); });
   return C.coordinateSessionFromSimulation(Sim.submitSimulation(session), CATALOGUE, VOCAB);
 }
 // SYNTHETIC explicit-evidence envelope (labelled synthetic, not coordinator).

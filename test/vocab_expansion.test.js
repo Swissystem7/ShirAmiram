@@ -64,7 +64,7 @@ test('src/vocab.js validates dataset and filters deterministically by level', ()
 
   const levelA = V.filterByLevel(vocab, '', 'A');
   assert.equal(levelA.length, 100);
-  levelA.forEach(item => assert.equal(item.level, 'A_foundational'));
+  levelA.forEach(item => { assert.equal(item.level, 'A_foundational'); });
 
   const levelB = V.filterByLevel(vocab, '', 'B_intermediate');
   assert.equal(levelB.length, 100);

@@ -37,7 +37,6 @@
   // Predefined English inflections accepted as matches for a target lemma.
   var INFLECTIONS = {
     sing: ['sing', 'sings', 'sang', 'sung', 'singing'],
-    run: ['run', 'runs', 'ran', 'running'],
     go: ['go', 'goes', 'went', 'going', 'gone'],
     be: ['be', 'am', 'is', 'are', 'was', 'were', 'being', 'been'],
     have: ['have', 'has', 'had', 'having'],

@@ -40,7 +40,7 @@ function seededRandom(seed) {
 }
 function makeSimulationResult(wrongWords) {
   const session = Sim.createSimulation(QUESTIONS, { questionCount: QUESTIONS.length, random: seededRandom(7) });
-  session.questions.forEach((q) => Sim.answerQuestion(session, q.id, wrongWords.includes(q.word) ? 'definitely-wrong' : q.answer));
+  session.questions.forEach((q) => { Sim.answerQuestion(session, q.id, wrongWords.includes(q.word) ? 'definitely-wrong' : q.answer); });
   return Sim.submitSimulation(session);
 }
 function assertTimestamp(r) {

@@ -200,13 +200,15 @@
       var perWordCat = dict();
       n.errors.forEach(function (e) {
         if (e.category) {
-          (perWordCat[e.word] = perWordCat[e.word] || dict())[e.category] = true;
+          if (!perWordCat[e.word]) perWordCat[e.word] = dict();
+          perWordCat[e.word][e.category] = true;
         }
       });
       // Once per word per session (errorWords is already deduped).
       n.errorWords.forEach(function (w) {
         counts[w] = (counts[w] || 0) + 1;
-        var bucket = cats[w] || (cats[w] = dict());
+        if (!cats[w]) cats[w] = dict();
+        var bucket = cats[w];
         Object.keys(perWordCat[w] || {}).forEach(function (c) { bucket[c] = true; });
       });
     });

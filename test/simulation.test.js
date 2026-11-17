@@ -92,7 +92,7 @@ test('8. createSimulation and submitSimulation do not mutate the input pool', ()
   const pool = makePool(30);
   const snapshot = JSON.stringify(pool);
   const session = Sim.createSimulation(pool, { random: seededRandom(3) });
-  session.questions.forEach(q => Sim.answerQuestion(session, q.id, q.answer));
+  session.questions.forEach(q => { Sim.answerQuestion(session, q.id, q.answer); });
   const result = Sim.submitSimulation(session);
   assert.equal(result.correctCount, 25);
   assert.equal(JSON.stringify(pool), snapshot);
@@ -105,7 +105,7 @@ test('9. submitSimulation: perfect run scores 150 / Exemption, empty review', ()
   const session = Sim.createSimulation(makePool(30), {
     random: seededRandom(9), now: () => now
   });
-  session.questions.forEach(q => Sim.answerQuestion(session, q.id, q.answer));
+  session.questions.forEach(q => { Sim.answerQuestion(session, q.id, q.answer); });
   now += 10 * 60 * 1000;
   const result = Sim.submitSimulation(session);
   assert.deepEqual(Object.keys(result).sort(),
@@ -122,7 +122,7 @@ test('10. submitSimulation reviews only wrong and unanswered questions', () => {
   const session = Sim.createSimulation(makePool(30), { random: seededRandom(11) });
   const [q0, q1] = session.questions;
   Sim.answerQuestion(session, q0.id, 'definitely-wrong');
-  session.questions.slice(2).forEach(q => Sim.answerQuestion(session, q.id, q.answer));
+  session.questions.slice(2).forEach(q => { Sim.answerQuestion(session, q.id, q.answer); });
   // q1 is intentionally left unanswered.
   const result = Sim.submitSimulation(session);
   assert.equal(result.correctCount, 23);
@@ -143,7 +143,7 @@ test('11. submitSimulation clamps elapsed time to the 20-minute limit', () => {
   const session = Sim.createSimulation(makePool(25), {
     random: seededRandom(5), now: () => now
   });
-  session.questions.forEach(q => Sim.answerQuestion(session, q.id, q.answer));
+  session.questions.forEach(q => { Sim.answerQuestion(session, q.id, q.answer); });
   now += 60 * 60 * 1000; // one hour: beyond the practice limit
   assert.equal(Sim.submitSimulation(session).timeSpentSec, 1200);
   const backwards = Sim.createSimulation(makePool(25), {
@@ -160,7 +160,7 @@ test('12. submitSimulation validates session state and maps mid levels', () => {
   const session = Sim.createSimulation(makePool(25), { random: seededRandom(13) });
   // Answer 13 of 25 correctly -> score 102 -> AdvancedA.
   session.questions.forEach((q, i) =>
-    Sim.answerQuestion(session, q.id, i < 13 ? q.answer : 'nope'));
+    { Sim.answerQuestion(session, q.id, i < 13 ? q.answer : 'nope'); });
   const result = Sim.submitSimulation(session);
   assert.equal(result.score, 102);
   assert.equal(result.level, 'AdvancedA');
