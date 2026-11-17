@@ -1,25 +1,25 @@
 # HANDOFF — ShirAmiram
 
-Updated: 2026-11-17 09:4x (Claude Code, branch `claude/alias-game`, PR #108)
+Updated: 2026-11-17 (Claude Code, branch `fix/a11y-biome`)
 
 ## Current state
-- PR #108: Alias word game. Solo Guess + Explain mode (EN and HE, taboo words, party -1). Done and tested
-  (npm test 744/745 - the one failure is the CRLF hash test on Windows only; Playwright 375/390/1280).
-- Biome: 0 errors in index.html, alias_ui.js, alias_engine.js, ui_shell.js.
-- main merged into the branch on 17.11 (conflicts in volt.css, index.html, ui_shell.js resolved by keeping both sides).
-- Not merged. Merge only when Gemini (tools chat) says so and CI is green.
+- Branch `fix/a11y-biome` (from main 9d0a99f). Biome 2.6.7 (`biome.json` schema version):
+  - index.html: 0 errors (was 23). 11 role="group"/labelled divs -> fieldset.ui-group, #timer role="timer",
+    scoreboard <section>, aria-hidden decorative SVGs, default heading text, label for=, captions <track>.
+  - src, test, scripts, assets: 0 errors (68 `var` in blocks -> `let`; forEach bodies; duplicate key; icon <title>).
+  - `biome lint` on the whole repo: 132 errors left, all in design/ (Claude Design exports).
+- Visual check: Playwright screenshots of all 10 screens at 390 and 1280 before/after; only the quiz question
+  differs (it rotates by time). npm test 746/748; the 2 failures also fail on main in a Windows CRLF checkout.
 
-- 17.11 (coordinator order): the 7 game choices (mode, language, deck) are native radios in fieldsets instead of
-  `<button role="radio">` (Biome lint/a11y/useSemanticElements). Look unchanged; keyboard arrows work.
-
-## Known blockers
-- `dell-ci/full-gate` fails on every PR: Biome errors in ~18 older files on main, and "lcov missing"
-  (npm test produces no coverage file). Needs a decision from Aviran.
-- PR #109 (another worker) fixes the same forEach lint lines in index.html as commit 0f2ff17 here.
+## Needs a decision (coordinator / Aviran)
+1. design/*.dc.html + support.js (132 lint errors): edit the exported prototypes (button type, key handlers,
+   lang, == in Claude Design's runtime) or exclude design/ in biome.json.
+2. `biome check` formatting: the repo was never formatted with Biome defaults (tabs, quotes). Almost every file
+   "needs formatting" even on a clean LF checkout. Options: format the whole repo (huge diff), set formatter
+   options in biome.json to match the current style, or keep the gate on `biome lint`.
 
 ## Next step
-- Wait for `ci` and `dell-ci/full-gate` on PR #108. The GitHub agent merges, not Claude Code.
-- After that (coordinator order): a NEW ShirAmiram PR for #btn-play, #timer, #mini-player and favicon.
+- Wait for CI on the PR. Do not merge (the GitHub agent merges after Gemini's say-so).
 
 ## Rate limits
-- None hit in this session.
+- None hit.

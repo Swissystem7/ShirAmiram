@@ -49,7 +49,7 @@
     <div class="header-tools flex items-center gap-2">
       <button id="theme-toggle" type="button" aria-pressed="true" style="min-height:44px;min-width:44px">מצב בהיר</button>
       <button id="btn-play" type="button" aria-label="ניגון" aria-pressed="false" class="px-3 py-1 bg-neon-pink rounded hover:bg-neon-purple transition" style="min-height:44px;min-width:44px">▶️</button>
-      <span id="timer" class="font-mono" aria-label="זמן ניגון">00:00</span>
+      <span id="timer" class="font-mono" role="timer" aria-label="זמן ניגון">00:00</span>
     </div>
   </header>
 
@@ -127,16 +127,16 @@
         <input id="vocab-search" type="search" placeholder="חפש מילים…" aria-label="חיפוש מילה" class="p-2 bg-stage-900 rounded text-neon-pink">
         <div class="flex flex-wrap items-center gap-2">
           <span class="text-xs text-slate-400 font-bold">רמת קושי:</span>
-          <div id="vocab-level-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי רמת קושי">
+          <fieldset id="vocab-level-filters" class="ui-group flex flex-wrap gap-2" aria-label="סינון לפי רמת קושי">
             <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="all" aria-pressed="true" style="min-height:44px">הכול</button>
             <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="A_foundational" aria-pressed="false" style="min-height:44px">רמה A (בסיסי)</button>
             <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="B_intermediate" aria-pressed="false" style="min-height:44px">רמה B (בינוני)</button>
             <button type="button" class="level-btn px-3 py-1 rounded bg-stage-800 border border-slate-700 text-xs font-bold" data-level="C_advanced" aria-pressed="false" style="min-height:44px">רמה C (מתקדם)</button>
-          </div>
+          </fieldset>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <span class="text-xs text-slate-400 font-bold">סוג מילה:</span>
-          <div id="vocab-filters" class="flex flex-wrap gap-2" role="group" aria-label="סינון לפי סוג מילה"></div>
+          <fieldset id="vocab-filters" class="ui-group flex flex-wrap gap-2" aria-label="סינון לפי סוג מילה"></fieldset>
         </div>
       </div>
       <table class="w-full text-sm border-collapse">
@@ -150,33 +150,33 @@
 
     <!-- Practice hub (v2 design): entry points to the practice modes -->
     <section id="practice" class="tab-content hidden">
-      <div id="xp-widget" class="xp-card" role="group" aria-label="ההתקדמות שלי">
+      <fieldset id="xp-widget" class="ui-group xp-card" aria-label="ההתקדמות שלי">
         <div class="xp-top">
           <span class="xp-level">שלב <b id="xp-level">1</b></span>
           <span id="xp-note" class="xp-note">0 נק׳</span>
         </div>
         <div id="xp-bar" class="xp-bar" role="progressbar" aria-label="התקדמות לשלב הבא" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="xp-fill"></span></div>
         <p id="xp-streak" class="xp-streak" data-live="off" aria-live="polite"></p>
-      </div>
+      </fieldset>
       <h2 class="hub-title">מה מתרגלים היום?</h2>
       <div class="hub-grid">
         <button type="button" class="hub-card" data-hub-tab="flashcards" data-hub-tone="a">
-          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5L12 12 4 7.5 12 3z"/><path d="M4 12l8 4.5L20 12"/><path d="M4 16.5L12 21l8-4.5"/></svg></span>
+          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5L12 12 4 7.5 12 3z"/><path d="M4 12l8 4.5L20 12"/><path d="M4 16.5L12 21l8-4.5"/></svg></span>
           <span class="hub-copy"><span class="hub-name">כרטיסיות</span>
           <span class="hub-desc">חזרה מרווחת על מילים, עם הפיכת כרטיס ודירוג</span></span>
         </button>
         <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-cloze" data-hub-tone="b">
-          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h7M13 12h7M4 17h16"/></svg></span>
+          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h7M13 12h7M4 17h16"/></svg></span>
           <span class="hub-copy"><span class="hub-name">השלמת משפטים</span>
           <span class="hub-desc">שאלות אמיר״ם עם ארבע תשובות והסבר</span></span>
         </button>
         <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-restatement" data-hub-tone="c">
-          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h10M4 12h16M4 17h8"/><path d="M17 15l3 3-3 3"/><path d="M20 18H11"/></svg></span>
+          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M4 12h16M4 17h8"/><path d="M17 15l3 3-3 3"/><path d="M20 18H11"/></svg></span>
           <span class="hub-copy"><span class="hub-name">ניסוח מחדש</span>
           <span class="hub-desc">בחירת המשפט ששומר על המשמעות</span></span>
         </button>
         <button type="button" class="hub-card" data-hub-tab="quiz" data-hub-click="exam-type-reading" data-hub-tone="d">
-          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6c-2.5-1.6-5.2-2-8-2v14c2.8 0 5.5.4 8 2 2.5-1.6 5.2-2 8-2V4c-2.8 0-5.5.4-8 2z"/><path d="M12 6v14"/></svg></span>
+          <span class="hub-icon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6c-2.5-1.6-5.2-2-8-2v14c2.8 0 5.5.4 8 2 2.5-1.6 5.2-2 8-2V4c-2.8 0-5.5.4-8 2z"/><path d="M12 6v14"/></svg></span>
           <span class="hub-copy"><span class="hub-name">הבנת הנקרא</span>
           <span class="hub-desc">קטע קריאה עם מילים לחיצות ושאלות</span></span>
         </button>
@@ -187,11 +187,11 @@
       </div>
       <div id="quick-plan" class="plan-card">
         <h3 class="plan-title">כמה זמן יש לך?</h3>
-        <div class="plan-chips" role="group" aria-label="זמן פנוי לתרגול">
+        <fieldset class="ui-group plan-chips" aria-label="זמן פנוי לתרגול">
           <button type="button" data-plan-min="5" aria-pressed="false">5 דק׳</button>
           <button type="button" data-plan-min="10" aria-pressed="false">10 דק׳</button>
           <button type="button" data-plan-min="20" aria-pressed="false">20 דק׳</button>
-        </div>
+        </fieldset>
         <ol id="plan-list" class="plan-list"></ol>
         <p id="plan-note" class="plan-note" aria-live="polite"></p>
       </div>
@@ -199,25 +199,25 @@
 
     <!-- Quiz Tab -->
     <section id="quiz" class="tab-content hidden">
-      <div class="exam-types flex flex-wrap items-center gap-2 mb-3 p-1 bg-stage-900 rounded-lg border border-white/5" role="group" aria-label="סוג מבחן אמיר״ם">
+      <fieldset class="ui-group exam-types flex flex-wrap items-center gap-2 mb-3 p-1 bg-stage-900 rounded-lg border border-white/5" aria-label="סוג מבחן אמיר״ם">
         <button type="button" id="exam-type-cloze" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-indigo-600 text-white" aria-pressed="true" aria-label="השלמת משפטים (Cloze)">השלמה</button>
         <button type="button" id="exam-type-restatement" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false" aria-label="שחבור וניסוח מחדש (Restatements)">שחבור</button>
         <button type="button" id="exam-type-reading" class="px-3 py-1.5 rounded-md text-xs font-bold transition bg-stage-800 text-gray-300 hover:text-white" aria-pressed="false" aria-label="הבנת הנקרא (Reading Comprehension)">קריאה</button>
-      </div>
+      </fieldset>
 
       <!-- Reading Comprehension Modes Bar -->
-      <div id="reading-mode-bar" class="quiz-mode-bar hidden" role="group" aria-label="מצב הבנת הנקרא">
+      <fieldset id="reading-mode-bar" class="ui-group quiz-mode-bar hidden" aria-label="מצב הבנת הנקרא">
         <button type="button" id="reading-mode-mix" aria-pressed="true" aria-label="כל הקטעים (סימולציה)">הכל</button>
         <button type="button" id="reading-mode-a" aria-pressed="false" aria-label="טקסט רמה A (בסיס)">רמה A</button>
         <button type="button" id="reading-mode-b" aria-pressed="false" aria-label="טקסט רמה B (ביניים)">רמה B</button>
         <button type="button" id="reading-mode-c" aria-pressed="false" aria-label="טקסט רמה C (פטור)">רמה C</button>
-      </div>
+      </fieldset>
 
       <!-- Reading Passage Box (Displayed in reading mode) -->
       <div id="reading-passage-container" class="hidden mb-4 space-y-2">
         <div class="flex flex-wrap items-center justify-between p-3 bg-stage-900 rounded-lg border border-indigo-500/30 gap-2">
           <div>
-            <h3 id="rc-passage-title" class="text-base font-bold text-indigo-300" dir="ltr"></h3>
+            <h3 id="rc-passage-title" class="text-base font-bold text-indigo-300" dir="ltr">Reading passage</h3>
             <p id="rc-passage-subtitle" class="text-xs text-slate-400"></p>
           </div>
           <div class="flex items-center gap-2">
@@ -230,22 +230,22 @@
       </div>
 
       <!-- Restatement Modes Bar -->
-      <div id="restatement-mode-bar" class="quiz-mode-bar hidden" role="group" aria-label="מצב שחבור">
+      <fieldset id="restatement-mode-bar" class="ui-group quiz-mode-bar hidden" aria-label="מצב שחבור">
         <button type="button" id="restatement-mode-mix" aria-pressed="true" aria-label="סימולציית שחבור (15 שאלות)">סימולציה</button>
         <button type="button" id="restatement-mode-a" aria-pressed="false" aria-label="שחבור רמה A">רמה A</button>
         <button type="button" id="restatement-mode-b" aria-pressed="false" aria-label="שחבור רמה B">רמה B</button>
         <button type="button" id="restatement-mode-c" aria-pressed="false" aria-label="שחבור רמה C">רמה C</button>
-      </div>
+      </fieldset>
 
       <!-- Cloze Modes Bar -->
-      <div id="cloze-mode-bar" class="quiz-mode-bar" role="group" aria-label="מצב מבחן">
+      <fieldset id="cloze-mode-bar" class="ui-group quiz-mode-bar" aria-label="מצב מבחן">
         <button type="button" id="quiz-mode-quick" aria-pressed="true" aria-label="מבחן מהיר (10 שאלות)">מהיר</button>
         <button type="button" id="quiz-mode-full" aria-pressed="false" aria-label="מבחן מלא (50 שאלות)">מלא</button>
         <button type="button" id="quiz-mode-amiram-mix" aria-pressed="false" aria-label="סימולציית אמיר״ם (25 שאלות)">אמיר״ם</button>
         <button type="button" id="quiz-mode-amiram-a" aria-pressed="false" aria-label="אמיר״ם רמה A">רמה A</button>
         <button type="button" id="quiz-mode-amiram-b" aria-pressed="false" aria-label="אמיר״ם רמה B">רמה B</button>
         <button type="button" id="quiz-mode-amiram-c" aria-pressed="false" aria-label="אמיר״ם רמה C">רמה C</button>
-      </div>
+      </fieldset>
       <div id="quiz-progress" aria-live="polite">שאלה 0 מתוך 0</div>
       <div id="quiz-container" class="space-y-4">
         <!-- Questions will be injected -->
@@ -393,12 +393,12 @@
         <span class="alias-banner-name">משחק מילים בסגנון Alias</span>
         <span class="alias-banner-desc">ניחוש מרמזים, או הסבר בקול בלי לומר את המילה. המילים החלשות קודמות.</span>
       </button>
-      <div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="סינון רמת כרטיסיות">
+      <fieldset class="ui-group flex flex-wrap gap-2 mb-3" aria-label="סינון רמת כרטיסיות">
         <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="all" aria-pressed="true">הכול</button>
         <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="A" aria-pressed="false">רמה A</button>
         <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="B" aria-pressed="false">רמה B</button>
         <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="C" aria-pressed="false">רמה C</button>
-      </div>
+      </fieldset>
 
       <div class="flex items-center justify-between mb-3 text-sm opacity-90">
         <div id="srs-counter" aria-live="polite">כרטיסייה 0 מתוך 0</div>
@@ -555,10 +555,10 @@
       <button id="btn-recommend" type="button" class="song-link bg-neon-purple rounded mb-3">המלצות לפי מילות יעד</button>
       <div id="songs-list" class="space-y-3"></div>
       <div class="embed-player mt-3" id="embed-player">
-        <div class="embed-toggle" role="group" aria-label="בחירת נגן">
+        <fieldset class="ui-group embed-toggle" aria-label="בחירת נגן">
           <button type="button" id="embed-tab-spotify" aria-pressed="true">Spotify</button>
           <button type="button" id="embed-tab-youtube" aria-pressed="false">YouTube</button>
-        </div>
+        </fieldset>
         <div id="spotify-box" class="embed-frame-wrap spotify"></div>
         <div id="youtube-box" class="embed-frame-wrap youtube hidden text-sm"></div>
       </div>
@@ -577,7 +577,7 @@
           <option value="B_intermediate">בינוני (B)</option>
           <option value="C_advanced">מתקדם (C)</option>
         </select>
-        <label class="block text-xs text-muted mb-1">בחרו שיר מהמאגר לתרגול וטלפרומפטר:</label>
+        <label for="karaoke-30-select" class="block text-xs text-muted mb-1">בחרו שיר מהמאגר לתרגול וטלפרומפטר:</label>
         <select id="karaoke-30-select" class="w-full p-2 bg-stage-900 border border-white/10 rounded-lg text-sm text-gray-200 mb-3"></select>
 
         <!-- Current Song Details -->
@@ -605,7 +605,7 @@
       <h2 class="font-bold mb-2">שמע מקומי ותזמון</h2>
       <p class="text-sm mb-2">לא מסופק קובץ שמע או תזמון מומצא. בחרו קובץ שמע שלכם וקובץ LRC/JSON שלכם.</p>
       <input id="audio-file" type="file" accept="audio/*" class="block mb-2">
-      <audio id="local-audio" controls class="w-full mb-2"></audio>
+      <audio id="local-audio" controls class="w-full mb-2"><track kind="captions" srclang="en" label="Lyrics"></audio>
       <input id="timing-file" type="file" accept=".lrc,.json,text/plain,application/json" class="block mb-2">
       <div id="timed-lines" dir="ltr" class="text-left space-y-1"></div>
       <hr class="my-4 border-stage-800">
@@ -624,13 +624,13 @@
         </div>
       </div>
       <div class="mb-4 flex flex-wrap gap-2 items-center">
-        <label class="text-sm font-bold text-slate-300">בחר שיר להפקה:</label>
+        <label for="suno-song-select" class="text-sm font-bold text-slate-300">בחר שיר להפקה:</label>
         <select id="suno-song-select" class="p-2 bg-stage-900 border border-slate-700 rounded text-sm text-slate-100 flex-1 max-w-md" style="min-height:44px"></select>
       </div>
       <div id="suno-card" class="p-4 bg-stage-900/80 rounded-xl border border-slate-700/80 space-y-4">
         <div class="flex justify-between items-start flex-wrap gap-2">
           <div>
-            <h3 id="suno-title" class="text-lg font-bold text-indigo-400"></h3>
+            <h3 id="suno-title" class="text-lg font-bold text-indigo-400">שיר</h3>
             <p id="suno-meta" class="text-xs text-slate-400"></p>
           </div>
           <span id="suno-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-900/60 text-amber-200 border border-amber-500/40">סטטוס: pending_manual</span>
@@ -656,7 +656,7 @@
         <div class="pt-2 border-t border-slate-800">
           <h4 class="text-xs font-bold text-slate-400 mb-2">נגן שמע מקומי:</h4>
           <div id="suno-audio-status" class="text-xs text-amber-300 mb-2">ממתין להפקת אודיו ב-Suno (העתיקו את המילים והפרומפט)</div>
-          <audio id="suno-audio-player" controls class="w-full hidden"></audio>
+          <audio id="suno-audio-player" controls class="w-full hidden"><track kind="captions" srclang="en" label="Lyrics"></audio>
         </div>
       </div>
     </section>
@@ -668,11 +668,11 @@
         <span id="karaoke-mic-indicator" aria-hidden="true"></span>
         <span id="karaoke-status-text">מוכן</span>
       </div>
-      <div class="karaoke-scoreboard" id="karaoke-scoreboard" aria-label="לוח תוצאות">
+      <section class="karaoke-scoreboard" id="karaoke-scoreboard" aria-label="לוח תוצאות">
         <div class="cell">ציון<br><strong id="karaoke-score">0</strong></div>
         <div class="cell">רצף<br><strong id="karaoke-streak">0</strong></div>
         <div class="cell">דיוק<br><strong id="karaoke-accuracy">0%</strong></div>
-      </div>
+      </section>
       <div id="karaoke-teleprompter" dir="ltr" lang="en" aria-live="polite"></div>
       <p id="karaoke-feedback" class="mt-2 min-h-[1.5rem]" aria-live="assertive"></p>
       <div id="karaoke-fallback-msg" class="hidden" role="alert"></div>
@@ -680,7 +680,7 @@
         <button id="karaoke-start-btn" type="button">התחל קריוקי (מנגינה)</button>
         <button id="karaoke-mic-btn" type="button">Start Mic</button>
       </div>
-      <div id="karaoke-choices" class="karaoke-actions mt-3 hidden" aria-label="Rhythm Tap choices"></div>
+      <fieldset id="karaoke-choices" class="ui-group karaoke-actions mt-3 hidden" aria-label="Rhythm Tap choices"></fieldset>
       <div id="karaoke-end" class="hidden" aria-live="polite"></div>
     </section>
 

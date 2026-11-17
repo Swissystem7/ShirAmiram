@@ -313,7 +313,7 @@
 :root[data-theme] .quiz-fb.text-red-400 { background: var(--bad-bg); color: var(--bad) !important; padding: var(--s3); border-radius: var(--r-m); }
 :root[data-theme] #quiz-progress { color: var(--ink-2); font-size: 14px; }
 :root[data-theme] #quiz-explanation { color: var(--ink); }
-:root[data-theme] [role="group"][aria-label="סוג מבחן אמיר״ם"] { width: 100%; background: transparent !important; border: 0 !important; padding: 0; }
+:root[data-theme] .exam-types[aria-label="סוג מבחן אמיר״ם"] { width: 100%; background: transparent !important; border: 0 !important; padding: 0; }
 :root[data-theme] [id^="exam-type-"] {
   min-height: 44px; border-radius: var(--r-pill) !important; border: 1px solid var(--line);
   font-size: 14px; padding-inline: var(--s4);
@@ -1054,3 +1054,6 @@ body:has(#alias:not(.hidden)) #mini-player { display: none; }
 .alias-choice { position: relative; }
 .alias-radio { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
 .alias-choice:has(> input:focus-visible) { outline: 3px solid var(--accent-text); outline-offset: 2px; }
+
+/* Groups of controls are fieldsets for assistive tech; they keep the old div box. */
+:where(fieldset.ui-group) { margin: 0; padding: 0; border: 0; min-width: 0; min-inline-size: 0; }

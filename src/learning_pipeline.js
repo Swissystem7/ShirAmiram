@@ -91,8 +91,8 @@
   function verifiedCategory(entry) {
     if (typeof entry === 'string') return entry.trim() ? entry.trim() : null;
     if (!isObj(entry)) return null;
-    for (var i = 0; i < CATEGORY_FIELDS.length; i++) {
-      var k = CATEGORY_FIELDS[i];
+    for (let i = 0; i < CATEGORY_FIELDS.length; i++) {
+      let k = CATEGORY_FIELDS[i];
       if (has(entry, k) && typeof entry[k] === 'string' && entry[k].trim()) {
         return entry[k].trim();
       }
@@ -102,10 +102,10 @@
 
   function entryWord(entry, fallbackKey) {
     if (isObj(entry)) {
-      for (var i = 0; i < WORD_FIELDS.length; i++) {
-        var k = WORD_FIELDS[i];
+      for (let i = 0; i < WORD_FIELDS.length; i++) {
+        let k = WORD_FIELDS[i];
         if (has(entry, k)) {
-          var w = normWord(typeof entry[k] === 'string' ? entry[k] : '');
+          let w = normWord(typeof entry[k] === 'string' ? entry[k] : '');
           if (w) return w;
           if (entry[k] !== undefined && entry[k] !== null && String(entry[k]).trim()) {
             return String(entry[k]).trim().toLowerCase();
@@ -172,7 +172,7 @@
       var isUnknown = typeof copy.category === 'string' &&
         copy.category.trim().toLowerCase() === 'unknown';
       if (isUnknown) {
-        var w = normWord(copy.word);
+        let w = normWord(copy.word);
         if (w && has(lookup, w)) copy.category = lookup[w];
       }
       return copy;

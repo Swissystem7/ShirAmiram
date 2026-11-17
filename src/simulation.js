@@ -152,13 +152,13 @@
     // Fisher-Yates shuffle of a copy: the caller's pool is left untouched,
     // and sampling without replacement guarantees unique questions.
     var copy = questionsPool.slice();
-    for (var i = copy.length - 1; i > 0; i--) {
-      var r = random();
+    for (let i = copy.length - 1; i > 0; i--) {
+      let r = random();
       if (!isFiniteNumber(r) || r < 0 || r >= 1) {
         throw new RangeError('config.random() must return a number in [0, 1)');
       }
-      var j = Math.floor(r * (i + 1));
-      var tmp = copy[i]; copy[i] = copy[j]; copy[j] = tmp;
+      let j = Math.floor(r * (i + 1));
+      let tmp = copy[i]; copy[i] = copy[j]; copy[j] = tmp;
     }
     var questions = copy.slice(0, questionCount).map(function (q) {
       return q && typeof q === 'object' ? Object.assign({}, q) : q;
@@ -200,7 +200,7 @@
       });
       if (index < 0) index = questionRef;
     } else {
-      var key = String(questionRef && typeof questionRef === 'object'
+      let key = String(questionRef && typeof questionRef === 'object'
         ? questionKey(questionRef, -1) : questionRef);
       index = session.questions.findIndex(function (q, i) {
         return questionKey(q, i) === key;
@@ -219,8 +219,8 @@
 
   function userAnswerOf(session, question, index, id) {
     var maps = [session.answers, session.responses, session.userAnswers];
-    for (var m = 0; m < maps.length; m++) {
-      var map = maps[m];
+    for (let m = 0; m < maps.length; m++) {
+      let map = maps[m];
       if (Array.isArray(map) && map[index] !== undefined) return map[index];
       if (map && typeof map === 'object' && !Array.isArray(map)) {
         // Maps are keyed by question id only: an index key would collide
@@ -230,7 +230,7 @@
     }
     if (!question || typeof question !== 'object') return undefined;
     var fields = ['userAnswer', 'selectedAnswer', 'selected', 'givenAnswer', 'response'];
-    for (var f = 0; f < fields.length; f++) {
+    for (let f = 0; f < fields.length; f++) {
       if (question[fields[f]] !== undefined) return question[fields[f]];
     }
     return undefined;
@@ -271,13 +271,13 @@
     if (!isFiniteNumber(start)) return 0;
     var end = null;
     var endFields = ['endedAtMs', 'submittedAtMs', 'finishedAtMs'];
-    for (var i = 0; i < endFields.length; i++) {
+    for (let i = 0; i < endFields.length; i++) {
       if (isFiniteNumber(session[endFields[i]])) { end = session[endFields[i]]; break; }
     }
     if (end === null) {
-      var fn = typeof session.now === 'function' ? session.now
+      let fn = typeof session.now === 'function' ? session.now
         : (typeof session.clock === 'function' ? session.clock : null);
-      if (fn) { var v = fn(); end = v instanceof Date ? v.getTime() : v; }
+      if (fn) { let v = fn(); end = v instanceof Date ? v.getTime() : v; }
     }
     if (!isFiniteNumber(end)) end = Date.now();
     // Sensible clamping: a backwards clock yields 0, overtime is capped

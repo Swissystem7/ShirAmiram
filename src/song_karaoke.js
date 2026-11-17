@@ -76,7 +76,7 @@
       if (term) lookupMap.set(term, w);
     });
 
-    while ((match = wordRegex.exec(lineText)) !== null) {
+    for (match = wordRegex.exec(lineText); match !== null; match = wordRegex.exec(lineText)) {
       const text = match[0];
       const isWord = /^[A-Za-z]/.test(text);
       const normalized = text.toLowerCase();

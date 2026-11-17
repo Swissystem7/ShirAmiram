@@ -109,7 +109,7 @@
     }
     var word = entry.word || entry.word_id || entry.wordId || keyWord;
     if (word !== undefined && word !== null && String(word).trim() !== '') {
-      var copy = {};
+      let copy = {};
       Object.keys(entry).forEach(function (k) { copy[k] = entry[k]; });
       if (!copy.word) copy.word = String(word);
       buckets.vocab.push(copy);
@@ -313,14 +313,14 @@
       var attempt = { correct: false };
       if (qid !== undefined && qid !== null) {
         attempt.questionId = qid;
-        var k = String(qid); if (!seenReview[k]) { seenReview[k] = true; reviewIds.push(qid); }
+        let k = String(qid); if (!seenReview[k]) { seenReview[k] = true; reviewIds.push(qid); }
       }
       if (entry.userAnswer !== undefined) attempt.userAnswer = entry.userAnswer;
       if (entry.correctAnswer !== undefined) attempt.correctAnswer = entry.correctAnswer;
       else if (entry.answer !== undefined) attempt.correctAnswer = entry.answer;
       var word = normWord(entry.word || entry.word_id || (q && (q.word || q.word_id)));
       if (!word) {
-        var cand = normWord(entry.correctAnswer !== undefined ? entry.correctAnswer : entry.answer);
+        let cand = normWord(entry.correctAnswer !== undefined ? entry.correctAnswer : entry.answer);
         if (cand && data.vocabByWord[cand]) word = cand;
       }
       if (word) attempt.word = word;
@@ -358,9 +358,9 @@
         .map(function (d) { return { word: d.word, songId: top.songId, partOfSpeech: d.partOfSpeech,
           difficulty: d.difficulty, directlyMissed: d.directlyMissed, need: d.need }; });
       if (data.questions.length) {
-        var targetSet = {}; result.targetWords.forEach(function (t) { targetSet[t.word] = true; });
-        var missedSet = {}; profile.missedWords.forEach(function (m) { missedSet[m.word] = true; });
-        var eligible = data.questions.slice().sort(function (a, b) {
+        let targetSet = {}; result.targetWords.forEach(function (t) { targetSet[t.word] = true; });
+        let missedSet = {}; profile.missedWords.forEach(function (m) { missedSet[m.word] = true; });
+        let eligible = data.questions.slice().sort(function (a, b) {
           var aw = normWord(a.word || a.word_id); var bw = normWord(b.word || b.word_id);
           var ap = (missedSet[aw] || targetSet[aw]) ? 0 : 1; var bp = (missedSet[bw] || targetSet[bw]) ? 0 : 1;
           return (ap - bp) || cmpStr(aw, bw) || cmpId(a.id, b.id);

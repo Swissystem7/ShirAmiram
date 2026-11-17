@@ -37,10 +37,10 @@ test('exam coverage is full_vocabulary_50; youtube ids validated when present', 
 test('all resolved youtube_id values match ^[a-zA-Z0-9_-]{11}$', () => {
   const ids = C.songs.map(s => s.youtube_id).filter(Boolean);
   assert.ok(ids.length >= 1, 'expected at least one youtube_id');
-  ids.forEach(id => assert.match(String(id), /^[a-zA-Z0-9_-]{11}$/));
+  ids.forEach(id => { assert.match(String(id), /^[a-zA-Z0-9_-]{11}$/); });
   // Prefer full coverage: when enrichment succeeded for all 30, enforce it.
   if (ids.length === 30) {
-    C.songs.forEach(s => assert.match(String(s.youtube_id), /^[a-zA-Z0-9_-]{11}$/));
+    C.songs.forEach(s => { assert.match(String(s.youtube_id), /^[a-zA-Z0-9_-]{11}$/); });
   }
 });
 
@@ -59,7 +59,7 @@ test('recommendations deterministic with explicit reasons', () => {
 });
 
 test('questions valid and loader uses injected fetch', async () => {
-  C.questions.forEach(q => assert.equal(q.options.filter(o => o === q.answer).length, 1));
+  C.questions.forEach(q => { assert.equal(q.options.filter(o => o === q.answer).length, 1); });
   const loaded = await A.loadContent(async () => ({ ok: true, json: async () => raw }));
   assert.equal(loaded.songs.length, 30);
   await assert.rejects(() => A.loadContent(async () => ({ ok: false })));

@@ -53,7 +53,7 @@ function deepFreeze(v, seen) {
   seen = seen || new Set();
   if (seen.has(v)) return v;
   seen.add(v);
-  Object.values(v).forEach((x) => deepFreeze(x, seen));
+  Object.values(v).forEach((x) => { deepFreeze(x, seen); });
   return Object.freeze(v);
 }
 
@@ -184,7 +184,7 @@ test('10. null/missing inputs: score stays null, never coerced to 0', () => {
 
 test('11. deep-frozen inputs are not mutated', () => {
   const session = Sim.createSimulation(POOL, { questionCount: 4, random: () => 0 });
-  session.questions.forEach((item) => Sim.answerQuestion(session, item.id, WRONG_ACHIEVE[item.id]));
+  session.questions.forEach((item) => { Sim.answerQuestion(session, item.id, WRONG_ACHIEVE[item.id]); });
   const result = Sim.submitSimulation(session);
   const vocab = JSON.parse(JSON.stringify(REAL_VOCAB.slice(0, 20)));
   const history = [{

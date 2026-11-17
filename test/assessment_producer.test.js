@@ -110,7 +110,7 @@ test('7. safe words: constructor/__proto__ dedupe without pollution', () => {
     { id: 'c', question: 'Synthetic C', options: ['x', 'y'], answer: 'x', word: '__proto__' }
   ];
   const session = Sim.createSimulation(pool, { questionCount: 3, random: () => 0 });
-  session.questions.forEach((q) => Sim.answerQuestion(session, q.id, 'y'));
+  session.questions.forEach((q) => { Sim.answerQuestion(session, q.id, 'y'); });
   const envelope = produceAssessmentFromSimulation(session, Sim.submitSimulation(session));
   assert.deepEqual(envelope.assessment.errors.map((e) => e.word).sort(),
     ['__proto__', '__proto__', 'constructor']);

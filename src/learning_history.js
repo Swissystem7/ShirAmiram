@@ -46,7 +46,7 @@
 
   function meaningfulTimestamp(ts) {
     if (typeof ts === 'string') {
-      var t = ts.trim();
+      let t = ts.trim();
       return t !== '' && Number.isFinite(Date.parse(t));
     }
     return typeof ts === 'number' && Number.isFinite(ts);
@@ -71,20 +71,20 @@
     var seenErrCat = dict();
     if (has(raw, 'errors') && raw.errors !== undefined) {
       if (!Array.isArray(raw.errors)) return { invalid: true };
-      for (var i = 0; i < raw.errors.length; i++) {
-        var e = raw.errors[i];
+      for (let i = 0; i < raw.errors.length; i++) {
+        let e = raw.errors[i];
         if (!isObj(e)) return { invalid: true };
-        var w = normWord(e.word);
+        let w = normWord(e.word);
         if (!w) return { invalid: true };
-        var cat = null;
+        let cat = null;
         if (e.category !== undefined) {
           if (typeof e.category !== 'string' || !e.category.trim()) return { invalid: true };
           cat = e.category.trim();
         }
-        var key = w + '\u0000' + (cat || '');
+        let key = w + '\u0000' + (cat || '');
         if (!seenErrCat[key]) {
           seenErrCat[key] = true;
-          var item = { word: w };
+          let item = { word: w };
           if (cat) item.category = cat;
           errors.push(item);
         }
@@ -94,10 +94,10 @@
     var correctWords = [];
     if (has(raw, 'correctWords') && raw.correctWords !== undefined) {
       if (!Array.isArray(raw.correctWords)) return { invalid: true };
-      var seenCorr = dict();
-      for (var j = 0; j < raw.correctWords.length; j++) {
+      let seenCorr = dict();
+      for (let j = 0; j < raw.correctWords.length; j++) {
         if (typeof raw.correctWords[j] !== 'string') return { invalid: true };
-        var cw = normWord(raw.correctWords[j]);
+        let cw = normWord(raw.correctWords[j]);
         if (cw && !seenCorr[cw]) { seenCorr[cw] = true; correctWords.push(cw); }
       }
     }
@@ -163,9 +163,9 @@
 
     var resolvedWords = []; var unresolvedWords = []; var newErrors = [];
     if (evidenceStatus === 'available') {
-      var prevErr = dict(); prev.errorWords.forEach(function (w) { prevErr[w] = true; });
-      var currErr = dict(); curr.errorWords.forEach(function (w) { currErr[w] = true; });
-      var currCorr = dict(); curr.correctWords.forEach(function (w) { currCorr[w] = true; });
+      let prevErr = dict(); prev.errorWords.forEach(function (w) { prevErr[w] = true; });
+      let currErr = dict(); curr.errorWords.forEach(function (w) { currErr[w] = true; });
+      let currCorr = dict(); curr.correctWords.forEach(function (w) { currCorr[w] = true; });
       resolvedWords = prev.errorWords.filter(function (w) { return currCorr[w] && !currErr[w]; });
       unresolvedWords = prev.errorWords.filter(function (w) { return !!currErr[w]; });
       newErrors = curr.errorWords.filter(function (w) { return !prevErr[w]; });
@@ -200,13 +200,15 @@
       var perWordCat = dict();
       n.errors.forEach(function (e) {
         if (e.category) {
-          (perWordCat[e.word] = perWordCat[e.word] || dict())[e.category] = true;
+          if (!perWordCat[e.word]) perWordCat[e.word] = dict();
+          perWordCat[e.word][e.category] = true;
         }
       });
       // Once per word per session (errorWords is already deduped).
       n.errorWords.forEach(function (w) {
         counts[w] = (counts[w] || 0) + 1;
-        var bucket = cats[w] || (cats[w] = dict());
+        if (!cats[w]) cats[w] = dict();
+        var bucket = cats[w];
         Object.keys(perWordCat[w] || {}).forEach(function (c) { bucket[c] = true; });
       });
     });

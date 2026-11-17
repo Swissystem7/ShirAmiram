@@ -37,7 +37,6 @@
   // Predefined English inflections accepted as matches for a target lemma.
   var INFLECTIONS = {
     sing: ['sing', 'sings', 'sang', 'sung', 'singing'],
-    run: ['run', 'runs', 'ran', 'running'],
     go: ['go', 'goes', 'went', 'going', 'gone'],
     be: ['be', 'am', 'is', 'are', 'was', 'were', 'being', 'been'],
     have: ['have', 'has', 'had', 'having'],
@@ -184,7 +183,7 @@
         cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
         cur[j] = Math.min(cur[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
       }
-      var tmp = prev; prev = cur; cur = tmp;
+      let tmp = prev; prev = cur; cur = tmp;
     }
     return prev[b.length];
   }
@@ -220,7 +219,7 @@
     if (infl[h]) return true;
     if (levenshtein(h, t) <= maxDistance(t)) return true;
     var keys = Object.keys(infl);
-    for (var i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
       if (levenshtein(h, keys[i]) <= maxDistance(keys[i])) return true;
     }
     // Phonetic tolerance from karaoke_scoring: score >= 0.8 counts as a hit.
@@ -237,7 +236,7 @@
     if (cleaned === t) return true;
     if (cleaned.includes(t)) return true;
     var parts = tokens(heard);
-    for (var i = 0; i < parts.length; i++) {
+    for (let i = 0; i < parts.length; i++) {
       if (wordMatches(parts[i], t)) return true;
     }
     // whole-utterance fuzzy against target only when short
@@ -276,7 +275,7 @@
   function detectSpeechSupport(SpeechRecognitionCtor) {
     if (SpeechRecognitionCtor) return { ok: true, ctor: SpeechRecognitionCtor };
     if (typeof window !== 'undefined') {
-      var C = window.SpeechRecognition || window.webkitSpeechRecognition;
+      let C = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (C) return { ok: true, ctor: C };
     }
     return { ok: false, reason: 'SpeechRecognition API is not available in this browser.' };
@@ -342,7 +341,7 @@
       state.streak += 1;
       var pts;
       if (useStreakMultipliers) {
-        var mult = multiplierFn(state.streak);
+        let mult = multiplierFn(state.streak);
         pts = Math.round(basePoints * mult);
         if (state.maxMultiplier == null || mult > state.maxMultiplier) {
           state.maxMultiplier = mult;
@@ -405,12 +404,12 @@
       if (!w) return [];
       var pool = (distractors || []).map(sanitize).filter(Boolean);
       var opts = [sanitize(w.word)];
-      for (var i = 0; i < pool.length && opts.length < 3; i++) {
+      for (let i = 0; i < pool.length && opts.length < 3; i++) {
         if (opts.indexOf(pool[i]) === -1) opts.push(pool[i]);
       }
       // pad with simple fillers if needed
       var fillers = ['peace', 'hope', 'light', 'dream', 'heart', 'night', 'song', 'star'];
-      for (var j = 0; j < fillers.length && opts.length < 3; j++) {
+      for (let j = 0; j < fillers.length && opts.length < 3; j++) {
         if (opts.indexOf(fillers[j]) === -1 && fillers[j] !== sanitize(w.word)) opts.push(fillers[j]);
       }
       // shuffle deterministic-ish by word id
@@ -466,11 +465,11 @@
     // Match word tokens in line text
     return lineText.replace(/[\p{L}\p{N}']+/gu, function (token) {
       var cleanToken = sanitize(token);
-      for (var i = 0; i < sortedTargets.length; i++) {
-        var t = sortedTargets[i];
+      for (let i = 0; i < sortedTargets.length; i++) {
+        let t = sortedTargets[i];
         if (cleanToken === t.clean || wordMatches(cleanToken, t.clean)) {
-          var isActive = activeWordIndex != null && (t.index === activeWordIndex || t.vocabId === activeWordIndex);
-          var activeClass = isActive ? ' is-active' : '';
+          let isActive = activeWordIndex != null && (t.index === activeWordIndex || t.vocabId === activeWordIndex);
+          let activeClass = isActive ? ' is-active' : '';
           return '<mark class="karaoke-amiram-word' + activeClass + '" data-vocab-id="' + t.vocabId + '" data-word="' + t.clean + '">' + token + '</mark>';
         }
       }
@@ -577,7 +576,7 @@
     if (Array.isArray(rawHits)) {
       hits = rawHits.length;
     } else if (rawHits != null) {
-      var numHits = Number(rawHits);
+      let numHits = Number(rawHits);
       if (isFinite(numHits)) {
         hits = numHits;
       }
@@ -588,10 +587,10 @@
     if (rawBestStreak != null && isFinite(Number(rawBestStreak))) {
       bestStreak = Number(rawBestStreak);
     } else if (Array.isArray(rawHits)) {
-      var maxStreak = 0;
-      for (var i = 0; i < rawHits.length; i++) {
-        var h = rawHits[i];
-        var sVal = 0;
+      let maxStreak = 0;
+      for (let i = 0; i < rawHits.length; i++) {
+        let h = rawHits[i];
+        let sVal = 0;
         if (h != null) {
           if (typeof h === 'object' && h.streak != null) {
             sVal = Number(h.streak);
@@ -619,13 +618,13 @@
     if (rawTotal != null && isFinite(Number(rawTotal))) {
       totalTargets = Number(rawTotal);
     } else {
-      var words = s.words != null ? s.words : st.words;
+      let words = s.words != null ? s.words : st.words;
       if (words && (Array.isArray(words) || typeof words.length === 'number')) {
         totalTargets = words.length;
       } else {
-        var rawMisses = s.misses != null ? s.misses : st.misses;
+        let rawMisses = s.misses != null ? s.misses : st.misses;
         if (rawMisses != null) {
-          var missesLen = Array.isArray(rawMisses) ? rawMisses.length : (isFinite(Number(rawMisses)) ? Number(rawMisses) : 0);
+          let missesLen = Array.isArray(rawMisses) ? rawMisses.length : (isFinite(Number(rawMisses)) ? Number(rawMisses) : 0);
           totalTargets = hits + missesLen;
         } else {
           totalTargets = hits;
@@ -656,9 +655,9 @@
     if (targetStorage) {
       try {
         if (typeof targetStorage.getItem === 'function') {
-          var stored = targetStorage.getItem(key);
+          let stored = targetStorage.getItem(key);
           if (stored !== null && stored !== undefined && stored !== '') {
-            var parsed = Number(stored);
+            let parsed = Number(stored);
             if (isFinite(parsed)) {
               prevHighScore = parsed;
             }
@@ -705,8 +704,8 @@
     if (Array.isArray(session.words)) bucket = session;
     var words = Array.isArray(bucket.words) ? bucket.words : [];
     bucket.playbackRate = r;
-    for (var i = 0; i < words.length; i++) {
-      var w = words[i];
+    for (let i = 0; i < words.length; i++) {
+      let w = words[i];
       if (!w) continue;
       if (w.originalWindowMs == null) w.originalWindowMs = w.windowMs;
       if (w.originalTimeMs == null) w.originalTimeMs = w.timeMs;
