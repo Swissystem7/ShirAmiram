@@ -54,7 +54,7 @@
       outPrev = outPrev.replace(/[\s\u00A0]+$/, '') + NBSP;
     }
     if (typeof outNext === 'string') {
-      var rest = outNext.replace(/^[\s\u00A0]+/, '');
+      const rest = outNext.replace(/^[\s\u00A0]+/, '');
       if (rest && PUNCT_AFTER.test(rest)) outNext = rest;
       else if (rest) outNext = NBSP + rest;
     }
