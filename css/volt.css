@@ -880,3 +880,33 @@ body:has(#alias:not(.hidden)) #mini-player { display: none; }
 :root[data-theme] body:has(#alias:not(.hidden)) main { padding-bottom: calc(var(--nav-h) + 32px + env(safe-area-inset-bottom, 0px)); }
 .alias-sentence-summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; font-size: 14px; font-weight: 700; color: var(--accent-text); }
 .alias-sentence[open] .alias-sentence-summary { min-height: 32px; }
+
+/* Alias: mode choice and Explain mode */
+.alias-modes, .alias-langs { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+.alias-modes button, .alias-langs button {
+  display: flex; flex-direction: column; justify-content: center; gap: 2px; min-height: 64px; padding: var(--s2) var(--s3);
+  border: 2px solid var(--line); border-radius: var(--r-m); background: var(--surface); color: var(--ink);
+  font-family: var(--sans); text-align: start; cursor: pointer;
+}
+.alias-langs button { min-height: 48px; font-weight: 700; font-size: 15px; }
+.alias-modes button[aria-checked="true"], .alias-langs button[aria-checked="true"] { border-color: var(--ink); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--ink); }
+.alias-modes .mode-name { font-weight: 800; font-size: 16px; }
+.alias-modes .mode-desc { font-size: 13px; color: var(--ink-2); }
+.alias-explain-opts { display: grid; gap: var(--s2); }
+.alias-explain-opts[hidden], .alias-rules[hidden] { display: none; }
+.alias-party { display: flex; align-items: center; gap: var(--s3); min-height: 48px; padding: var(--s2) var(--s3); border-radius: var(--r-m); background: var(--surface); font-size: 14px; cursor: pointer; }
+.alias-party input { width: 22px; height: 22px; flex: none; accent-color: var(--accent-text); }
+
+.explain-card { padding: var(--s4); border-radius: var(--r-l); background: var(--surface); box-shadow: var(--sh-1); display: grid; gap: var(--s2); text-align: center; }
+.explain-label { margin: 0; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.explain-word { margin: 0; font: 800 36px var(--display); line-height: 1.15; overflow-wrap: anywhere; }
+.explain-word[lang="he"] { font-family: var(--sans); }
+.explain-trans { margin: 0; font-size: 15px; color: var(--ink-2); }
+.explain-trans span:last-child { font-weight: 700; color: var(--ink); }
+.explain-taboo { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s2); }
+.explain-taboo li { padding: 6px 14px; border-radius: var(--r-pill); background: var(--bad-bg); color: var(--bad); font-weight: 700; font-size: 16px; text-decoration: line-through; text-decoration-thickness: 2px; }
+#alias-x-taboo-box[hidden] { display: none; }
+.alias-danger { border-color: var(--bad); color: var(--bad); }
+@media (min-width: 900px) {
+  .alias-bottom > .alias-danger { grid-column: 1 / -1; }
+}

@@ -80,7 +80,7 @@
   function weakCount() { return Object.keys(store.weak).filter((k) => byKey(k)).length; }
 
   // ---------- Screens ----------
-  const SCREENS = ['alias-start', 'alias-play', 'alias-results', 'alias-review'];
+  const SCREENS = ['alias-start', 'alias-play', 'alias-explain', 'alias-results', 'alias-review'];
   function show(id) {
     SCREENS.forEach((s) => { const el = $(s); if (el) el.hidden = s !== id; });
     root.scrollTo(0, 0);
@@ -107,6 +107,8 @@
 
   // ---------- Start screen ----------
   let deckChoice = 'mix';
+  let modeChoice = 'guess';
+  let langChoice = 'en';
   function deckFor(name, seed) {
     return G.buildDeck(vocab(), {
       deck: name, cards: srsCards(), weak: store.weak, now: new Date(),
@@ -122,6 +124,13 @@
       const meta = b.querySelector('.deck-meta');
       if (meta) meta.textContent = counts[name] ? `${counts[name]} מילים` : 'אין מילים כרגע';
     });
+    doc.querySelectorAll('[data-alias-mode]').forEach((b) => b.setAttribute('aria-checked', String(b.getAttribute('data-alias-mode') === modeChoice)));
+    doc.querySelectorAll('[data-alias-lang]').forEach((b) => b.setAttribute('aria-checked', String(b.getAttribute('data-alias-lang') === langChoice)));
+    $('alias-explain-opts').hidden = modeChoice !== 'explain';
+    doc.querySelectorAll('[data-rules-mode]').forEach((r) => { r.hidden = r.getAttribute('data-rules-mode') !== modeChoice; });
+    $('alias-lead').textContent = modeChoice === 'explain'
+      ? 'מקבלים מילה ומסבירים אותה בקול לחברים, בלי לומר אותה, את התרגום שלה או את המילים האסורות. 30 שניות למילה.'
+      : 'מקבלים רמזים באנגלית ומקלידים את המילה. כמה שפחות רמזים, יותר נקודות. 30 שניות למילה.';
     $('alias-weak-count').textContent = String(weakCount());
     const ok = counts[deckChoice] > 0;
     $('alias-start-btn').disabled = !ok;
@@ -137,7 +146,8 @@
   function startGame(name) {
     const deck = deckFor(name, Math.floor(Math.random() * 4294967295));
     if (!deck.length) { renderStart(); return; }
-    g = { deck, i: 0, score: 0, run: 0, results: [], seen: new Set(), deckName: name };
+    g = { deck, i: 0, score: 0, run: 0, results: [], seen: new Set(), deckName: name, mode: modeChoice, lang: langChoice, party: $('alias-party').checked };
+    if (g.mode === 'explain') { show('alias-explain'); showCard(); return; }
     show('alias-play');
     showWord();
   }
@@ -209,13 +219,19 @@
 
   // ---------- Timer ----------
   const reduceMotion = () => root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function timerIds() {
+    return g && g.mode === 'explain'
+      ? { bar: 'alias-x-timer', fill: 'alias-x-timer-fill', text: 'alias-x-timer-text', total: G.EXPLAIN_MS }
+      : { bar: 'alias-timer', fill: 'alias-timer-fill', text: 'alias-timer-text', total: G.WORD_MS };
+  }
   function paintTimer() {
     if (!g || !g.timer) return;
+    const t = timerIds();
     const left = G.timerLeft(g.timer, Date.now());
-    const frac = left / G.WORD_MS;
-    $('alias-timer-fill').style.transform = `scaleX(${frac.toFixed(3)})`;
-    $('alias-timer').setAttribute('data-low', String(left <= 10000));
-    $('alias-timer-text').textContent = left > 0 ? `${Math.ceil(left / 1000)} שנ׳` : 'הזמן נגמר';
+    const frac = left / t.total;
+    $(t.fill).style.transform = `scaleX(${frac.toFixed(3)})`;
+    $(t.bar).setAttribute('data-low', String(left <= 10000));
+    $(t.text).textContent = left > 0 ? `${Math.ceil(left / 1000)} שנ׳` : 'הזמן נגמר';
     if (left <= 0 && !g.timedOut) timeUp();
   }
   function startTick() {
@@ -227,16 +243,26 @@
   function timeUp() {
     g.timedOut = true;
     stopTick();
+    if (g.mode === 'explain') {
+      $('alias-x-easy').disabled = true;
+      setExplainFeedback('הזמן נגמר. אפשר לסמן הצלחה במאמץ, דילוג או מילה אסורה.');
+      return;
+    }
     while (g.clueIdx < 3) nextClue();
     setFeedback('הזמן נגמר, כל הרמזים פתוחים. אפשר עדיין לכתוב את המילה, או לדלג.', 'info');
   }
+  function playing() {
+    if (!g || !g.timer) return false;
+    if (g.mode === 'explain') return !$('alias-explain').hidden;
+    return !$('alias-play').hidden && $('alias-reveal').hidden;
+  }
   function pause() {
-    if (!g || !g.timer || $('alias-play').hidden || !$('alias-reveal').hidden) return;
+    if (!playing()) return;
     g.timer = G.timerPause(g.timer, Date.now());
     stopTick();
   }
   function resume() {
-    if (!g || !g.timer || g.timedOut || $('alias-play').hidden || !$('alias-reveal').hidden) return;
+    if (!playing() || g.timedOut) return;
     if (!aliasVisible() || doc.visibilityState === 'hidden') return;
     g.timer = G.timerResume(g.timer, Date.now());
     startTick();
@@ -342,6 +368,57 @@
     if (g.i < g.deck.length) showWord(); else renderResults();
   }
 
+  // ---------- Explain mode ----------
+  const OUTCOME_HE = { easy: 'הצלחה בקלות', effort: 'הצלחה במאמץ', skip: 'דילוג', taboo: 'נאמרה מילה אסורה' };
+
+  function setExplainFeedback(text) { $('alias-x-feedback').textContent = text; }
+
+  function showCard() {
+    const item = current().item;
+    const card = G.buildExplainCard(item, clueData(item), g.lang);
+    g.timedOut = false;
+    $('alias-x-progress').textContent = `מילה ${g.i + 1} מתוך ${g.deck.length}`;
+    $('alias-x-score').textContent = `${g.score} נק׳`;
+    const word = $('alias-x-word');
+    word.textContent = card.main;
+    word.setAttribute('lang', card.lang);
+    word.setAttribute('dir', card.lang === 'en' ? 'ltr' : 'rtl');
+    const tr = $('alias-x-trans');
+    tr.textContent = card.translation;
+    tr.setAttribute('lang', card.translationLang);
+    tr.setAttribute('dir', card.translationLang === 'en' ? 'ltr' : 'rtl');
+    const list = $('alias-x-taboo');
+    list.textContent = '';
+    card.taboo.forEach((t) => {
+      const li = card.tabooLang === 'en' ? en('li', null, t) : el('li', null, t, { lang: 'he' });
+      list.appendChild(li);
+    });
+    $('alias-x-taboo-box').hidden = card.taboo.length === 0;
+    $('alias-x-easy').disabled = false;
+    $('alias-x-taboo-btn').textContent = g.party ? `נאמרה מילה אסורה (${G.PARTY_TABOO_POINTS} נק׳)` : 'נאמרה מילה אסורה';
+    g.timer = G.timerStart(Date.now(), G.EXPLAIN_MS);
+    startTick();
+  }
+
+  function finishExplain(outcome) {
+    if (!g || g.mode !== 'explain') return;
+    stopTick();
+    const item = current().item;
+    const key = String(item.id);
+    const points = G.explainPoints(outcome, g.party);
+    g.score += points;
+    const quality = G.explainQuality(outcome);
+    recordProgress(key, outcome === 'easy' || outcome === 'effort');
+    store = G.applyWeak(store, key, quality, today());
+    g.seen.add(key);
+    G.save(store);
+    g.results.push({ item, outcome, points, bonus: 0, quality, nextDue: null, srsUpdated: true });
+    const sign = points > 0 ? `+${points}` : String(points);
+    setExplainFeedback(`${item.word} · ${item.hebrew_translation || ''}: ${OUTCOME_HE[outcome]}, ${sign} נק׳`);
+    g.i += 1;
+    if (g.i < g.deck.length) showCard(); else renderResults();
+  }
+
   function quit() {
     stopTick();
     if (g && g.results.length) renderResults(); else { g = null; renderStart(); show('alias-start'); }
@@ -349,6 +426,7 @@
 
   // ---------- Results ----------
   function outcomeLabel(r) {
+    if (r.outcome) return OUTCOME_HE[r.outcome];
     if (r.clueIdx == null) return 'פספוס';
     return r.clueIdx === 0 ? 'בלי עזרה' : `אחרי רמז ${r.clueIdx + 1}`;
   }
@@ -389,15 +467,19 @@
   function renderResults() {
     stopTick();
     const res = g ? g.results : [];
-    const solo = res.filter((r) => r.clueIdx === 0);
-    const helped = res.filter((r) => r.clueIdx != null && r.clueIdx > 0);
-    const missed = res.filter((r) => r.clueIdx == null);
+    const explain = !!(g && g.mode === 'explain');
+    const solo = explain ? res.filter((r) => r.outcome === 'easy') : res.filter((r) => r.clueIdx === 0);
+    const helped = explain ? res.filter((r) => r.outcome === 'effort') : res.filter((r) => r.clueIdx != null && r.clueIdx > 0);
+    const missed = explain ? res.filter((r) => r.outcome === 'skip' || r.outcome === 'taboo') : res.filter((r) => r.clueIdx == null);
+    $('alias-solo-label').textContent = explain ? 'בקלות' : 'בלי עזרה';
+    $('alias-helped-label').textContent = explain ? 'במאמץ' : 'עם עזרה';
+    $('alias-missed-label').textContent = explain ? 'דילוג או מילה אסורה' : 'פספוסים';
     const pts = (list) => list.reduce((s, r) => s + r.points, 0);
     const bonus = res.reduce((s, r) => s + r.bonus, 0);
     $('alias-total').textContent = String(g ? g.score : 0);
     $('alias-solo').textContent = `${solo.length} מילים · ${pts(solo)} נק׳`;
     $('alias-helped').textContent = `${helped.length} מילים · ${pts(helped)} נק׳`;
-    $('alias-missed').textContent = `${missed.length} מילים`;
+    $('alias-missed').textContent = explain ? `${missed.length} מילים · ${pts(missed)} נק׳` : `${missed.length} מילים`;
     $('alias-bonus').textContent = bonus ? `+${bonus} נק׳ על רצפים` : '';
     const list = $('alias-result-list');
     list.textContent = '';
@@ -411,6 +493,7 @@
       li.appendChild(head);
       const due = fmtDate(r.nextDue);
       const meta = `${outcomeLabel(r)} · ${r.points + r.bonus} נק׳${due ? ` · חזרה הבאה: ${due}` : ''}${r.srsUpdated ? '' : ' · הכרטיסייה כבר עודכנה היום'}`;
+      // Explaining is judged by the player, so it does not move the flashcard schedule.
       li.appendChild(el('p', 'alias-result-meta', meta));
       if (r.quality <= 2) li.appendChild(sentenceBox(r.item));
       list.appendChild(li);
@@ -483,6 +566,11 @@
       renderStart();
     }); });
     $('alias-start-btn').addEventListener('click', () => startGame(deckChoice));
+    doc.querySelectorAll('[data-alias-mode]').forEach((b) => { b.addEventListener('click', () => { modeChoice = b.getAttribute('data-alias-mode'); renderStart(); }); });
+    doc.querySelectorAll('[data-alias-lang]').forEach((b) => { b.addEventListener('click', () => { langChoice = b.getAttribute('data-alias-lang'); renderStart(); }); });
+    ['easy', 'effort', 'skip'].forEach((o) => { $(`alias-x-${o}`).addEventListener('click', () => finishExplain(o)); });
+    $('alias-x-taboo-btn').addEventListener('click', () => finishExplain('taboo'));
+    $('alias-x-quit').addEventListener('click', quit);
     $('alias-review-btn').addEventListener('click', renderReview);
     $('alias-form').addEventListener('submit', check);
     $('alias-hint').addEventListener('click', () => { nextClue(); $('alias-input').focus({ preventScroll: true }); });
@@ -492,7 +580,7 @@
     $('alias-input').addEventListener('input', (e) => { $('alias-hebrew-warning').hidden = !G.hasHebrew(e.target.value); });
     $('alias-again').addEventListener('click', () => { g = null; store = G.load(); renderStart(); show('alias-start'); });
     $('alias-results-review').addEventListener('click', renderReview);
-    $('alias-review-play').addEventListener('click', () => { deckChoice = 'weak'; startGame('weak'); });
+    $('alias-review-play').addEventListener('click', () => { deckChoice = 'weak'; modeChoice = 'guess'; startGame('weak'); });
     $('alias-review-back').addEventListener('click', () => { renderStart(); show('alias-start'); });
     doc.querySelectorAll('[data-open-alias]').forEach((b) => { b.addEventListener('click', () => root.ShirAmiramAliasUI.open(b.getAttribute('data-open-alias') || null)); });
 
@@ -504,7 +592,7 @@
         const hidden = section.classList.contains('hidden');
         if (hidden && !wasHidden) pause();
         if (!hidden && wasHidden) {
-          if (g && !$('alias-play').hidden) resume();
+          if (g && (!$('alias-play').hidden || !$('alias-explain').hidden)) resume();
           else if (!g || $('alias-results').hidden) { store = G.load(); renderStart(); show('alias-start'); }
         }
         wasHidden = hidden;

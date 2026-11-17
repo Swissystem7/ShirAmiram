@@ -194,8 +194,8 @@
           <span class="hub-desc">קטע קריאה עם מילים לחיצות ושאלות</span>
         </button>
         <button type="button" class="hub-card" data-hub-tab="alias" data-open-alias="" data-hub-tone="e">
-          <span class="hub-name">נחשו את המילה</span>
-          <span class="hub-desc">משחק רמזים בסגנון Alias, עם עדיפות למילים החלשות</span>
+          <span class="hub-name">משחק מילים</span>
+          <span class="hub-desc">בסגנון Alias: ניחוש מרמזים או הסבר בלי לומר את המילה</span>
         </button>
       </div>
       <div id="quick-plan" class="plan-card">
@@ -272,14 +272,30 @@
     <!-- Alias word game (solo). Logic: src/alias_engine.js, screens: src/alias_ui.js -->
     <section id="alias" class="tab-content hidden" aria-labelledby="alias-title">
       <div id="alias-start" class="alias-screen">
-        <h2 id="alias-title" class="alias-title">נחשו את המילה</h2>
-        <p class="alias-lead">מקבלים רמזים באנגלית ומקלידים את המילה. כמה שפחות רמזים, יותר נקודות. 30 שניות למילה.</p>
+        <h2 id="alias-title" class="alias-title">משחק מילים</h2>
+        <div class="alias-modes" role="radiogroup" aria-label="סוג משחק">
+          <button type="button" role="radio" aria-checked="true" data-alias-mode="guess"><span class="mode-name">ניחוש מרמזים</span><span class="mode-desc">לבד: מקלידים את המילה</span></button>
+          <button type="button" role="radio" aria-checked="false" data-alias-mode="explain"><span class="mode-name">להסביר בלי לומר</span><span class="mode-desc">Alias קלאסי, בקול לחברים</span></button>
+        </div>
+        <p id="alias-lead" class="alias-lead">מקבלים רמזים באנגלית ומקלידים את המילה. כמה שפחות רמזים, יותר נקודות. 30 שניות למילה.</p>
+        <div id="alias-explain-opts" class="alias-explain-opts" hidden>
+          <div class="alias-langs" role="radiogroup" aria-label="שפת ההסבר">
+            <button type="button" role="radio" aria-checked="true" data-alias-lang="en">מסבירים באנגלית</button>
+            <button type="button" role="radio" aria-checked="false" data-alias-lang="he">מסבירים בעברית</button>
+          </div>
+          <label class="alias-party"><input id="alias-party" type="checkbox"> משחקים עם חברים ומעבירים את הטלפון (מילה אסורה מורידה נקודה)</label>
+        </div>
         <div class="alias-decks" role="radiogroup" aria-label="בחירת חפיסה">
           <button type="button" role="radio" aria-checked="true" data-alias-deck="mix"><span class="deck-name">מיקס חכם</span><span class="deck-desc">חלשות, לחזרה, חדשות ומילה שכבר שולטים בה</span><span class="deck-meta"></span></button>
           <button type="button" role="radio" aria-checked="false" data-alias-deck="today"><span class="deck-name">להיום</span><span class="deck-desc">מילים שהגיע זמן החזרה שלהן</span><span class="deck-meta"></span></button>
           <button type="button" role="radio" aria-checked="false" data-alias-deck="weak"><span class="deck-name">רק חלשות</span><span class="deck-desc">המילים שהכי קשות לכם</span><span class="deck-meta"></span></button>
         </div>
-        <ul class="alias-rules">
+        <ul class="alias-rules" data-rules-mode="explain" hidden>
+          <li><b>10</b> נק׳ כשהצליחו בקלות, <b>6</b> במאמץ, <b>0</b> בדילוג</li>
+          <li>אסור לומר את המילה, את התרגום שלה ואת המילים האסורות שעל הכרטיס</li>
+          <li>במשחק עם חברים מילה אסורה מורידה נקודה</li>
+        </ul>
+        <ul class="alias-rules" data-rules-mode="guess">
           <li><b>10</b> נק׳ בלי עזרה, <b>7</b> אחרי רמז 2, <b>4</b> אחרי רמז 3, <b>2</b> אחרי התרגום</li>
           <li><b>+5</b> על כל תשובה נכונה מהשלישית ברצף</li>
           <li>שגיאת הקלדה אחת מותרת במילים של 5 אותיות ומעלה</li>
@@ -326,13 +342,43 @@
         <button id="alias-quit" type="button" class="alias-link">סיום המשחק עכשיו</button>
       </div>
 
+      <div id="alias-explain" class="alias-screen" hidden>
+        <div class="alias-hud">
+          <span id="alias-x-progress">מילה 1 מתוך 10</span>
+          <span id="alias-x-score" class="alias-score">0 נק׳</span>
+        </div>
+        <div class="alias-timer-row">
+          <div id="alias-x-timer" class="alias-timer" aria-hidden="true"><span id="alias-x-timer-fill"></span></div>
+          <span id="alias-x-timer-text" class="alias-timer-text" role="timer" aria-label="זמן שנותר למילה">30 שנ׳</span>
+        </div>
+        <div class="explain-card" aria-live="polite">
+          <p class="explain-label">הסבירו בלי לומר:</p>
+          <p id="alias-x-word" class="explain-word"></p>
+          <p class="explain-trans"><span>גם התרגום אסור: </span><span id="alias-x-trans"></span></p>
+          <div id="alias-x-taboo-box">
+            <p class="explain-label">מילים אסורות</p>
+            <ul id="alias-x-taboo" class="explain-taboo"></ul>
+          </div>
+        </div>
+        <p id="alias-x-feedback" class="alias-feedback" aria-live="polite"></p>
+        <div class="alias-bottom">
+          <button id="alias-x-taboo-btn" type="button" class="alias-secondary alias-danger">נאמרה מילה אסורה</button>
+          <div class="alias-pair">
+            <button id="alias-x-effort" type="button" class="alias-secondary">הצלחה במאמץ (6)</button>
+            <button id="alias-x-skip" type="button" class="alias-secondary">דילוג</button>
+          </div>
+          <button id="alias-x-easy" type="button" class="alias-primary">הצלחה בקלות (10 נק׳)</button>
+        </div>
+        <button id="alias-x-quit" type="button" class="alias-link">סיום המשחק עכשיו</button>
+      </div>
+
       <div id="alias-results" class="alias-screen" hidden>
         <h2 class="alias-title">תוצאות</h2>
         <p class="alias-total"><span id="alias-total">0</span> נק׳</p>
         <dl class="alias-split">
-          <div><dt>בלי עזרה</dt><dd id="alias-solo"></dd></div>
-          <div><dt>עם עזרה</dt><dd id="alias-helped"></dd></div>
-          <div><dt>פספוסים</dt><dd id="alias-missed"></dd></div>
+          <div><dt id="alias-solo-label">בלי עזרה</dt><dd id="alias-solo"></dd></div>
+          <div><dt id="alias-helped-label">עם עזרה</dt><dd id="alias-helped"></dd></div>
+          <div><dt id="alias-missed-label">פספוסים</dt><dd id="alias-missed"></dd></div>
         </dl>
         <p id="alias-bonus" class="alias-note"></p>
         <p id="alias-weak-prompt" class="alias-note" hidden>למילים שהיו קשות: כתבו משפט משלכם. זה עוזר לזכור אותן.</p>
@@ -357,8 +403,8 @@
 
     <section id="flashcards" class="tab-content hidden">
       <button type="button" class="alias-banner" data-open-alias="">
-        <span class="alias-banner-name">משחק: נחשו את המילה</span>
-        <span class="alias-banner-desc">10 מילים, רמזים באנגלית ושעון. המילים החלשות קודמות.</span>
+        <span class="alias-banner-name">משחק מילים בסגנון Alias</span>
+        <span class="alias-banner-desc">ניחוש מרמזים, או הסבר בקול בלי לומר את המילה. המילים החלשות קודמות.</span>
       </button>
       <div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="סינון רמת כרטיסיות">
         <button type="button" class="srs-level-btn tab-btn px-3 py-1 rounded" data-level="all" aria-pressed="true">הכול</button>

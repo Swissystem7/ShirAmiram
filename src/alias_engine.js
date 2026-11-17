@@ -348,11 +348,53 @@
     }
   }
 
+  // ---------- Explain mode ----------
+  // The player sees a word and explains it aloud without saying it, its translation or the taboo
+  // words. Outcomes: easy, effort (got it with effort), skip, taboo (a forbidden word was said).
+  const EXPLAIN_MS = 30000;
+  const EXPLAIN_POINTS = { easy: 10, effort: 6, skip: 0, taboo: 0 };
+  const PARTY_TABOO_POINTS = -1;
+  // Explaining is self-judged, so it never moves the SRS interval; it feeds the weak list only.
+  const EXPLAIN_QUALITY = { easy: 4, effort: 3, skip: 1, taboo: 2 };
+
+  function explainPoints(outcome, party) {
+    if (outcome === 'taboo') return party ? PARTY_TABOO_POINTS : EXPLAIN_POINTS.taboo;
+    return EXPLAIN_POINTS[outcome] || 0;
+  }
+
+  function explainQuality(outcome) {
+    return EXPLAIN_QUALITY[outcome] || MISS_QUALITY;
+  }
+
+  /**
+   * The card for one word. English: the English word is explained; its Hebrew translation and the
+   * English taboo words are forbidden. Hebrew: the Hebrew meaning is explained; the English word
+   * and the Hebrew taboo words are forbidden.
+   */
+  function buildExplainCard(word, extra, lang) {
+    const w = word || {};
+    const x = extra || {};
+    const he = String(w.hebrew_translation || '');
+    const en = String(w.word || '');
+    if (lang === 'he') {
+      return {
+        lang: 'he', main: he, translation: en, translationLang: 'en',
+        taboo: (Array.isArray(x.taboo_he) ? x.taboo_he : []).slice(0, 4), tabooLang: 'he'
+      };
+    }
+    return {
+      lang: 'en', main: en, translation: he, translationLang: 'he',
+      taboo: (Array.isArray(x.taboo) ? x.taboo : []).slice(0, 4), tabooLang: 'en'
+    };
+  }
+
   return {
     STORAGE_KEY, WORD_MS, CLUE_POINTS, CLUE_QUALITY, MISS_QUALITY, STREAK_BONUS, STREAK_BONUS_FROM,
     GAME_SIZE, MIX, MAX_NEW_PER_DAY, MAX_PER_SONG, STRONG_DAYS_TO_LEAVE,
+    EXPLAIN_MS, EXPLAIN_POINTS, PARTY_TABOO_POINTS, EXPLAIN_QUALITY,
     normalize, levenshtein, checkAnswer, hasHebrew, pointsFor, streakBonus, qualityFor, qualityToResult,
     blankOut, buildClues, categorize, buildDeck, shuffle, rng,
+    explainPoints, explainQuality, buildExplainCard,
     emptyState, normalizeState, applyWeak, canUpdateSrs, markSrsDay, newCountToday, markNew,
     timerStart, timerLeft, timerPause, timerResume, load, save
   };
