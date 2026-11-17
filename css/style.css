@@ -650,3 +650,5 @@ article,
   box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
 }
 
+/* Shown in the player box when the browser is offline. */
+.embed-frame-wrap .embed-offline { margin: 0; padding: 16px; }
