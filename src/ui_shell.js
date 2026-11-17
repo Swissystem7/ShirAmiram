@@ -372,8 +372,7 @@
     var targets = [];
     var pending = false;
     function inWaiting(node) {
-      for (var i = 0; i < waiting.length; i++) if (waiting[i].contains(node)) return true;
-      return false;
+      return waiting.some(function (sec) { return sec.contains(node); });
     }
     new root.MutationObserver(function (records) {
       records.forEach(function (r) {
