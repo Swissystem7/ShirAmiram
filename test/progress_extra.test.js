@@ -81,7 +81,7 @@ test('every precached path exists and every local script is precached', () => {
     const rel = p === './' ? 'index.html' : p.slice(2);
     assert.ok(fs.existsSync(path.join(root, rel)), 'missing file for ' + p);
   }
-  const scripts = [...html.matchAll(/<script src="([^"]+)"><\/script>/g)].map((m) => m[1]).filter((s) => !/^https?:/.test(s));
+  const scripts = [...html.matchAll(/<script (?:defer )?src="([^"]+)"><\/script>/g)].map((m) => m[1]).filter((s) => !/^https?:/.test(s));
   assert.ok(scripts.length > 10);
   for (const s of scripts) assert.ok(paths.includes('./' + s), s + ' is loaded by index.html but not precached');
 });

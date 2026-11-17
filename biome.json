@@ -1,0 +1,12 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
+  "files": {
+    "includes": ["**", "!css/tailwind.css"]
+  },
+  "overrides": [
+    {
+      "includes": ["css/tailwind.src.css"],
+      "linter": { "rules": { "suspicious": { "noUnknownAtRules": "off" } } }
+    }
+  ]
+}

@@ -60,5 +60,5 @@ test('4. sw.js defines static asset precache including all 300 words data and sc
 
 test('5. index.html links manifest.json and loads speech.js', () => {
   assert.match(html, /<link rel="manifest" href="manifest\.json">/);
-  assert.match(html, /<script src="src\/speech\.js"><\/script>/);
+  assert.match(html, /<script (?:defer )?src="src\/speech\.js"><\/script>/);
 });
