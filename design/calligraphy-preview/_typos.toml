@@ -1,0 +1,9 @@
+# typos (crate-ci) for dell-ci/full-gate: the gate passes changed files by name, so it would read the
+# screenshots and the woff2 font as text and report random byte pairs. They are binary files, not prose.
+[type.png]
+extend-glob = ["*.png"]
+check-file = false
+
+[type.woff2]
+extend-glob = ["*.woff2"]
+check-file = false

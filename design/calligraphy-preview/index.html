@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שיראמיר״ם</title>
+<script>
+  // ?theme=light|dark pins the theme (used for the screenshots); otherwise the system setting wins.
+  (function () { try {
+    var t = new URLSearchParams(location.search).get('theme');
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {} })();
+</script>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font: 400 var(--text-base)/var(--leading-body) var(--font-body); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-inline: 16px; }
+  :focus-visible { outline: 2px solid var(--color-primary-text); outline-offset: 3px; }
+  p { margin: 0; }
+  .en { direction: ltr; unicode-bidi: isolate; }
+  .num { font-family: var(--font-label); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  /* preview bar (not part of the app) */
+  .top { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; padding-block: 12px; border-bottom: 1px solid var(--color-border); }
+  .brand { font: 700 var(--text-h3)/1.2 var(--font-body); }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .theme-btn { font: 500 var(--text-sm)/1 var(--font-body); color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); min-height: 44px; padding: 0 14px; cursor: pointer; }
+
+  /* screens */
+  .screen { padding-block: 32px; border-bottom: 1px solid var(--color-border); }
+  h2 { font: 700 var(--text-h2)/1.25 var(--font-body); margin: 0 0 6px; }
+  h3 { font: 700 var(--text-h3)/1.3 var(--font-body); margin: 0 0 12px; }
+  .sub { color: var(--color-text-muted); font-size: var(--text-sm); margin-bottom: 16px; }
+  .grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+  .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-card); min-width: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font: 500 var(--text-xs)/1 var(--font-label); color: var(--color-text-muted); border: 1px solid var(--color-border-strong); border-radius: 999px; padding: 6px 10px; }
+  .chip.on { color: var(--color-primary-text); background: var(--color-primary-soft); border-color: transparent; }
+  .btn { font: 700 var(--text-base)/1 var(--font-body); min-height: 48px; padding: 0 22px; border-radius: var(--radius-sm); border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn.primary { background: var(--color-primary); color: var(--color-on-primary); }
+  .btn.ghost { background: transparent; color: var(--color-text); border-color: var(--color-border-strong); }
+  .icon-btn { width: 48px; height: 48px; border-radius: 999px; border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); display: inline-grid; place-items: center; cursor: pointer; }
+  .icon-btn.play { background: var(--color-accent); color: var(--color-on-accent); border-color: transparent; width: 56px; height: 56px; }
+  .bar { height: 8px; background: var(--color-primary-soft); border-radius: 999px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--color-primary); border-radius: inherit; }
+
+  /* ---------- 1. home ---------- */
+  /* calligraphy: hero only. Two deliberate lines, a faint stroke thickens Gveret Levin's thin pen line for legibility. */
+  .hero h1 { font: 400 var(--text-hero)/1.08 var(--font-script); margin: 0; -webkit-text-stroke: .02em currentColor; paint-order: stroke fill; }
+  .hero h1 span { display: block; }
+  .hero h1 .l2 { color: var(--color-primary-text); }
+  .hero .lead { font-size: 1.1875rem; line-height: 1.55; max-width: 30em; margin: 16px 0 22px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .stat b { display: block; font: 500 1.875rem/1.1 var(--font-label); color: var(--color-primary-text); font-variant-numeric: tabular-nums; }
+  .stat span { font-size: var(--text-sm); color: var(--color-text-muted); }
+  .song-row { display: flex; gap: 14px; align-items: center; }
+  .cover { flex: none; width: 64px; height: 64px; border-radius: 12px; background: linear-gradient(135deg, var(--accent-300), var(--accent-700)); }
+  .song-row .t { font-weight: 700; font-size: 1.125rem; line-height: 1.3; }
+  .song-row .t2 { color: var(--color-text-muted); font-size: var(--text-sm); }
+  .song-row .meta { margin-top: 6px; }
+  .review li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--color-border); }
+  .review li:last-child { border-bottom: 0; }
+  .review ul { list-style: none; margin: 0; padding: 0; }
+  .review .he { font-weight: 700; }
+  .review .en { color: var(--color-text-muted); }
+
+  /* ---------- 2. song ---------- */
+  .player .now { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
+  .player .controls { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 14px 0 4px; }
+  .times { display: flex; justify-content: space-between; font: 500 var(--text-xs)/1 var(--font-label); color: var(--color-text-muted); margin-top: 6px; direction: ltr; }
+  .lyrics { list-style: none; margin: 0; padding: 0; }
+  .lyrics li { padding: 12px 0; border-bottom: 1px solid var(--color-border); }
+  .lyrics li:last-child { border-bottom: 0; }
+  .lyrics li.cur { border-inline-start: 3px solid var(--color-accent); padding-inline-start: 12px; }
+  .lyrics .he { font-weight: 600; }
+  .lyrics .en { display: block; text-align: left; color: var(--color-text-muted); margin-top: 2px; }
+  .lyrics mark { background: var(--color-accent-soft); color: var(--color-accent-text); font-weight: 700; padding: 0 4px; border-radius: 4px; }
+  .lyrics .ts { font: 500 var(--text-xs)/1 var(--font-label); color: var(--color-text-muted); float: left; }
+  /* calligraphy: short quote only */
+  .quote { margin: 0; text-align: center; padding: 22px 12px; }
+  .quote blockquote { margin: 0; font: 400 var(--text-quote)/1.25 var(--font-script); color: var(--color-accent-text); -webkit-text-stroke: .015em currentColor; }
+
+  .word { display: flex; flex-direction: column; gap: 10px; }
+  .word .chips { justify-content: space-between; }
+  .word .meaning { font: 700 1.375rem/1.3 var(--font-body); }
+  .word .term { font: 700 2rem/1.1 var(--font-body); text-align: left; letter-spacing: -.01em; }
+  .word .syl { font: 500 var(--text-sm)/1 var(--font-label); color: var(--color-text-muted); text-align: left; }
+  .word .ex { background: var(--color-bg); border-radius: var(--radius-sm); padding: 10px 12px; }
+  .word .ex .he { font-size: var(--text-sm); }
+  .word .ex .en { display: block; text-align: left; font-size: var(--text-sm); color: var(--color-text-muted); margin-top: 2px; }
+  .word .foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; }
+  .word .foot .src { font: 500 var(--text-xs)/1.3 var(--font-label); color: var(--color-text-muted); }
+  .save { font: 600 var(--text-sm)/1 var(--font-body); min-height: 44px; padding: 0 14px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-strong); background: transparent; color: var(--color-text); cursor: pointer; }
+
+  /* ---------- 3. quiz ---------- */
+  .qhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .qhead .num { font-size: var(--text-sm); color: var(--color-text-muted); }
+  .qhead .score { color: var(--color-primary-text); font-size: var(--text-base); }
+  .dots { display: flex; gap: 6px; margin-bottom: 18px; }
+  .dots i { flex: 1; height: 6px; border-radius: 999px; background: var(--color-primary-soft); }
+  .dots i.done { background: var(--color-primary); }
+  .ask { font-weight: 700; margin-bottom: 6px; }
+  .qterm { font: 700 2.25rem/1.1 var(--font-body); text-align: left; margin: 6px 0 4px; }
+  .qctx { text-align: left; color: var(--color-text-muted); font-size: var(--text-sm); margin-bottom: 16px; }
+  .qctx b { color: var(--color-text); }
+  .opts { display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr); }
+  .opt { font: 500 var(--text-base)/1.3 var(--font-body); text-align: start; min-height: 52px; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-strong); background: var(--color-surface); color: var(--color-text); cursor: pointer; display: flex; align-items: center; gap: 10px; }
+  .opt .k { font: 500 var(--text-xs)/1 var(--font-label); width: 26px; height: 26px; border-radius: 999px; display: inline-grid; place-items: center; border: 1px solid var(--color-border-strong); color: var(--color-text-muted); flex: none; }
+  .opt[aria-pressed="true"] { border: 2px solid var(--color-primary); background: var(--color-primary-soft); font-weight: 700; }
+  .opt[aria-pressed="true"] .k { background: var(--color-primary); color: var(--color-on-primary); border-color: transparent; }
+  .feedback { margin-top: 14px; border-radius: var(--radius-sm); background: var(--color-primary-soft); padding: 12px 14px; }
+  .feedback b { color: var(--color-primary-text); }
+  .result .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  @media (min-width: 900px) {
+    .home { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; }
+    .song { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
+    .words { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .quiz { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; }
+    .opts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero { padding-top: 12px; }
+  }
+</style>
+</head>
+<body>
+<header class="wrap top">
+  <p class="brand">שיראמיר״ם</p>
+  <div class="tools">
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="החלפת מצב בהיר או כהה">בהיר / כהה</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 1. Home -->
+  <section class="screen" aria-labelledby="hero-title">
+    <div class="grid home">
+      <div class="hero">
+        <h1 id="hero-title"><span>שיר אחד,</span> <span class="l2">מילה אחת</span></h1>
+        <p class="lead">לומדים את מילות האמיר״ם דרך שירים: שומעים את המילה בשיר, שרים אותה, ובודקים בחידון קצר שהיא נשארה.</p>
+        <div class="actions">
+          <button class="btn primary" type="button">להמשיך לשיר היום</button>
+          <button class="btn ghost" type="button">לחידון היומי</button>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>ההתקדמות שלי</h3>
+          <div class="stats">
+            <div class="stat"><b>124</b><span>מילים שנשמרו</span></div>
+            <div class="stat"><b>7</b><span>ימים ברצף</span></div>
+            <div class="stat"><b>62%</b><span>מרמה 3</span></div>
+          </div>
+          <div class="bar" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" aria-label="התקדמות ברמה 3"><i style="width:62%"></i></div>
+        </article>
+        <article class="card">
+          <h3>שיר היום</h3>
+          <div class="song-row">
+            <div class="cover" aria-hidden="true"></div>
+            <div>
+              <p class="t">אור מהסס</p>
+              <p class="t2 en" lang="en">Reluctant Light</p>
+              <div class="chips meta"><span class="chip on">רמה 3</span><span class="chip"><span class="num">5</span> מילים</span><span class="chip num">3:42</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="card review">
+          <h3>לחזור עליהן היום</h3>
+          <ul>
+            <li><span class="he">בלתי נמנע</span><span class="en" lang="en">inevitable</span></li>
+            <li><span class="he">שופע, בשפע</span><span class="en" lang="en">abundant</span></li>
+            <li><span class="he">להקל, לרכך</span><span class="en" lang="en">alleviate</span></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Song -->
+  <section class="screen" aria-labelledby="song-title">
+    <h2 id="song-title">אור מהסס</h2>
+    <p class="sub">המילים החדשות מסומנות בכל שורה.</p>
+    <div class="grid song">
+      <article class="card player">
+        <div class="now">
+          <div class="cover" aria-hidden="true"></div>
+          <div><p class="t" style="font-weight:700">אור מהסס</p><p class="en" lang="en" style="color:var(--color-text-muted);font-size:var(--text-sm)">Reluctant Light · Level 3</p></div>
+        </div>
+        <div class="bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" aria-label="מיקום בשיר"><i style="width:33%"></i></div>
+        <div class="times"><span>1:12</span><span>3:42</span></div>
+        <div class="controls">
+          <button class="icon-btn" type="button" aria-label="10 שניות אחורה"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z" fill="currentColor"/></svg></button>
+          <button class="icon-btn play" type="button" aria-label="השהיה"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg></button>
+          <button class="icon-btn" type="button" aria-label="חזרה על השורה"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v3l4-4-4-4v3H5v6h2zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2z" fill="currentColor"/></svg></button>
+        </div>
+        <figure class="quote">
+          <blockquote>מילה ששרים פעם אחת, נשארת.</blockquote>
+        </figure>
+      </article>
+      <article class="card">
+        <h3>מילות השיר</h3>
+        <ol class="lyrics">
+          <li><span class="ts">0:24</span><p class="he">הלילה היה <mark>שופע</mark> באור <mark>מהסס</mark>,</p><span class="en" lang="en">The night was <mark>abundant</mark> with a <mark>reluctant</mark> light,</span></li>
+          <li class="cur"><span class="ts">1:12</span><p class="he">שיר <mark>בלתי נמנע</mark> שנשאר עד הבוקר.</p><span class="en" lang="en">an <mark>inevitable</mark> song that stayed till morning.</span></li>
+          <li><span class="ts">1:40</span><p class="he">וכל צליל <mark>הקל</mark> את מה שכאב,</p><span class="en" lang="en">and every note would <mark>alleviate</mark> the ache,</span></li>
+        </ol>
+      </article>
+    </div>
+
+    <h3 style="margin-top:28px">מילים מהשיר</h3>
+    <div class="grid words">
+      <article class="card word">
+        <div class="chips"><span class="chip on">שם תואר</span><span class="chip">רמה 3</span></div>
+        <p class="meaning">שופע, בשפע</p>
+        <p class="term en" lang="en">abundant</p>
+        <p class="syl en" lang="en">a · bun · dant</p>
+        <div class="ex"><p class="he">הלילה היה שופע באור.</p><span class="en" lang="en">The night was abundant with light.</span></div>
+        <div class="foot"><span class="src">בשיר: שורה <span class="num">1</span> · <span class="num">0:24</span></span><button class="save" type="button">לשמור</button></div>
+      </article>
+      <article class="card word">
+        <div class="chips"><span class="chip on">שם תואר</span><span class="chip">רמה 3</span></div>
+        <p class="meaning">מהסס, לא שש</p>
+        <p class="term en" lang="en">reluctant</p>
+        <p class="syl en" lang="en">re · luc · tant</p>
+        <div class="ex"><p class="he">אור מהסס נכנס בחלון.</p><span class="en" lang="en">A reluctant light came through the window.</span></div>
+        <div class="foot"><span class="src">בשיר: שורה <span class="num">1</span> · <span class="num">0:24</span></span><button class="save" type="button">לשמור</button></div>
+      </article>
+      <article class="card word">
+        <div class="chips"><span class="chip on">שם תואר</span><span class="chip">רמה 4</span></div>
+        <p class="meaning">בלתי נמנע</p>
+        <p class="term en" lang="en">inevitable</p>
+        <p class="syl en" lang="en">in · ev · i · ta · ble</p>
+        <div class="ex"><p class="he">השינוי היה בלתי נמנע.</p><span class="en" lang="en">The change was inevitable.</span></div>
+        <div class="foot"><span class="src">בשיר: שורה <span class="num">2</span> · <span class="num">1:12</span></span><button class="save" type="button">לשמור</button></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 3. Quiz -->
+  <section class="screen" aria-labelledby="quiz-title">
+    <h2 id="quiz-title">חידון על השיר</h2>
+    <p class="sub">חמש שאלות על המילים מהשיר. אפשר לחזור לשורה בשיר מכל שאלה.</p>
+    <div class="grid quiz">
+      <article class="card">
+        <div class="qhead"><span class="num">שאלה 2 מתוך 5</span><span class="num score">ניקוד 80</span></div>
+        <div class="dots" aria-hidden="true"><i class="done"></i><i class="done"></i><i></i><i></i><i></i></div>
+        <p class="ask">מה הפירוש של המילה?</p>
+        <p class="qterm en" lang="en">reluctant</p>
+        <p class="qctx en" lang="en">“The night was abundant with a <b>reluctant</b> light”</p>
+        <div class="opts">
+          <button class="opt" type="button" aria-pressed="false"><span class="k">א</span>שופע, בשפע</button>
+          <button class="opt" type="button" aria-pressed="true"><span class="k">ב</span>מהסס, לא שש</button>
+          <button class="opt" type="button" aria-pressed="false"><span class="k">ג</span>בלתי נמנע</button>
+          <button class="opt" type="button" aria-pressed="false"><span class="k">ד</span>מאיר, זוהר</button>
+        </div>
+        <p class="feedback" role="status"><b>✓ נכון!</b> שמעת אותה בשיר בשורה <span class="num">1</span>, בדקה <span class="num">0:24</span>.</p>
+        <div class="actions" style="margin-top:14px"><button class="btn primary" type="button">לשאלה הבאה</button></div>
+      </article>
+      <article class="card result">
+        <h3>עד עכשיו</h3>
+        <div class="stats">
+          <div class="stat"><b>2/5</b><span>תשובות נכונות</span></div>
+          <div class="stat"><b>0:48</b><span>זמן בחידון</span></div>
+        </div>
+        <div class="bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" aria-label="התקדמות בחידון"><i style="width:40%"></i></div>
+        <p class="sub" style="margin:12px 0 0">כל תשובה נכונה מעבירה את המילה לרשימת "נשמרו".</p>
+      </article>
+    </div>
+  </section>
+</main>
+
+
+<script>
+  document.getElementById('themeBtn').addEventListener('click', function () {
+    var r = document.documentElement;
+    var cur = r.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  });
+</script>
+</body>
+</html>
