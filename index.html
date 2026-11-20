@@ -34,6 +34,7 @@
   </style>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/volt.css">
+  <link rel="stylesheet" href="css/shir.css">
   <script>try{const t=localStorage.getItem('shiramiram-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}</script>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/icon-192.svg" type="image/svg+xml">
@@ -56,6 +57,7 @@
 
   <!-- Tabs -->
   <nav class="flex bg-stage-800 p-2 gap-2" aria-label="מסכים">
+    <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="home" aria-pressed="false" hidden>בית</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="song" aria-pressed="true">שיר</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="vocab" aria-pressed="false" hidden>אוצר מילים</button>
     <button type="button" class="tab-btn px-3 py-1 rounded" data-tab="practice" aria-pressed="false" hidden aria-label="מרכז תרגול">תרגול</button>
@@ -70,36 +72,62 @@
 
   <!-- Content -->
   <main class="flex-1 p-4 overflow-auto">
+    <!-- Home (approved design, 20.11.2026). Filled from the learner's own progress by src/home_screen.js. -->
+    <section id="home" class="tab-content hidden" aria-labelledby="home-title">
+      <div class="home-top">
+        <div class="home-hello">
+          <span class="home-avatar" aria-hidden="true">ש</span>
+          <span class="home-greet"><span id="home-greeting">שלום</span><b>שיראמיר״ם</b></span>
+        </div>
+        <p class="home-streak"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><b id="home-streak">0</b><span>ימים ברצף</span></p>
+      </div>
+      <h2 id="home-title" class="home-title">מה שרים היום?</h2>
+      <div class="home-stack">
+        <article class="home-hero" aria-labelledby="home-song-title">
+          <div class="home-hero-row"><span class="home-pill">השיר של היום</span><span id="home-duration" dir="ltr">00:30</span></div>
+          <div class="home-art" aria-hidden="true"><span class="vinyl"></span><span class="cover"><b id="home-cover-label" dir="ltr"></b></span></div>
+          <p class="home-count"><b id="home-new-words">0</b><span>מילים חדשות</span></p>
+          <div class="home-song">
+            <p dir="ltr" lang="en"><b id="home-song-title">Hold the Light</b><span id="home-song-artist">ShirAmiram Originals</span></p>
+            <button id="home-play" type="button" aria-label="לשיר את השיר של היום" style="min-height:44px;min-width:44px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z"/></svg></button>
+          </div>
+          <p id="home-chips" class="home-chips" dir="ltr" lang="en"></p>
+        </article>
+      </div>
+      <div class="home-learned">
+        <div id="home-ring" class="home-ring" role="img" aria-label="מילים שלמדת"><span><b id="home-learned">0</b><small>מילים</small></span></div>
+        <div class="home-learned-text">
+          <h3>המילים שלמדת</h3>
+          <p id="home-goal">מתוך 300 מילות אמיר״ם</p>
+          <div id="home-week" class="home-week" role="img" aria-label="תרגול השבוע"></div>
+        </div>
+      </div>
+      <div class="home-review">
+        <span class="home-review-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v4h-4"/></svg></span>
+        <p><b id="home-due">0</b> <span id="home-due-label">מילים מחכות לחזרה</span></p>
+        <button id="home-practice" type="button" style="min-height:44px;min-width:44px">בואו נתרגל</button>
+      </div>
+    </section>
+
     <!-- Song Tab -->
     <section id="song" class="tab-content">
-      <!-- Today's song hero (v2 design). The title is a display name for the built-in original lyrics. -->
+      <!-- Now playing (approved design, 20.11.2026). The title is a display name for the built-in original lyrics. -->
       <div id="song-hero" class="song-hero">
-        <div class="hero-tags"><span>השיר של היום</span><span id="hero-words"></span></div>
-        <div class="hero-title" dir="ltr" lang="en">Hold the&nbsp;<br>Light</div>
-        <div class="hero-sub" dir="ltr" lang="en">ShirAmiram Originals</div>
-        <div class="hero-progress"><div class="hero-bar"><i id="hero-bar-fill"></i></div><span id="hero-time">00:00</span></div>
-        <button id="hero-play" type="button" class="hero-cta">להתחיל לשיר</button>
-      </div>
-      <button id="btn-install-pwa" type="button" class="install-secondary hidden" style="min-height:44px">התקן אפליקציה</button>
-      <div class="mb-4">
-        <div class="flex items-center gap-2 mb-2">
-          <input id="seek" type="range" min="0" max="100" value="0" aria-label="מיקום בשיר" class="flex-1 progress-track">
-          <select id="speed" aria-label="מהירות" class="bg-stage-900 text-neon-pink px-2 py-1 rounded">
-            <option value="0.75">0.75×</option>
-            <option value="1" selected>1×</option>
-            <option value="1.25">1.25×</option>
-          </select>
+        <div class="player-bar">
+          <button id="player-back" type="button" class="player-round" aria-label="חזרה לבית" style="min-height:44px;min-width:44px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <span class="player-bar-title">מתנגן עכשיו</span>
+          <span class="player-bar-gap" aria-hidden="true"></span>
         </div>
-        <div class="flex gap-1 justify-center mb-2">
-          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-          <div class="wave-bar"></div><div class="wave-bar"></div>
+        <div class="player-head">
+          <div class="player-art" aria-hidden="true"><span class="vinyl"></span><span class="cover"></span></div>
+          <div class="player-meta">
+            <div class="hero-title" dir="ltr" lang="en">Hold the&nbsp;<br>Light</div>
+            <div class="hero-sub" dir="ltr" lang="en">ShirAmiram Originals</div>
+            <div class="hero-tags"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="hero-words"></span></div>
+          </div>
         </div>
-        <div id="insp-word" class="p-2 bg-stage-900 rounded text-sm" aria-live="polite">לחצו על מילה מודגשת בשיר כדי לראות תרגום ודוגמה.</div>
       </div>
-
-      <article class="text-lg leading-relaxed" dir="ltr" lang="en">
+      <article class="player-lyrics text-lg leading-relaxed" dir="ltr" lang="en">
         <p class="lyric-line mb-2 px-2 rounded" data-line="0">
           <button type="button" class="vocab-badge" data-word="deliberate">deliberate</button> steps echo in the night,
           <button type="button" class="vocab-badge" data-word="crucial">crucial</button> hearts beat, we hold the light.
@@ -120,6 +148,24 @@
           The lyrics were written for this app; they are not from a published song.
         </p>
       </article>
+      <div id="insp-word" class="player-pop" aria-live="polite">לחצו על מילה מודגשת בשיר כדי לראות תרגום ודוגמה.</div>
+      <div class="player-controls">
+        <div class="player-scrub" aria-hidden="true"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+        <div class="hero-progress"><div class="hero-bar"><i id="hero-bar-fill"></i></div><span id="hero-time">00:00</span><span id="hero-total">00:30</span></div>
+        <input id="seek" type="range" min="0" max="100" value="0" aria-label="מיקום בשיר" class="progress-track">
+        <div class="player-buttons" dir="ltr">
+          <select id="speed" aria-label="מהירות">
+            <option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.25">1.25×</option>
+          </select>
+          <button id="player-prev" type="button" class="player-skip" aria-label="השורה הקודמת" style="min-height:44px;min-width:44px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+          <button id="hero-play" type="button" class="hero-cta">להתחיל לשיר</button>
+          <button id="player-next" type="button" class="player-skip" aria-label="השורה הבאה" style="min-height:44px;min-width:44px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+          <button id="player-restart" type="button" class="player-restart" aria-label="מההתחלה" style="min-height:44px;min-width:44px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v4h4"/></svg></button>
+        </div>
+      </div>
+      <button id="btn-install-pwa" type="button" class="install-secondary hidden" style="min-height:44px">התקן אפליקציה</button>
     </section>
 
     <!-- Vocabulary Tab -->
@@ -247,7 +293,11 @@
         <button type="button" id="quiz-mode-amiram-b" aria-pressed="false" aria-label="אמיר״ם רמה B">רמה B</button>
         <button type="button" id="quiz-mode-amiram-c" aria-pressed="false" aria-label="אמיר״ם רמה C">רמה C</button>
       </fieldset>
-      <div id="quiz-progress" aria-live="polite">שאלה 0 מתוך 0</div>
+      <div class="quiz-top">
+        <button id="quiz-close" type="button" class="player-round" aria-label="חזרה לתרגול" style="min-height:44px;min-width:44px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        <div id="quiz-bar" class="quiz-bar" aria-hidden="true"><i id="quiz-bar-fill"></i></div>
+        <div id="quiz-progress" aria-live="polite">שאלה 0 מתוך 0</div>
+      </div>
       <div id="quiz-container" class="space-y-4">
         <!-- Questions will be injected -->
       </div>
@@ -450,6 +500,30 @@
 
     <!-- Amiram Analytics Dashboard Tab -->
     <section id="dashboard" class="tab-content hidden">
+      <!-- Profile header (approved design). Numbers come from the learner's progress, via src/home_screen.js. -->
+      <div class="me">
+        <div class="me-title-row"><h2 class="me-title">הפרופיל שלי</h2><span id="me-theme-slot"></span></div>
+        <div class="me-id">
+          <div id="me-ring" class="me-ring" aria-hidden="true"><span><b>ש</b></span></div>
+          <div class="me-text">
+            <p class="me-name">הלמידה שלי</p>
+            <p id="me-since" class="me-since">מתחילים היום</p>
+            <p class="me-level"><b id="me-level">שלב 1</b><span id="me-next">0% לשלב 2</span></p>
+          </div>
+        </div>
+        <p class="me-quote" lang="he">״כל שיר הוא שיעור קטן״</p>
+        <div class="me-stats">
+          <p class="me-stat is-green"><span>מילים נלמדו</span><b id="me-words">0</b></p>
+          <p class="me-stat is-warm"><span>ימי רצף</span><b id="me-streak">0</b></p>
+          <p class="me-stat"><span>שירים</span><b id="me-songs">0</b></p>
+        </div>
+        <div class="me-week-card">
+          <div class="me-week-head"><h3>השבוע שלך</h3><span id="me-week-total">0 תרגולים</span></div>
+          <div id="me-week" class="me-week" role="img" aria-label="תרגול השבוע"></div>
+        </div>
+        <h3 class="me-songs-title">השירים עם הכי הרבה מילים</h3>
+        <div id="me-top-songs" class="me-top-songs"></div>
+      </div>
       <!-- Hero Score Card -->
       <div class="p-6 bg-stage-800 rounded-xl border border-white/10 shadow-xl mb-4 text-center">
         <p class="text-xs text-muted uppercase tracking-wider mb-1">ציון אמיר"ם משוער (מדד 50–150)</p>
@@ -736,6 +810,7 @@
   <script defer src="src/alias_ui.js"></script>
   <script defer src="src/media_links.js"></script>
   <script defer src="src/ui_shell.js"></script>
+  <script defer src="src/home_screen.js"></script>
   <script>
   // The scripts above load with defer, so this start-up waits for them: DOMContentLoaded fires after
   // every deferred script has run, and before the DOMContentLoaded init of progress_ui.js and ui_shell.js.
@@ -1139,6 +1214,8 @@
       const y = quizPool.length;
       const x = y ? Math.min(quizIndex + 1, y) : 0;
       $('quiz-progress').textContent = 'שאלה ' + x + ' מתוך ' + y;
+      const fill = $('quiz-bar-fill');
+      if (fill) fill.style.width = (y ? Math.round(x / y * 100) : 0) + '%';
     }
     function renderQuiz() {
       score = 0;
@@ -1233,7 +1310,8 @@
               fb.textContent = right ? '✅ נכון!' : '❌ לא נכון. התשובה היא: ' + answer;
             }
 
-            btn.classList.add('selected');
+            btn.classList.add('selected', right ? 'is-right' : 'is-wrong');
+            fb.dataset.result = right ? 'ok' : 'bad';
             fb.className = 'quiz-fb mt-2 text-sm ' + (right ? 'text-green-400' : 'text-red-400');
             const answerMs = Date.now() - quizShownAt;
             const conf = A.formatAnswerConfidenceBadge(answerMs, right);
@@ -1518,7 +1596,7 @@
       };
     }
 
-    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); init30SongKaraoke(c.songs); if (typeof renderQuiz==='function') renderQuiz(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
+    if (window.fetch) A.loadContent(fetch.bind(window)).then(c=>{ CONTENT=c; window.ShirAmiramContent=c; document.dispatchEvent(new CustomEvent('shiramiram:content')); $('content-status').textContent='נטענו '+c.songs.length+' שירים, '+c.questions.length+' שאלות, '+c.words.length+' מילים. שגיאות אימות: '+c.errors.length; renderSongs(); init30SongKaraoke(c.songs); if (typeof renderQuiz==='function') renderQuiz(); }).catch(()=>{ $('content-status').textContent='לא ניתן לטעון data/imports/content_v2.json — פתחו דרך שרת סטטי.'; });
     $('btn-recommend').addEventListener('click', renderSongs);
     $('btn-suno').addEventListener('click', ()=>{
       const targets=$('target-words').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);

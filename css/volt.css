@@ -1,48 +1,62 @@
 /* ==========================================================================
-   ShirAmiram — "Volt" theme (v2)
-   Source: Claude Design export in design/shiramiram-2026-11-12/
-   Dark-first, near-black base, one volt-lime signature colour, Rubik for
-   Hebrew and Bricolage Grotesque for English words.
+   ShirAmiram theme tokens and base styles.
+   Colours follow the design approved in Claude Design (20.11.2026); the screens
+   themselves are in css/shir.css, loaded after this file.
    Loaded after css/style.css. It only overrides presentation: every id,
    class and data attribute the scripts rely on stays as it is.
-   ========================================================================== */
+   ==========================================================================*/
 
+/* Palette (approved Claude Design, 20.11.2026): deep green, warm orange, soft paper.
+   Same token names in both themes; dark is the base block, light redefines every colour. */
 :root,
 :root[data-theme="dark"] {
-  --stage: #050608; --bg: #0B0C10; --surface: #15171D; --surface-2: #1F222B; --surface-3: #2A2E39;
-  --ink: #F4F5F7; --ink-2: #A6ABB8; --line: #2C303B;
-  --accent: #C6FF3D; --accent-ink: #0B0C10; --accent-text: #C6FF3D;
-  --mark: #C6FF3D; --mark-ink: #0B0C10;
-  --nav: #1F222B; --nav-ink: #F4F5F7; --nav-ink-2: #A6ABB8; --cover-ink: #0B0C10;
-  --ok: #5BE49B; --ok-bg: #10301F; --bad: #FF7B7B; --bad-bg: #3B1517;
-  --la: #4FE3C1; --la-bg: #0F2F2A; --lb: #FFC247; --lb-bg: #33270C; --lc: #FF7AA8; --lc-bg: #3A1424;
+  --stage: #070B08; --bg: #0B110C; --surface: #161C17; --surface-2: #1E261F; --surface-3: #2A332B;
+  --ink: #F5F8F5; --ink-2: #A6AFA8; --line: #263027;
+  --accent: #78B685; --accent-ink: #0B110C; --accent-text: #78B685;
+  --mark: #F7A973; --mark-ink: #161C17;
+  --nav: #161C17; --nav-ink: #F5F8F5; --nav-ink-2: #A6AFA8; --cover-ink: #161C17;
+  --ok: #78B685; --ok-bg: #18301E; --bad: #F7A973; --bad-bg: #3A2617;
+  --la: #78B685; --la-bg: #18301E; --lb: #F7A973; --lb-bg: #3A2617; --lc: #F5F8F5; --lc-bg: #2A332B;
+  --green: #287C42; --green-deep: #106A31; --green-tint: rgba(120, 182, 133, .18); --on-green: #FCFEFC;
+  --orange: #F7A973; --orange-soft: #F7A973; --orange-tint: rgba(247, 169, 115, .12); --orange-line: rgba(247, 169, 115, .4);
+  --play: #F7A973; --play-ink: #161C17; --cta: #78B685; --cta-ink: #0B110C;
+  --track: rgba(245, 248, 245, .1); --nav-glass: rgba(22, 28, 23, .96); --pop: #161C17; --pop-ink: #F5F8F5;
   --sh-1: 0 1px 2px rgba(0, 0, 0, .4);
   --sh-2: 0 14px 32px -10px rgba(0, 0, 0, .7);
   --sh-float: 0 18px 40px -10px rgba(0, 0, 0, .8);
-  --glow: 0 10px 36px -6px rgba(198, 255, 61, .6);
-  --display: 'Bricolage Grotesque', 'Rubik', sans-serif;
-  --sans: 'Rubik', system-ui, sans-serif;
+  --sh-hero: 0 28px 60px -14px rgba(0, 0, 0, .8), inset 0 1px 0 rgba(120, 182, 133, .4);
+  --glow: 0 10px 30px -10px rgba(120, 182, 133, .5);
+  --hero-warm: rgba(247, 169, 115, .38);
+  --display: 'Rubik', system-ui, sans-serif;
+  --sans: 'Rubik', 'Heebo', system-ui, sans-serif;
+  --display-hand: 'Gveret Levin', 'Rubik', cursive;
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
   --r-xs: 6px; --r-s: 8px; --r-m: 14px; --r-l: 22px; --r-xl: 30px; --r-pill: 999px;
-  --nav-h: 76px;
-  --cover-1: linear-gradient(135deg, #FFC247 0%, #FF8A4C 48%, #FF5E9A 100%);
-  --cover-2: linear-gradient(135deg, #4FE3C1 0%, #35B8FF 60%, #7A6BFF 100%);
-  --cover-3: linear-gradient(135deg, #C6FF3D 0%, #5BE49B 55%, #22C7B8 100%);
-  --cover-4: linear-gradient(135deg, #FF7AA8 0%, #B56BFF 60%, #6B7BFF 100%);
+  --nav-h: 84px;
+  --cover-1: radial-gradient(circle at 50% 118%, #D36D00 0 28%, #F7A973 28% 42%, #FFE6D5 42% 54%, #F7A973 54% 100%);
+  --cover-2: repeating-radial-gradient(circle at 50% 120%, #287C42 0 5px, #DFF1E2 5px 10px);
+  --cover-3: repeating-linear-gradient(135deg, #F7A973 0 6px, #FFE6D5 6px 12px);
+  --cover-4: linear-gradient(160deg, #287C42, #106A31);
   color-scheme: dark;
 }
 :root[data-theme="light"] {
-  --stage: #E4E6DE; --bg: #F3F4EF; --surface: #FFFFFF; --surface-2: #E9EBE3; --surface-3: #DDE0D5;
-  --ink: #0E1014; --ink-2: #555B66; --line: #D5D8CE;
-  --accent: #C6FF3D; --accent-ink: #0E1014; --accent-text: #3F6B00;
-  --mark: #C6FF3D; --mark-ink: #0E1014;
-  --nav: #0E1014; --nav-ink: #F4F5F7; --nav-ink-2: #A6ABB8; --cover-ink: #0B0C10;
-  --ok: #0F6B3C; --ok-bg: #D6F1E0; --bad: #B3261E; --bad-bg: #FADCD9;
-  --la: #00705C; --la-bg: #D3F3EA; --lb: #7A4E00; --lb-bg: #FBE8B8; --lc: #B0184F; --lc-bg: #FCDDE8;
-  --sh-1: 0 1px 2px rgba(14, 16, 20, .08);
-  --sh-2: 0 14px 28px -14px rgba(14, 16, 20, .3);
-  --sh-float: 0 18px 40px -14px rgba(14, 16, 20, .5);
-  --glow: 0 10px 30px -10px rgba(63, 107, 0, .55);
+  --stage: #E3E8E3; --bg: #F5F8F5; --surface: #FCFEFC; --surface-2: #EEF1EE; --surface-3: #DCDFDC;
+  --ink: #161C17; --ink-2: #5F6560; --line: #DCDFDC;
+  --accent: #287C42; --accent-ink: #FCFEFC; --accent-text: #106A31;
+  --mark: #FFE6D5; --mark-ink: #161C17;
+  --nav: #161C17; --nav-ink: #F5F8F5; --nav-ink-2: #A6AFA8; --cover-ink: #161C17;
+  --ok: #106A31; --ok-bg: #DFF1E2; --bad: #8A4300; --bad-bg: #FFE6D5;
+  --la: #106A31; --la-bg: #DFF1E2; --lb: #8A4300; --lb-bg: #FFE6D5; --lc: #161C17; --lc-bg: #DCDFDC;
+  --green: #287C42; --green-deep: #106A31; --green-tint: #DFF1E2; --on-green: #FCFEFC;
+  --orange: #D36D00; --orange-soft: #F7A973; --orange-tint: #FFE6D5; --orange-line: #F7A973;
+  --play: #FCFEFC; --play-ink: #287C42; --cta: #161C17; --cta-ink: #FCFEFC;
+  --track: #DCDFDC; --nav-glass: rgba(252, 254, 252, .96); --pop: #161C17; --pop-ink: #F5F8F5;
+  --sh-1: 0 1px 2px rgba(22, 28, 23, .08);
+  --sh-2: 0 12px 30px -16px rgba(22, 28, 23, .18);
+  --sh-float: 0 24px 40px -16px rgba(22, 28, 23, .6);
+  --sh-hero: 0 28px 50px -18px rgba(16, 106, 49, .6);
+  --glow: 0 12px 24px -8px rgba(16, 106, 49, .7);
+  --hero-warm: rgba(211, 109, 0, .55);
   color-scheme: light;
 }
 

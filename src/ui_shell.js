@@ -4,14 +4,16 @@
 (function (root) {
   'use strict';
 
+  // Order follows the approved design: home, songs, words, practice, me (right to left).
   var GROUPS = [
+    { id: 'home', label: 'בית', tabs: ['home'] },
+    { id: 'songs', label: 'שירים', tabs: ['song', 'songs', 'suno', 'karaoke'] },
     { id: 'words', label: 'מילים', tabs: ['vocab'] },
     { id: 'practice', label: 'תרגול', tabs: ['practice', 'quiz', 'flashcards', 'alias'] },
-    { id: 'songs', label: 'שירים', tabs: ['song', 'songs', 'suno', 'karaoke'] },
-    { id: 'progress', label: 'התקדמות', tabs: ['dashboard'] }
+    { id: 'progress', label: 'אני', tabs: ['dashboard'] }
   ];
   var THEME_KEY = 'shiramiram-theme';
-  var THEME_COLORS = { light: '#F3F4EF', dark: '#0B0C10' };
+  var THEME_COLORS = { light: '#F5F8F5', dark: '#0B110C' };
 
   function groupForTab(tabId) {
     for (let i = 0; i < GROUPS.length; i++) {
@@ -78,10 +80,11 @@
   if (!doc || !doc.getElementById) return;
 
   var ICONS = {
-    words: '<path d="M4 5h7a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H4z"/><path d="M20 5h-3a3 3 0 0 0-3 3"/><path d="M14 19a2 2 0 0 1 2-2h4V5"/>',
-    practice: '<path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>',
-    songs: '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
-    progress: '<path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/>'
+    home: '<path d="M4 10.5 12 4l8 6.5V20h-5.5v-6h-5v6H4z"/>',
+    songs: '<path d="M9 18V6l10-2v12M9 18a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0zM19 16a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>',
+    words: '<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11"/>',
+    practice: '<path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v4h-4"/>',
+    progress: '<path d="M15.5 8.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0zM5 20c1.2-3.5 4-5 7-5s5.8 1.5 7 5"/>'
   };
 
   var UI_ICONS = {
@@ -163,7 +166,7 @@
       var btn = doc.createElement('button');
       btn.type = 'button';
       btn.dataset.group = group.id;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[group.id] + '</svg><span>' + group.label + '</span>';
+      btn.innerHTML = '<span class="nav-pill"><svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[group.id] + '</svg></span><span>' + group.label + '</span>';
       btn.addEventListener('click', function () {
         var target = tabButton(lastTab[group.id] || group.tabs[0]);
         if (target) target.click();
@@ -202,7 +205,7 @@
     var timer = doc.getElementById('timer');
     var words = doc.querySelectorAll('#song article .vocab-badge').length;
     var heroWords = doc.getElementById('hero-words');
-    if (heroWords && words) heroWords.textContent = words + ' מילות אמיר״ם';
+    if (heroWords && words) heroWords.textContent = words + ' מילים מסומנות';
 
     function paint() {
       var on = play.getAttribute('aria-pressed') === 'true';
@@ -403,8 +406,8 @@
   }
 
   function initLanding() {
-    // The v2 design opens on today's song. Run after the app's own start-up picked its tab.
-    root.setTimeout(function () { goTab('song'); }, 0);
+    // The approved design opens on the home screen. Run after the app's own start-up picked its tab.
+    root.setTimeout(function () { goTab('home'); }, 0);
   }
 
   function initStartPractice() {
