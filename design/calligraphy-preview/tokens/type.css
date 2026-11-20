@@ -1,0 +1,15 @@
+/* type tokens: style "pen-note" (Gveret Levin, OFL (AlefAlefAlef)). Calligraphy ONLY for hero + quotes. */
+:root {
+  --font-hero: "Gveret Levin", "Heebo", cursive;
+  --font-body: "Heebo", "Assistant", Arial, sans-serif;
+  --font-num: "Rubik", "Heebo", Arial, sans-serif;
+  --text-caption: 0.75rem; --text-small: 0.875rem; --text-body: 1rem; --text-lead: 1.125rem;
+  --text-h3: 1.25rem; --text-h2: 1.5625rem; --text-h1: 1.9375rem;
+  --text-hero: clamp(2.50rem, 11vw, 4.5rem);
+  --text-quote: clamp(1.50rem, 6.4vw, 2rem);
+  --lh-hero: 1.25; --lh-body: 1.6; --lh-tight: 1.25;
+}
+.hero { font-family: var(--font-hero); font-size: var(--text-hero); line-height: var(--lh-hero); font-weight: 400; text-wrap: balance; }
+.quote { font-family: var(--font-hero); font-size: var(--text-quote); line-height: 1.35; text-wrap: balance; }
+h2, h3, .subhead { font-family: var(--font-body); font-weight: 700; }
+.num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
