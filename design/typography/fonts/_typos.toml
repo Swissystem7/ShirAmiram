@@ -1,0 +1,5 @@
+# typos (crate-ci): these are binary font files, not text. A gate that passes changed paths by name
+# would read them as text, so turn off file checks for woff2 in this folder.
+[type.woff2]
+extend-glob = ["*.woff2"]
+check-file = false

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שיראמיר״ם: מערכת הכתב (דוגמה)</title>
+<link rel="stylesheet" href="type.css">
+<style>
+  /* Palette A, "warm paper": cream, coral and teal (Aviran's pick, 18.11.2026). Contrast (WCAG): ink 14.9,
+     muted 5.9, coral label 5.9, white on coral button 5.0, teal chip 6.7. */
+  :root { --bg:#FBF6EE; --page:#F3ECE0; --card:#FFFFFF; --ink:#2A1F1A; --muted:#6B5D52; --line:#EADFCF;
+          --accent:#C2461F; --accent-ink:#A93B1B; --on-accent:#FFFFFF; --chip-bg:#DDF1EC; --chip:#0E5C50; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--page); color:var(--ink); font-family:var(--font-body); }
+  .wrap { display:flex; flex-wrap:wrap; gap:var(--space-4); justify-content:center; padding:var(--space-4) 16px; }
+  .spec { flex:1 1 300px; max-width:360px; }
+  .spec dl { margin:0; }
+  .spec dt { color:var(--accent-ink); padding-top:var(--space-2); border-top:1px solid var(--line); margin-top:var(--space-2); }
+  .spec dd { margin:var(--space-1) 0 0; }
+  .phone { flex:0 1 360px; width:100%; max-width:360px; background:var(--bg); border:1px solid var(--line); border-radius:32px;
+           padding:var(--space-4) var(--space-3) var(--space-3); display:flex; flex-direction:column; }
+  .kicker { color:var(--accent-ink); margin:0 0 var(--space-2); }
+  .sub { margin-top:calc(-1 * var(--space-1)); }
+  .muted { color:var(--muted); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:var(--space-3); margin:0 0 var(--space-2); }
+  .card .t-meta { margin:0; }
+  .meta-row { display:flex; justify-content:space-between; align-items:center; margin:var(--space-2) 0 0; }
+  .chip { background:var(--chip-bg); color:var(--chip); border-radius:999px; padding:4px 12px; }
+  .cta { margin-top:var(--space-3); min-height:52px; border:0; border-radius:16px; background:var(--accent); color:var(--on-accent);
+         font:500 var(--fs-body)/1 var(--font-body); cursor:pointer; }
+  .cta:focus-visible { outline:2px solid var(--ink); outline-offset:3px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="spec" aria-labelledby="spec-h">
+    <h1 id="spec-h" class="t-display">מערכת הכתב</h1>
+    <dl>
+      <dt class="t-label">כותרות</dt><dd class="t-title">פרנק רוהל ליברה, 900 ו־700</dd>
+      <dt class="t-label">טקסט רץ</dt><dd class="t-body">היבו, משקל 300 עד 700</dd>
+      <dt class="t-label">תוויות ומספרים</dt><dd class="t-body"><span class="t-num">רוביק 500: 14:30, 1.2 ק״מ</span></dd>
+      <dt class="t-label">סולם גדלים</dt><dd class="t-body"><span class="t-num">44, 19, 17, 14.5, 12</span></dd>
+      <dt class="t-label">גובה שורה</dt><dd class="t-body"><span class="t-num">1.08</span> לכותרות, <span class="t-num">1.6</span> לטקסט</dd>
+      <dt class="t-label">עקרונות</dt><dd class="t-body">שלוש רמות היררכיה לכל היותר: כותרת גדולה, כותרת כרטיס וטקסט. ריווח נדיב בין הרמות.</dd>
+    </dl>
+  </section>
+  <section class="phone" aria-label="השיר של היום">
+    <p class="t-label kicker">השיר של היום</p>
+    <h2 class="t-display">Hold the Light</h2>
+    <p class="t-body muted">12 מילות אמיר״ם בתוך השיר. לוחצים על מילה ומקבלים תרגום ודוגמה.</p>
+    <article class="card">
+      <h3 class="t-title">achieve</h3>
+      <p class="t-meta muted">להשיג, להגיע לתוצאה אחרי מאמץ.</p>
+      <p class="meta-row"><span class="t-label chip">רמה B</span><span class="t-label t-num muted">3 פעמים</span></p>
+    </article>
+    <button type="button" class="cta">נגן את השיר</button>
+  </section>
+  <section class="phone" aria-label="מדד אמיר״ם משוער">
+    <p class="t-label kicker">מדד אמיר״ם משוער</p>
+    <h2 class="t-display t-num">118</h2>
+    <p class="t-title sub">עוד 16 נקודות לפטור</p>
+    <p class="t-body muted">הציון מחושב מהתשובות שלך בשבוע האחרון. המילים לחיזוק מחכות בתרגול.</p>
+    <article class="card">
+      <h3 class="t-title">מילים לחיזוק</h3>
+      <p class="t-meta muted">deliberate, consequence, reluctant</p>
+      <p class="meta-row"><span class="t-label chip">תרגול</span><span class="t-label t-num muted">8 דק׳</span></p>
+    </article>
+    <button type="button" class="cta">להתחיל תרגול</button>
+  </section>
+</main>
+</body>
+</html>

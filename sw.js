@@ -1,5 +1,5 @@
 // ShirAmiram — Offline Service Worker (network-first pages, stale-while-revalidate assets)
-const CACHE_NAME = 'shiramiram-cache-v12';
+const CACHE_NAME = 'shiramiram-cache-v13';
 
 const STATIC_ASSETS = [
   './',
@@ -28,8 +28,11 @@ const STATIC_ASSETS = [
   './fonts/rubik-hebrew.woff2',
   './fonts/rubik-latin-ext.woff2',
   './fonts/rubik-latin.woff2',
+  './fonts/gveret-levin-hebrew.woff2',
+  './fonts/gveret-levin-latin.woff2',
   './app.js',
   './src/ui_shell.js',
+  './src/home_screen.js',
   './src/media_links.js',
   './src/xp_engine.js',
   './src/study_streak_badges.js',
@@ -44,6 +47,7 @@ const STATIC_ASSETS = [
   './src/alias_engine.js',
   './src/alias_ui.js',
   './css/volt.css',
+  './css/shir.css',
   './src/amiram_vocab_data.js',
   './src/amiram_restatements_data.js',
   './src/amiram_reading_data.js',

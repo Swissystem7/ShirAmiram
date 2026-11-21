@@ -7,8 +7,8 @@ Design work should use the trimmed Taste Skill at `.agents/skills/design-taste-f
 The project's existing logo, color palette, and fonts must be preserved:
 
 - Logo: `assets/icon-192.svg` and `assets/icon-512.svg`.
-- Palette: the Volt tokens in `css/volt.css` (near-black base, volt-lime `#C6FF3D` as the signature colour; light theme uses the same token names). See `design/README.md`.
-- Fonts already loaded in `index.html` and `css/volt.css`: Rubik for Hebrew, Bricolage Grotesque for English words, Heebo, and JetBrains Mono.
+- Palette: the tokens in `css/volt.css` (deep green `#287C42`, warm orange `#D36D00`/`#F7A973`, paper `#F5F8F5`; dark theme `#0B110C` with the same token names). They follow the design approved in Claude Design on 20.11.2026; the screens are styled in `css/shir.css`.
+- Fonts in `fonts/fonts.css`: Rubik and Heebo for the interface and numbers, and Gveret Levin only for the home title, short quotes and the praise line.
 
 When the skill would deal a palette, a type pairing, or a mark, keep the logo, palette, and fonts above.
 

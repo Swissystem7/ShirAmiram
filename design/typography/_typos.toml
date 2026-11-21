@@ -1,0 +1,6 @@
+# typos (crate-ci) for dell-ci/full-gate: the gate passes changed files by name, which makes
+# typos read the specimen screenshots (.png) as text and report random byte pairs as typos.
+# They are images, not prose, so never check them.
+[type.png]
+extend-glob = ["*.png"]
+check-file = false
