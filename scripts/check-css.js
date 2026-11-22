@@ -8,7 +8,8 @@ const path = require('node:path');
 
 const ROOT = path.join(__dirname, '..');
 const out = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'shiramiram-css-')), 'tailwind.css');
-const r = spawnSync(process.execPath, [require.resolve('tailwindcss/lib/cli.js'), '-c', 'tailwind.config.js', '-i', 'css/tailwind.src.css', '-o', out, '--minify'], { cwd: ROOT, encoding: 'utf8' });
+const cli = path.join(ROOT, 'node_modules', '.bin', 'tailwindcss');
+const r = spawnSync(cli, ['-c', 'tailwind.config.js', '-i', 'css/tailwind.src.css', '-o', out, '--minify'], { cwd: ROOT, encoding: 'utf8' });
 if (r.status !== 0) {
   console.error('check:css: tailwind build failed\n' + r.stderr);
   process.exit(1);
