@@ -795,6 +795,7 @@
   <script defer src="src/reading_comprehension.js"></script>
   <script defer src="src/karaoke_scoring.js"></script>
   <script defer src="src/daily_challenge_scheduler.js"></script>
+  <script defer src="src/melody_synth.js"></script>
   <script defer src="src/karaoke.js"></script>
   <script defer src="src/xp_engine.js"></script>
   <script defer src="src/study_streak_badges.js"></script>
@@ -945,7 +946,7 @@
 
     // The song: a short tune that loops, a timer, and the line being sung is highlighted.
     // elapsed counts "song seconds", so the speed changes the tempo and not the pitch.
-    let audioCtx = null, osc = null, gainNode = null;
+    let audioCtx = null, melody = null, lastNote = -1;
     let playing = false, elapsed = 0, lastTick = 0, frame = 0;
     const bars = document.querySelectorAll('.wave-bar');
     const lines = document.querySelectorAll('.lyric-line');
@@ -956,7 +957,9 @@
       $('seek').value = pos.percent;
       lines.forEach((l, i) => { l.classList.toggle('lyrics-active', (playing || elapsed > 0) && i === pos.line); });
       bars.forEach((b) => { b.classList.toggle('on', playing); });
-      if (osc && audioCtx) osc.frequency.setValueAtTime(pos.hz, audioCtx.currentTime);
+      // Each new note is played once, with its own fade in and out (src/melody_synth.js).
+      const note = Math.floor(elapsed / A.NOTE_SEC);
+      if (playing && melody && note !== lastNote) { lastNote = note; melody.play(note, A.NOTE_SEC / parseFloat($('speed').value)); }
     }
     function tick(now) {
       if (!playing) return;
@@ -969,17 +972,12 @@
       try {
         if (!audioCtx) {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          gainNode = audioCtx.createGain();
-          gainNode.gain.value = 0;
-          gainNode.connect(audioCtx.destination);
-          osc = audioCtx.createOscillator();
-          osc.type = 'triangle';
-          osc.connect(gainNode);
-          osc.start();
+          melody = window.ShirAmiramMelody ? window.ShirAmiramMelody.createMelody(audioCtx, A.TUNE) : null;
         }
         if (audioCtx.state === 'suspended') audioCtx.resume();
-        gainNode.gain.setTargetAtTime(0.12, audioCtx.currentTime, 0.02);
-      } catch (e) { audioCtx = null; osc = null; gainNode = null; } // no sound: the timer and the highlight still run
+        if (melody) melody.setVolume(1);
+        lastNote = -1;
+      } catch (e) { audioCtx = null; melody = null; } // no sound: the timer and the highlight still run
       playing = true;
       window.__shirPlaying = true;
       $('btn-play').textContent = '⏸️';
@@ -989,7 +987,7 @@
       frame = requestAnimationFrame(tick);
     }
     function stopPlayback() {
-      if (gainNode && audioCtx) gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.02);
+      if (melody) melody.setVolume(0);
       playing = false;
       window.__shirPlaying = false;
       cancelAnimationFrame(frame);

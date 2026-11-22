@@ -478,6 +478,12 @@
   }
 
   // Melody-only instrumental via Web Audio (no vocals). Uses pentatonic tune.
+  function loadMelody() {
+    try { if (typeof require === 'function') return require('./melody_synth.js'); } catch {}
+    if (typeof globalThis !== 'undefined' && globalThis.ShirAmiramMelody) return globalThis.ShirAmiramMelody;
+    return null;
+  }
+
   function createInstrumentalPlayer(audioCtx, tune, noteSec) {
     var TUNE = tune || [220, 261.63, 293.66, 329.63, 392, 329.63, 293.66, 261.63, 220, 261.63, 329.63, 392, 440, 392, 329.63];
     var NOTE = noteSec || 0.5;
@@ -515,11 +521,16 @@
       gain.gain.exponentialRampToValueAtTime(0.001, now + NOTE * 0.95);
     }
 
+    // Soft voice with fades, bass and echo when src/melody_synth.js is loaded.
+    var M = loadMelody();
+    var melody = null;
+
     function tick() {
       if (!playing) return;
       var elapsed = (Date.now() - startedAt) / 1000;
-      var idx = Math.floor(elapsed / NOTE) % TUNE.length;
-      playNote(TUNE[idx]);
+      var n = Math.round(elapsed / NOTE);
+      if (melody) melody.play(n, NOTE);
+      else playNote(TUNE[n % TUNE.length]);
     }
 
     return {
@@ -528,6 +539,8 @@
       start: function () {
         if (!audioCtx) return false;
         if (audioCtx.state === 'suspended' && audioCtx.resume) audioCtx.resume();
+        if (!melody && M) melody = M.createMelody(audioCtx, TUNE);
+        if (melody) melody.setVolume(1);
         playing = true;
         startedAt = Date.now();
         tick();
@@ -537,6 +550,7 @@
       stop: function () {
         playing = false;
         if (timer) { clearInterval(timer); timer = null; }
+        if (melody) melody.setVolume(0);
         stopVoice();
       },
       currentTimeMs: function () {
