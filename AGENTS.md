@@ -1,5 +1,8 @@
 # Agent notes
 
+- **מדיניות מיזוג (חובה).** הענף הראשי (`master` או `main`) מוגן. אסור למזג PRs ישירות ואסור לדחוף ישירות אליו. פתח PR מענף לולאה (`loop/` או `dell/`) או dependabot. הלולאות לא ממזגות בעצמן. המיזוג האוטומטי בשרת (`auto_merge.sh` דרך `approved_merge.sh`) רץ רק כאשר סוקר ה-pre-PR (`pre_pr_review.sh` — Gemini או מודל אחר השונה מהמחבר) אישר בלי בעיות חוסמות, וכל בדיקות GitHub כולל `dell-ci/full-gate` ירוקות על ה-head הנוכחי, וה-PR הוא MERGEABLE בלי קונפליקט. אין להמתין לאישור מיזוג ידני נוסף. (כלל אבירן 22.11.2026 08:13.)
+- **עיצוב.** Build UI minimal and functional; never wait for designs; approved Claude Design packages are applied later as polish.
+
 ## Design
 
 Design work should use the trimmed Taste Skill at `.agents/skills/design-taste-frontend`. It is a vendored adaptation of the MIT-licensed [taste-skill](https://github.com/Leonxlnx/taste-skill) (`design-taste-frontend`) from commit [`f6b76575f949707b4e3c37cd86cb44b0b98643e8`](https://github.com/Leonxlnx/taste-skill/commit/f6b76575f949707b4e3c37cd86cb44b0b98643e8). This copy is `SKILL.md`, `LICENSE`, and `UPSTREAM.md`. The upstream asset kit, dealer scripts, and finish gate are not in the repo. Follow the skill's art direction and check the result in a real browser.
