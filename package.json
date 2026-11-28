@@ -17,7 +17,7 @@
   "devDependencies": {
     "@size-limit/file": "14.3.0",
     "@tailwindcss/cli": "4.3.5",
-    "knip": "6.45.1",
+    "knip": "6.48.0",
     "size-limit": "14.3.0",
     "tailwindcss": "4.3.5"
   }
